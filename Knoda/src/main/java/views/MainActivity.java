@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -12,7 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -22,6 +25,10 @@ import com.knoda.knoda.R;
 import models.Topics;
 import networking.NetworkCallback;
 import networking.NetworkingManager;
+import roboguice.fragment.RoboFragment;
+import roboguice.inject.InjectView;
+
+;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -63,6 +70,17 @@ public class MainActivity extends BaseActivity
             }
         });
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Integer count = getSupportFragmentManager().getBackStackEntryCount();
+
+                if (count <= 0)
+                    mNavigationDrawerFragment.setDrawerToggleEnabled(true);
+            }
+        });
+
     }
 
     @Override
@@ -72,6 +90,14 @@ public class MainActivity extends BaseActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
+    }
+
+    public void pushFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_right);
+        transaction.addToBackStack(null).add(R.id.container, fragment).commit();
+        mNavigationDrawerFragment.setDrawerToggleEnabled(false);
     }
 
     public void onSectionAttached(int number) {
@@ -92,6 +118,7 @@ public class MainActivity extends BaseActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(mTitle);
     }
 
@@ -117,6 +144,15 @@ public class MainActivity extends BaseActivity
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
+            case R.id.action_example:
+                Toast.makeText(this, "Example action.", Toast.LENGTH_SHORT).show();
+                return true;
+            case android.R.id.home: {
+                if (mNavigationDrawerFragment.isDrawerToggleEnabled())
+                    break;
+                getSupportFragmentManager().popBackStack();
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -124,22 +160,20 @@ public class MainActivity extends BaseActivity
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends RoboFragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
+        @InjectView(R.id.button1) private Button button;
+
+        private Integer sectionNumber;
+
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
+            fragment.sectionNumber = sectionNumber;
             return fragment;
         }
 
@@ -151,15 +185,29 @@ public class MainActivity extends BaseActivity
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText(sectionNumber.toString());
+
             return rootView;
+        }
+
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainActivity activity = (MainActivity)getActivity();
+                    activity.pushFragment(PlaceholderFragment.newInstance(sectionNumber * 2));
+                }
+            });
         }
 
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
+                    sectionNumber);
         }
     }
 
