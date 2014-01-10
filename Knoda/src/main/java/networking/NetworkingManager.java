@@ -1,16 +1,14 @@
 package networking;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.GsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -52,10 +50,11 @@ public class NetworkingManager {
 
 
 
-    private void getResourceList (String url, final NetworkListCallback<T> callback) {
-        Response.Listener<T> responseListener = new Response.Listener<T>() {
+    private <T extends BaseModel> void getResourceList (String url, final Class tClass, final NetworkListCallback<T> callback) {
+
+        Response.Listener<ArrayList<T>> responseListener = new Response.Listener<ArrayList<T>>() {
             @Override
-            public void onResponse(T response) {
+            public void onResponse(ArrayList<T> response) {
                 callback.completionHandler(response, null);
             }
         };
@@ -67,7 +66,7 @@ public class NetworkingManager {
             }
         };
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+        GsonRequest<ArrayList<T>> request = new GsonRequest<ArrayList<T>>(Request.Method.GET, url, tClass , null, responseListener, errorListener);
 
         mRequestQueue.add(request);
     }

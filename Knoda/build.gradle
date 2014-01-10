@@ -12,6 +12,9 @@ repositories {
     maven {
         url 'https://github.com/Goddchen/mvn-repo/raw/master/'
     }
+    maven {
+        url 'https://github.com/knodafuture/knoda-volley/raw/mvn-repo'
+    }
     mavenCentral()
 }
 
@@ -27,7 +30,7 @@ android {
 
 dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.android:volley:1.0'
+    compile 'com.knoda:volley:1.0.0'
     compile 'org.roboguice:roboguice:2.0'
 	compile 'com.android.support:appcompat-v7:+'
 }

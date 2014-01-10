@@ -70,7 +70,6 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="ComAndroidVolley10.aar" level="project" />
     <orderEntry type="library" exported="" name="asm-3.1" level="project" />
     <orderEntry type="library" exported="" name="cglib-2.2.1-v20090111" level="project" />
     <orderEntry type="library" exported="" name="roboguice-2.0" level="project" />
@@ -80,6 +79,7 @@
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="aopalliance-1.0" level="project" />
     <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71900.aar" level="project" />
+    <orderEntry type="library" exported="" name="volley-1.0.0" level="project" />
   </component>
 </module>
 
