@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="views.login.LoginFragment">
+
+    <ImageView
+        android:id="@+id/login_logo_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/login_logo_small"
+        android:layout_centerHorizontal="true"/>
+
+    <EditText style="@style/edittext_main"
+        android:id="@+id/login_username_edittext"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/login_logo_small"
+        android:hint="username or password"
+        android:inputType="textNoSuggestions"
+        android:imeOptions="actionNext" />
+
+    <EditText style="@style/edittext_main"
+        android:id="@+id/login_password_edittext"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/login_username_edittext"
+        android:layout_alignLeft="@id/login_username_edittext"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:imeOptions="actionDone"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_password_edittext"
+        android:layout_marginLeft="10dp"
+        android:text="Forgot Password?"
+        android:textSize="10dip"
+        android:textColor="@color/white"/>
+
+
+
+</RelativeLayout>

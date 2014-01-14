@@ -10,9 +10,7 @@ import models.BaseModel;
  * Created by nick on 1/8/14.
  */
 
-public class NetworkListCallback <T extends BaseModel> {
+public interface NetworkListCallback <T extends BaseModel> {
 
-    public void completionHandler (ArrayList<T> object, VolleyError error) {
-
-    }
+    public void completionHandler (ArrayList<T> object, VolleyError error);
 }

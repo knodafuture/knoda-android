@@ -1,8 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.Apptheme.bg" parent="Theme.Apptheme">
+        <item name="android:background">@color/knodaLightGreen</item>
+    </style>
+    <style name="button_main">
+        <item name="android:background">@drawable/button_main_bg</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24dip</item>
+    </style>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="edittext_main">
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingTop">1dp</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textColorHint">@color/darkGray</item>
+        <item name="android:singleLine">true</item>
     </style>
 
 </resources>

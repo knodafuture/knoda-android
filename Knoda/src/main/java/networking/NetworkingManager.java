@@ -8,12 +8,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.GsonRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import models.BaseModel;
 import models.Topics;
@@ -27,17 +26,14 @@ import models.Topics;
 @Singleton
 public class NetworkingManager {
 
-    @Inject
-    Gson gson;
-
-    private Provider<Context> contextProvider;
+    Context context;
 
     private static RequestQueue mRequestQueue;
 
     @Inject
-    public NetworkingManager (Provider<Context> contextProvider) {
-        this.contextProvider = contextProvider;
-        mRequestQueue = Volley.newRequestQueue(contextProvider.get());
+    public NetworkingManager (Context applicationContext) {
+        this.context = applicationContext;
+        mRequestQueue = Volley.newRequestQueue(context);
     }
 
 
