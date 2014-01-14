@@ -163,6 +163,7 @@ public class MainActivity extends Activity
             catch (IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
+            mInstanceMap.put(screen, fragment);
         }
 
         return fragment;
