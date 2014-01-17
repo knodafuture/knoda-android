@@ -18,16 +18,12 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.knoda.knoda.R;
 
-import javax.inject.Inject;
-
-import core.ErrorReporter;
+import butterknife.InjectView;
 import models.LoginRequest;
 import models.LoginResponse;
 import networking.NetworkCallback;
-import networking.NetworkingManager;
 import views.core.BaseFragment;
 import views.core.MainActivity;
-import views.core.Spinner;
 
 
 /**
@@ -38,17 +34,12 @@ import views.core.Spinner;
  */
 public class LoginFragment extends BaseFragment {
 
+    @InjectView(R.id.login_username_edittext)
     EditText usernameField;
+    @InjectView(R.id.login_password_edittext)
     EditText passwordField;
 
-    @Inject
-    NetworkingManager mNetworkingManager;
 
-    @Inject
-    Spinner spinner;
-
-    @Inject
-    ErrorReporter reporter;
 
     boolean didLogin = false;
 

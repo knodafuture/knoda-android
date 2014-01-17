@@ -17,7 +17,7 @@ public class Spinner {
     }
 
     private View getProgressView() {
-        return mActivity.getProgressView();
+        return mActivity.progressView;
     }
 
     public void show() {

@@ -26,6 +26,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import core.ActivityModule;
 import core.KnodaApplication;
 import core.KnodaScreen;
@@ -58,8 +60,10 @@ public class MainActivity extends Activity
     @Inject
     NetworkingManager mNetworkingManager;
 
-    FrameLayout splashScreen;
-    FrameLayout progressView;
+    @InjectView(R.id.splash_screen)
+    public FrameLayout splashScreen;
+    @InjectView(R.id.progress_view)
+    public FrameLayout progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +72,13 @@ public class MainActivity extends Activity
         KnodaApplication application = (KnodaApplication) getApplication();
         activityGraph = application.getApplicationGraph().plus(getModules().toArray());
         activityGraph.inject(this);
+        ButterKnife.inject(this);
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         getActionBar().hide();
 
         setContentView(R.layout.activity_main);
-
-        progressView = (FrameLayout) findViewById(R.id.progress_view);
-        splashScreen = (FrameLayout) findViewById(R.id.splash_screen);
 
         initializeFragmentBackStack();
         setUpNavigation();
@@ -294,12 +296,6 @@ public class MainActivity extends Activity
 
         splashScreen.setAnimation(fadeOut);
     }
-
-
-    public View getProgressView() {
-        return progressView;
-    }
-
 
 
 }
