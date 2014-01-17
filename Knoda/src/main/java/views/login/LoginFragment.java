@@ -1,7 +1,6 @@
 package views.login;
 
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,9 +15,19 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.knoda.knoda.R;
 
+import javax.inject.Inject;
+
+import core.ErrorReporter;
+import models.LoginRequest;
+import models.LoginResponse;
+import networking.NetworkCallback;
+import networking.NetworkingManager;
+import views.core.BaseFragment;
 import views.core.MainActivity;
+import views.core.Spinner;
 
 
 /**
@@ -27,10 +36,19 @@ import views.core.MainActivity;
  * create an instance of this fragment.
  *
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends BaseFragment {
 
     EditText usernameField;
     EditText passwordField;
+
+    @Inject
+    NetworkingManager mNetworkingManager;
+
+    @Inject
+    Spinner spinner;
+
+    @Inject
+    ErrorReporter reporter;
 
     boolean didLogin = false;
 
@@ -46,6 +64,11 @@ public class LoginFragment extends Fragment {
 
         setHasOptionsMenu(true);
         getActivity().getActionBar().show();
+    }
+
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((MainActivity) getActivity()).inject(this);
     }
 
     @Override
@@ -108,6 +131,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void doLogin () {
+
         InputMethodManager inputManager = (InputMethodManager)
                 getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
@@ -115,8 +139,42 @@ public class LoginFragment extends Fragment {
         passwordField.clearFocus();
         usernameField.clearFocus();
 
+
+        if (!validateFields())
+            return;
+
+        LoginRequest request = new LoginRequest(usernameField.getText().toString(), passwordField.getText().toString());
+
+        spinner.show();
+
+
+        mNetworkingManager.login(request, new NetworkCallback<LoginResponse>() {
+            @Override
+            public void completionHandler(LoginResponse object, VolleyError error) {
+
+            }
+        });
+
+
         didLogin = true;
-        ((MainActivity)getActivity()).doLogin("something", "something");
+
+
+    }
+
+
+    private boolean validateFields() {
+
+        if (usernameField.getText().length() == 0) {
+            reporter.showError("Username cannot be empty");
+            usernameField.requestFocus();
+            return false;
+        } else if (passwordField.getText().length() == 0) {
+            reporter.showError("Password cannot be empty");
+            passwordField.requestFocus();
+            return false;
+        }
+
+        return true;
 
     }
 }

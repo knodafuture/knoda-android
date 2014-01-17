@@ -6,12 +6,12 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import views.core.MainActivity;
 
 /**
  * Created by nick on 1/13/14.
  */
-@Module(library = true, injects = MainActivity.class)
+@Module(
+    library = true)
 public class KnodaModule extends Object {
     private final KnodaApplication application;
 
@@ -23,6 +23,5 @@ public class KnodaModule extends Object {
     @Provides @Singleton Context provideContext() {
         return application;
     }
-
-
 }
+

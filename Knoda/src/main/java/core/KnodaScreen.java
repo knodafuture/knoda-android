@@ -26,7 +26,4 @@ public enum KnodaScreen {
     public static KnodaScreen get(Integer index) {
         return mMap.get(index);
     }
-
-
-
 }

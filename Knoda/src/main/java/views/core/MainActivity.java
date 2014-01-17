@@ -20,24 +20,30 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.knoda.knoda.R;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import core.ActivityModule;
 import core.KnodaApplication;
 import core.KnodaScreen;
-import models.Topics;
+import core.Logger;
+import dagger.ObjectGraph;
+import models.LoginRequest;
+import models.LoginResponse;
 import networking.NetworkCallback;
 import networking.NetworkingManager;
 import views.login.WelcomeFragment;
 import views.predictionlists.HomeFragment;
 
-import static core.Logger.log;
-
 ;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    private ObjectGraph activityGraph;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -52,19 +58,24 @@ public class MainActivity extends Activity
     @Inject
     NetworkingManager mNetworkingManager;
 
-
     FrameLayout splashScreen;
+    FrameLayout progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((KnodaApplication) getApplication()).inject(this);
+        KnodaApplication application = (KnodaApplication) getApplication();
+        activityGraph = application.getApplicationGraph().plus(getModules().toArray());
+        activityGraph.inject(this);
+
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         getActionBar().hide();
 
         setContentView(R.layout.activity_main);
+
+        progressView = (FrameLayout) findViewById(R.id.progress_view);
         splashScreen = (FrameLayout) findViewById(R.id.splash_screen);
 
         initializeFragmentBackStack();
@@ -76,7 +87,6 @@ public class MainActivity extends Activity
         boolean loggedIn = false;
 
         if (loggedIn) {
-            doLogin("saved", "saved");
         } else {
             showLogin();
         }
@@ -84,14 +94,29 @@ public class MainActivity extends Activity
         hideSplash();
 
 
-        mNetworkingManager.getTopics(new NetworkCallback<Topics>() {
+        mNetworkingManager.login(new LoginRequest("nick", "nick0923"), new NetworkCallback<LoginResponse>() {
             @Override
-            public void completionHandler(Topics object, VolleyError error) {
-                Gson gson = new Gson();
-                log(gson.toJson(object));
+            public void completionHandler(LoginResponse object, VolleyError error) {
+                Logger.log(new Gson().toJson(object));
             }
         });
 
+    }
+
+    protected List<Object> getModules() {
+        return Arrays.<Object>asList(new ActivityModule(this));
+    }
+
+    public void inject(Object object) {
+        activityGraph.inject(object);
+    }
+
+    @Override protected void onDestroy() {
+        // Eagerly clear the reference to the activity graph to allow it to be garbage collected as
+        // soon as possible.
+        activityGraph = null;
+
+        super.onDestroy();
     }
 
     @Override
@@ -117,6 +142,10 @@ public class MainActivity extends Activity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (progressView.getVisibility() == View.VISIBLE)
+            return true;
+
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
@@ -229,7 +258,7 @@ public class MainActivity extends Activity
        invalidateOptionsMenu();
     }
 
-    public void doLogin(String username, String password) {
+    public void doLogin(LoginResponse response) {
 
         mShowingLogin = false;
 
@@ -266,6 +295,10 @@ public class MainActivity extends Activity
         splashScreen.setAnimation(fadeOut);
     }
 
+
+    public View getProgressView() {
+        return progressView;
+    }
 
 
 

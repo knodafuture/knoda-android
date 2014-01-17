@@ -10,11 +10,16 @@ import com.android.volley.toolbox.GsonRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import core.Logger;
 import models.BaseModel;
+import models.LoginRequest;
+import models.LoginResponse;
 import models.Topics;
 
 
@@ -30,6 +35,8 @@ public class NetworkingManager {
 
     private static RequestQueue mRequestQueue;
 
+    private HashMap<String, String> headers;
+
     @Inject
     public NetworkingManager (Context applicationContext) {
         this.context = applicationContext;
@@ -40,13 +47,55 @@ public class NetworkingManager {
     public void getTopics (final NetworkCallback<Topics> callback) {
         String url = "http://api-test.knoda.com/api/topics.json?auth_token=7GPuMMaf41qMWqaAuoQZ";
 
-        getResource(url, Topics.class, callback);
+        //getResource(url, Topics.class, callback);
 
     }
 
+    public void login (final LoginRequest payload, final NetworkCallback<LoginResponse> callback) {
+
+        String url = "http://api-dev.knoda.com/api/session.json";
+
+        executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
+
+    }
+
+    private Map<String, String> getHeaders() {
+
+        if (headers == null) {
+            headers = new HashMap<String, String>();
+            headers.put("Content-Type", "application/json; charset=utf-8;");
+
+        }
+
+        Logger.log("using headers" + headers.toString());
+        return headers;
+    }
 
 
-    private <T extends BaseModel> void getResourceList (String url, final Class tClass, final NetworkListCallback<T> callback) {
+    private <T extends BaseModel> void executeRequest (int httpMethod, String url, final BaseModel payload, final Class responseClass, final NetworkCallback<T> callback) {
+        Response.Listener<T> responseListener = new Response.Listener<T>() {
+            @Override
+            public void onResponse(T t) {
+                callback.completionHandler(t, null);
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                callback.completionHandler(null, volleyError);
+            }
+        };
+
+        GsonRequest<T> request = new GsonRequest<T>(httpMethod, url, responseClass, getHeaders(), responseListener, errorListener);
+
+        if (payload != null)
+            request.setPayload(payload);
+
+        mRequestQueue.add(request);
+    }
+
+    private <T extends BaseModel> void executeListRequest (int httpMethod, final String url, final BaseModel payload, final Class responseClass, final NetworkListCallback<T> callback) {
 
         Response.Listener<ArrayList<T>> responseListener = new Response.Listener<ArrayList<T>>() {
             @Override
@@ -62,30 +111,13 @@ public class NetworkingManager {
             }
         };
 
-        GsonRequest<ArrayList<T>> request = new GsonRequest<ArrayList<T>>(Request.Method.GET, url, tClass , null, responseListener, errorListener);
+        GsonRequest<ArrayList<T>> request = new GsonRequest<ArrayList<T>>(httpMethod, url, responseClass , getHeaders(), responseListener, errorListener);
+
+        if (payload != null)
+            request.setPayload(payload);
 
         mRequestQueue.add(request);
+
     }
 
-
-    private <T extends BaseModel> void getResource (String url, final Class tClass, final NetworkCallback<T> callback) {
-
-        Response.Listener<T> responseListener = new Response.Listener<T>() {
-            @Override
-            public void onResponse(T t) {
-                callback.completionHandler(t, null);
-            }
-        };
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                callback.completionHandler(null, volleyError);
-            }
-        };
-
-        GsonRequest<T> request = new GsonRequest<T>(Request.Method.GET, url, tClass, null, responseListener, errorListener);
-
-        mRequestQueue.add(request);
-    }
 }
