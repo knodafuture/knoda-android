@@ -22,7 +22,7 @@ public class BaseFragment extends Fragment {
     public Spinner spinner;
 
     @Inject
-    public ErrorReporter reporter;
+    public ErrorReporter errorReporter;
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

@@ -20,6 +20,7 @@ import core.Logger;
 import models.BaseModel;
 import models.LoginRequest;
 import models.LoginResponse;
+import models.ServerError;
 import models.Topics;
 
 
@@ -64,7 +65,7 @@ public class NetworkingManager {
         if (headers == null) {
             headers = new HashMap<String, String>();
             headers.put("Content-Type", "application/json; charset=utf-8;");
-
+            headers.put("Accept", "application/json; api_version=2");
         }
 
         Logger.log("using headers" + headers.toString());
@@ -83,7 +84,7 @@ public class NetworkingManager {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                callback.completionHandler(null, volleyError);
+                callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
         };
 
@@ -107,7 +108,7 @@ public class NetworkingManager {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                callback.completionHandler(null, volleyError);
+                callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
         };
 
@@ -119,5 +120,4 @@ public class NetworkingManager {
         mRequestQueue.add(request);
 
     }
-
 }

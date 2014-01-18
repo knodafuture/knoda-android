@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -16,8 +17,6 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 import com.knoda.knoda.R;
 
 import java.util.Arrays;
@@ -29,13 +28,12 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import core.ActivityModule;
+import core.Keys;
 import core.KnodaApplication;
 import core.KnodaScreen;
-import core.Logger;
 import dagger.ObjectGraph;
 import models.LoginRequest;
 import models.LoginResponse;
-import networking.NetworkCallback;
 import networking.NetworkingManager;
 import views.login.WelcomeFragment;
 import views.predictionlists.HomeFragment;
@@ -68,17 +66,17 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getWindow().setBackgroundDrawableResource(R.color.knodaLightGreen);
         KnodaApplication application = (KnodaApplication) getApplication();
         activityGraph = application.getApplicationGraph().plus(getModules().toArray());
         activityGraph.inject(this);
-        ButterKnife.inject(this);
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         getActionBar().hide();
 
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
 
         initializeFragmentBackStack();
         setUpNavigation();
@@ -94,15 +92,6 @@ public class MainActivity extends Activity
         }
 
         hideSplash();
-
-
-        mNetworkingManager.login(new LoginRequest("nick", "nick0923"), new NetworkCallback<LoginResponse>() {
-            @Override
-            public void completionHandler(LoginResponse object, VolleyError error) {
-                Logger.log(new Gson().toJson(object));
-            }
-        });
-
     }
 
     protected List<Object> getModules() {
@@ -260,8 +249,10 @@ public class MainActivity extends Activity
        invalidateOptionsMenu();
     }
 
-    public void doLogin(LoginResponse response) {
+    public void doLogin(LoginRequest request, LoginResponse response) {
 
+
+        saveRequestAndResponse(request, response);
         mShowingLogin = false;
 
         mNavigationDrawerFragment.setDrawerToggleEnabled(true);
@@ -271,6 +262,13 @@ public class MainActivity extends Activity
 
         mNavigationDrawerFragment.selectStartingItem();
 
+    }
+
+    private void saveRequestAndResponse(LoginRequest request, LoginResponse response) {
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        sharedPreferences.edit().putString(Keys.SAVED_USERNAME_KEY.toString(), response.email);
+        sharedPreferences.edit().putString(Keys.SAVED_PASSWORD_KEY.toString(), request.password);
+        sharedPreferences.edit().putString(Keys.SAVED_AUTH_TOKEN_KEY.toString(), response.authToken);
     }
 
     private void hideSplash() {

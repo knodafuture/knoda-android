@@ -15,31 +15,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import models.LoginRequest;
 import models.LoginResponse;
+import models.ServerError;
 import networking.NetworkCallback;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 
-
-/**
- * A simple {@link android.support.v4.app.Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
 public class LoginFragment extends BaseFragment {
 
     @InjectView(R.id.login_username_edittext)
     EditText usernameField;
     @InjectView(R.id.login_password_edittext)
     EditText passwordField;
-
-
 
     boolean didLogin = false;
 
@@ -55,11 +46,6 @@ public class LoginFragment extends BaseFragment {
 
         setHasOptionsMenu(true);
         getActivity().getActionBar().show();
-    }
-
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).inject(this);
     }
 
     @Override
@@ -134,21 +120,23 @@ public class LoginFragment extends BaseFragment {
         if (!validateFields())
             return;
 
-        LoginRequest request = new LoginRequest(usernameField.getText().toString(), passwordField.getText().toString());
+        final LoginRequest request = new LoginRequest(usernameField.getText().toString(), passwordField.getText().toString());
 
         spinner.show();
 
 
         mNetworkingManager.login(request, new NetworkCallback<LoginResponse>() {
             @Override
-            public void completionHandler(LoginResponse object, VolleyError error) {
-
+            public void completionHandler(LoginResponse object, ServerError error) {
+                spinner.hide();
+                if (error != null)
+                    errorReporter.showError(error);
+                else {
+                    didLogin = true;
+                    ((MainActivity)getActivity()).doLogin(request, object);
+                }
             }
         });
-
-
-        didLogin = true;
-
 
     }
 
@@ -156,11 +144,11 @@ public class LoginFragment extends BaseFragment {
     private boolean validateFields() {
 
         if (usernameField.getText().length() == 0) {
-            reporter.showError("Username cannot be empty");
+            errorReporter.showError("Username cannot be empty");
             usernameField.requestFocus();
             return false;
         } else if (passwordField.getText().length() == 0) {
-            reporter.showError("Password cannot be empty");
+            errorReporter.showError("Password cannot be empty");
             passwordField.requestFocus();
             return false;
         }

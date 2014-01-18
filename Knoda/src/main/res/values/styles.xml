@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Apptheme.bg" parent="Theme.Apptheme">
-        <item name="android:background">@color/knodaLightGreen</item>
-    </style>
     <style name="button_main">
         <item name="android:background">@drawable/button_main_bg</item>
         <item name="android:textColor">@color/white</item>

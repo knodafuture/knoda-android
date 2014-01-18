@@ -1,8 +1,7 @@
 package networking;
 
-import com.android.volley.VolleyError;
-
 import models.BaseModel;
+import models.ServerError;
 
 /**
  * Created by nick on 1/8/14.
@@ -10,7 +9,7 @@ import models.BaseModel;
 
 public interface NetworkCallback <T extends BaseModel> {
 
-    public void completionHandler (T object, VolleyError error);
+    public void completionHandler (T object, ServerError error);
 }
 
 

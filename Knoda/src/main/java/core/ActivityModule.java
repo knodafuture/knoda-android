@@ -4,9 +4,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import views.core.BaseFragment;
 import views.core.MainActivity;
 import views.core.Spinner;
+import views.login.LoginFragment;
 
 /**
  * Created by nick on 1/17/14.
@@ -15,7 +15,7 @@ import views.core.Spinner;
 @Module(
         injects = {
                 MainActivity.class,
-                BaseFragment.class
+                LoginFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

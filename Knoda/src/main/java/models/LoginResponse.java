@@ -8,12 +8,12 @@ import com.google.gson.annotations.SerializedName;
 public class LoginResponse extends BaseModel {
 
     @SerializedName("auth_token")
-    String authToken;
+    public String authToken;
 
     @SerializedName("user_id")
-    Integer userId;
+    public Integer userId;
 
     @SerializedName("email")
-    String email;
+    public String email;
 
 }

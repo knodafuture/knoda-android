@@ -2,6 +2,7 @@ package core;
 
 import android.app.AlertDialog;
 
+import models.ServerError;
 import views.core.MainActivity;
 
 /**
@@ -21,6 +22,10 @@ public class ErrorReporter{
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setMessage(message).setPositiveButton("Ok", null);
         builder.create().show();
+    }
+
+    public void showError(ServerError error) {
+        showError(error.getDescription());
     }
 
 
