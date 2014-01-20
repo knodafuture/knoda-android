@@ -32,8 +32,6 @@ public class LoginFragment extends BaseFragment {
     @InjectView(R.id.login_password_edittext)
     EditText passwordField;
 
-    boolean didLogin = false;
-
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
         return fragment;
@@ -43,7 +41,6 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setHasOptionsMenu(true);
         getActivity().getActionBar().show();
     }
@@ -52,7 +49,6 @@ public class LoginFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.login, menu);
         getActivity().getActionBar().setTitle("");
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -67,25 +63,18 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        if (!didLogin)
-            getActivity().getActionBar().hide();
+        return view;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-
-        usernameField = (EditText)view.findViewById(R.id.login_username_edittext);
-        passwordField = (EditText)view.findViewById(R.id.login_password_edittext);
-
         configureEditTextListeners();
-
-        return view;
     }
 
     private void configureEditTextListeners() {
@@ -132,7 +121,6 @@ public class LoginFragment extends BaseFragment {
                 if (error != null)
                     errorReporter.showError(error);
                 else {
-                    didLogin = true;
                     ((MainActivity)getActivity()).doLogin(request, object);
                 }
             }

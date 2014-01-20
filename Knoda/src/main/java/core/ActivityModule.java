@@ -7,6 +7,8 @@ import dagger.Provides;
 import views.core.MainActivity;
 import views.core.Spinner;
 import views.login.LoginFragment;
+import views.login.SignUpFragment;
+import views.login.WelcomeFragment;
 
 /**
  * Created by nick on 1/17/14.
@@ -15,7 +17,9 @@ import views.login.LoginFragment;
 @Module(
         injects = {
                 MainActivity.class,
-                LoginFragment.class
+                WelcomeFragment.class,
+                LoginFragment.class,
+                SignUpFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="views.login.SignUpFragment"
+    android:background="@color/knodaLightGreen">
+
+    <ImageView
+        android:id="@+id/signup_logo_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/login_logo_small"
+        android:layout_centerHorizontal="true"/>
+
+    <EditText style="@style/edittext_main"
+        android:id="@+id/signup_email_edittext"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/signup_logo_small"
+        android:hint="email"
+        android:inputType="textNoSuggestions"
+        android:imeOptions="actionNext" />
+    <EditText style="@style/edittext_main"
+        android:id="@+id/signup_username_edittext"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/signup_email_edittext"
+        android:hint="username"
+        android:inputType="textNoSuggestions"
+        android:imeOptions="actionNext" />
+
+    <EditText style="@style/edittext_main"
+        android:id="@+id/signup_password_edittext"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/signup_username_edittext"
+        android:layout_alignLeft="@id/login_username_edittext"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:imeOptions="actionDone"/>
+
+    <TextView style="@style/smallWhiteText"
+        android:id="@+id/signup_textview_termsstart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signup_password_edittext"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:text="By signing up, I agree to the"/>
+
+    <Button style="@style/smallWhiteText"
+        android:id="@+id/signup_terms_button"
+        android:layout_width="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/signup_textview_termsstart"
+        android:layout_toRightOf="@id/signup_textview_termsstart"
+        android:layout_marginLeft="1dp"
+        android:text="@string/tos"/>
+
+
+
+</RelativeLayout>

@@ -37,7 +37,7 @@ android {
 
 dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.knoda:volley:1.0.1'
+    compile 'com.knoda:volley:1.0.0'
     compile 'com.squareup.dagger:dagger:1.2.0'
     compile 'com.squareup.dagger:dagger-compiler:1.2.0'
     compile 'com.android.support:appcompat-v7:+'

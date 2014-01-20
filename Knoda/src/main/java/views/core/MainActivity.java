@@ -34,6 +34,8 @@ import core.KnodaScreen;
 import dagger.ObjectGraph;
 import models.LoginRequest;
 import models.LoginResponse;
+import models.ServerError;
+import networking.NetworkCallback;
 import networking.NetworkingManager;
 import views.login.WelcomeFragment;
 import views.predictionlists.HomeFragment;
@@ -84,14 +86,25 @@ public class MainActivity extends Activity
         mInstanceMap = new HashMap<KnodaScreen, Fragment>();
         mClassMap = getClassMap();
 
-        boolean loggedIn = false;
 
-        if (loggedIn) {
-        } else {
+        final LoginRequest request = null; //getSavedLoginRequest();
+
+        if (request == null) {
             showLogin();
+            hideSplash();
+        } else {
+            mNetworkingManager.login(request, new NetworkCallback<LoginResponse>() {
+                @Override
+                public void completionHandler(LoginResponse object, ServerError error) {
+                    if (error != null) {
+                        showLogin();
+                    } else {
+                        doLogin(request, object);
+                    }
+                    hideSplash();
+                }
+            });
         }
-
-        hideSplash();
     }
 
     protected List<Object> getModules() {
@@ -103,8 +116,6 @@ public class MainActivity extends Activity
     }
 
     @Override protected void onDestroy() {
-        // Eagerly clear the reference to the activity graph to allow it to be garbage collected as
-        // soon as possible.
         activityGraph = null;
 
         super.onDestroy();
@@ -122,11 +133,6 @@ public class MainActivity extends Activity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (mShowingLogin) {
-            menu.removeGroup(R.id.default_menu_group);
-            return true;
-        }
-
         return super.onPrepareOptionsMenu(menu);
 
     }
@@ -258,6 +264,7 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setDrawerToggleEnabled(true);
         mNavigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
+        getActionBar().show();
         invalidateOptionsMenu();
 
         mNavigationDrawerFragment.selectStartingItem();
@@ -266,10 +273,23 @@ public class MainActivity extends Activity
 
     private void saveRequestAndResponse(LoginRequest request, LoginResponse response) {
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        sharedPreferences.edit().putString(Keys.SAVED_USERNAME_KEY.toString(), response.email);
-        sharedPreferences.edit().putString(Keys.SAVED_PASSWORD_KEY.toString(), request.password);
-        sharedPreferences.edit().putString(Keys.SAVED_AUTH_TOKEN_KEY.toString(), response.authToken);
+        sharedPreferences.edit().putString(Keys.SAVED_USERNAME_KEY, response.email).commit();
+        sharedPreferences.edit().putString(Keys.SAVED_PASSWORD_KEY, request.password).commit();
+        sharedPreferences.edit().putString(Keys.SAVED_AUTHTOKEN_KEY, response.authToken).commit();
     }
+
+    private LoginRequest getSavedLoginRequest() {
+
+        SharedPreferences sharedPreferences= getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        String login = sharedPreferences.getString(Keys.SAVED_USERNAME_KEY, null);
+        String password = sharedPreferences.getString(Keys.SAVED_PASSWORD_KEY, null);
+
+        if (login == null || password == null)
+            return null;
+
+        return new LoginRequest(login, password);
+    }
+
 
     private void hideSplash() {
         Animation fadeOut = new AlphaAnimation(1, 0);
@@ -294,6 +314,4 @@ public class MainActivity extends Activity
 
         splashScreen.setAnimation(fadeOut);
     }
-
-
 }

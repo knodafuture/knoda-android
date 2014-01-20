@@ -18,6 +18,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import core.Logger;
+
 /**
  * Volley adapter for JSON requests that will be parsed into Java objects by Gson.
  */
@@ -57,6 +59,7 @@ public class GsonRequest<T> extends Request<T> {
         if (payload == null)
             return null;
 
+        Logger.log("JSON = " + gson.toJson(payload));
         return gson.toJson(payload).getBytes(Charset.forName("UTF-8"));
     }
 

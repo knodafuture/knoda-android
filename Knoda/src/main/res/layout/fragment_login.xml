@@ -30,15 +30,13 @@
         android:inputType="textPassword"
         android:imeOptions="actionDone"/>
 
-    <Button
+    <Button style="@style/smallWhiteText"
         android:layout_width="wrap_content"
         android:background="@android:color/transparent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_password_edittext"
         android:layout_marginLeft="10dp"
-        android:text="Forgot Password?"
-        android:textSize="10dip"
-        android:textColor="@color/white"/>
+        android:text="Forgot Password?"/>
 
 
 

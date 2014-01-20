@@ -15,6 +15,7 @@ public class ServerError extends BaseModel {
     public ArrayList<FieldError> serverErrors = new ArrayList<FieldError>();
 
     private ServerError(VolleyError error) {
+        if (error.networkResponse != null)
         this.statusCode = error.networkResponse.statusCode;
         this.headers = error.networkResponse.headers;
     }
