@@ -13,7 +13,6 @@ import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import views.core.BaseFragment;
-import views.core.MainActivity;
 
 
 /**
@@ -82,7 +81,7 @@ public class WelcomeFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 LoginFragment fragment = LoginFragment.newInstance();
-                ((MainActivity)getActivity()).pushFragment(fragment);
+                pushFragment(fragment);
             }
         });
 
@@ -90,7 +89,7 @@ public class WelcomeFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 SignUpFragment fragment = SignUpFragment.newInstance();
-                ((MainActivity)getActivity()).pushFragment(fragment);
+                pushFragment(fragment);
             }
         });
 

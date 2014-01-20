@@ -54,9 +54,6 @@ public class MainActivity extends Activity
     private HashMap<KnodaScreen, Class<? extends Fragment>> mClassMap;
     private HashMap<KnodaScreen, Fragment> mInstanceMap;
 
-
-    private boolean mShowingLogin;
-
     @Inject
     NetworkingManager mNetworkingManager;
 
@@ -257,7 +254,6 @@ public class MainActivity extends Activity
 
     public void doLogin(LoginRequest request, LoginResponse response) {
 
-
         saveRequestAndResponse(request, response);
         mShowingLogin = false;
 
@@ -274,7 +270,7 @@ public class MainActivity extends Activity
     private void saveRequestAndResponse(LoginRequest request, LoginResponse response) {
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         sharedPreferences.edit().putString(Keys.SAVED_USERNAME_KEY, response.email).commit();
-        sharedPreferences.edit().putString(Keys.SAVED_PASSWORD_KEY, request.password).commit();
+        sharedPreferences.edit().putString(Keys.SAVED_PASSWORD_KEY, request.getPassword()).commit();
         sharedPreferences.edit().putString(Keys.SAVED_AUTHTOKEN_KEY, response.authToken).commit();
     }
 

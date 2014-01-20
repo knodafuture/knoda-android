@@ -20,6 +20,7 @@
         android:hint="email"
         android:inputType="textNoSuggestions"
         android:imeOptions="actionNext" />
+
     <EditText style="@style/edittext_main"
         android:id="@+id/signup_username_edittext"
         android:layout_width="fill_parent"
@@ -58,6 +59,23 @@
         android:layout_marginLeft="1dp"
         android:text="@string/tos"/>
 
+    <TextView style="@style/smallWhiteText"
+        android:id="@+id/signup_terms_and"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="1dp"
+        android:layout_alignBaseline="@id/signup_textview_termsstart"
+        android:layout_toRightOf="@id/signup_terms_button"
+        android:text="and"/>
 
+    <Button style="@style/smallWhiteText"
+        android:id="@+id/signup_privacy_button"
+        android:layout_width="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/signup_textview_termsstart"
+        android:layout_toRightOf="@id/signup_terms_and"
+        android:layout_marginLeft="1dp"
+        android:text="@string/privacypolicy"/>
 
 </RelativeLayout>

@@ -31,6 +31,7 @@
         android:imeOptions="actionDone"/>
 
     <Button style="@style/smallWhiteText"
+        android:id="@+id/login_forgot_button"
         android:layout_width="wrap_content"
         android:background="@android:color/transparent"
         android:layout_height="wrap_content"

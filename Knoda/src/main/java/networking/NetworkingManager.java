@@ -1,6 +1,7 @@
 package networking;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,12 +16,14 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import builders.ParamBuilder;
+import core.Keys;
 import core.Logger;
 import models.BaseModel;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.ServerError;
-import models.Topics;
+import models.SignUpRequest;
 
 
 /**
@@ -37,23 +40,28 @@ public class NetworkingManager {
 
     private HashMap<String, String> headers;
 
+    public static String termsOfServiceUrl = "http://knoda.com/terms";
+    public static String privacyPolicyUrl = "http://knoda.com/privacy";
+
+    private String baseUrl = "http://api-dev.knoda.com/api/";
+
     @Inject
     public NetworkingManager (Context applicationContext) {
         this.context = applicationContext;
         mRequestQueue = Volley.newRequestQueue(context);
     }
 
+    public void login (final LoginRequest payload, final NetworkCallback<LoginResponse> callback) {
 
-    public void getTopics (final NetworkCallback<Topics> callback) {
-        String url = "http://api-test.knoda.com/api/topics.json?auth_token=7GPuMMaf41qMWqaAuoQZ";
+        String url = buildUrl("session.json", false, null);
 
-        //getResource(url, Topics.class, callback);
+        executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
 
     }
 
-    public void login (final LoginRequest payload, final NetworkCallback<LoginResponse> callback) {
+    public void signup(final SignUpRequest payload, final NetworkCallback<LoginResponse> callback) {
 
-        String url = "http://api-dev.knoda.com/api/session.json";
+        String url = buildUrl("registration.json", false, null);
 
         executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
 
@@ -69,6 +77,33 @@ public class NetworkingManager {
 
         Logger.log("using headers" + headers.toString());
         return headers;
+    }
+
+
+    private String buildUrl(String path, boolean requiresAuthToken, ParamBuilder paramBuilder) {
+
+
+        if (requiresAuthToken && paramBuilder != null) {
+            String authToken = getAuthToken();
+            if (authToken == null) {
+                throw new RuntimeException("No auth token found");
+            }
+
+            paramBuilder.add("auth", authToken);
+        }
+
+        String url = baseUrl + path;
+        if (paramBuilder != null)
+            url += paramBuilder.build();
+
+        return url;
+
+    }
+
+    private String getAuthToken() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+
+        return sharedPreferences.getString(Keys.SAVED_AUTHTOKEN_KEY, null);
     }
 
 

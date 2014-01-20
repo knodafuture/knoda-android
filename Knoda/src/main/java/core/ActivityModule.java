@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import views.core.MainActivity;
 import views.core.Spinner;
+import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
@@ -19,7 +20,8 @@ import views.login.WelcomeFragment;
                 MainActivity.class,
                 WelcomeFragment.class,
                 LoginFragment.class,
-                SignUpFragment.class
+                SignUpFragment.class,
+                ForgotPasswordFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

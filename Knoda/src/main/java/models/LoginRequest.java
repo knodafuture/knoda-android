@@ -7,14 +7,16 @@ public class LoginRequest extends BaseModel {
     @SerializedName("user")
     LoginRequestUser user;
 
-    
-    public String login;
-    public String password;
-
     public LoginRequest(String login, String password) {
         this.user = new LoginRequestUser(login, password);
-        this.login = login;
-        this.password = password;
+    }
+
+    public String getLogin() {
+        return user.login;
+    }
+
+    public String getPassword() {
+        return user.password;
     }
 }
 

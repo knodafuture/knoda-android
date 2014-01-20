@@ -1,23 +1,21 @@
 package views.login;
 
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
 import butterknife.InjectView;
+import butterknife.OnClick;
+import helpers.EditTextDoneCallback;
+import helpers.EditTextHelper;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.ServerError;
@@ -31,6 +29,12 @@ public class LoginFragment extends BaseFragment {
     EditText usernameField;
     @InjectView(R.id.login_password_edittext)
     EditText passwordField;
+
+
+    @OnClick(R.id.login_forgot_button) void onForgotPassword() {
+        ForgotPasswordFragment fragment = ForgotPasswordFragment.newInstance();
+        pushFragment(fragment);
+    }
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -48,6 +52,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.login, menu);
+        menu.removeGroup(R.id.default_menu_group);
         getActivity().getActionBar().setTitle("");
     }
 
@@ -79,32 +84,21 @@ public class LoginFragment extends BaseFragment {
 
     private void configureEditTextListeners() {
 
-        TextView.OnEditorActionListener listener = new TextView.OnEditorActionListener() {
+        EditTextHelper.assignNextEditText(usernameField, passwordField);
+
+        EditTextHelper.assignDoneListener(passwordField, new EditTextDoneCallback() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_NEXT) {
-                    passwordField.requestFocus();
-                } else if (i == EditorInfo.IME_ACTION_DONE) {
-                    doLogin();
-                }
-
-                return true;
+            public void onDone() {
+                doLogin();
             }
-        };
+        });
 
-        usernameField.setOnEditorActionListener(listener);
-        passwordField.setOnEditorActionListener(listener);
     }
 
     private void doLogin () {
-
-        InputMethodManager inputManager = (InputMethodManager)
-                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        hideKeyboard();
         passwordField.clearFocus();
         usernameField.clearFocus();
-
 
         if (!validateFields())
             return;

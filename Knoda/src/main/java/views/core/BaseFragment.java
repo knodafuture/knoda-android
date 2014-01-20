@@ -1,8 +1,10 @@
 package views.core;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import javax.inject.Inject;
 
@@ -33,4 +35,17 @@ public class BaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ButterKnife.inject(this, view);
     }
+
+
+    public void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    public void pushFragment(Fragment fragment) {
+        ((MainActivity) getActivity()).pushFragment(fragment);
+    }
+
 }
