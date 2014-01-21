@@ -5,6 +5,8 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.Map;
 
+import core.Logger;
+
 /**
  * Created by nick on 1/17/14.
  */
@@ -15,9 +17,12 @@ public class ServerError extends BaseModel {
     public ArrayList<FieldError> serverErrors = new ArrayList<FieldError>();
 
     private ServerError(VolleyError error) {
-        if (error.networkResponse != null)
-        this.statusCode = error.networkResponse.statusCode;
-        this.headers = error.networkResponse.headers;
+        try {
+            this.statusCode = error.networkResponse.statusCode;
+            this.headers = error.networkResponse.headers;
+        } catch (NullPointerException ex) {
+            Logger.log("Error creating server error" + ex.getCause());
+        }
     }
 
     public static ServerError newInstanceWithVolleyError(VolleyError error) {

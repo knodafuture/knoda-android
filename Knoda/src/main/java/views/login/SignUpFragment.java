@@ -19,7 +19,6 @@ import butterknife.OnClick;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;
-import models.LoginRequest;
 import models.LoginResponse;
 import models.ServerError;
 import models.SignUpRequest;
@@ -122,7 +121,7 @@ public class SignUpFragment extends BaseFragment {
                 spinner.hide();
 
                 if (error == null) {
-                    ((MainActivity) getActivity()).doLogin(new LoginRequest(request.email, request.password), object);
+                    ((MainActivity) getActivity()).doLogin(request, object);
                 } else {
                     errorReporter.showError(error);
                 }

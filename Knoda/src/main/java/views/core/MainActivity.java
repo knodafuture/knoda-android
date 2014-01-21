@@ -238,9 +238,6 @@ public class MainActivity extends Activity
     }
 
     private void showLogin () {
-
-       mShowingLogin = true;
-
        WelcomeFragment welcome = WelcomeFragment.newInstance();
        FragmentManager fragmentManager = getFragmentManager();
        FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -255,8 +252,6 @@ public class MainActivity extends Activity
     public void doLogin(LoginRequest request, LoginResponse response) {
 
         saveRequestAndResponse(request, response);
-        mShowingLogin = false;
-
         mNavigationDrawerFragment.setDrawerToggleEnabled(true);
         mNavigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
@@ -270,7 +265,7 @@ public class MainActivity extends Activity
     private void saveRequestAndResponse(LoginRequest request, LoginResponse response) {
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         sharedPreferences.edit().putString(Keys.SAVED_USERNAME_KEY, response.email).commit();
-        sharedPreferences.edit().putString(Keys.SAVED_PASSWORD_KEY, request.getPassword()).commit();
+        sharedPreferences.edit().putString(Keys.SAVED_PASSWORD_KEY, request.password).commit();
         sharedPreferences.edit().putString(Keys.SAVED_AUTHTOKEN_KEY, response.authToken).commit();
     }
 
