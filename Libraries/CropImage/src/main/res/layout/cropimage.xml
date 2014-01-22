@@ -24,7 +24,7 @@
             android:orientation="horizontal">
 
         <view class="com.android.camera.CropImageView" android:id="@+id/image"
-                android:background="#55000000"
+                android:background="#77BC1F"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_x="0dip"

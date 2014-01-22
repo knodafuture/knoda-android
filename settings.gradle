@@ -1,3 +1,2 @@
 include ':Knoda'
 include ':libraries:CropImage'
-

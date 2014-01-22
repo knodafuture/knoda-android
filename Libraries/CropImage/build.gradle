@@ -16,6 +16,10 @@ android {
     compileSdkVersion 19
     buildToolsVersion "19.0.0"
 
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 19
+    }
 }
 
 dependencies {
