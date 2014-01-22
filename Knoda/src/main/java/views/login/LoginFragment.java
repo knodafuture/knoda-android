@@ -14,12 +14,12 @@ import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import core.networking.NetworkCallback;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import models.LoginRequest;
-import models.LoginResponse;
 import models.ServerError;
-import networking.NetworkCallback;
+import models.User;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 
@@ -82,6 +82,12 @@ public class LoginFragment extends BaseFragment {
         configureEditTextListeners();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideKeyboard();
+    }
+
     private void configureEditTextListeners() {
 
         EditTextHelper.assignNextEditText(usernameField, passwordField);
@@ -94,6 +100,7 @@ public class LoginFragment extends BaseFragment {
         });
 
     }
+
 
     private void doLogin () {
         hideKeyboard();
@@ -108,15 +115,14 @@ public class LoginFragment extends BaseFragment {
         spinner.show();
 
 
-        mNetworkingManager.login(request, new NetworkCallback<LoginResponse>() {
+        userManager.login(request, new NetworkCallback<User>() {
             @Override
-            public void completionHandler(LoginResponse object, ServerError error) {
+            public void completionHandler(User object, ServerError error) {
                 spinner.hide();
                 if (error != null)
                     errorReporter.showError(error);
-                else {
-                    ((MainActivity)getActivity()).doLogin(request, object);
-                }
+                else
+                    ((MainActivity)getActivity()).doLogin();
             }
         });
 

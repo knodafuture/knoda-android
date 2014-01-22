@@ -10,21 +10,21 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import core.ErrorReporter;
-import networking.NetworkingManager;
+import core.managers.NetworkingManager;
+import core.managers.UserManager;
 
 /**
  * Created by nick on 1/17/14.
  */
 public class BaseFragment extends Fragment {
 
-    @Inject
-    public NetworkingManager mNetworkingManager;
+    @Inject public NetworkingManager networkingManager;
 
-    @Inject
-    public Spinner spinner;
+    @Inject public Spinner spinner;
 
-    @Inject
-    public ErrorReporter errorReporter;
+    @Inject public ErrorReporter errorReporter;
+
+    @Inject public UserManager userManager;
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

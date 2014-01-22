@@ -16,14 +16,14 @@ import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import core.managers.NetworkingManager;
+import core.networking.NetworkCallback;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;
-import models.LoginResponse;
 import models.ServerError;
 import models.SignUpRequest;
-import networking.NetworkCallback;
-import networking.NetworkingManager;
+import models.User;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 
@@ -115,16 +115,14 @@ public class SignUpFragment extends BaseFragment {
 
         final SignUpRequest request = new SignUpRequest(emailField.getText().toString(), usernameField.getText().toString(), passwordField.getText().toString());
 
-        mNetworkingManager.signup(request, new NetworkCallback<LoginResponse>() {
+        userManager.signup(request, new NetworkCallback<User>() {
             @Override
-            public void completionHandler(LoginResponse object, ServerError error) {
+            public void completionHandler(User object, ServerError error) {
                 spinner.hide();
-
-                if (error == null) {
-                    ((MainActivity) getActivity()).doLogin(request, object);
-                } else {
+                if (error != null)
                     errorReporter.showError(error);
-                }
+                else
+                    ((MainActivity)getActivity()).doLogin();
             }
         });
 

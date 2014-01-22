@@ -3,11 +3,11 @@
     tools:context=".MainActivity" >
     <group
         android:id="@+id/default_menu_group">
-        <item android:id="@+id/action_example"
+        <item android:id="@+id/action_search"
             android:title="Search"
             android:icon="@android:drawable/ic_menu_search"
             android:showAsAction="ifRoom" />
-        <item android:id="@+id/action_settings"
+        <item android:id="@+id/action_add_prediction"
             android:title="Add Prediction"
             android:icon="@android:drawable/ic_menu_add"
             android:orderInCategory="100"

@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -15,8 +15,8 @@ import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.knoda.knoda.R;
 
 import java.util.Arrays;
@@ -27,16 +27,19 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import core.ActivityModule;
-import core.Keys;
-import core.KnodaApplication;
 import core.KnodaScreen;
+import core.Logger;
+import core.di.ActivityModule;
+import core.di.KnodaApplication;
+import core.managers.NetworkingManager;
+import core.managers.SharedPrefManager;
+import core.managers.UserManager;
+import core.networking.NetworkCallback;
 import dagger.ObjectGraph;
 import models.LoginRequest;
-import models.LoginResponse;
 import models.ServerError;
-import networking.NetworkCallback;
-import networking.NetworkingManager;
+import models.User;
+import views.login.PhotoChooserActivity;
 import views.login.WelcomeFragment;
 import views.predictionlists.HomeFragment;
 
@@ -47,15 +50,18 @@ public class MainActivity extends Activity
 
     private ObjectGraph activityGraph;
 
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationDrawerFragment navigationDrawerFragment;
 
     private CharSequence mTitle;
 
     private HashMap<KnodaScreen, Class<? extends Fragment>> mClassMap;
     private HashMap<KnodaScreen, Fragment> mInstanceMap;
 
-    @Inject
-    NetworkingManager mNetworkingManager;
+    @Inject NetworkingManager networkingManager;
+
+    @Inject UserManager userManager;
+
+    @Inject SharedPrefManager sharedPrefManager;
 
     @InjectView(R.id.splash_screen)
     public FrameLayout splashScreen;
@@ -69,6 +75,8 @@ public class MainActivity extends Activity
         KnodaApplication application = (KnodaApplication) getApplication();
         activityGraph = application.getApplicationGraph().plus(getModules().toArray());
         activityGraph.inject(this);
+        activityGraph.inject(userManager);
+        activityGraph.inject(networkingManager);
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
@@ -83,21 +91,19 @@ public class MainActivity extends Activity
         mInstanceMap = new HashMap<KnodaScreen, Fragment>();
         mClassMap = getClassMap();
 
-
-        final LoginRequest request = null; //getSavedLoginRequest();
+        final LoginRequest request = null; //sharedPrefManager.getSavedLoginRequest();
 
         if (request == null) {
             showLogin();
             hideSplash();
         } else {
-            mNetworkingManager.login(request, new NetworkCallback<LoginResponse>() {
+            userManager.login(request, new NetworkCallback<User>() {
                 @Override
-                public void completionHandler(LoginResponse object, ServerError error) {
-                    if (error != null) {
+                public void completionHandler(User object, ServerError error) {
+                    if (error != null)
                         showLogin();
-                    } else {
-                        doLogin(request, object);
-                    }
+                    else
+                        doLogin();
                     hideSplash();
                 }
             });
@@ -120,7 +126,7 @@ public class MainActivity extends Activity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mNavigationDrawerFragment!= null && !mNavigationDrawerFragment.isDrawerOpen()) {
+        if (navigationDrawerFragment != null && !navigationDrawerFragment.isDrawerOpen()) {
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
@@ -141,13 +147,8 @@ public class MainActivity extends Activity
             return true;
 
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            case R.id.action_example:
-                Toast.makeText(this, "Example action.", Toast.LENGTH_SHORT).show();
-                return true;
             case android.R.id.home: {
-                if (mNavigationDrawerFragment.isDrawerToggleEnabled())
+                if (navigationDrawerFragment.isDrawerToggleEnabled())
                     break;
                 getFragmentManager().popBackStack();
                 return true;
@@ -201,12 +202,12 @@ public class MainActivity extends Activity
     }
 
     private void setUpNavigation (){
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
+        navigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
@@ -221,7 +222,7 @@ public class MainActivity extends Activity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.addToBackStack(null).replace(R.id.container, fragment).commit();
-        mNavigationDrawerFragment.setDrawerToggleEnabled(false);
+        navigationDrawerFragment.setDrawerToggleEnabled(false);
     }
 
     private void initializeFragmentBackStack () {
@@ -232,7 +233,7 @@ public class MainActivity extends Activity
                 Integer count = getFragmentManager().getBackStackEntryCount();
 
                 if (count <= 0)
-                    mNavigationDrawerFragment.setDrawerToggleEnabled(true);
+                    navigationDrawerFragment.setDrawerToggleEnabled(true);
             }
         });
     }
@@ -243,44 +244,29 @@ public class MainActivity extends Activity
        FragmentTransaction transaction = fragmentManager.beginTransaction();
        transaction.replace(R.id.container, welcome).commit();
 
-       mNavigationDrawerFragment.setDrawerToggleEnabled(false);
-       mNavigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+       navigationDrawerFragment.setDrawerToggleEnabled(false);
+       navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
        invalidateOptionsMenu();
     }
 
-    public void doLogin(LoginRequest request, LoginResponse response) {
+    public void doLogin() {
 
-        saveRequestAndResponse(request, response);
-        mNavigationDrawerFragment.setDrawerToggleEnabled(true);
-        mNavigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        Logger.log(new Gson().toJson(userManager.getUser()));
+        navigationDrawerFragment.setDrawerToggleEnabled(true);
+        navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
         getActionBar().show();
         invalidateOptionsMenu();
 
-        mNavigationDrawerFragment.selectStartingItem();
+        navigationDrawerFragment.selectStartingItem();
+
+        if (userManager.getUser().avatar == null) {
+            Intent intent = new Intent(this, PhotoChooserActivity.class);
+            //startActivity(intent);
+        }
 
     }
-
-    private void saveRequestAndResponse(LoginRequest request, LoginResponse response) {
-        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        sharedPreferences.edit().putString(Keys.SAVED_USERNAME_KEY, response.email).commit();
-        sharedPreferences.edit().putString(Keys.SAVED_PASSWORD_KEY, request.password).commit();
-        sharedPreferences.edit().putString(Keys.SAVED_AUTHTOKEN_KEY, response.authToken).commit();
-    }
-
-    private LoginRequest getSavedLoginRequest() {
-
-        SharedPreferences sharedPreferences= getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        String login = sharedPreferences.getString(Keys.SAVED_USERNAME_KEY, null);
-        String password = sharedPreferences.getString(Keys.SAVED_PASSWORD_KEY, null);
-
-        if (login == null || password == null)
-            return null;
-
-        return new LoginRequest(login, password);
-    }
-
 
     private void hideSplash() {
         Animation fadeOut = new AlphaAnimation(1, 0);
