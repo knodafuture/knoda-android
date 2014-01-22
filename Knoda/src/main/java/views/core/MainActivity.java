@@ -91,7 +91,7 @@ public class MainActivity extends Activity
         mInstanceMap = new HashMap<KnodaScreen, Fragment>();
         mClassMap = getClassMap();
 
-        final LoginRequest request = null; //sharedPrefManager.getSavedLoginRequest();
+        final LoginRequest request = sharedPrefManager.getSavedLoginRequest();
 
         if (request == null) {
             showLogin();
@@ -120,7 +120,7 @@ public class MainActivity extends Activity
 
     @Override protected void onDestroy() {
         activityGraph = null;
-
+        System.gc();
         super.onDestroy();
     }
 
@@ -263,7 +263,7 @@ public class MainActivity extends Activity
 
         if (userManager.getUser().avatar == null) {
             Intent intent = new Intent(this, PhotoChooserActivity.class);
-            //startActivity(intent);
+            startActivity(intent);
         }
 
     }

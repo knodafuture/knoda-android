@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    android:id="@+id/default_menu_group">
+    <item android:id="@+id/action_from_camera"
+        android:title="From Camera" />
+    <item android:id="@+id/action_from_gallery"
+        android:title="Choose existing" />
+    <item android:id="@+id/action_none"
+        android:title="No thanks" />
+
+</menu>
