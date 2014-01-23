@@ -141,6 +141,11 @@ public class MainActivity extends Activity
     }
 
     @Override
+    public void onBackPressed() {
+        if (progressView.getVisibility() == View.VISIBLE)
+            super.onBackPressed();
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (progressView.getVisibility() == View.VISIBLE)
@@ -265,7 +270,6 @@ public class MainActivity extends Activity
             Intent intent = new Intent(this, PhotoChooserActivity.class);
             startActivity(intent);
         }
-
     }
 
     private void hideSplash() {

@@ -1,7 +1,9 @@
 package views.login;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -12,20 +14,33 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.android.camera.CropImageIntentBuilder;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.knoda.knoda.R;
+
+import org.apache.http.entity.ContentType;
 
 import java.io.File;
 
+import builders.MultipartRequestBuilder;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import core.Logger;
+import core.managers.NetworkingManager;
+import core.networking.MultipartRequest;
 
 public class PhotoChooserActivity extends Activity {
 
     @InjectView(R.id.photo_chooser_imageview) ImageView imageView;
+    @InjectView(R.id.photo_chooser_progress_view) FrameLayout progressView;
 
     private boolean madeInitialSelection = false;
 
@@ -41,10 +56,15 @@ public class PhotoChooserActivity extends Activity {
     private File cameraOutputFile;
     private File cropResultFile;
 
+    private RequestQueue requestQueue;
+
+    private boolean uploadInProgress = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_chooser);
+        requestQueue = Volley.newRequestQueue(this);
 
         restoreActionBar();
 
@@ -54,7 +74,16 @@ public class PhotoChooserActivity extends Activity {
 
         cameraOutputFile = new File(getExternalFilesDir(null), FROM_CAMERA_FILENAME);
         cropResultFile = new File(getExternalFilesDir(null), CROP_RESULT_FILENAME);
+
+        progressView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -92,7 +121,6 @@ public class PhotoChooserActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.select_picture, menu);
         menu.setHeaderTitle("Select a profile picture");
-        Logger.log("context menu");
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
@@ -118,9 +146,73 @@ public class PhotoChooserActivity extends Activity {
 
     }
 
+    private void showSpinner() {
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setDuration(1000);
+
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        progressView.setVisibility(View.VISIBLE);
+        progressView.setAnimation(fadeIn);
+    }
+
     private void submit() {
-        Logger.log("ill save your file i promise");
-        finish();
+
+        if (uploadInProgress)
+            return;
+
+
+        showSpinner();
+
+        String url = NetworkingManager.baseUrl;
+        url += "profile.json?auth_token=" + getAuthToken();
+
+        MultipartRequestBuilder builder = MultipartRequestBuilder.create().forUrl(url);
+        builder.addErrorListener(new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                showError();
+            }
+        });
+
+        builder.addListener(new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                finish();
+            }
+        });
+
+
+        builder.addFilePart("user[avatar]", cropResultFile, ContentType.APPLICATION_OCTET_STREAM, "image.jpg");
+
+        MultipartRequest req = builder.build();
+        Logger.log(req.toString());
+        requestQueue.add(builder.build());
+    }
+
+    private void showError() {
+        progressView.setAlpha(0);
+        progressView.setVisibility(View.INVISIBLE);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Please try again later.").setPositiveButton("Ok", null);
+        builder.create().show();
+    }
+
+    private String getAuthToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        return sharedPreferences.getString("SAVEDAUTHTOKEN", null);
     }
 
     private void restoreActionBar() {
@@ -148,7 +240,7 @@ public class PhotoChooserActivity extends Activity {
 
     public void startGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        galleryIntent.setType("image/*");
+        galleryIntent.setType("image/png");
         startActivityForResult(Intent.createChooser(galleryIntent, "Select a profile picture"), GALLERY_RESULT);
     }
 

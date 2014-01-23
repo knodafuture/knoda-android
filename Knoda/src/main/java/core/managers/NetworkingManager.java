@@ -45,7 +45,7 @@ public class NetworkingManager {
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
 
-    private String baseUrl = "http://api-dev.knoda.com/api/";
+    public static String baseUrl = "http://api-dev.knoda.com/api/";
 
     @Inject SharedPrefManager sharedPrefManager;
 

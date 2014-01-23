@@ -15,4 +15,19 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
+    <FrameLayout
+        android:id="@+id/photo_chooser_progress_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="invisible"
+        android:background="@color/transparentBlack">
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:background="@android:color/transparent"/>
+    </FrameLayout>
+
 </RelativeLayout>

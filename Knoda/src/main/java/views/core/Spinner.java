@@ -17,7 +17,17 @@ public class Spinner {
     }
 
     private View getProgressView() {
-        return mActivity.progressView;
+        View progressView = mActivity.progressView;
+
+        if (!progressView.hasOnClickListeners())
+            progressView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+        return progressView;
     }
 
     public void show() {

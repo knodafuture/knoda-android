@@ -10,10 +10,10 @@ apply plugin: 'android'
 
 configurations {
     provided
+
 }
 
 repositories {
-    maven { url 'https://github.com/Goddchen/mvn-repo/raw/master/' }
     maven { url 'https://github.com/knodafuture/knoda-volley/raw/mvn-repo' }
     mavenCentral()
 }
@@ -28,15 +28,20 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
     }
 }
 
 dependencies {
+    compile project(':libraries:CropImage')
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.knoda:volley:1.0.0'
     compile 'com.squareup.dagger:dagger:1.2.0'
     compile 'com.squareup.dagger:dagger-compiler:1.2.0'
     compile 'com.jakewharton:butterknife:4.0.1'
-    compile project(':libraries:CropImage')
+    compile 'org.apache.httpcomponents:httpcore:4.3'
+    compile 'org.apache.httpcomponents:httpmime:4.3'
 }
