@@ -25,19 +25,12 @@ import core.Logger;
  */
 public class GsonRequest<T> extends Request<T> {
     private Gson gson = new Gson();
-    private final Class<T> clazz;
+    private final Class clazz;
     private final Map<String, String> headers;
     private final Listener<T> listener;
     private Object payload;
 
-    /**
-     * Make a GET request and return a parsed object from JSON.
-     *
-     * @param url URL of the request to make
-     * @param clazz Relevant class object, for Gson's reflection
-     * @param headers Map of request headers
-     */
-    public GsonRequest(int httpMethod, String url, Class<T> clazz, Map<String, String> headers,
+    public GsonRequest(int httpMethod, String url, Class clazz, Map<String, String> headers,
                        Listener<T> listener, ErrorListener errorListener) {
         super(httpMethod, url, errorListener);
         this.clazz = clazz;
@@ -74,7 +67,7 @@ public class GsonRequest<T> extends Request<T> {
             String json = new String(
                     response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(
-                    gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
+                    (T)gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {

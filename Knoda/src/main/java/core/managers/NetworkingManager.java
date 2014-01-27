@@ -22,6 +22,7 @@ import core.networking.GsonArrayRequest;
 import core.networking.GsonRequest;
 import core.networking.NetworkCallback;
 import core.networking.NetworkListCallback;
+import helpers.TypeTokenFactory;
 import models.BaseModel;
 import models.LoginRequest;
 import models.LoginResponse;
@@ -86,7 +87,7 @@ public class NetworkingManager {
 
         String url = buildUrl("predictions.json", true, builder);
 
-        executeListRequest(Request.Method.GET, url, null, new TypeToken<ArrayList<Prediction>>(){}, callback);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
     private Map<String, String> getHeaders() {
