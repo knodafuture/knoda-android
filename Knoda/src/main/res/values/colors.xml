@@ -8,4 +8,5 @@
     <color name="darkGray">#666666</color>
     <color name="transparentBlack">#66FFFFFF</color>
     <color name="sideNavBlack">#222222</color>
+    <color name="lightGray">#EFEFEF</color>
 </resources>

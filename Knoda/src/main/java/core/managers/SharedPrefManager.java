@@ -57,6 +57,11 @@ public class SharedPrefManager {
         return new LoginRequest(login, password);
     }
 
+    public void setSavedAuthtoken(String authtoken) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, authtoken).commit();
+    }
+
     public String getSavedAuthtoken () {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getString(SAVED_AUTHTOKEN_KEY, null);

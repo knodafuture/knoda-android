@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +18,14 @@ import javax.inject.Singleton;
 
 import builders.ParamBuilder;
 import core.Logger;
+import core.networking.GsonArrayRequest;
 import core.networking.GsonRequest;
 import core.networking.NetworkCallback;
 import core.networking.NetworkListCallback;
 import models.BaseModel;
 import models.LoginRequest;
 import models.LoginResponse;
+import models.Prediction;
 import models.ServerError;
 import models.SignUpRequest;
 import models.User;
@@ -44,7 +47,7 @@ public class NetworkingManager {
 
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
-
+    public static Integer PAGE_LIMIT = 50;
     public static String baseUrl = "http://api-dev.knoda.com/api/";
 
     @Inject SharedPrefManager sharedPrefManager;
@@ -77,12 +80,21 @@ public class NetworkingManager {
         executeRequest(Request.Method.GET, url, null, User.class, callback);
     }
 
+
+    public void getPredictionsAfter(final Integer lastId, final NetworkListCallback<Prediction> callback) {
+        ParamBuilder builder = ParamBuilder.create().add("recent", "true").add("limit", PAGE_LIMIT.toString()).withLastId(lastId);
+
+        String url = buildUrl("predictions.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, new TypeToken<ArrayList<Prediction>>(){}, callback);
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
             headers = new HashMap<String, String>();
             headers.put("Content-Type", "application/json; charset=utf-8;");
-            headers.put("Accept", "application/json; api_version=2");
+            headers.put("Accept", "application/json; api_version=2;");
         }
 
         Logger.log("using headers" + headers.toString());
@@ -118,7 +130,7 @@ public class NetworkingManager {
 
     private <T extends BaseModel> void executeRequest (int httpMethod, String url, final BaseModel payload, final Class responseClass, final NetworkCallback<T> callback) {
 
-        Logger.log("Executing request" + httpMethod + url);
+        Logger.log("Executing request" + url);
         Response.Listener<T> responseListener = new Response.Listener<T>() {
             @Override
             public void onResponse(T t) {
@@ -141,7 +153,8 @@ public class NetworkingManager {
         mRequestQueue.add(request);
     }
 
-    private <T extends BaseModel> void executeListRequest (int httpMethod, final String url, final BaseModel payload, final Class responseClass, final NetworkListCallback<T> callback) {
+    private <T extends BaseModel> void executeListRequest (int httpMethod, final String url, final BaseModel payload, final TypeToken token, final NetworkListCallback<T> callback) {
+        Logger.log("Executing request" + url);
 
         Response.Listener<ArrayList<T>> responseListener = new Response.Listener<ArrayList<T>>() {
             @Override
@@ -157,7 +170,7 @@ public class NetworkingManager {
             }
         };
 
-        GsonRequest<ArrayList<T>> request = new GsonRequest<ArrayList<T>>(httpMethod, url, responseClass , getHeaders(), responseListener, errorListener);
+        GsonArrayRequest<ArrayList<T>> request = new GsonArrayRequest<ArrayList<T>>(httpMethod, url, token , getHeaders(), responseListener, errorListener);
 
         if (payload != null)
             request.setPayload(payload);

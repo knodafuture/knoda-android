@@ -23,6 +23,12 @@ public class ParamBuilder {
         return this;
     }
 
+    public ParamBuilder withLastId(Integer lastId) {
+        if (lastId != 0)
+            params.put("id_lt", lastId.toString());
+        return this;
+    }
+
     public String build() {
 
         String out = "";

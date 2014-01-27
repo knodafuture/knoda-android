@@ -26,8 +26,8 @@ public class BaseFragment extends Fragment {
 
     @Inject public UserManager userManager;
 
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    @Override public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         ((MainActivity) getActivity()).inject(this);
     }
 

@@ -1,16 +1,16 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="views.login.WelcomeFragment"
-    android:background="@color/knodaLightGreen"
-    >
+    android:background="@color/knodaLightGreen">
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/knodaLighterGreen"
-        android:layout_alignParentBottom="true">
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp">
 
         <Button style="@style/button_main"
             android:id="@+id/button_sign_in"
@@ -29,7 +29,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:text="@string/sign_up"
             android:layout_below="@id/button_sign_in"
             />
@@ -37,4 +36,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</FrameLayout>

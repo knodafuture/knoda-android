@@ -4,8 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
@@ -20,11 +18,6 @@ public class NavigationAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
     private ArrayList<KnodaScreen> screens;
-
-    private final class ViewHolder {
-        public ImageView imageView;
-        public TextView textView;
-    }
 
     public NavigationAdapter(LayoutInflater inflater, ArrayList<KnodaScreen> screens) {
         this.inflater = inflater;
@@ -60,14 +53,5 @@ public class NavigationAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
-    }
-
-    private View addViewHolder(View view) {
-        ViewHolder holder = new ViewHolder();
-        holder.imageView = (ImageView) view.findViewById(R.id.navigation_list_icon);
-        holder.textView = (TextView) view.findViewById(R.id.navigation_list_text);
-
-        view.setTag(holder);
-        return view;
     }
 }

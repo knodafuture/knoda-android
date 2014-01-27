@@ -85,7 +85,6 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
 

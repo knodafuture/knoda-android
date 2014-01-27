@@ -14,6 +14,7 @@ import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
+import views.predictionlists.HomeFragment;
 
 /**
  * Created by nick on 1/17/14.
@@ -27,7 +28,8 @@ import views.login.WelcomeFragment;
                 WelcomeFragment.class,
                 LoginFragment.class,
                 SignUpFragment.class,
-                ForgotPasswordFragment.class
+                ForgotPasswordFragment.class,
+                HomeFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

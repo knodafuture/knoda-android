@@ -1,5 +1,7 @@
 package core.managers;
 
+import com.google.gson.Gson;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -46,6 +48,8 @@ public class UserManager {
                     return;
                 }
                 else {
+                    Logger.log(new Gson().toJson(loginResponse));
+                    sharedPrefManager.setSavedAuthtoken(loginResponse.authToken);
                     refreshUser(new NetworkCallback<User>() {
                         @Override
                         public void completionHandler(User user, ServerError error) {
@@ -71,6 +75,7 @@ public class UserManager {
                     callback.completionHandler(null, error);
                     return;
                 } else {
+                    sharedPrefManager.setSavedAuthtoken(loginResponse.authToken);
                     refreshUser(new NetworkCallback<User>() {
                         @Override
                         public void completionHandler(User object, ServerError error) {
