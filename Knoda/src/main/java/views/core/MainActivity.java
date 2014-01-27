@@ -19,7 +19,9 @@ import android.widget.FrameLayout;
 import com.google.gson.Gson;
 import com.knoda.knoda.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,10 +54,8 @@ public class MainActivity extends Activity
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
-    private CharSequence mTitle;
-
-    private HashMap<KnodaScreen, Class<? extends Fragment>> mClassMap;
-    private HashMap<KnodaScreen, Fragment> mInstanceMap;
+    private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
+    private HashMap<KnodaScreen, Fragment> instanceMap;
 
     @Inject NetworkingManager networkingManager;
 
@@ -85,11 +85,12 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
+
+        instanceMap = new HashMap<KnodaScreen, Fragment>();
+        classMap = getClassMap();
+
         initializeFragmentBackStack();
         setUpNavigation();
-
-        mInstanceMap = new HashMap<KnodaScreen, Fragment>();
-        mClassMap = getClassMap();
 
         final LoginRequest request = sharedPrefManager.getSavedLoginRequest();
 
@@ -163,12 +164,8 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-
+    public void onNavigationDrawerItemSelected(KnodaScreen screen) {
         Fragment fragment;
-
-        KnodaScreen screen = KnodaScreen.get(position);
 
         fragment = getFragment(screen);
 
@@ -180,9 +177,9 @@ public class MainActivity extends Activity
     }
 
     public Fragment getFragment(KnodaScreen screen) {
-        Fragment fragment = mInstanceMap.get(screen);
+        Fragment fragment = instanceMap.get(screen);
         if (fragment == null) {
-            Class<? extends Fragment> fragmentClass = mClassMap.get(screen);
+            Class<? extends Fragment> fragmentClass = classMap.get(screen);
             try {
                 fragment = fragmentClass.newInstance();
             }
@@ -192,7 +189,7 @@ public class MainActivity extends Activity
             catch (IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
-            mInstanceMap.put(screen, fragment);
+            instanceMap.put(screen, fragment);
         }
 
         return fragment;
@@ -201,7 +198,7 @@ public class MainActivity extends Activity
     private HashMap<KnodaScreen, Class<? extends Fragment>> getClassMap() {
         HashMap<KnodaScreen, Class<? extends Fragment>> map = new HashMap<KnodaScreen, Class<? extends Fragment>>();
 
-        map.put(KnodaScreen.HOME, HomeFragment.class);
+        map.put(new KnodaScreen(0, "Home", getResources().getDrawable(R.drawable.side_nav_home_icon)), HomeFragment.class);
 
         return map;
     }
@@ -209,18 +206,21 @@ public class MainActivity extends Activity
     private void setUpNavigation (){
         navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
 
-        // Set up the drawer.
         navigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        ArrayList<KnodaScreen> screens = new ArrayList<KnodaScreen>(classMap.keySet());
+        Collections.sort(screens);
+
+        navigationDrawerFragment.setScreens(screens);
     }
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(mTitle);
+        actionBar.setTitle(getTitle());
     }
 
     public void pushFragment(Fragment fragment) {

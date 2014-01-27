@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views.core.NavigationListCell xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/navigation_list_selected_background"
+        android:visibility="visible"
+        android:src="@drawable/side_nav_active_bg"
+        android:adjustViewBounds="true"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/navigation_list_icon"
+        android:layout_centerVertical="true"
+        android:paddingLeft="10dp"
+        android:src="@drawable/side_nav_home_icon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/navigation_list_text"
+        android:textColor="@color/white"
+        android:text="Test layout text"
+        android:layout_toRightOf="@id/navigation_list_icon"
+        android:layout_centerVertical="true"
+        android:paddingLeft="10dp"/>
+
+</views.core.NavigationListCell>

@@ -1,29 +1,24 @@
 package core;
 
-import java.util.HashMap;
+import android.graphics.drawable.Drawable;
 
 /**
  * Created by nick on 1/13/14.
  */
-public enum KnodaScreen {
-    HOME(0);
+public class KnodaScreen implements Comparable<KnodaScreen>{
 
-    private final Integer value;
-    private static final HashMap<Integer, KnodaScreen> mMap = new HashMap<Integer, KnodaScreen>();
+    public Integer order;
+    public String displayName;
+    public Drawable drawable;
 
-    static  {
-        mMap.put(0, HOME);
+    public KnodaScreen(Integer order, String displayName, Drawable drawable) {
+        this.order = order;
+        this.displayName = displayName;
+        this.drawable = drawable;
     }
 
-    private KnodaScreen(final int newValue) {
-        value = newValue;
-    }
-
-    public Integer getValue() {
-        return value;
-    }
-
-    public static KnodaScreen get(Integer index) {
-        return mMap.get(index);
+    @Override
+    public int compareTo(KnodaScreen screen) {
+        return this.order.compareTo(screen.order);
     }
 }
