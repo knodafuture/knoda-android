@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
 /**
@@ -14,6 +15,7 @@ public class PredictionListCell extends RelativeLayout {
 
     public TextView usernameTextView;
     public TextView bodyTextView;
+    public NetworkImageView avatarImageView;
 
     public PredictionListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -23,5 +25,6 @@ public class PredictionListCell extends RelativeLayout {
     public void onFinishInflate() {
         usernameTextView = (TextView)findViewById(R.id.prediction_cell_username_textview);
         bodyTextView = (TextView)findViewById(R.id.prediction_cell_body_textview);
+        avatarImageView = (NetworkImageView)findViewById(R.id.prediction_cell_avatar_imageview);
     }
 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
 
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ public class BasePredictionListAdapter extends BaseAdapter {
 
     private ArrayList<Prediction> predictions;
     private LayoutInflater inflater;
+    private ImageLoader imageLoader;
 
-    public BasePredictionListAdapter(LayoutInflater inflater, ArrayList<Prediction> predictions) {
+    public BasePredictionListAdapter(LayoutInflater inflater, ArrayList<Prediction> predictions, ImageLoader imageLoader) {
         this.inflater = inflater;
         this.predictions = predictions;
+        this.imageLoader = imageLoader;
     }
 
     @Override
@@ -51,8 +54,11 @@ public class BasePredictionListAdapter extends BaseAdapter {
         listItem.bodyTextView.setText(prediction.body);
         listItem.usernameTextView.setText(prediction.username);
 
+        if (prediction.userAvatar != null)
+            listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
         return listItem;
     }
+
 
 
 }

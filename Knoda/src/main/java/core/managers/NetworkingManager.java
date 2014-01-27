@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.reflect.TypeToken;
 
@@ -18,6 +19,7 @@ import javax.inject.Singleton;
 
 import builders.ParamBuilder;
 import core.Logger;
+import core.networking.BitmapLruCache;
 import core.networking.GsonArrayRequest;
 import core.networking.GsonRequest;
 import core.networking.NetworkCallback;
@@ -51,12 +53,20 @@ public class NetworkingManager {
     public static Integer PAGE_LIMIT = 50;
     public static String baseUrl = "http://api-dev.knoda.com/api/";
 
+    private ImageLoader imageLoader;
+
     @Inject SharedPrefManager sharedPrefManager;
 
     @Inject
     public NetworkingManager (Context applicationContext) {
         this.context = applicationContext;
         mRequestQueue = Volley.newRequestQueue(context);
+    }
+
+    public ImageLoader getImageLoader() {
+        if (imageLoader == null)
+            imageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache());
+        return imageLoader;
     }
 
     public void login (final LoginRequest payload, final NetworkCallback<LoginResponse> callback) {

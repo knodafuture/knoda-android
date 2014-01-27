@@ -64,7 +64,7 @@ public class HomeFragment extends BaseFragment {
                 if (error != null)
                     errorReporter.showError(error);
                 else
-                    listView.setAdapter(new BasePredictionListAdapter(getActivity().getLayoutInflater(), predictions));
+                    listView.setAdapter(new BasePredictionListAdapter(getActivity().getLayoutInflater(), predictions, networkingManager.getImageLoader()));
 
             }
         });
