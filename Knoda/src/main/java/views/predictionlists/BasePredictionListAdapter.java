@@ -47,7 +47,7 @@ public class BasePredictionListAdapter extends BaseAdapter {
 
         PredictionListCell listItem = (PredictionListCell) convertView;
         if (listItem == null)
-            listItem = (PredictionListCell) inflater.inflate(R.layout.list_predictions, null);
+            listItem = (PredictionListCell) inflater.inflate(R.layout.list_cell_predictions, null);
 
         Prediction prediction = getItem(position);
 

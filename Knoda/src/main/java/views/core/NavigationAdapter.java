@@ -30,7 +30,7 @@ public class NavigationAdapter extends BaseAdapter {
 
         NavigationListCell listItem = (NavigationListCell) convertView;
         if (listItem == null)
-            listItem = (NavigationListCell) inflater.inflate(R.layout.list_navigation, null);
+            listItem = (NavigationListCell) inflater.inflate(R.layout.list_cell_navigation, null);
 
         KnodaScreen screen = getItem(position);
 
