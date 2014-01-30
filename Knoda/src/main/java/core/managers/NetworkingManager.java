@@ -24,7 +24,7 @@ import core.networking.GsonArrayRequest;
 import core.networking.GsonRequest;
 import core.networking.NetworkCallback;
 import core.networking.NetworkListCallback;
-import helpers.TypeTokenFactory;
+import Factories.TypeTokenFactory;
 import models.BaseModel;
 import models.LoginRequest;
 import models.LoginResponse;
@@ -51,7 +51,7 @@ public class NetworkingManager {
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
-    public static String baseUrl = "http://api-dev.knoda.com/api/";
+    public static String baseUrl = "http://api-test.knoda.com/api/";
 
     private ImageLoader imageLoader;
 

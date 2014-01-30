@@ -18,13 +18,14 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import Factories.GsonF;
 import core.Logger;
 
 /**
  * Volley adapter for JSON requests that will be parsed into Java objects by Gson.
  */
 public class GsonRequest<T> extends Request<T> {
-    private Gson gson = new Gson();
+    private Gson gson = GsonF.actory();
     private final Class clazz;
     private final Map<String, String> headers;
     private final Listener<T> listener;

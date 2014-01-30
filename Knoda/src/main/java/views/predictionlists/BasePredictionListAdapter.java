@@ -53,7 +53,7 @@ public class BasePredictionListAdapter extends BaseAdapter {
 
         listItem.bodyTextView.setText(prediction.body);
         listItem.usernameTextView.setText(prediction.username);
-
+        listItem.timeStampsTextView.setText(prediction.getMetdataString());
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
         return listItem;

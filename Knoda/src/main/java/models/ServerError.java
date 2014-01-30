@@ -15,11 +15,13 @@ public class ServerError extends BaseModel {
     public Integer statusCode;
     public Map<String, String> headers;
     public ArrayList<FieldError> serverErrors = new ArrayList<FieldError>();
+    public Throwable cause;
 
     private ServerError(VolleyError error) {
         try {
             this.statusCode = error.networkResponse.statusCode;
             this.headers = error.networkResponse.headers;
+            this.cause = error.getCause();
         } catch (NullPointerException ex) {
             Logger.log("Error creating server error" + ex.getCause());
         }

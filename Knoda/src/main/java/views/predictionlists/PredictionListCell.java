@@ -16,6 +16,7 @@ public class PredictionListCell extends RelativeLayout {
     public TextView usernameTextView;
     public TextView bodyTextView;
     public NetworkImageView avatarImageView;
+    public TextView timeStampsTextView;
 
     public PredictionListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -26,5 +27,6 @@ public class PredictionListCell extends RelativeLayout {
         usernameTextView = (TextView)findViewById(R.id.prediction_cell_username_textview);
         bodyTextView = (TextView)findViewById(R.id.prediction_cell_body_textview);
         avatarImageView = (NetworkImageView)findViewById(R.id.prediction_cell_avatar_imageview);
+        timeStampsTextView = (TextView)findViewById(R.id.prediction_cell_timestamps_textview);
     }
 }

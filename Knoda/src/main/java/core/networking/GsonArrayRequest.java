@@ -20,13 +20,14 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Map;
 
+import Factories.GsonF;
 import core.Logger;
 
 /**
  * Volley adapter for JSON requests that will be parsed into Java objects by Gson.
  */
 public class GsonArrayRequest<T> extends Request<T> {
-    private Gson gson = new Gson();
+    private Gson gson = GsonF.actory();
     private final Map<String, String> headers;
     private final Listener<T> listener;
     private Object payload;
