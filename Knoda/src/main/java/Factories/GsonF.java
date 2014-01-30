@@ -1,7 +1,5 @@
 package Factories;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -31,7 +29,6 @@ public class GsonF {
         public DateTime deserialize(final JsonElement je, final Type type,
                                     final JsonDeserializationContext jdc) throws JsonParseException
         {
-            Log.v("KNODA", je.getAsString());
             return je.getAsString().length() == 0 ? null : DATE_TIME_FORMATTER.parseDateTime(je.getAsString());
         }
 
