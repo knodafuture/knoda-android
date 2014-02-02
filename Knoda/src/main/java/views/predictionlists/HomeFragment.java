@@ -11,19 +11,20 @@ import android.widget.ListView;
 
 import com.knoda.knoda.R;
 
-import java.util.ArrayList;
-
-import adapters.BasePredictionListAdapter;
-import listeners.PredictionSwipeListener;
+import adapters.HomeAdapter;
+import adapters.PagingAdapter;
 import butterknife.InjectView;
 import core.networking.NetworkCallback;
 import core.networking.NetworkListCallback;
+import listeners.PredictionSwipeListener;
 import models.Challenge;
 import models.Prediction;
 import models.ServerError;
 import views.core.BaseFragment;
 
-public class HomeFragment extends BaseFragment implements PredictionSwipeListener.PredictionCellCallbacks {
+public class HomeFragment extends BaseFragment implements PredictionSwipeListener.PredictionCellCallbacks, PagingAdapter.PagingAdapterDatasource<Prediction> {
+
+    HomeAdapter adapter;
 
     @InjectView(R.id.home_listview) ListView listView;
 
@@ -61,19 +62,19 @@ public class HomeFragment extends BaseFragment implements PredictionSwipeListene
         PredictionSwipeListener swipeListener = new PredictionSwipeListener(listView, this);
         listView.setOnTouchListener(swipeListener);
         listView.setOnScrollListener(swipeListener.makeScrollListener());
-        spinner.show();
 
-        networkingManager.getPredictionsAfter(0, new NetworkListCallback<Prediction>() {
-            @Override
-            public void completionHandler(ArrayList<Prediction> predictions, ServerError error) {
-                spinner.hide();
-                if (error != null)
-                    errorReporter.showError(error);
-                else
-                    listView.setAdapter(new BasePredictionListAdapter(getActivity().getLayoutInflater(), predictions, networkingManager.getImageLoader()));
+        adapter = new HomeAdapter(getActivity().getLayoutInflater(), this, networkingManager.getImageLoader());
 
-            }
-        });
+        listView.setAdapter(adapter);
+        adapter.loadPage(0);
+    }
+
+
+    @Override
+    public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
+        int lastId = object == null ? 0 : object.id;
+
+        networkingManager.getPredictionsAfter(lastId, callback);
     }
 
 
