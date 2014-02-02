@@ -22,7 +22,7 @@ import com.knoda.knoda.R;
 
 import java.util.ArrayList;
 
-import core.KnodaScreen;
+import models.KnodaScreen;
 
 ;
 

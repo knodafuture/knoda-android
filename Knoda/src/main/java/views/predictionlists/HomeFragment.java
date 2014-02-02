@@ -19,7 +19,7 @@ import models.Prediction;
 import models.ServerError;
 import views.core.BaseFragment;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements PredictionSwipeListener.PredictionCellCallbacks {
 
     @InjectView(R.id.home_listview) ListView listView;
 
@@ -54,7 +54,9 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        PredictionSwipeListener swipeListener = new PredictionSwipeListener(listView, this);
+        listView.setOnTouchListener(swipeListener);
+        listView.setOnScrollListener(swipeListener.makeScrollListener());
         spinner.show();
 
         networkingManager.getPredictionsAfter(0, new NetworkListCallback<Prediction>() {
@@ -68,5 +70,16 @@ public class HomeFragment extends BaseFragment {
 
             }
         });
+    }
+
+
+    @Override
+    public void onPredictionAgreed(PredictionListCell cell, int position) {
+        cell.setAgree(true);
+    }
+
+    @Override
+    public void onPredictionDisagreed(PredictionListCell cell, int position) {
+        cell.setAgree(false);
     }
 }

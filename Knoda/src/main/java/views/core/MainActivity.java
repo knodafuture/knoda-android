@@ -29,7 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import core.KnodaScreen;
+import models.KnodaScreen;
 import core.Logger;
 import core.di.ActivityModule;
 import core.di.KnodaApplication;

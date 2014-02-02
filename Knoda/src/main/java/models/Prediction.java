@@ -57,10 +57,10 @@ public class Prediction extends BaseModel {
     public ArrayList<Topic> tags = new ArrayList<Topic>();
 
     @SerializedName("my_challenge")
-    Challenge challenge;
+    public Challenge challenge;
 
     @SerializedName("my_points")
-    PredictionPoints points;
+    public PredictionPoints points;
 
     public String getCreationString() {
         return "made " + getPeriodString(creationDate) + " ago";

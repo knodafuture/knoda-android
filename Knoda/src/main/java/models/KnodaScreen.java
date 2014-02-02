@@ -1,4 +1,4 @@
-package core;
+package models;
 
 import android.graphics.drawable.Drawable;
 

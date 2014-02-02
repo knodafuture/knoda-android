@@ -56,6 +56,10 @@ public class BasePredictionListAdapter extends BaseAdapter {
         listItem.timeStampsTextView.setText(prediction.getMetdataString());
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
+
+        if (prediction.challenge != null)
+            listItem.setAgree(prediction.challenge.agree);
+
         return listItem;
     }
 

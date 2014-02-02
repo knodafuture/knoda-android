@@ -8,55 +8,68 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lightGray"
-        android:id="@+id/prediction_cell_top_container">
-
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/prediction_cell_avatar_imageview"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@color/black"/>
-        <TextView
-            android:id="@+id/prediction_cell_username_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/prediction_cell_avatar_imageview"
-            android:text="test layout text"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="50dp"
-        android:layout_below="@id/prediction_cell_top_container"
-        android:id="@+id/prediction_cell_body_container">
-
-        <TextView
-            android:id="@+id/prediction_cell_body_textview"
+        android:id="@+id/prediction_cell_body_view"
+        android:background="@color/white">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="TEST TEXT AND STUFF"/>
+            android:background="@color/lightGray"
+            android:id="@+id/prediction_cell_top_container">
 
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/prediction_cell_avatar_imageview"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/black"/>
+            <TextView
+                android:id="@+id/prediction_cell_username_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/prediction_cell_avatar_imageview"
+                android:text="test layout text"/>
+
+
+            <ImageView
+                android:id="@+id/prediction_cell_vote_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:layout_below="@id/prediction_cell_top_container"
+            android:id="@+id/prediction_cell_body_container">
+
+            <TextView
+                android:id="@+id/prediction_cell_body_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="TEST TEXT AND STUFF"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/prediction_cell_timestamps_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/prediction_cell_body_container"
+            android:textColor="@color/knodaLightGreen"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:text="test"/>
     </RelativeLayout>
-
-
-    <TextView
-        android:id="@+id/prediction_cell_timestamps_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/prediction_cell_body_container"
-        android:textColor="@color/knodaLightGreen"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="5dp"
-        android:text="test"/>
-
-
 </views.predictionlists.PredictionListCell>
