@@ -26,6 +26,7 @@ import core.networking.NetworkCallback;
 import core.networking.NetworkListCallback;
 import Factories.TypeTokenFactory;
 import models.BaseModel;
+import models.Challenge;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.Prediction;
@@ -98,6 +99,48 @@ public class NetworkingManager {
         String url = buildUrl("predictions.json", true, builder);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
+    }
+
+    public void getChallengeForPrediction(final Integer predictionId, final NetworkCallback<Challenge> callback) {
+        ParamBuilder builder = ParamBuilder.create().add("prediction_id", predictionId.toString());
+
+        String url = buildUrl("predictions/" + predictionId + "/challenge.json", true, builder);
+
+        executeRequest(Request.Method.GET, url, null, Challenge.class, callback);
+    }
+
+    public void agreeWithPrediction(final Integer predictionId, final NetworkCallback<Challenge> callback) {
+
+        ParamBuilder builder = new ParamBuilder().create().add("prediction_id", predictionId.toString());
+
+        String url = buildUrl("predictions/" + predictionId + "/agree.json", true, builder);
+
+        executeRequest(Request.Method.POST, url, null, Challenge.class, new NetworkCallback<Challenge>() {
+            @Override
+            public void completionHandler(Challenge object, ServerError error) {
+                if (error != null)
+                    callback.completionHandler(null, error);
+                else
+                    getChallengeForPrediction(predictionId, callback);
+            }
+        });
+    }
+
+    public void disagreeWithPrediction(final Integer predictionId, final NetworkCallback<Challenge> callback) {
+
+        ParamBuilder builder = new ParamBuilder().create().add("prediction_id", predictionId.toString());
+
+        String url = buildUrl("predictions/" + predictionId + "/disagree.json", true, builder);
+
+        executeRequest(Request.Method.POST, url, null, Challenge.class, new NetworkCallback<Challenge>() {
+            @Override
+            public void completionHandler(Challenge object, ServerError error) {
+                if (error != null) {
+                    callback.completionHandler(null, error);
+                } else
+                    getChallengeForPrediction(predictionId, callback);
+            }
+        });
     }
 
     private Map<String, String> getHeaders() {

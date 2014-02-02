@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
+import models.Prediction;
+
 /**
  * Created by nick on 1/27/14.
  */
@@ -20,6 +22,8 @@ public class PredictionListCell extends RelativeLayout {
     public TextView timeStampsTextView;
     public ImageView voteImageView;
     public RelativeLayout bodyView;
+
+    public Prediction prediction;
 
     public PredictionListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,6 +42,21 @@ public class PredictionListCell extends RelativeLayout {
     public void setAgree(boolean agree) {
         int resId = agree? R.drawable.agree_marker : R.drawable.disagree_marker;
         voteImageView.setImageResource(resId);
+    }
+
+    public void setPrediction(Prediction prediction) {
+        this.prediction = prediction;
+        update();
+    }
+
+
+    public void update() {
+        bodyTextView.setText(prediction.body);
+        usernameTextView.setText(prediction.username);
+        timeStampsTextView.setText(prediction.getMetdataString());
+
+        if (prediction.challenge != null)
+            setAgree(prediction.challenge.agree);
     }
 
 }

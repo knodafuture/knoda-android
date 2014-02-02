@@ -32,7 +32,6 @@ public class PredictionSwipeListener implements View.OnTouchListener {
     int viewWidth = 1;
 
     private float downX;
-    private int downPosition;
     private boolean swiping;
     private PredictionListCell downView;
 
@@ -41,8 +40,8 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
     public interface PredictionCellCallbacks {
 
-        void onPredictionAgreed(PredictionListCell cell, int position);
-        void onPredictionDisagreed(PredictionListCell cell, int position);
+        void onPredictionAgreed(PredictionListCell cell);
+        void onPredictionDisagreed(PredictionListCell cell);
     }
 
 
@@ -102,7 +101,6 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
                 if (downView != null) {
                     downX = motionEvent.getRawX();
-                    downPosition = listView.getPositionForView(downView);
                     threshold = (double)downView.getWidth() * thresholdPercentange;
                 }
 
@@ -118,9 +116,9 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
                 if (Math.abs(deltaX) > threshold) {
                     if (deltaX < 0)
-                        callbacks.onPredictionDisagreed(downView, downPosition);
+                        callbacks.onPredictionDisagreed(downView);
                     else
-                        callbacks.onPredictionAgreed(downView, downPosition);
+                        callbacks.onPredictionAgreed(downView);
                 }
 
 
@@ -193,7 +191,6 @@ public class PredictionSwipeListener implements View.OnTouchListener {
         downView.bodyView.animate().translationX(0).alpha(1).setDuration(animationTime).setListener(null);
         downX = 0;
         downView = null;
-        downPosition = ListView.INVALID_POSITION;
         swiping = false;
         threshold = 0.0;
     }

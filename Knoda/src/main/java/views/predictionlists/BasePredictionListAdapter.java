@@ -51,14 +51,9 @@ public class BasePredictionListAdapter extends BaseAdapter {
 
         Prediction prediction = getItem(position);
 
-        listItem.bodyTextView.setText(prediction.body);
-        listItem.usernameTextView.setText(prediction.username);
-        listItem.timeStampsTextView.setText(prediction.getMetdataString());
+        listItem.setPrediction(prediction);
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
-
-        if (prediction.challenge != null)
-            listItem.setAgree(prediction.challenge.agree);
 
         return listItem;
     }

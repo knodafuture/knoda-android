@@ -14,7 +14,9 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 
 import butterknife.InjectView;
+import core.networking.NetworkCallback;
 import core.networking.NetworkListCallback;
+import models.Challenge;
 import models.Prediction;
 import models.ServerError;
 import views.core.BaseFragment;
@@ -74,12 +76,36 @@ public class HomeFragment extends BaseFragment implements PredictionSwipeListene
 
 
     @Override
-    public void onPredictionAgreed(PredictionListCell cell, int position) {
+    public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
+
+        networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Challenge>() {
+            @Override
+            public void completionHandler(Challenge object, ServerError error) {
+                if (error != null)
+                    errorReporter.showError(error);
+                else {
+                    cell.prediction.challenge = object;
+                    cell.update();
+                }
+            }
+        });
     }
 
     @Override
-    public void onPredictionDisagreed(PredictionListCell cell, int position) {
+    public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
+
+        networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Challenge>() {
+            @Override
+            public void completionHandler(Challenge object, ServerError error) {
+                if (error != null) {
+                    errorReporter.showError(error);
+                } else {
+                    cell.prediction.challenge = object;
+                    cell.update();
+                }
+            }
+        });
     }
 }
