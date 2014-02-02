@@ -8,6 +8,7 @@ import core.managers.SharedPrefManager;
 import core.managers.UserManager;
 import dagger.Module;
 import dagger.Provides;
+import views.activity.ActivityFragment;
 import views.core.MainActivity;
 import views.core.Spinner;
 import views.login.ForgotPasswordFragment;
@@ -29,7 +30,8 @@ import views.predictionlists.HomeFragment;
                 LoginFragment.class,
                 SignUpFragment.class,
                 ForgotPasswordFragment.class,
-                HomeFragment.class
+                HomeFragment.class,
+                ActivityFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

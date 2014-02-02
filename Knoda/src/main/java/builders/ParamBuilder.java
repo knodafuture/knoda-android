@@ -3,6 +3,8 @@ package builders;
 import java.util.HashMap;
 import java.util.Map;
 
+import core.managers.NetworkingManager;
+
 /**
  * Created by nick on 1/20/14.
  */
@@ -20,6 +22,11 @@ public class ParamBuilder {
 
     public ParamBuilder add(String key, String value) {
         params.put(key, value);
+        return this;
+    }
+
+    public ParamBuilder withPageLimit() {
+        params.put("limit", NetworkingManager.PAGE_LIMIT.toString());
         return this;
     }
 

@@ -1,4 +1,4 @@
-package views.predictionlists;
+package listeners;
 
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.ListView;
+
+import views.predictionlists.PredictionListCell;
 
 /**
  * Created by nick on 1/30/14.

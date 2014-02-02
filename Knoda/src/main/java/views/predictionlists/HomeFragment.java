@@ -13,6 +13,8 @@ import com.knoda.knoda.R;
 
 import java.util.ArrayList;
 
+import adapters.BasePredictionListAdapter;
+import listeners.PredictionSwipeListener;
 import butterknife.InjectView;
 import core.networking.NetworkCallback;
 import core.networking.NetworkListCallback;

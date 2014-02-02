@@ -18,7 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import Factories.GsonF;
+import factories.GsonF;
 import core.Logger;
 
 /**

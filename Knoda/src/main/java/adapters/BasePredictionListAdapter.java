@@ -1,4 +1,4 @@
-package views.predictionlists;
+package adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +11,7 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 
 import models.Prediction;
+import views.predictionlists.PredictionListCell;
 
 /**
  * Created by nick on 1/27/14.

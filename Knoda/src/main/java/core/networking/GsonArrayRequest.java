@@ -17,10 +17,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Map;
 
-import Factories.GsonF;
+import factories.GsonF;
 import core.Logger;
 
 /**

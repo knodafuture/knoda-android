@@ -24,7 +24,8 @@ import core.networking.GsonArrayRequest;
 import core.networking.GsonRequest;
 import core.networking.NetworkCallback;
 import core.networking.NetworkListCallback;
-import Factories.TypeTokenFactory;
+import factories.TypeTokenFactory;
+import models.ActivityItem;
 import models.BaseModel;
 import models.Challenge;
 import models.LoginRequest;
@@ -94,7 +95,7 @@ public class NetworkingManager {
 
 
     public void getPredictionsAfter(final Integer lastId, final NetworkListCallback<Prediction> callback) {
-        ParamBuilder builder = ParamBuilder.create().add("recent", "true").add("limit", PAGE_LIMIT.toString()).withLastId(lastId);
+        ParamBuilder builder = ParamBuilder.create().withPageLimit().add("recent", "true").withLastId(lastId);
 
         String url = buildUrl("predictions.json", true, builder);
 
@@ -141,6 +142,16 @@ public class NetworkingManager {
                     getChallengeForPrediction(predictionId, callback);
             }
         });
+    }
+
+    public void getActivityItemsAfter(final Integer lastId, NetworkListCallback<ActivityItem> callback) {
+
+        ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit();
+
+        String url = buildUrl("activityfeed.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getActivityItemTypeToken(), callback);
+
     }
 
     private Map<String, String> getHeaders() {

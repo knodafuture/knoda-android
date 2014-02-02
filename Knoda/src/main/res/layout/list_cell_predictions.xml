@@ -60,12 +60,11 @@
         </RelativeLayout>
 
 
-        <TextView
+        <TextView style="@style/smallGreenText"
             android:id="@+id/prediction_cell_timestamps_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/prediction_cell_body_container"
-            android:textColor="@color/knodaLightGreen"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"

@@ -41,6 +41,7 @@ import dagger.ObjectGraph;
 import models.LoginRequest;
 import models.ServerError;
 import models.User;
+import views.activity.ActivityFragment;
 import views.login.PhotoChooserActivity;
 import views.login.WelcomeFragment;
 import views.predictionlists.HomeFragment;
@@ -198,7 +199,7 @@ public class MainActivity extends Activity
         HashMap<KnodaScreen, Class<? extends Fragment>> map = new HashMap<KnodaScreen, Class<? extends Fragment>>();
 
         map.put(new KnodaScreen(0, "Home", getResources().getDrawable(R.drawable.side_nav_home_icon)), HomeFragment.class);
-
+        map.put(new KnodaScreen(1, "Activity", getResources().getDrawable(R.drawable.side_nav_activity_icon)), ActivityFragment.class);
         return map;
     }
 
