@@ -3,7 +3,7 @@ package builders;
 import java.util.HashMap;
 import java.util.Map;
 
-import core.managers.NetworkingManager;
+import managers.NetworkingManager;
 
 /**
  * Created by nick on 1/20/14.

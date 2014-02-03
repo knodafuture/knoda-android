@@ -14,7 +14,7 @@ import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import core.networking.NetworkCallback;
+import networking.NetworkCallback;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import models.LoginRequest;

@@ -1,4 +1,4 @@
-package core.di;
+package di;
 
 import android.content.Context;
 

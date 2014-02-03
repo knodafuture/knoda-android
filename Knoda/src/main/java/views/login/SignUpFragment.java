@@ -16,8 +16,8 @@ import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import core.managers.NetworkingManager;
-import core.networking.NetworkCallback;
+import managers.NetworkingManager;
+import networking.NetworkCallback;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;

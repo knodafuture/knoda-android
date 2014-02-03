@@ -1,4 +1,4 @@
-package core.managers;
+package managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;

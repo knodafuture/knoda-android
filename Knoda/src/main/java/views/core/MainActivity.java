@@ -30,13 +30,13 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import models.KnodaScreen;
-import core.Logger;
-import core.di.ActivityModule;
-import core.di.KnodaApplication;
-import core.managers.NetworkingManager;
-import core.managers.SharedPrefManager;
-import core.managers.UserManager;
-import core.networking.NetworkCallback;
+import unsorted.Logger;
+import di.ActivityModule;
+import di.KnodaApplication;
+import managers.NetworkingManager;
+import managers.SharedPrefManager;
+import managers.UserManager;
+import networking.NetworkCallback;
 import dagger.ObjectGraph;
 import models.LoginRequest;
 import models.ServerError;
@@ -44,6 +44,7 @@ import models.User;
 import views.activity.ActivityFragment;
 import views.login.PhotoChooserActivity;
 import views.login.WelcomeFragment;
+import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 
 ;
@@ -200,6 +201,7 @@ public class MainActivity extends Activity
 
         map.put(new KnodaScreen(0, "Home", getResources().getDrawable(R.drawable.side_nav_home_icon)), HomeFragment.class);
         map.put(new KnodaScreen(1, "Activity", getResources().getDrawable(R.drawable.side_nav_activity_icon)), ActivityFragment.class);
+        map.put(new KnodaScreen(2, "History", getResources().getDrawable(R.drawable.side_nav_history_icon)), HistoryFragment.class);
         return map;
     }
 
@@ -220,7 +222,6 @@ public class MainActivity extends Activity
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getTitle());
     }
 
     public void pushFragment(Fragment fragment) {

@@ -11,8 +11,8 @@ import com.knoda.knoda.R;
 
 import java.util.ArrayList;
 
-import core.managers.NetworkingManager;
-import core.networking.NetworkListCallback;
+import managers.NetworkingManager;
+import networking.NetworkListCallback;
 import models.BaseModel;
 import models.ServerError;
 

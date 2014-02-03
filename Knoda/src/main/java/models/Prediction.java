@@ -70,7 +70,7 @@ public class Prediction extends BaseModel {
     public String getExpirationString() {
         String string = expired ? "closed" : "closes";
         string += " " + DateUtil.getPeriodString(expirationDate);
-        string += expired ? "ago" : "";
+        string += expired ? " ago" : "";
         return string;
     }
 

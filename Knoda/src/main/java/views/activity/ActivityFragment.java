@@ -5,7 +5,7 @@ import android.view.View;
 
 import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
-import core.networking.NetworkListCallback;
+import networking.NetworkListCallback;
 import models.ActivityItem;
 import views.core.BaseListFragment;
 

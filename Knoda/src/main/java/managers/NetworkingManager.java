@@ -1,4 +1,4 @@
-package core.managers;
+package managers;
 
 import android.content.Context;
 
@@ -18,12 +18,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import builders.ParamBuilder;
-import core.Logger;
-import core.networking.BitmapLruCache;
-import core.networking.GsonArrayRequest;
-import core.networking.GsonRequest;
-import core.networking.NetworkCallback;
-import core.networking.NetworkListCallback;
+import unsorted.Logger;
+import networking.BitmapLruCache;
+import networking.GsonArrayRequest;
+import networking.GsonRequest;
+import networking.NetworkCallback;
+import networking.NetworkListCallback;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
 import models.BaseModel;
@@ -52,7 +52,7 @@ public class NetworkingManager {
 
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
-    public static Integer PAGE_LIMIT = 50;
+    public static Integer PAGE_LIMIT = 25;
     public static String baseUrl = "http://api-test.knoda.com/api/";
 
     private ImageLoader imageLoader;
@@ -152,6 +152,15 @@ public class NetworkingManager {
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getActivityItemTypeToken(), callback);
 
+    }
+
+    public void getHistoryAfter(final Integer lastId, NetworkListCallback<Prediction> callback) {
+
+        ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit().add("challenged", "true");
+
+        String url = buildUrl("predictions.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
     private Map<String, String> getHeaders() {

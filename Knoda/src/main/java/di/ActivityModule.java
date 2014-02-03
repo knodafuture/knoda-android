@@ -1,11 +1,11 @@
-package core.di;
+package di;
 
 import javax.inject.Singleton;
 
-import core.ErrorReporter;
-import core.managers.NetworkingManager;
-import core.managers.SharedPrefManager;
-import core.managers.UserManager;
+import unsorted.ErrorReporter;
+import managers.NetworkingManager;
+import managers.SharedPrefManager;
+import managers.UserManager;
 import dagger.Module;
 import dagger.Provides;
 import views.activity.ActivityFragment;
@@ -15,6 +15,7 @@ import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
+import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 
 /**
@@ -31,7 +32,8 @@ import views.predictionlists.HomeFragment;
                 SignUpFragment.class,
                 ForgotPasswordFragment.class,
                 HomeFragment.class,
-                ActivityFragment.class
+                ActivityFragment.class,
+                HistoryFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

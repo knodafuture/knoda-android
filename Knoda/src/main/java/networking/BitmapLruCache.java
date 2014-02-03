@@ -1,4 +1,4 @@
-package core.networking;
+package networking;
 
 /**
  * Created by nick on 1/27/14.

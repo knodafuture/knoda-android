@@ -1,4 +1,4 @@
-package core.networking;
+package networking;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import core.Logger;
+import unsorted.Logger;
 
 /**
  * Created by nick on 1/22/14.

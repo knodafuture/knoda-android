@@ -14,9 +14,9 @@ import views.predictionlists.PredictionListCell;
 /**
  * Created by nick on 1/27/14.
  */
-public class HomeAdapter extends PagingAdapter<Prediction> {
+public class PredictionAdapter extends PagingAdapter<Prediction> {
 
-    public HomeAdapter(LayoutInflater inflater, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
+    public PredictionAdapter(LayoutInflater inflater, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
         super(inflater, datasource, imageLoader);
     }
 

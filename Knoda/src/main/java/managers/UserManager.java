@@ -1,12 +1,12 @@
-package core.managers;
+package managers;
 
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import core.Logger;
-import core.networking.NetworkCallback;
+import unsorted.Logger;
+import networking.NetworkCallback;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.ServerError;

@@ -1,4 +1,4 @@
-package core.networking;
+package networking;
 
 import models.BaseModel;
 import models.ServerError;

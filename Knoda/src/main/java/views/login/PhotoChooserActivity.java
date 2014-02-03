@@ -33,9 +33,9 @@ import java.io.File;
 import builders.MultipartRequestBuilder;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import core.Logger;
-import core.managers.NetworkingManager;
-import core.networking.MultipartRequest;
+import unsorted.Logger;
+import managers.NetworkingManager;
+import networking.MultipartRequest;
 
 public class PhotoChooserActivity extends Activity {
 

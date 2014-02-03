@@ -8,7 +8,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import java.io.File;
 
-import core.networking.MultipartRequest;
+import networking.MultipartRequest;
 
 /**
  * Created by nick on 1/22/14.

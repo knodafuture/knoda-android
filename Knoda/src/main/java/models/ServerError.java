@@ -5,7 +5,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.Map;
 
-import core.Logger;
+import unsorted.Logger;
 
 /**
  * Created by nick on 1/17/14.
@@ -30,8 +30,10 @@ public class ServerError extends BaseModel {
     public static ServerError newInstanceWithVolleyError(VolleyError error) {
         if (error == null)
             return null;
-        else
+        else {
+            Logger.log(error.toString());
             return new ServerError(error);
+        }
 
     }
 

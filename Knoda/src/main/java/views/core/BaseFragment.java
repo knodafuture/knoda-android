@@ -9,9 +9,9 @@ import android.view.inputmethod.InputMethodManager;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import core.ErrorReporter;
-import core.managers.NetworkingManager;
-import core.managers.UserManager;
+import unsorted.ErrorReporter;
+import managers.NetworkingManager;
+import managers.UserManager;
 
 /**
  * Created by nick on 1/17/14.
