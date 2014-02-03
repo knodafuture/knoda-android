@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.extras.SoundPullEventListener;
 import com.knoda.knoda.R;
 
 import adapters.PagingAdapter;
@@ -19,9 +22,10 @@ import helpers.ListenerHelper;
 public class BaseListFragment extends BaseFragment {
 
     @InjectView(R.id.base_listview)
-    public ListView listView;
+    public PullToRefreshListView pListView;
 
     protected PagingAdapter adapter;
+    public ListView listView;
 
     public static BaseListFragment newInstance() {
         BaseListFragment fragment = new BaseListFragment();
@@ -55,14 +59,37 @@ public class BaseListFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        listView = pListView.getRefreshableView();
         onListViewCreated(listView);
 
         adapter = getAdapter();
-        listView.setAdapter(adapter);
+        pListView.setAdapter(adapter);
 
         adapter.loadPage(0);
 
         addScrollListener();
+
+
+
+        adapter.setLoadFinishedListener(new PagingAdapter.PagingAdapaterPageLoadFinishListener() {
+            @Override
+            public void adapterFinishedLoadingPage(int page) {
+                pListView.onRefreshComplete();
+            }
+        });
+
+        pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                adapter.loadPage(0);
+            }
+        });
+
+        SoundPullEventListener<ListView> soundListener = new SoundPullEventListener<ListView>(getActivity());
+        soundListener.addSoundEvent(PullToRefreshBase.State.PULL_TO_REFRESH, R.raw.pull_event);
+        soundListener.addSoundEvent(PullToRefreshBase.State.RESET, R.raw.reset_sound);
+        soundListener.addSoundEvent(PullToRefreshBase.State.REFRESHING, R.raw.refreshing_sound);
+        pListView.setOnPullEventListener(soundListener);
     }
 
     private void addScrollListener() {

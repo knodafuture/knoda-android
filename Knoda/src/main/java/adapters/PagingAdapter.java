@@ -23,6 +23,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
 
     protected ArrayList<T> objects = new ArrayList<T>();
     protected PagingAdapterDatasource datasource;
+    protected PagingAdapaterPageLoadFinishListener onLoadFinished;
 
     public LayoutInflater inflater;
     public ImageLoader imageLoader;
@@ -34,11 +35,19 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         void getObjectsAfterObject(T object, NetworkListCallback<T> callback);
     }
 
+    public interface  PagingAdapaterPageLoadFinishListener <T extends BaseModel> {
+        void adapterFinishedLoadingPage(int page);
+    }
+
     public PagingAdapter(LayoutInflater inflater, PagingAdapterDatasource datasource, ImageLoader imageLoader) {
         this.inflater = inflater;
         this.datasource = datasource;
         this.imageLoader = imageLoader;
         this.currentPage = 0;
+    }
+
+    public void setLoadFinishedListener(PagingAdapaterPageLoadFinishListener<T> onLoadFinished) {
+        this.onLoadFinished = onLoadFinished;
     }
 
     @Override
@@ -77,12 +86,15 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         if (loading)
             return;
 
-        T object = objects.size() == 0 ? null : objects.get(objects.size() - 1);
+        T object = null;
+        if (page != 0)
+            object = objects.size() == 0 ? null : objects.get(objects.size() - 1);
         loading = true;
 
         datasource.getObjectsAfterObject(object, new NetworkListCallback<T>() {
             @Override
             public void completionHandler(ArrayList<T> objectsToAdd, ServerError error) {
+
                 if (error != null || objectsToAdd == null || objectsToAdd.size() == 0)
                     return;
 
@@ -94,6 +106,9 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
                 currentPage = page;
                 loading = false;
                 notifyDataSetChanged();
+
+                if (onLoadFinished != null)
+                    onLoadFinished.adapterFinishedLoadingPage(page);
             }
         });
     }
