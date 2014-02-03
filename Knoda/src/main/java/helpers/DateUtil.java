@@ -17,18 +17,20 @@ public class DateUtil {
         else
             period = new Period(now, date);
 
-        if (period.getMinutes() <= 0)
-            return period.getSeconds() + "s";
-        else if (period.getHours() <= 0)
-            return period.getMinutes() + "m";
-        else if (period.getDays() <= 0)
-            return period.getHours() + "h";
-        else if (period.getMonths() <= 0)
-            return period.getDays() + "d";
-        else if (period.getYears() <= 0)
-            return period.getMonths() + "mo";
-        else {
+        if (period.getYears() != 0)
             return period.getYears() + period.getYears() > 1 ? "yrs" : "yr";
+        else if (period.getMonths() != 0)
+            return period.getMonths() + "mo";
+        else if (period.getDays() != 0 || period.getWeeks() != 0) {
+            int days = period.getWeeks() != 0 ? period.getWeeks() * 7 : period.getDays();
+            return days + "d";
         }
+        else if (period.getHours() != 0)
+            return period.getHours() + "h";
+        else if (period.getMinutes() != 0)
+            return period.getMinutes() + "m";
+        else
+            return period.getSeconds() + "s";
+
     }
 }
