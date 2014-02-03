@@ -5,14 +5,15 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import adapters.PredictionAdapter;
 import adapters.PagingAdapter;
-import networking.NetworkCallback;
-import networking.NetworkListCallback;
+import adapters.PredictionAdapter;
 import listeners.PredictionSwipeListener;
 import models.Challenge;
 import models.Prediction;
 import models.ServerError;
+import networking.NetworkCallback;
+import networking.NetworkListCallback;
+import unsorted.Logger;
 import views.core.BaseListFragment;
 
 /**
@@ -86,5 +87,15 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 }
             }
         });
+    }
+
+    @Override
+    public void onProfileTapped(final PredictionListCell cell) {
+        if (cell.prediction.userId == userManager.getUser().id) {
+            Logger.log("current user profile unimplemented");
+        } else {
+            AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment(cell.prediction.userId);
+            pushFragment(fragment);
+        }
     }
 }

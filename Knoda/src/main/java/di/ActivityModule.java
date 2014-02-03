@@ -15,6 +15,7 @@ import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
+import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 
@@ -33,7 +34,8 @@ import views.predictionlists.HomeFragment;
                 ForgotPasswordFragment.class,
                 HomeFragment.class,
                 ActivityFragment.class,
-                HistoryFragment.class
+                HistoryFragment.class,
+                AnotherUsersProfileFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

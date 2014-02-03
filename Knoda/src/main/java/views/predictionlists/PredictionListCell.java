@@ -21,6 +21,8 @@ public class PredictionListCell extends RelativeLayout {
     public NetworkImageView avatarImageView;
     public TextView timeStampsTextView;
     public ImageView voteImageView;
+
+    public RelativeLayout usernameView;
     public RelativeLayout bodyView;
 
     public Prediction prediction;
@@ -37,6 +39,7 @@ public class PredictionListCell extends RelativeLayout {
         timeStampsTextView = (TextView)findViewById(R.id.prediction_cell_timestamps_textview);
         bodyView = (RelativeLayout)findViewById(R.id.prediction_cell_body_view);
         voteImageView = (ImageView)findViewById(R.id.prediction_cell_vote_image);
+        usernameView = (RelativeLayout)findViewById(R.id.prediction_cell_top_container);
     }
 
     public void setAgree(boolean agree) {

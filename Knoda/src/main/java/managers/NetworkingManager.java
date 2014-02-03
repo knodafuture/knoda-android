@@ -163,6 +163,20 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
+    public void getUser(final Integer userId, NetworkCallback<User> callback) {
+        String url = buildUrl("users/" + userId + ".json", true, null);
+
+        executeRequest(Request.Method.GET, url, null, User.class, callback);
+    }
+
+    public void getPredictionsForUserAfter(final Integer userId, final Integer lastId, NetworkListCallback<Prediction> callback) {
+        ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit();
+
+        String url = buildUrl("users/" + userId + "/predictions.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {

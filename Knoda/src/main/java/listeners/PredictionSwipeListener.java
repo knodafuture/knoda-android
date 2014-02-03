@@ -44,6 +44,7 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
         void onPredictionAgreed(PredictionListCell cell);
         void onPredictionDisagreed(PredictionListCell cell);
+        void onProfileTapped(PredictionListCell cell);
     }
 
 
@@ -114,13 +115,27 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                 if (downView == null)
                     break;
 
-                float deltaX = motionEvent.getRawX() - downX;
+                if (swiping) {
 
-                if (Math.abs(deltaX) > threshold) {
-                    if (deltaX < 0)
-                        callbacks.onPredictionDisagreed(downView);
-                    else
-                        callbacks.onPredictionAgreed(downView);
+                    float deltaX = motionEvent.getRawX() - downX;
+
+                    if (Math.abs(deltaX) > threshold) {
+                        if (deltaX < 0)
+                            callbacks.onPredictionDisagreed(downView);
+                        else
+                            callbacks.onPredictionAgreed(downView);
+                    }
+                } else {
+                    int[] coords = new int[2];
+                    downView.usernameView.getLocationOnScreen(coords);
+                    int x = (int) motionEvent.getRawX() - coords[0];
+                    int y = (int) motionEvent.getRawY() - coords[1];
+
+                    Rect rect = new Rect();
+                    downView.usernameView.getHitRect(rect);
+                    if (rect.contains(x, y)) {
+                        callbacks.onProfileTapped(downView);
+                    }
                 }
 
 
