@@ -146,6 +146,8 @@ public class MainActivity extends Activity
     public void onBackPressed() {
         if (progressView.getVisibility() == View.VISIBLE)
             super.onBackPressed();
+
+        getFragmentManager().popBackStack();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -238,7 +240,7 @@ public class MainActivity extends Activity
             public void onBackStackChanged() {
                 Integer count = getFragmentManager().getBackStackEntryCount();
 
-                if (count <= 0)
+                if (count <= 1)
                     navigationDrawerFragment.setDrawerToggleEnabled(true);
             }
         });

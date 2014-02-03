@@ -8,6 +8,7 @@ import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import unsorted.Logger;
 import views.predictionlists.PredictionListCell;
 
 /**
@@ -48,7 +49,6 @@ public class PredictionSwipeListener implements View.OnTouchListener {
     }
 
 
-
     public PredictionSwipeListener(ListView listView, PredictionCellCallbacks callbacks) {
         ViewConfiguration vc = ViewConfiguration.get(listView.getContext());
         slop = vc.getScaledTouchSlop();
@@ -59,13 +59,18 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
     public void setEnabled(boolean enabled) {
         paused = !enabled;
+
+        if (paused)
+            reset();
+
     }
 
     public AbsListView.OnScrollListener makeScrollListener() {
         return new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                setEnabled(scrollState != AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
+                Logger.log(scrollState + "");
+                setEnabled(scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE);
             }
 
             @Override
@@ -205,7 +210,8 @@ public class PredictionSwipeListener implements View.OnTouchListener {
     }
 
     private void reset() {
-        downView.bodyView.animate().translationX(0).alpha(1).setDuration(animationTime).setListener(null);
+        if (downView != null)
+            downView.bodyView.animate().translationX(0).alpha(1).setDuration(animationTime).setListener(null);
         downX = 0;
         downView = null;
         swiping = false;
