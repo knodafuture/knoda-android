@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
 
+import helpers.AdapterHelper;
 import models.Prediction;
 import views.predictionlists.PredictionListCell;
 
@@ -22,7 +23,10 @@ public class HomeAdapter extends PagingAdapter<Prediction> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        PredictionListCell listItem = (PredictionListCell) convertView;
+        if (position >= objects.size())
+            return super.getView(position, convertView, parent);
+
+        PredictionListCell listItem = (PredictionListCell) AdapterHelper.getConvertViewSafely(convertView, PredictionListCell.class);
         if (listItem == null)
             listItem = (PredictionListCell) inflater.inflate(R.layout.list_cell_predictions, null);
 
@@ -33,8 +37,6 @@ public class HomeAdapter extends PagingAdapter<Prediction> {
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
 
         return listItem;
+
     }
-
-
-
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
 
+import helpers.AdapterHelper;
 import models.ActivityItem;
 import views.activity.ActivityListCell;
 
@@ -21,7 +22,11 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ActivityListCell listItem = (ActivityListCell) convertView;
+
+        if (position >= objects.size())
+            return super.getView(position, convertView, parent);
+
+        ActivityListCell listItem = (ActivityListCell) AdapterHelper.getConvertViewSafely(convertView, ActivityListCell.class);
         if (listItem == null)
             listItem = (ActivityListCell) inflater.inflate(R.layout.list_cell_activity, null);
 
