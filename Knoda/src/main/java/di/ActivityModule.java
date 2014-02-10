@@ -2,12 +2,12 @@ package di;
 
 import javax.inject.Singleton;
 
-import unsorted.ErrorReporter;
+import dagger.Module;
+import dagger.Provides;
 import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.UserManager;
-import dagger.Module;
-import dagger.Provides;
+import unsorted.ErrorReporter;
 import views.activity.ActivityFragment;
 import views.core.MainActivity;
 import views.core.Spinner;
@@ -18,6 +18,7 @@ import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
+import views.profile.MyProfileFragment;
 
 /**
  * Created by nick on 1/17/14.
@@ -35,7 +36,8 @@ import views.predictionlists.HomeFragment;
                 HomeFragment.class,
                 ActivityFragment.class,
                 HistoryFragment.class,
-                AnotherUsersProfileFragment.class
+                AnotherUsersProfileFragment.class,
+                MyProfileFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

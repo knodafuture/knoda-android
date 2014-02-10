@@ -1,0 +1,84 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/profile">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            tools:context="views.profile.MyProfileFragment"
+            >
+            
+            <views.profile.UserProfileHeaderView
+                android:id="@+id/profile_view_user_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></views.profile.UserProfileHeaderView>
+
+            <EditText style="@style/edittext_main"
+                android:id="@+id/profile_username_edittext"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                android:inputType="textNoSuggestions"
+                android:imeOptions="actionNext" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="username"/>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#efefef" />
+
+            <EditText style="@style/edittext_main"
+                android:id="@+id/profile_email_edittext"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                android:inputType="textNoSuggestions"
+                android:imeOptions="actionNext" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="email"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#efefef" />
+
+            <EditText style="@style/edittext_main"
+                android:id="@+id/profile_password_edittext"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="10dp"
+                android:inputType="textNoSuggestions"
+                android:imeOptions="actionNext" />
+
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/InnerRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <Button style="@style/button_main"
+            android:id="@+id/button_sign_out"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_out"
+            />
+    </RelativeLayout>
+</RelativeLayout>
+
+

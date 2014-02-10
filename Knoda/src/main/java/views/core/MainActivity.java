@@ -46,8 +46,7 @@ import views.login.PhotoChooserActivity;
 import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
-
-;
+import views.profile.MyProfileFragment;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -69,6 +68,7 @@ public class MainActivity extends Activity
     public FrameLayout splashScreen;
     @InjectView(R.id.progress_view)
     public FrameLayout progressView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +204,7 @@ public class MainActivity extends Activity
         map.put(new KnodaScreen(0, "Home", getResources().getDrawable(R.drawable.side_nav_home_icon)), HomeFragment.class);
         map.put(new KnodaScreen(1, "Activity", getResources().getDrawable(R.drawable.side_nav_activity_icon)), ActivityFragment.class);
         map.put(new KnodaScreen(2, "History", getResources().getDrawable(R.drawable.side_nav_history_icon)), HistoryFragment.class);
+        map.put(new KnodaScreen(3, "Profile", getResources().getDrawable(R.drawable.side_nav_profile_icon)), MyProfileFragment.class);
         return map;
     }
 

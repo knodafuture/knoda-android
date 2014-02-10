@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<views.profile.UserProfileHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:background="@color/lightGray">
@@ -100,4 +100,4 @@
 
         </RelativeLayout>
 
-</views.profile.UserProfileHeaderView>
+</merge>
