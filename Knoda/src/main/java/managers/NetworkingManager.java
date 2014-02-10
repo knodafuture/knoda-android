@@ -18,12 +18,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import builders.ParamBuilder;
-import unsorted.Logger;
-import networking.BitmapLruCache;
-import networking.GsonArrayRequest;
-import networking.GsonRequest;
-import networking.NetworkCallback;
-import networking.NetworkListCallback;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
 import models.BaseModel;
@@ -33,7 +27,14 @@ import models.LoginResponse;
 import models.Prediction;
 import models.ServerError;
 import models.SignUpRequest;
+import models.Tag;
 import models.User;
+import networking.BitmapLruCache;
+import networking.GsonArrayRequest;
+import networking.GsonRequest;
+import networking.NetworkCallback;
+import networking.NetworkListCallback;
+import unsorted.Logger;
 
 
 /**
@@ -175,6 +176,28 @@ public class NetworkingManager {
         String url = buildUrl("users/" + userId + "/predictions.json", true, builder);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
+    }
+
+
+    public void getPrediction(final Integer predictionId, final NetworkCallback<Prediction> callback) {
+
+        String url = buildUrl("predictions/" + predictionId + ".json", true, null);
+
+        executeRequest(Request.Method.GET, url, null, Prediction.class, callback);
+
+    }
+
+    public void submitPrediction(final Prediction prediction, final NetworkCallback<Prediction> callback) {
+
+        String url = buildUrl("predictions.json", true, null);
+
+        executeRequest(Request.Method.POST, url, prediction, Prediction.class, callback);
+    }
+
+    public void getTags(NetworkListCallback<Tag> callback) {
+        String url = buildUrl("topics.json", true, null);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getTopicListTypeToken(), callback);
     }
 
     private Map<String, String> getHeaders() {

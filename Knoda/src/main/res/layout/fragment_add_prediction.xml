@@ -1,0 +1,180 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="views.addprediction.AddPredictionFragment"
+    android:background="@color/lightGray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:id="@+id/add_prediction_body_container">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/add_prediction_user_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@color/knodaDarkGreen"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/add_prediction_body_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/add_prediction_user_avatar"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:inputType="textMultiLine"
+            android:hint="Make a  prediction..."
+            android:gravity="top"
+            android:background="@null"/>
+
+        <TextView
+            android:id="@+id/add_prediction_counter_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:id="@+id/add_prediction_topic_view"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/predict_category_icon"
+            android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/add_prediction_topic_textview"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select a Categorgy"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/add_prediction_vote_date_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/predict_calendar_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"/>
+
+        <LinearLayout
+            android:layout_toRightOf="@id/add_prediction_vote_date_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Voting ends on"/>
+
+            <EditText
+                android:id="@+id/add_prediction_vote_date_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:text="1/2/2014"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:text="at"/>
+
+            <EditText
+                android:id="@+id/add_prediction_vote_time_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:text="3:30 PM"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/add_prediction_resolution_date_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/predict_calendar_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"/>
+
+        <LinearLayout
+            android:layout_toRightOf="@id/add_prediction_resolution_date_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I'll Knoda result on"/>
+
+            <EditText
+                android:id="@+id/add_prediction_resolution_date_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1/2/2014"
+                android:focusable="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="at"/>
+
+            <EditText
+                android:id="@+id/add_prediction_resolution_time_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3:30 PM"
+                android:focusable="false"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

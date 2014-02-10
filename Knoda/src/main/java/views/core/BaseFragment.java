@@ -48,4 +48,8 @@ public class BaseFragment extends Fragment {
         ((MainActivity) getActivity()).pushFragment(fragment);
     }
 
+    public void popFragment() {
+        ((MainActivity) getActivity()).popFragment();
+    }
+
 }

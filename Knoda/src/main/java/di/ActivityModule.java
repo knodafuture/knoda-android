@@ -9,6 +9,7 @@ import managers.SharedPrefManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
 import views.activity.ActivityFragment;
+import views.addprediction.AddPredictionFragment;
 import views.core.MainActivity;
 import views.core.Spinner;
 import views.login.ForgotPasswordFragment;
@@ -37,7 +38,8 @@ import views.profile.MyProfileFragment;
                 ActivityFragment.class,
                 HistoryFragment.class,
                 AnotherUsersProfileFragment.class,
-                MyProfileFragment.class
+                MyProfileFragment.class,
+                AddPredictionFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

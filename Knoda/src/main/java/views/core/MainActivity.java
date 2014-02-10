@@ -42,6 +42,7 @@ import models.LoginRequest;
 import models.ServerError;
 import models.User;
 import views.activity.ActivityFragment;
+import views.addprediction.AddPredictionFragment;
 import views.login.PhotoChooserActivity;
 import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
@@ -162,6 +163,10 @@ public class MainActivity extends Activity
                 getFragmentManager().popBackStack();
                 return true;
             }
+
+            case R.id.action_add_prediction: {
+                onAddPrediction();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -234,6 +239,10 @@ public class MainActivity extends Activity
         navigationDrawerFragment.setDrawerToggleEnabled(false);
     }
 
+    public void popFragment() {
+        getFragmentManager().popBackStack();
+    }
+
     private void initializeFragmentBackStack () {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
@@ -298,5 +307,12 @@ public class MainActivity extends Activity
         });
 
         splashScreen.setAnimation(fadeOut);
+    }
+
+
+    private void onAddPrediction() {
+        AddPredictionFragment fragment = new AddPredictionFragment();
+
+        pushFragment(fragment);
     }
 }

@@ -9,7 +9,7 @@
             android:showAsAction="ifRoom" />
         <item android:id="@+id/action_add_prediction"
             android:title="Add Prediction"
-            android:icon="@android:drawable/ic_menu_add"
+            android:icon="@drawable/predict_icon"
             android:orderInCategory="100"
             android:showAsAction="ifRoom" />
     </group>

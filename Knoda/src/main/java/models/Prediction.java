@@ -55,7 +55,7 @@ public class Prediction extends BaseModel {
     @SerializedName("is_ready_for_resolution")
     public boolean isReadyForResolution;
 
-    public ArrayList<Topic> tags = new ArrayList<Topic>();
+    public ArrayList<String> tags = new ArrayList<String>();
 
     @SerializedName("my_challenge")
     public Challenge challenge;
