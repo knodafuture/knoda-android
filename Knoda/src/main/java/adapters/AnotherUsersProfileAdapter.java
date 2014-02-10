@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.knoda.knoda.R;
 
 import helpers.AdapterHelper;
 import models.Prediction;
@@ -55,7 +54,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
         UserProfileHeaderView header = (UserProfileHeaderView) AdapterHelper.getConvertViewSafely(convertView, UserProfileHeaderView.class);
 
         if (header == null)
-            header = (UserProfileHeaderView) inflater.inflate(R.layout.view_user_header, null);
+            header = new UserProfileHeaderView(inflater.getContext(), null);
 
         header.pointsTextView.setText(user.points.toString());
 
