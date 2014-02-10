@@ -235,7 +235,7 @@ public class MainActivity extends Activity
     public void pushFragment(Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.addToBackStack(null).replace(R.id.container, fragment).commit();
+        transaction.addToBackStack(null).add(R.id.container, fragment).commit();
         navigationDrawerFragment.setDrawerToggleEnabled(false);
     }
 
