@@ -43,10 +43,7 @@ public class MyProfileFragment extends BaseFragment {
         getActivity().getActionBar().setTitle(user.username);
         username.setText(user.username);
         email.setText(user.email);
-        header.pointsTextView.setText(user.points.toString());
-        header.winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
-        header.streakTextView.setText(user.streak.toString());
-        header.winPercentTextView.setText(user.winningPercentage.toString());
+        header.setUser(user);
         header.avatarImageView.setImageUrl(user.avatar.big, networkingManager.getImageLoader());
     }
 }
