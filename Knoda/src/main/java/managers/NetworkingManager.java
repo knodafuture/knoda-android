@@ -222,6 +222,11 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
+    public void updateUser(User user, final NetworkCallback<User> callback) {
+        String url = buildUrl("profile.json", true, null);
+        executeRequest(Request.Method.PUT, url, user, User.class, callback);
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
@@ -267,6 +272,7 @@ public class NetworkingManager {
         Response.Listener<T> responseListener = new Response.Listener<T>() {
             @Override
             public void onResponse(T t) {
+                Logger.log("RESPONSE RECEIVED.");
                 callback.completionHandler(t, null);
             }
         };

@@ -92,8 +92,6 @@ public class WelcomeFragment extends BaseFragment {
                 pushFragment(fragment);
             }
         });
-
-
     }
 
 }

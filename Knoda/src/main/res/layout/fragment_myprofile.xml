@@ -1,7 +1,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white"
+    android:background="@color/lightGray"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/profile">
@@ -9,11 +9,12 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:background="@android:color/white">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             tools:context="views.profile.MyProfileFragment"
             >
             
@@ -22,12 +23,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></views.profile.UserProfileHeaderView>
 
-            <EditText style="@style/edittext_main"
+            <TextView
+                style="@style/edittext_main"
                 android:id="@+id/profile_username_edittext"
                 android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
-                android:inputType="textNoSuggestions"
-                android:imeOptions="actionNext" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"/>
 
             <TextView
                 android:layout_width="fill_parent"
@@ -39,12 +40,12 @@
                 android:layout_height="1dip"
                 android:background="#efefef" />
 
-            <EditText style="@style/edittext_main"
+            <TextView
+                style="@style/edittext_main"
                 android:id="@+id/profile_email_edittext"
                 android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
-                android:inputType="textNoSuggestions"
-                android:imeOptions="actionNext" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,12 +58,19 @@
                 android:layout_height="1dip"
                 android:background="#efefef" />
 
-            <EditText style="@style/edittext_main"
+            <TextView
+                style="@style/edittext_main"
                 android:id="@+id/profile_password_edittext"
                 android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:inputType="textNoSuggestions"
-                android:imeOptions="actionNext" />
+                android:text="Change Password"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="lock it down"/>
 
         </LinearLayout>
     </RelativeLayout>
