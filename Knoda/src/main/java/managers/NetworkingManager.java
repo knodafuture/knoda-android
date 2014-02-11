@@ -94,13 +94,19 @@ public class NetworkingManager {
         executeRequest(Request.Method.GET, url, null, User.class, callback);
     }
 
-
-    public void getPredictionsAfter(final Integer lastId, final NetworkListCallback<Prediction> callback) {
+    public void getPredictionsWithTagAfter(final Tag tag, final Integer lastId, final NetworkListCallback<Prediction> callback) {
         ParamBuilder builder = ParamBuilder.create().withPageLimit().add("recent", "true").withLastId(lastId);
+
+        if (tag != null)
+            builder.add("tag", tag.name);
 
         String url = buildUrl("predictions.json", true, builder);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
+    }
+
+    public void getPredictionsAfter(final Integer lastId, final NetworkListCallback<Prediction> callback) {
+        getPredictionsWithTagAfter(null, lastId, callback);
     }
 
     public void getChallengeForPrediction(final Integer predictionId, final NetworkCallback<Challenge> callback) {

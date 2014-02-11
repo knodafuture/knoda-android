@@ -23,21 +23,28 @@ public class UserProfileHeaderView extends RelativeLayout {
 
     public NetworkImageView avatarImageView;
 
+    public UserProfileHeaderView(Context context) {
+        super(context);
+        initView(context);
+    }
 
     public UserProfileHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.view_user_header, this);
+        initView(context);
     }
 
-    @Override
-    public void onFinishInflate() {
+    private void initView(Context context) {
+        LayoutInflater.from(context).inflate(R.layout.view_user_header, this);
+
         pointsTextView = (TextView)findViewById(R.id.user_profile_header_points_textview);
         winPercentTextView = (TextView)findViewById(R.id.user_profile_header_win_textview);
         streakTextView = (TextView)findViewById(R.id.user_profile_header_streak_textview);
         winLossTextView = (TextView)findViewById(R.id.user_profile_header_wl_textview);
 
         avatarImageView = (NetworkImageView)findViewById(R.id.user_profile_header_avatar);
+
     }
+
 
     public void setUser(User user) {
         pointsTextView.setText(user.points.toString());

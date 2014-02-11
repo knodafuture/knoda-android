@@ -54,7 +54,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
         UserProfileHeaderView header = (UserProfileHeaderView) AdapterHelper.getConvertViewSafely(convertView, UserProfileHeaderView.class);
 
         if (header == null)
-            header = new UserProfileHeaderView(inflater.getContext(), null);
+            header = new UserProfileHeaderView(inflater.getContext());
 
         header.pointsTextView.setText(user.points.toString());
 

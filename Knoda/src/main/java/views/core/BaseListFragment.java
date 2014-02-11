@@ -69,8 +69,6 @@ public class BaseListFragment extends BaseFragment {
 
         addScrollListener();
 
-
-
         adapter.setLoadFinishedListener(new PagingAdapter.PagingAdapaterPageLoadFinishListener() {
             @Override
             public void adapterFinishedLoadingPage(int page) {

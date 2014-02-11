@@ -17,9 +17,11 @@ import views.login.LoginFragment;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
+import views.predictionlists.CategoryFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
+import views.search.SearchFragment;
 
 /**
  * Created by nick on 1/17/14.
@@ -39,7 +41,9 @@ import views.profile.MyProfileFragment;
                 HistoryFragment.class,
                 AnotherUsersProfileFragment.class,
                 MyProfileFragment.class,
-                AddPredictionFragment.class
+                AddPredictionFragment.class,
+                SearchFragment.class,
+                CategoryFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

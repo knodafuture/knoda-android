@@ -48,6 +48,7 @@ import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
+import views.search.SearchFragment;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -148,7 +149,8 @@ public class MainActivity extends Activity
         if (progressView.getVisibility() == View.VISIBLE)
             super.onBackPressed();
 
-        getFragmentManager().popBackStack();
+        if (getFragmentManager().getBackStackEntryCount() > 1)
+            getFragmentManager().popBackStack();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -166,6 +168,12 @@ public class MainActivity extends Activity
 
             case R.id.action_add_prediction: {
                 onAddPrediction();
+                break;
+            }
+
+            case R.id.action_search: {
+                onSearch();
+                break;
             }
         }
         return super.onOptionsItemSelected(item);
@@ -234,8 +242,8 @@ public class MainActivity extends Activity
 
     public void pushFragment(Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.addToBackStack(null).add(R.id.container, fragment).commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.addToBackStack(null).replace(R.id.container, fragment).commit();
         navigationDrawerFragment.setDrawerToggleEnabled(false);
     }
 
@@ -313,6 +321,11 @@ public class MainActivity extends Activity
     private void onAddPrediction() {
         AddPredictionFragment fragment = new AddPredictionFragment();
 
+        pushFragment(fragment);
+    }
+
+    private void onSearch() {
+        SearchFragment fragment = new SearchFragment();
         pushFragment(fragment);
     }
 }
