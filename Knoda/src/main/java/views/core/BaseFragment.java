@@ -44,6 +44,13 @@ public class BaseFragment extends Fragment {
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    public void showKeyboard(View focusable) {
+        InputMethodManager keyboard = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        keyboard.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        focusable.requestFocus();
+    }
+
     public void pushFragment(Fragment fragment) {
         ((MainActivity) getActivity()).pushFragment(fragment);
     }

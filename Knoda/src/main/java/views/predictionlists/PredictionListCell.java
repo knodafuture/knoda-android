@@ -2,6 +2,7 @@ package views.predictionlists;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,12 +28,18 @@ public class PredictionListCell extends RelativeLayout {
 
     public Prediction prediction;
 
-    public PredictionListCell(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public PredictionListCell(Context context) {
+        super(context);
+        initView(context);
     }
 
-    @Override
-    public void onFinishInflate() {
+    public PredictionListCell(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initView(context);
+    }
+
+    private void initView(Context context) {
+        LayoutInflater.from(context).inflate(R.layout.list_cell_predictions, this);
         usernameTextView = (TextView)findViewById(R.id.prediction_cell_username_textview);
         bodyTextView = (TextView)findViewById(R.id.prediction_cell_body_textview);
         avatarImageView = (NetworkImageView)findViewById(R.id.prediction_cell_avatar_imageview);
@@ -41,6 +48,8 @@ public class PredictionListCell extends RelativeLayout {
         voteImageView = (ImageView)findViewById(R.id.prediction_cell_vote_image);
         usernameView = (RelativeLayout)findViewById(R.id.prediction_cell_top_container);
     }
+
+
 
     public void setAgree(boolean agree) {
         int resId = agree? R.drawable.agree_marker : R.drawable.disagree_marker;

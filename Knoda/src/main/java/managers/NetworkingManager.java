@@ -206,6 +206,22 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getTopicListTypeToken(), callback);
     }
 
+    public void searchForUsers(String searchTerm, NetworkListCallback<User> callback) {
+        ParamBuilder builder = ParamBuilder.create().add("limit", "5").add("q", searchTerm);
+
+        String url = buildUrl("search/users.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
+    }
+
+    public void searchForPredictions(String searchterm, NetworkListCallback<Prediction> callback) {
+        ParamBuilder builder = ParamBuilder.create().add("limit", "5").add("q", searchterm);
+
+        String url = buildUrl("search/predictions.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {

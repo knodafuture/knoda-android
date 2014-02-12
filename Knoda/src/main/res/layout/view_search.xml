@@ -34,6 +34,7 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/search_view_searchicon"
         android:layout_toLeftOf="@id/search_view_clear"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:imeOptions="actionSearch"/>
 
 </RelativeLayout>

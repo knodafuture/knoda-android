@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/user_cell_avatar_imageview"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/black"/>
+    <TextView
+        android:id="@+id/user_cell_username_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/user_cell_avatar_imageview"
+        android:text="test layout text"/>
+
+</merge>

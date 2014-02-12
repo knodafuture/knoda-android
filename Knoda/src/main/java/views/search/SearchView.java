@@ -26,6 +26,7 @@ public class SearchView extends RelativeLayout {
 
     public interface SearchViewCallbacks {
         void onSearch(String searchText);
+        void onCancel();
     }
 
     public SearchView(Context context) {
@@ -46,10 +47,6 @@ public class SearchView extends RelativeLayout {
 
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_search, this);
-    }
-
-    @Override
-    public void onFinishInflate() {
         searchField = (EditText)findViewById(R.id.search_view_searchfield);
         cancelButton = (ImageView)findViewById(R.id.search_view_clear);
 
@@ -57,10 +54,13 @@ public class SearchView extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 searchField.getEditableText().clear();
+
+                if (callbacks != null)
+                    callbacks.onCancel();
             }
         });
 
-        EditTextHelper.assignDoneListener(searchField, new EditTextDoneCallback() {
+        EditTextHelper.assignSearchListener(searchField, new EditTextDoneCallback() {
             @Override
             public void onDone() {
                 if (callbacks != null)

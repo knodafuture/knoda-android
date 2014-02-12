@@ -13,19 +13,26 @@ import android.widget.ListView;
 import com.knoda.knoda.R;
 
 import adapters.PagingAdapter;
+import adapters.SearchAdapter;
 import adapters.TagAdapter;
 import butterknife.InjectView;
+import models.Prediction;
 import models.Tag;
+import models.User;
 import networking.NetworkListCallback;
 import views.core.BaseFragment;
+import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 
-public class SearchFragment extends BaseFragment implements SearchView.SearchViewCallbacks, PagingAdapter.PagingAdapterDatasource<Tag>{
+public class SearchFragment extends BaseFragment implements SearchView.SearchViewCallbacks, PagingAdapter.PagingAdapterDatasource<Tag>,
+        SearchAdapter.SearchAdapterDatasource, SearchAdapter.SearchAdapterCallbacks {
 
     @InjectView(R.id.search_listview)
     ListView listview;
 
-    TagAdapter adapter;
+    TagAdapter tagAdapter;
+    SearchAdapter searchAdapter;
+    SearchView searchView;
 
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
@@ -57,8 +64,10 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         inflater.inflate(R.menu.search, menu);
 
         MenuItem menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView)menuItem.getActionView();
+        searchView = (SearchView)menuItem.getActionView();
         searchView.setCallbacks(this);
+        showKeyboard(searchView.searchField);
+
     }
 
     @Override
@@ -78,26 +87,42 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        adapter = new TagAdapter(getActivity().getLayoutInflater(), this, null);
+        tagAdapter = new TagAdapter(getActivity().getLayoutInflater(), this, null);
 
-        listview.setAdapter(adapter);
+        searchAdapter = new SearchAdapter(getActivity().getLayoutInflater(), this, this, networkingManager.getImageLoader());
 
-        adapter.loadPage(0);
+        onCancel();
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Tag tag = adapter.getItem(position);
-                CategoryFragment fragment = new CategoryFragment(tag);
-                pushFragment(fragment);
-            }
-        });
+
     }
 
 
     @Override
     public void onSearch(String string) {
 
+        hideKeyboard();
+
+        listview.setAdapter(searchAdapter);
+
+        searchAdapter.loadForSearchTerm(string);
+
+        listview.setOnItemClickListener(searchAdapter.makeOnItemClickListeners());
+    }
+
+    @Override
+    public  void onCancel() {
+        listview.setAdapter(tagAdapter);
+
+        tagAdapter.loadPage(0);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Tag tag = tagAdapter.getItem(position);
+                CategoryFragment fragment = new CategoryFragment(tag);
+                pushFragment(fragment);
+            }
+        });
     }
 
     @Override
@@ -105,5 +130,25 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         networkingManager.getTags(callback);
     }
 
+    @Override
+    public void getUsers(String searchTerm, NetworkListCallback<User> callback) {
+        networkingManager.searchForUsers(searchTerm, callback);
+    }
 
+    @Override
+    public void getPredictions(String searchTerm, NetworkListCallback<Prediction> callback) {
+        networkingManager.searchForPredictions(searchTerm, callback);
+    }
+
+
+    @Override
+    public void onUserSelected(User user) {
+        AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment(user.id);
+        pushFragment(fragment);
+    }
+
+    @Override
+    public void onPredictionSelected(Prediction prediction) {
+
+    }
 }

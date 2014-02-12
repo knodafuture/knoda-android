@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.knoda.knoda.R;
 
 import helpers.AdapterHelper;
 import models.Prediction;
@@ -28,7 +27,7 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
 
         PredictionListCell listItem = (PredictionListCell) AdapterHelper.getConvertViewSafely(convertView, PredictionListCell.class);
         if (listItem == null)
-            listItem = (PredictionListCell) inflater.inflate(R.layout.list_cell_predictions, null);
+            listItem = new PredictionListCell(inflater.getContext());
 
         Prediction prediction = getItem(position);
 

@@ -40,5 +40,16 @@ public class EditTextHelper {
         editText.setOnEditorActionListener(listener);
     }
 
+    public static void assignSearchListener(EditText editText, final EditTextDoneCallback callback) {
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH)
+                    callback.onDone();
+                return true;
+            }
+        });
+    }
+
 }
 
