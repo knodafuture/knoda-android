@@ -181,11 +181,10 @@ public class MyProfileFragment extends BaseFragment {
                 EditText email = (EditText) changeEmailView.findViewById(R.id.email);
                 final User user = new User();
                 user.email = email.getText().toString();
-                networkingManager.updateUser(user, new NetworkCallback<User>() {
+                userManager.updateUser(user, new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
-                        userManager.getUser().email = user.email;
-                        updateUser(userManager.getUser());
+                        updateUser(u);
                         if (error == null)
                             dialog.dismiss();
                         else
@@ -202,11 +201,10 @@ public class MyProfileFragment extends BaseFragment {
                 EditText username = (EditText) changeUsernameView.findViewById(R.id.username);
                 final User user = new User();
                 user.username = username.getText().toString();
-                networkingManager.updateUser(user, new NetworkCallback<User>() {
+                userManager.updateUser(user, new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
-                        userManager.getUser().username = user.username;
-                        updateUser(userManager.getUser());
+                        updateUser(u);
                         if (error == null)
                             dialog.dismiss();
                         else

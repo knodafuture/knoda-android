@@ -39,6 +39,16 @@ public class UserManager {
         });
     }
 
+    public void updateUser(final User u, final NetworkCallback<User> callback) {
+        networkingManager.updateUser(u, new NetworkCallback<User>() {
+            @Override
+            public void completionHandler(User u, ServerError error) {
+                user = u;
+                callback.completionHandler(user, error);
+            }
+        });
+    }
+
     public void login(final LoginRequest request, final NetworkCallback<User> callback) {
         networkingManager.login(request, new NetworkCallback<LoginResponse>() {
             @Override
