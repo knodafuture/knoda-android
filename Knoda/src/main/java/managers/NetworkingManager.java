@@ -24,6 +24,7 @@ import models.BaseModel;
 import models.Challenge;
 import models.LoginRequest;
 import models.LoginResponse;
+import models.PasswordChangeRequest;
 import models.Prediction;
 import models.ServerError;
 import models.SignUpRequest;
@@ -225,6 +226,11 @@ public class NetworkingManager {
     public void updateUser(User user, final NetworkCallback<User> callback) {
         String url = buildUrl("profile.json", true, null);
         executeRequest(Request.Method.PUT, url, user, User.class, callback);
+    }
+
+    public void changePassword(PasswordChangeRequest passwordChange, final NetworkCallback<User> callback) {
+        String url = buildUrl("password.json", true, null);
+        executeRequest(Request.Method.PUT, url, passwordChange, User.class, callback);
     }
 
     private Map<String, String> getHeaders() {

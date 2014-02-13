@@ -1,7 +1,6 @@
 package views.profile;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.knoda.knoda.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import models.PasswordChangeRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
@@ -29,59 +29,63 @@ public class MyProfileFragment extends BaseFragment {
 
 
     @OnClick(R.id.profile_username_edittext) void onClickUsername() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setTitle("Change Your Username");
-        final EditText input = new EditText(getActivity());
-        alert.setView(input);
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                final User user = new User();
-                user.username = input.getText().toString();
-                networkingManager.updateUser(user, new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User u, ServerError error) {
-                        userManager.getUser().username = user.username;
-                        updateUser(userManager.getUser());
-                        if (error != null)
-                            return;
-                    }
-                });
-            }
-        });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-            }
-        });
+        LayoutInflater li = LayoutInflater.from(getActivity().getApplicationContext());
+        final View changeUsernameView = li.inflate(R.layout.dialog_change_username, null);
+        EditText username = (EditText) changeUsernameView.findViewById(R.id.username);
+        username.setText("");
+        username.append(userManager.getUser().username);
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Ok", null)
+                .setNegativeButton("Cancel", null)
+                .setView(changeUsernameView)
+                .setTitle("Change Your Username")
+                .create();
         alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(changeUsername(changeUsernameView, alert));
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
     }
 
     @OnClick(R.id.profile_email_edittext) void onClickEmail() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setTitle("Change Your Email");
-        final EditText input = new EditText(getActivity());
-        alert.setView(input);
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                final User user = new User();
-                user.email = input.getText().toString();
-                networkingManager.updateUser(user, new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User u, ServerError error) {
-                        userManager.getUser().email = user.email;
-                        updateUser(userManager.getUser());
-                        if (error != null)
-                            return;
-                    }
-                });
-            }
-        });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-            }
-        });
+        LayoutInflater li = LayoutInflater.from(getActivity().getApplicationContext());
+        final View changeEmailView = li.inflate(R.layout.dialog_change_email, null);
+        EditText email = (EditText) changeEmailView.findViewById(R.id.email);
+        email.setText("");
+        email.append(userManager.getUser().email);
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Ok", null)
+                .setNegativeButton("Cancel", null)
+                .setView(changeEmailView)
+                .setTitle("Change Your Email")
+                .create();
         alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(changeEmail(changeEmailView, alert));
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+    }
+
+    @OnClick(R.id.profile_password_edittext) void onClickPassword() {
+        LayoutInflater li = LayoutInflater.from(getActivity().getApplicationContext());
+        final View changePasswordView = li.inflate(R.layout.dialog_change_password, null);
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Ok", null)
+                .setNegativeButton("Cancel", null)
+                .setView(changePasswordView)
+                .setTitle("Change Your Password")
+                .create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(changePassword(changePasswordView, alert));
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
     }
 
     public static MyProfileFragment newInstance() {
@@ -110,5 +114,81 @@ public class MyProfileFragment extends BaseFragment {
         email.setText(user.email);
         header.setUser(user);
         header.avatarImageView.setImageUrl(user.avatar.big, networkingManager.getImageLoader());
+    }
+
+    private View.OnClickListener changePassword(final View changePasswordView, final AlertDialog dialog) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                PasswordChangeRequest pcr = new PasswordChangeRequest();
+                EditText currentPassword = (EditText) changePasswordView.findViewById(R.id.current_password);
+                EditText newPassword = (EditText) changePasswordView.findViewById(R.id.new_password);
+                EditText newPasswordConfirm = (EditText) changePasswordView.findViewById(R.id.new_password_confirm);
+                if (validateChangePassword(changePasswordView)) {
+                    pcr.currentPassword = currentPassword.getText().toString();
+                    pcr.newPassword = newPassword.getText().toString();
+                    networkingManager.changePassword(pcr, new NetworkCallback<User>() {
+                        @Override
+                        public void completionHandler(User u, ServerError error) {
+                            if (error == null)
+                                dialog.dismiss();
+                        }
+                    });
+                } else {
+                    return;
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener changeEmail(final View changeEmailView, final AlertDialog dialog) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                EditText email = (EditText) changeEmailView.findViewById(R.id.email);
+                final User user = new User();
+                user.email = email.getText().toString();
+                networkingManager.updateUser(user, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User u, ServerError error) {
+                        userManager.getUser().email = user.email;
+                        updateUser(userManager.getUser());
+                        if (error == null)
+                            dialog.dismiss();
+                    }
+                });
+            }
+        };
+    }
+
+    private View.OnClickListener changeUsername(final View changeUsernameView, final AlertDialog dialog) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                EditText username = (EditText) changeUsernameView.findViewById(R.id.username);
+                final User user = new User();
+                user.username = username.getText().toString();
+                networkingManager.updateUser(user, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User u, ServerError error) {
+                        userManager.getUser().username = user.username;
+                        updateUser(userManager.getUser());
+                        if (error == null)
+                            dialog.dismiss();
+                    }
+                });
+            }
+        };
+    }
+
+    private boolean validateChangePassword(final View changePasswordView) {
+        EditText currentPassword = (EditText) changePasswordView.findViewById(R.id.current_password);
+        EditText newPassword = (EditText) changePasswordView.findViewById(R.id.new_password);
+        EditText newPasswordConfirm = (EditText) changePasswordView.findViewById(R.id.new_password_confirm);
+        if (newPassword.getText().toString().length() < 6) {
+            errorReporter.showError("Minimum password length is 6 characters");
+        }
+        if (!newPassword.getText().toString().equals(newPasswordConfirm.getText().toString())) {
+            errorReporter.showError("Passwords do not match.");
+            return false;
+        }
+        return true;
     }
 }
