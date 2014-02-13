@@ -89,6 +89,11 @@ public class NetworkingManager {
 
     }
 
+    public void signout(final NetworkCallback<User> callback) {
+        String url = buildUrl("session.json", true, null);
+        executeRequest(Request.Method.DELETE, url, null, User.class, callback);
+    }
+
     public void getCurrentUser(final NetworkCallback<User> callback) {
         String url = buildUrl("profile.json", true, null);
 

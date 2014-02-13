@@ -67,5 +67,15 @@ public class SharedPrefManager {
         return sharedPreferences.getString(SAVED_AUTHTOKEN_KEY, null);
     }
 
+    public void clearSession() {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences
+            .edit()
+            .remove(SAVED_PASSWORD_KEY)
+            .remove(SAVED_USERNAME_KEY)
+            .remove(SAVED_AUTHTOKEN_KEY)
+            .commit();
+    }
+
 }
 

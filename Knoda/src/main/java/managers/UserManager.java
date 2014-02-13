@@ -93,6 +93,18 @@ public class UserManager {
         });
     }
 
+    public void signout(final NetworkCallback<User> callback) {
+        Logger.log("signout");
+        networkingManager.signout(new NetworkCallback<User>() {
+            @Override
+            public void completionHandler(User u, ServerError error) {
+                Logger.log("Clear session");
+                sharedPrefManager.clearSession();
+                callback.completionHandler(user, error);
+            }
+        });
+    }
+
     public User getUser() {
         return user;
     }

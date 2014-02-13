@@ -293,6 +293,12 @@ public class MainActivity extends Activity
         }
     }
 
+    public void restart() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void hideSplash() {
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setDuration(1000);

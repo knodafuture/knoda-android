@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -17,7 +18,9 @@ import models.PasswordChangeRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
+import unsorted.Logger;
 import views.core.BaseFragment;
+import views.core.MainActivity;
 
 public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.profile_username_edittext)
@@ -26,7 +29,19 @@ public class MyProfileFragment extends BaseFragment {
     TextView email;
     @InjectView(R.id.profile_view_user_header)
     UserProfileHeaderView header;
+    @InjectView(R.id.button_sign_out)
+    Button signOutButton;
 
+
+    @OnClick(R.id.button_sign_out) void onClickSignOut() {
+        userManager.signout(new NetworkCallback<User>() {
+            @Override
+            public void completionHandler(User u, ServerError error) {
+                Logger.log("Restart Activity");
+                ((MainActivity)getActivity()).restart();
+            }
+        });
+    }
 
     @OnClick(R.id.profile_username_edittext) void onClickUsername() {
         LayoutInflater li = LayoutInflater.from(getActivity().getApplicationContext());
@@ -153,6 +168,8 @@ public class MyProfileFragment extends BaseFragment {
                         updateUser(userManager.getUser());
                         if (error == null)
                             dialog.dismiss();
+                        else
+                            errorReporter.showError(error);
                     }
                 });
             }
@@ -172,6 +189,8 @@ public class MyProfileFragment extends BaseFragment {
                         updateUser(userManager.getUser());
                         if (error == null)
                             dialog.dismiss();
+                        else
+                            errorReporter.showError(error);
                     }
                 });
             }
