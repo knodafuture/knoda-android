@@ -121,6 +121,11 @@ public class PhotoChooserActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.select_picture, menu);
         menu.setHeaderTitle("Select a profile picture");
+        Bundle extras = getIntent().getExtras();
+        if(extras == null || !extras.getBoolean("change_picture"))
+        {
+            menu.findItem(R.id.action_cancel).setVisible(false);
+        }
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
@@ -134,6 +139,9 @@ public class PhotoChooserActivity extends Activity {
                 break;
             case R.id.action_from_gallery:
                 startGallery();
+                break;
+            case R.id.action_cancel:
+                finish();
                 break;
         }
 

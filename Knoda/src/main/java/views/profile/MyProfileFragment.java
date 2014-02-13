@@ -1,6 +1,7 @@
 package views.profile;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import networking.NetworkCallback;
 import unsorted.Logger;
 import views.core.BaseFragment;
 import views.core.MainActivity;
+import views.login.PhotoChooserActivity;
 
 public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.profile_username_edittext)
@@ -31,6 +33,12 @@ public class MyProfileFragment extends BaseFragment {
     UserProfileHeaderView header;
     @InjectView(R.id.button_sign_out)
     Button signOutButton;
+
+    @OnClick(R.id.user_profile_header_avatar) void onClickAvatar() {
+        Intent intent = new Intent(getActivity(), PhotoChooserActivity.class);
+        intent.putExtra("change_picture", true);
+        startActivity(intent);
+    }
 
 
     @OnClick(R.id.button_sign_out) void onClickSignOut() {
@@ -121,6 +129,18 @@ public class MyProfileFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         final User user = userManager.getUser();
         updateUser(user);
+    }
+
+    @Override
+    public void onResume() {
+        /* Having to refresh the user isn't cool.  Need to make it so that the chooser activity updates the userManager */
+        userManager.refreshUser(new NetworkCallback<User>() {
+            @Override
+            public void completionHandler(User object, ServerError error) {
+                updateUser(userManager.getUser());
+            }
+        });
+        super.onResume();
     }
 
     private void updateUser(User user) {
