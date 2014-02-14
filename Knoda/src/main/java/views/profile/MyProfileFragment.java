@@ -35,6 +35,8 @@ public class MyProfileFragment extends BaseFragment {
     Button signOutButton;
 
     @OnClick(R.id.user_profile_header_avatar) void onClickAvatar() {
+        getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(false);
+        Logger.log("launching photo activity");
         Intent intent = new Intent(getActivity(), PhotoChooserActivity.class);
         intent.putExtra("change_picture", true);
         startActivity(intent);
@@ -133,8 +135,9 @@ public class MyProfileFragment extends BaseFragment {
 
     @Override
     public void onResume() {
-        updateUser(userManager.getUser());
         super.onResume();
+        updateUser(userManager.getUser());
+        getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
     }
 
     private void updateUser(User user) {
