@@ -3,16 +3,16 @@ package unsorted;
 import android.app.AlertDialog;
 
 import models.ServerError;
-import views.core.MainActivity;
+import views.core.BaseActivity;
 
 /**
  * Created by nick on 1/17/14.
  */
 public class ErrorReporter{
 
-    private final MainActivity mActivity;
+    private final BaseActivity mActivity;
 
-    public ErrorReporter(MainActivity activity) {
+    public ErrorReporter(BaseActivity activity) {
         this.mActivity = activity;
     }
 

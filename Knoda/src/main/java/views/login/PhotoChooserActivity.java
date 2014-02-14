@@ -1,6 +1,5 @@
 package views.login;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,23 +23,32 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.knoda.knoda.R;
 
 import org.apache.http.entity.ContentType;
 
 import java.io.File;
 
+import javax.inject.Inject;
+
 import builders.MultipartRequestBuilder;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import unsorted.Logger;
 import managers.NetworkingManager;
+import managers.UserManager;
+import models.User;
 import networking.MultipartRequest;
+import unsorted.Logger;
+import views.core.BaseActivity;
 
-public class PhotoChooserActivity extends Activity {
+public class PhotoChooserActivity extends BaseActivity {
 
     @InjectView(R.id.photo_chooser_imageview) ImageView imageView;
     @InjectView(R.id.photo_chooser_progress_view) FrameLayout progressView;
+
+    @Inject
+    public UserManager userManager;
 
     private boolean madeInitialSelection = false;
 
@@ -198,6 +206,8 @@ public class PhotoChooserActivity extends Activity {
         builder.addListener(new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
+                User u = new Gson().fromJson(s, User.class);
+                userManager.user = u;
                 finish();
             }
         });

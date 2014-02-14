@@ -133,13 +133,7 @@ public class MyProfileFragment extends BaseFragment {
 
     @Override
     public void onResume() {
-        /* Having to refresh the user isn't cool.  Need to make it so that the chooser activity updates the userManager */
-        userManager.refreshUser(new NetworkCallback<User>() {
-            @Override
-            public void completionHandler(User object, ServerError error) {
-                updateUser(userManager.getUser());
-            }
-        });
+        updateUser(userManager.getUser());
         super.onResume();
     }
 
@@ -166,6 +160,8 @@ public class MyProfileFragment extends BaseFragment {
                         public void completionHandler(User u, ServerError error) {
                             if (error == null)
                                 dialog.dismiss();
+                            else
+                                errorReporter.showError(error);
                         }
                     });
                 } else {
@@ -184,11 +180,12 @@ public class MyProfileFragment extends BaseFragment {
                 userManager.updateUser(user, new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
-                        updateUser(u);
-                        if (error == null)
+                        if (error == null) {
+                            updateUser(u);
                             dialog.dismiss();
-                        else
+                        } else {
                             errorReporter.showError(error);
+                        }
                     }
                 });
             }
@@ -204,11 +201,12 @@ public class MyProfileFragment extends BaseFragment {
                 userManager.updateUser(user, new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
-                        updateUser(u);
-                        if (error == null)
+                        if (error == null) {
+                            updateUser(u);
                             dialog.dismiss();
-                        else
+                        } else {
                             errorReporter.showError(error);
+                        }
                     }
                 });
             }

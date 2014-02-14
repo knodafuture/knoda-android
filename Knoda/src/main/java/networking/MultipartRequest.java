@@ -6,10 +6,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +66,14 @@ public class MultipartRequest extends Request<String> {
 
     @Override
     protected Response<String> parseNetworkResponse(NetworkResponse response) {
-        return Response.success("Uploaded", getCacheEntry());
+        StringWriter writer = new StringWriter();
+        InputStream is = new ByteArrayInputStream(response.data);
+        try {
+            IOUtils.copy(is, writer);
+        } catch (IOException e) {
+            Logger.log(e.toString());
+        }
+        return Response.success(writer.toString(), getCacheEntry());
     }
 
     @Override

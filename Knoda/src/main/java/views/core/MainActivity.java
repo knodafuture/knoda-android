@@ -1,7 +1,6 @@
 package views.core;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -20,27 +19,17 @@ import com.google.gson.Gson;
 import com.knoda.knoda.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import models.KnodaScreen;
-import unsorted.Logger;
-import di.ActivityModule;
-import di.KnodaApplication;
-import managers.NetworkingManager;
-import managers.SharedPrefManager;
-import managers.UserManager;
-import networking.NetworkCallback;
-import dagger.ObjectGraph;
 import models.LoginRequest;
 import models.ServerError;
 import models.User;
+import networking.NetworkCallback;
+import unsorted.Logger;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.login.PhotoChooserActivity;
@@ -50,37 +39,22 @@ import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
 
-public class MainActivity extends Activity
+public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
-    private ObjectGraph activityGraph;
 
     private NavigationDrawerFragment navigationDrawerFragment;
 
     private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
     private HashMap<KnodaScreen, Fragment> instanceMap;
 
-    @Inject NetworkingManager networkingManager;
-
-    @Inject UserManager userManager;
-
-    @Inject SharedPrefManager sharedPrefManager;
-
     @InjectView(R.id.splash_screen)
     public FrameLayout splashScreen;
-    @InjectView(R.id.progress_view)
-    public FrameLayout progressView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawableResource(R.color.knodaLightGreen);
-        KnodaApplication application = (KnodaApplication) getApplication();
-        activityGraph = application.getApplicationGraph().plus(getModules().toArray());
-        activityGraph.inject(this);
-        activityGraph.inject(userManager);
-        activityGraph.inject(networkingManager);
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
@@ -112,20 +86,6 @@ public class MainActivity extends Activity
                 }
             });
         }
-    }
-
-    protected List<Object> getModules() {
-        return Arrays.<Object>asList(new ActivityModule(this));
-    }
-
-    public void inject(Object object) {
-        activityGraph.inject(object);
-    }
-
-    @Override protected void onDestroy() {
-        activityGraph = null;
-        System.gc();
-        super.onDestroy();
     }
 
     @Override

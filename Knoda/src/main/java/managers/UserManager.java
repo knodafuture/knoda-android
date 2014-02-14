@@ -19,7 +19,7 @@ import models.User;
 @Singleton
 public class UserManager {
 
-    private User user;
+    public User user;
 
     @Inject NetworkingManager networkingManager;
     @Inject SharedPrefManager sharedPrefManager;

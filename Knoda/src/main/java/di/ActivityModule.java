@@ -10,10 +10,12 @@ import managers.UserManager;
 import unsorted.ErrorReporter;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
+import views.core.BaseActivity;
 import views.core.MainActivity;
 import views.core.Spinner;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
+import views.login.PhotoChooserActivity;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
@@ -32,6 +34,7 @@ import views.search.SearchFragment;
                 UserManager.class,
                 NetworkingManager.class,
                 MainActivity.class,
+                PhotoChooserActivity.class,
                 WelcomeFragment.class,
                 LoginFragment.class,
                 SignUpFragment.class,
@@ -50,9 +53,9 @@ import views.search.SearchFragment;
 )
 public class ActivityModule {
 
-    private final MainActivity mActivity;
+    private final BaseActivity mActivity;
 
-    public ActivityModule(MainActivity activity) {
+    public ActivityModule(BaseActivity activity) {
         this.mActivity = activity;
     }
 

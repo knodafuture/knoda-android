@@ -10,9 +10,9 @@ import android.view.animation.Animation;
 
 public class Spinner {
 
-    private final MainActivity mActivity;
+    private final BaseActivity mActivity;
 
-    public Spinner(MainActivity activity) {
+    public Spinner(BaseActivity activity) {
         this.mActivity = activity;
     }
 

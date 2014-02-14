@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.SignUpRequest;
-import views.core.MainActivity;
+import views.core.BaseActivity;
 
 /**
  * Created by nick on 1/21/14.
@@ -17,13 +17,13 @@ import views.core.MainActivity;
 @Singleton
 public class SharedPrefManager {
 
-    private MainActivity activity;
+    private BaseActivity activity;
 
     private static final String SAVED_USERNAME_KEY = "SAVEDUSERNAME";
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
 
-    public SharedPrefManager(MainActivity activity) {
+    public SharedPrefManager(BaseActivity activity) {
         this.activity = activity;
     }
 
