@@ -32,6 +32,7 @@ import networking.NetworkCallback;
 import unsorted.Logger;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
+import views.badge.BadgeFragment;
 import views.login.PhotoChooserActivity;
 import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
@@ -177,7 +178,8 @@ public class MainActivity extends BaseActivity
         map.put(new KnodaScreen(0, "Home", getResources().getDrawable(R.drawable.side_nav_home_icon)), HomeFragment.class);
         map.put(new KnodaScreen(1, "Activity", getResources().getDrawable(R.drawable.side_nav_activity_icon)), ActivityFragment.class);
         map.put(new KnodaScreen(2, "History", getResources().getDrawable(R.drawable.side_nav_history_icon)), HistoryFragment.class);
-        map.put(new KnodaScreen(3, "Profile", getResources().getDrawable(R.drawable.side_nav_profile_icon)), MyProfileFragment.class);
+        map.put(new KnodaScreen(3, "Badges", getResources().getDrawable(R.drawable.side_nav_badges_icon)), BadgeFragment.class);
+        map.put(new KnodaScreen(4, "Profile", getResources().getDrawable(R.drawable.side_nav_profile_icon)), MyProfileFragment.class);
         return map;
     }
 

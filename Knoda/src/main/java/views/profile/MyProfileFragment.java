@@ -44,6 +44,7 @@ public class MyProfileFragment extends BaseFragment {
 
 
     @OnClick(R.id.button_sign_out) void onClickSignOut() {
+        getActivity().findViewById(R.id.button_sign_out).setEnabled(false);
         userManager.signout(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User u, ServerError error) {

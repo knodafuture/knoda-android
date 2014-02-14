@@ -10,6 +10,7 @@ import managers.UserManager;
 import unsorted.ErrorReporter;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
+import views.badge.BadgeFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
 import views.core.Spinner;
@@ -46,7 +47,8 @@ import views.search.SearchFragment;
                 MyProfileFragment.class,
                 AddPredictionFragment.class,
                 SearchFragment.class,
-                CategoryFragment.class
+                CategoryFragment.class,
+                BadgeFragment.class
         },
         addsTo = KnodaModule.class,
         library = true
