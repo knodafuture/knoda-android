@@ -12,9 +12,6 @@ import com.knoda.knoda.R;
 
 import models.Badge;
 
-/**
- * Created by adamengland on 2/14/14.
- */
 public class BadgeAdapter extends ArrayAdapter<Badge> {
     public ImageLoader imageLoader;
 

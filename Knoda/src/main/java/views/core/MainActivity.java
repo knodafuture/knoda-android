@@ -15,6 +15,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.google.gson.Gson;
 import com.knoda.knoda.R;
 
@@ -24,11 +26,14 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import models.Badge;
 import models.KnodaScreen;
 import models.LoginRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
+import networking.NetworkListCallback;
+import unsorted.BadgesUnseenMonitor;
 import unsorted.Logger;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
@@ -87,6 +92,7 @@ public class MainActivity extends BaseActivity
                 }
             });
         }
+        new ImagePreloader().invoke();
     }
 
     @Override
@@ -261,6 +267,10 @@ public class MainActivity extends BaseActivity
         finish();
     }
 
+    public void checkBadges() {
+        new BadgesUnseenMonitor(this, networkingManager).execute();
+    }
+
     private void hideSplash() {
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setDuration(1000);
@@ -288,12 +298,38 @@ public class MainActivity extends BaseActivity
 
     private void onAddPrediction() {
         AddPredictionFragment fragment = new AddPredictionFragment();
-
         pushFragment(fragment);
     }
 
     private void onSearch() {
         SearchFragment fragment = new SearchFragment();
         pushFragment(fragment);
+    }
+
+    private class ImagePreloader {
+        public void invoke() {
+            networkingManager.getAvailableBadges(new NetworkListCallback<Badge>() {
+                @Override
+                public void completionHandler(ArrayList<Badge> object, ServerError error) {
+                    for (Badge b: object) {
+                        preloadUrl("http://api-cdn.knoda.com/badges/212/" + b.name + ".png");
+                    }
+                }
+            });
+        }
+
+        private void preloadUrl(final String url) {
+            networkingManager.getImageLoader().get(url, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                    Logger.log("PRELOADER# SUCCESS " + url);
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Logger.log("PRELOADER# ERROR " + url);
+                }
+            });
+        }
     }
 }

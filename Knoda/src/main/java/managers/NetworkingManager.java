@@ -241,7 +241,16 @@ public class NetworkingManager {
 
     public void getBadges(final NetworkListCallback<Badge> callback) {
         String url = buildUrl("badges.json", true, null);
-        Logger.log("Badge url: " + url);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getBadgeListTypeToken(), callback);
+    }
+
+    public void getUnseenBadges(final NetworkListCallback<Badge> callback) {
+        String url = buildUrl("badges/recent.json", true, null);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getBadgeListTypeToken(), callback);
+    }
+
+    public void getAvailableBadges(final NetworkListCallback<Badge> callback) {
+        String url = buildUrl("badges/available.json", false, null);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getBadgeListTypeToken(), callback);
     }
 

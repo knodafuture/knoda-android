@@ -15,6 +15,7 @@ import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import unsorted.Logger;
 import views.core.BaseListFragment;
+import views.core.MainActivity;
 
 /**
  * Created by nick on 2/3/14.
@@ -67,6 +68,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 else {
                     cell.prediction.challenge = object;
                     cell.update();
+                    ((MainActivity) getActivity()).checkBadges();
                 }
             }
         });
@@ -84,6 +86,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 } else {
                     cell.prediction.challenge = object;
                     cell.update();
+                    ((MainActivity) getActivity()).checkBadges();
                 }
             }
         });
