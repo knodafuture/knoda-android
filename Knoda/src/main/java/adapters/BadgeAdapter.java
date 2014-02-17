@@ -32,7 +32,7 @@ public class BadgeAdapter extends ArrayAdapter<Badge> {
             gridView = inflater.inflate(R.layout.grid_cell_badges, null);
             NetworkImageView imageView = (NetworkImageView) gridView
                     .findViewById(R.id.image);
-            String imageUrl = "http://knoda-api-cdn.s3.amazonaws.com/badges/212/" + getItem(position).name + ".png";
+            String imageUrl = "http://api-cdn.knoda.com/badges/212/" + getItem(position).name + ".png";
             imageView.setImageUrl(imageUrl, imageLoader);
         } else {
             gridView = (View) convertView;
