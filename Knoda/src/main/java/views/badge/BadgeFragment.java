@@ -4,10 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.knoda.knoda.R;
 
+import java.util.ArrayList;
+
+import adapters.BadgeAdapter;
 import butterknife.ButterKnife;
+import models.Badge;
+import models.ServerError;
+import networking.NetworkListCallback;
 import views.core.BaseFragment;
 
 /**
@@ -30,5 +37,19 @@ public class BadgeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final GridView gridview = (GridView) getActivity().findViewById(R.id.grid);
+        final BadgeAdapter adapter = new BadgeAdapter(getActivity().getApplicationContext());
+        adapter.imageLoader = networkingManager.getImageLoader();
+        gridview.setAdapter(adapter);
+        networkingManager.getBadges(new NetworkListCallback<Badge>() {
+            @Override
+            public void completionHandler(ArrayList<Badge> object, ServerError error) {
+                if (error == null) {
+                    adapter.addAll(object);
+                } else {
+                    errorReporter.showError(error);
+                }
+            }
+        });
     }
 }

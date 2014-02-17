@@ -20,6 +20,7 @@ import javax.inject.Singleton;
 import builders.ParamBuilder;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
+import models.Badge;
 import models.BaseModel;
 import models.Challenge;
 import models.LoginRequest;
@@ -236,6 +237,12 @@ public class NetworkingManager {
     public void changePassword(PasswordChangeRequest passwordChange, final NetworkCallback<User> callback) {
         String url = buildUrl("password.json", true, null);
         executeRequest(Request.Method.PUT, url, passwordChange, User.class, callback);
+    }
+
+    public void getBadges(final NetworkListCallback<Badge> callback) {
+        String url = buildUrl("badges.json", true, null);
+        Logger.log("Badge url: " + url);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getBadgeListTypeToken(), callback);
     }
 
     private Map<String, String> getHeaders() {
