@@ -12,31 +12,37 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.InjectView;
-import butterknife.Optional;
 import dagger.ObjectGraph;
 import di.ActivityModule;
 import di.KnodaApplication;
 import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.UserManager;
+import unsorted.ErrorReporter;
 
 /**
  * Created by adamengland on 2/14/14.
  */
 public class BaseActivity extends Activity {
     private ObjectGraph activityGraph;
-    @Inject
-    NetworkingManager networkingManager;
 
     @Inject
-    UserManager userManager;
+    public NetworkingManager networkingManager;
 
     @Inject
-    SharedPrefManager sharedPrefManager;
+    public UserManager userManager;
 
-    @Optional
+    @Inject
+    public SharedPrefManager sharedPrefManager;
+
     @InjectView(R.id.progress_view)
     public FrameLayout progressView;
+
+    @Inject
+    public Spinner spinner;
+
+    @Inject
+    public ErrorReporter errorReporter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

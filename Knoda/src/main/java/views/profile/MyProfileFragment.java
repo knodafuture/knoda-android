@@ -2,7 +2,10 @@ package views.profile;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,17 +37,18 @@ public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.button_sign_out)
     Button signOutButton;
 
+    private static final int PHOTO_RESULT_CODE = 123123129;
+
     @OnClick(R.id.user_profile_header_avatar) void onClickAvatar() {
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(false);
-        Logger.log("launching photo activity");
         Intent intent = new Intent(getActivity(), PhotoChooserActivity.class);
-        intent.putExtra("change_picture", true);
-        startActivity(intent);
+        intent.putExtra("cancelable", true);
+        startActivityForResult(intent, PHOTO_RESULT_CODE);
     }
 
 
     @OnClick(R.id.button_sign_out) void onClickSignOut() {
-        getActivity().findViewById(R.id.button_sign_out).setEnabled(false);
+        signOutButton.setEnabled(false);
         userManager.signout(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User u, ServerError error) {
@@ -55,7 +59,7 @@ public class MyProfileFragment extends BaseFragment {
     }
 
     @OnClick(R.id.profile_username_edittext) void onClickUsername() {
-        LayoutInflater li = LayoutInflater.from(getActivity().getApplicationContext());
+        LayoutInflater li = getActivity().getLayoutInflater();
         final View changeUsernameView = li.inflate(R.layout.dialog_change_username, null);
         EditText username = (EditText) changeUsernameView.findViewById(R.id.username);
         username.setText("");
@@ -76,7 +80,7 @@ public class MyProfileFragment extends BaseFragment {
     }
 
     @OnClick(R.id.profile_email_edittext) void onClickEmail() {
-        LayoutInflater li = LayoutInflater.from(getActivity().getApplicationContext());
+        LayoutInflater li = getActivity().getLayoutInflater();
         final View changeEmailView = li.inflate(R.layout.dialog_change_email, null);
         EditText email = (EditText) changeEmailView.findViewById(R.id.email);
         email.setText("");
@@ -97,7 +101,7 @@ public class MyProfileFragment extends BaseFragment {
     }
 
     @OnClick(R.id.profile_password_edittext) void onClickPassword() {
-        LayoutInflater li = LayoutInflater.from(getActivity().getApplicationContext());
+        LayoutInflater li = getActivity().getLayoutInflater();
         final View changePasswordView = li.inflate(R.layout.dialog_change_password, null);
         final AlertDialog alert = new AlertDialog.Builder(getActivity())
                 .setPositiveButton("Ok", null)
@@ -137,10 +141,18 @@ public class MyProfileFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateUser(userManager.getUser());
-        getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
+        header.setEnabled(true);
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null)
+            return;
 
+        String avatarPath = data.getExtras().getString(MediaStore.EXTRA_OUTPUT);
+
+        Bitmap bitmap = BitmapFactory.decodeFile(avatarPath);
+        header.avatarImageView.setImageBitmap(bitmap);
+    }
     private void updateUser(User user) {
         getActivity().getActionBar().setTitle(user.username);
         username.setText(user.username);

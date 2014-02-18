@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"/>
 
     <FrameLayout
-        android:id="@+id/photo_chooser_progress_view"
+        android:id="@+id/progress_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:visibility="invisible"

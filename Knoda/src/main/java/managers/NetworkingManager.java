@@ -8,8 +8,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.http.entity.ContentType;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +21,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import builders.MultipartRequestBuilder;
 import builders.ParamBuilder;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
@@ -316,6 +321,31 @@ public class NetworkingManager {
         String url = buildUrl("predictions/" + predictionId + "/history_disagreed.json", true, null);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
+    }
+
+    public void uploadAvatar(final File avatarFile, final NetworkCallback<User> callback) {
+        String url = buildUrl("profile.json", true, null);
+
+        MultipartRequestBuilder builder = MultipartRequestBuilder.create().forUrl(url);
+        builder.addErrorListener(new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
+            }
+        });
+
+        builder.addListener(new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                User u = new Gson().fromJson(s, User.class);
+                callback.completionHandler(u, null);
+            }
+        });
+
+
+        builder.addFilePart("user[avatar]", avatarFile, ContentType.APPLICATION_OCTET_STREAM, "image.jpg");
+
+        mRequestQueue.add(builder.build());
     }
 
     private Map<String, String> getHeaders() {
