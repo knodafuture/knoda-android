@@ -21,6 +21,7 @@ import models.Tag;
 import models.User;
 import networking.NetworkListCallback;
 import views.core.BaseFragment;
+import views.details.DetailsFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 
@@ -119,7 +120,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Tag tag = tagAdapter.getItem(position);
-                CategoryFragment fragment = new CategoryFragment(tag);
+                CategoryFragment fragment = new CategoryFragment(tag.name);
                 pushFragment(fragment);
             }
         });
@@ -149,6 +150,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
 
     @Override
     public void onPredictionSelected(Prediction prediction) {
-
+        DetailsFragment fragment = new DetailsFragment(prediction);
+        pushFragment(fragment);
     }
 }

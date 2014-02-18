@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <views.predictionlists.PredictionListCell
+        android:id="@+id/details_cell_prediction_cell"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        </views.predictionlists.PredictionListCell>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightGray"
+        android:layout_below="@id/details_cell_prediction_cell"/>
+
+    <RelativeLayout
+        android:id="@+id/details_cell_actions_container"
+        android:layout_marginTop="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/details_cell_prediction_cell">
+
+
+        <RelativeLayout
+            android:visibility="invisible"
+            android:id="@+id/details_cell_agree_disagree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/details_cell_agree_disagree_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="What do you think?"
+                android:layout_centerHorizontal="true"/>
+
+            <LinearLayout
+                android:layout_below="@id/details_cell_agree_disagree_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <Button
+                    android:id="@+id/details_cell_agree_button"
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:text="Agree"
+                    android:textColor="@color/white"
+                    android:background="@color/knodaLightGreen"/>
+                <Button
+                    android:id="@+id/details_cell_disagree_button"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="0dp"
+                    android:layout_weight=".5"
+                    android:layout_height="wrap_content"
+                    android:text="Disagree"
+                    android:textColor="@color/white"
+                    android:background="@color/knodaLightGreen"
+                    android:layout_toRightOf="@id/details_cell_agree_button"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="invisible"
+            android:id="@+id/details_cell_settle"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <TextView
+                android:id="@+id/details_cell_settle_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                android:text="Was your prediction correct?"/>
+
+
+
+            <LinearLayout
+                android:layout_below="@id/details_cell_settle_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <Button
+                    android:id="@+id/details_cell_yes_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/knodaLightGreen"
+                    android:textColor="@color/white"
+                    android:layout_weight=".33"
+                    android:text="Yes"/>
+                <Button
+                    android:id="@+id/details_cell_no_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/knodaLightGreen"
+                    android:textColor="@color/white"
+                    android:layout_weight=".33"
+                    android:text="No"
+                    android:layout_marginLeft="2dp"/>
+                <Button
+                    android:id="@+id/details_cell_idk_button"
+                    android:layout_width="0dp"
+                    android:layout_weight=".33"
+                    android:layout_height="wrap_content"
+                    android:background="@color/knodaLightGreen"
+                    android:textColor="@color/white"
+                    android:text="IDK Yet"
+                    android:layout_marginLeft="2dp"/>
+
+
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:visibility="invisible"
+                android:orientation="horizontal"
+                android:id="@+id/details_cell_points"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <RelativeLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/results_outcome_imageview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/results_win_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="40dp"
+                        />
+                    <TextView
+                        android:layout_below="@id/results_outcome_imageview"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:text="You \n Won"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal" />
+                    </RelativeLayout>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/lightGray" />
+
+                <RelativeLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/results_points_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50"
+                        android:textColor="@color/knodaDarkGreen"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="top"
+                        android:layout_marginTop="33dp"
+                        android:textSize="40dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="points"
+                        android:textColor="@color/knodaDarkGreen"
+                        android:layout_below="@id/results_points_textview"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="-10dp"/>
+
+                    </RelativeLayout>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/lightGray" />
+
+                <TextView
+                    android:id="@+id/details_cell_points_breakdown_textview"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="+20 Underdog\n+20 Win\n+10 Market"/>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/lightGray" />
+
+                <RelativeLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Is this right?"
+                        />
+
+                    <Button
+                        android:id="@+id/details_cell_bs_button"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/knodaLightGreen"
+                        android:text="BS"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="40dp"
+                        android:layout_centerHorizontal="true"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+        </RelativeLayout>
+
+
+
+
+
+
+</merge>

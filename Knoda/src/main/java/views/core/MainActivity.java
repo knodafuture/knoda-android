@@ -114,10 +114,12 @@ public class MainActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         if (progressView.getVisibility() == View.VISIBLE)
-            super.onBackPressed();
+            return;
 
         if (getFragmentManager().getBackStackEntryCount() > 1)
             getFragmentManager().popBackStack();
+        else
+            super.onBackPressed();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

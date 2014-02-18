@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import models.ActivityItem;
 import models.Badge;
+import models.Comment;
 import models.Prediction;
 import models.Tag;
 import models.User;
@@ -35,4 +36,7 @@ public class TypeTokenFactory {
         return new TypeToken<ArrayList<Badge>>(){};
     }
 
+    public static TypeToken getCommentListTypeToken() {
+        return new TypeToken<ArrayList<Comment>>(){};
+    }
 }

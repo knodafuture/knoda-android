@@ -36,6 +36,14 @@ public class ParamBuilder {
         return this;
     }
 
+    public ParamBuilder withLastIdGt(Integer lastId) {
+        if (lastId != 0)
+            params.put("id_gt", lastId.toString());
+
+
+        return this;
+    }
+
     public String build() {
 
         String out = "";

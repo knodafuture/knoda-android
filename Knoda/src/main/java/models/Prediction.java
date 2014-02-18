@@ -63,6 +63,9 @@ public class Prediction extends BaseModel {
     @SerializedName("my_points")
     public PredictionPoints points;
 
+    @SerializedName("comment_count")
+    public Integer commentCount;
+
     public String getCreationString() {
         return "made " + DateUtil.getPeriodString(creationDate) + " ago";
     }
@@ -81,5 +84,55 @@ public class Prediction extends BaseModel {
 
     public String getMetdataString() {
         return getExpirationString() + " | " + getCreationString() + " | " + getAgreePercentString() + " | ";
+    }
+
+    public boolean canSetOutcome() {
+        return challenge != null && (isFinished() || passed72HoursSinceExpiration());
+
+    }
+
+    public boolean isFinished() {
+        return challenge.isOwn && resolutionDate.isBeforeNow();
+    }
+
+    public boolean passed72HoursSinceExpiration() {
+        return expirationDate.minusHours(72).isBeforeNow();
+    }
+
+    public String pointsString() {
+
+        String string = "";
+
+        if (points.basePoints > 0)
+            string += "+" + points.basePoints + "Base \\n";
+        if (points.outcomePoints > 0)
+            string += "+" + points.outcomePoints + "Outcome \\n";
+        if (points.marketSizePoints > 0)
+            string += "+" + points.marketSizePoints + "Market \\n";
+        if (points.predictionMarketPoints > 0)
+            string += "+" + points.predictionMarketPoints + marketSizeNameForPoints(points.predictionMarketPoints) + "\\n";
+
+        return string;
+
+    }
+
+    public Integer totalPoints() {
+        if (points == null)
+            return 0;
+
+        return points.predictionMarketPoints + points.basePoints + points.outcomePoints + points.marketSizePoints;
+    }
+
+
+    private String marketSizeNameForPoints(Integer points) {
+        switch (points) {
+            case 0: return "Too Easy";
+            case 10:
+            case 20: return "Favorite";
+            case 30:
+            case 40: return "Underdog";
+            case 50: return "Longshot";
+            default: return "";
+        }
     }
 }

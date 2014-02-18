@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 public class User extends BaseModel {
 
 
+    @SerializedName("user_id")
+    public Integer userId;
     public Integer id;
     public String username;
     public String email;

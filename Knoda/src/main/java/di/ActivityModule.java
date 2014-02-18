@@ -14,6 +14,7 @@ import views.badge.BadgeFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
 import views.core.Spinner;
+import views.details.DetailsFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.login.PhotoChooserActivity;
@@ -48,7 +49,8 @@ import views.search.SearchFragment;
                 AddPredictionFragment.class,
                 SearchFragment.class,
                 CategoryFragment.class,
-                BadgeFragment.class
+                BadgeFragment.class,
+                DetailsFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

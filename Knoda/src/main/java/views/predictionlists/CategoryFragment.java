@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import models.Prediction;
-import models.Tag;
 import networking.NetworkListCallback;
 
 /**
@@ -12,7 +11,7 @@ import networking.NetworkListCallback;
  */
 public class CategoryFragment extends BasePredictionListFragment {
 
-    Tag tag;
+    String tag;
 
     public static CategoryFragment newInstance() {
         CategoryFragment fragment = new CategoryFragment();
@@ -20,7 +19,7 @@ public class CategoryFragment extends BasePredictionListFragment {
     }
     public CategoryFragment() {}
 
-    public CategoryFragment(Tag tag) {
+    public CategoryFragment(String tag) {
         super();
         this.tag = tag;
     }
@@ -29,7 +28,7 @@ public class CategoryFragment extends BasePredictionListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().getActionBar().setTitle(tag.name.toUpperCase());
+        getActivity().getActionBar().setTitle(tag.toUpperCase());
     }
 
     @Override

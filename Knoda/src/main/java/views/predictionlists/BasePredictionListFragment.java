@@ -3,6 +3,7 @@ package views.predictionlists;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import adapters.PagingAdapter;
@@ -16,6 +17,7 @@ import networking.NetworkListCallback;
 import unsorted.Logger;
 import views.core.BaseListFragment;
 import views.core.MainActivity;
+import views.details.DetailsFragment;
 
 /**
  * Created by nick on 2/3/14.
@@ -42,9 +44,19 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     }
 
     @Override
-    public void onListViewCreated(ListView listView1) {
+    public void onListViewCreated(ListView listView) {
         swipeListener = new PredictionSwipeListener(listView, this);
         listView.setOnTouchListener(swipeListener);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Logger.log("Clicked at : " + i);
+                Prediction prediction = (Prediction)adapter.getItem(i-1);
+                DetailsFragment fragment = new DetailsFragment(prediction);
+                pushFragment(fragment);
+            }
+        });
     }
 
 

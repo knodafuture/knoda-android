@@ -23,6 +23,7 @@ import models.ActivityItem;
 import models.Badge;
 import models.BaseModel;
 import models.Challenge;
+import models.Comment;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.PasswordChangeRequest;
@@ -101,11 +102,11 @@ public class NetworkingManager {
         executeRequest(Request.Method.GET, url, null, User.class, callback);
     }
 
-    public void getPredictionsWithTagAfter(final Tag tag, final Integer lastId, final NetworkListCallback<Prediction> callback) {
+    public void getPredictionsWithTagAfter(final String tag, final Integer lastId, final NetworkListCallback<Prediction> callback) {
         ParamBuilder builder = ParamBuilder.create().withPageLimit().add("recent", "true").withLastId(lastId);
 
         if (tag != null)
-            builder.add("tag", tag.name);
+            builder.add("tag", tag);
 
         String url = buildUrl("predictions.json", true, builder);
 
@@ -156,6 +157,47 @@ public class NetworkingManager {
                     getChallengeForPrediction(predictionId, callback);
             }
         });
+    }
+
+    public void sendBS(final Integer predictionId, final NetworkCallback<Prediction> callback) {
+        String url = buildUrl("predictions/" + predictionId + "/bs.json", true, null);
+
+        executeRequest(Request.Method.POST, url, null, Prediction.class, new NetworkCallback<Prediction>() {
+            @Override
+            public void completionHandler(Prediction object, ServerError error) {
+                if (error != null)
+                    callback.completionHandler(object, error);
+                else
+                    getPrediction(predictionId, callback);
+            }
+        });
+    }
+
+    public void sendOutcome(final Integer predictionId, final boolean outcome, final NetworkCallback<Prediction> callback) {
+        String path;
+        if (outcome)
+            path = "predictions/" + predictionId + "/realize.json";
+        else
+            path = "predictions/" + predictionId + "/unrealize.json";
+
+        String url = buildUrl(path, true, null);
+
+        executeRequest(Request.Method.POST, url, null, Prediction.class, new NetworkCallback<Prediction>() {
+            @Override
+            public void completionHandler(Prediction object, ServerError error) {
+                if (error != null)
+                    callback.completionHandler(object, error);
+                else
+                    getPrediction(predictionId, callback);
+            }
+        });
+    }
+
+    public void updatePrediction(final Prediction prediction, final NetworkCallback<Prediction> callback) {
+
+        String url = buildUrl("predictions/" + prediction.id + ".json", true, null);
+
+        executeRequest(Request.Method.PUT, url, prediction, Prediction.class, callback);
     }
 
     public void getActivityItemsAfter(final Integer lastId, NetworkListCallback<ActivityItem> callback) {
@@ -252,6 +294,28 @@ public class NetworkingManager {
     public void getAvailableBadges(final NetworkListCallback<Badge> callback) {
         String url = buildUrl("badges/available.json", false, null);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getBadgeListTypeToken(), callback);
+    }
+
+    public void getCommentsForPredictionWithLastId(Integer predictionId, Integer lastId, NetworkListCallback<Comment> callback) {
+
+        ParamBuilder builder = ParamBuilder.create().withLastIdGt(lastId).add("list", "prediction").add("prediction_id", predictionId.toString()).withPageLimit();
+
+        String url = buildUrl("comments.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getCommentListTypeToken(), callback);
+    }
+
+    public void getAgreedUsers(Integer predictionId, NetworkListCallback<User> callback) {
+
+        String url = buildUrl("predictions/" + predictionId + "/history_agreed.json", true, null);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
+    }
+
+    public void getDisagreedUsers(Integer predictionId, NetworkListCallback<User> callback) {
+        String url = buildUrl("predictions/" + predictionId + "/history_disagreed.json", true, null);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
     }
 
     private Map<String, String> getHeaders() {

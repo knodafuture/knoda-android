@@ -8,33 +8,31 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/prediction_cell_body_view"
-        android:background="@color/white">
+        android:id="@+id/comment_cell_body_view">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lightGray"
-            android:id="@+id/prediction_cell_top_container">
+            android:id="@+id/comment_cell_top_container">
 
             <com.android.volley.toolbox.NetworkImageView
-                android:id="@+id/prediction_cell_avatar_imageview"
+                android:id="@+id/comment_cell_avatar_imageview"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@color/black"/>
             <TextView
-                android:id="@+id/prediction_cell_username_textview"
+                android:id="@+id/comment_cell_username_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/prediction_cell_avatar_imageview"
+                android:layout_toRightOf="@id/comment_cell_avatar_imageview"
                 android:text="test layout text"/>
 
 
             <ImageView
-                android:id="@+id/prediction_cell_vote_image"
+                android:id="@+id/comment_cell_vote_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -47,11 +45,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
-            android:layout_below="@id/prediction_cell_top_container"
-            android:id="@+id/prediction_cell_body_container">
+            android:layout_below="@id/comment_cell_top_container"
+            android:id="@+id/comment_cell_body_container">
 
             <TextView
-                android:id="@+id/prediction_cell_body_textview"
+                android:id="@+id/comment_cell_body_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -59,40 +57,16 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+
+        <TextView style="@style/smallGreenText"
+            android:id="@+id/comment_cell_timestamps_textview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/prediction_cell_body_container"
+            android:layout_below="@id/comment_cell_body_container"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp">
-
-            <TextView style="@style/smallGreenText"
-                android:id="@+id/prediction_cell_timestamps_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:text="test"/>
-
-            <ImageView
-                android:id="@+id/prediction_cell_comment_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/comment_icon"
-                android:layout_toRightOf="@id/prediction_cell_timestamps_textview"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"/>
-
-            <TextView style="@style/smallGreenText"
-                android:id="@+id/prediction_cell_comment_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1000"
-                android:layout_toRightOf="@id/prediction_cell_comment_icon"
-                android:layout_marginLeft="5dp"/>
-            </RelativeLayout>
-
-
+            android:layout_marginTop="5dp"
+            android:text="test"/>
     </RelativeLayout>
 </merge>

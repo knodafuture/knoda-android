@@ -26,6 +26,8 @@ public class PredictionListCell extends RelativeLayout {
     public RelativeLayout usernameView;
     public RelativeLayout bodyView;
 
+    public TextView commentCountTextView;
+
     public Prediction prediction;
 
     public PredictionListCell(Context context) {
@@ -47,6 +49,7 @@ public class PredictionListCell extends RelativeLayout {
         bodyView = (RelativeLayout)findViewById(R.id.prediction_cell_body_view);
         voteImageView = (ImageView)findViewById(R.id.prediction_cell_vote_image);
         usernameView = (RelativeLayout)findViewById(R.id.prediction_cell_top_container);
+        commentCountTextView = (TextView)findViewById(R.id.prediction_cell_comment_textview);
     }
 
 
@@ -67,6 +70,7 @@ public class PredictionListCell extends RelativeLayout {
         usernameTextView.setText(prediction.username);
         timeStampsTextView.setText(prediction.getMetdataString());
 
+        commentCountTextView.setText(prediction.commentCount.toString());
         if (prediction.challenge != null)
             setAgree(prediction.challenge.agree);
     }
