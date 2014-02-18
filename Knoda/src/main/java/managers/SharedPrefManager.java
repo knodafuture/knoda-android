@@ -22,6 +22,8 @@ public class SharedPrefManager {
     private static final String SAVED_USERNAME_KEY = "SAVEDUSERNAME";
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
+    private static final String REG_ID_KEY = "REGISTRATION_ID";
+    private static final String APP_VERSION_KEY = "APPVERSION";
 
     public SharedPrefManager(BaseActivity activity) {
         this.activity = activity;
@@ -43,6 +45,23 @@ public class SharedPrefManager {
         sharedPreferences.edit().putString(SAVED_USERNAME_KEY, response.email).commit();
         sharedPreferences.edit().putString(SAVED_PASSWORD_KEY, request.password).commit();
         sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, response.authToken).commit();
+    }
+
+    public void saveGcm(String regId, int appVersion) {
+        final SharedPreferences prefs = getSP();
+        //int appVersion = getAppVersion(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(REG_ID_KEY, regId);
+        editor.putInt(APP_VERSION_KEY, appVersion);
+        editor.commit();
+    }
+
+    public String getGcmRegId() {
+        return getSP().getString(REG_ID_KEY, "");
+    }
+
+    public int getGcmAppVersion() {
+        return getSP().getInt(APP_VERSION_KEY, Integer.MIN_VALUE);
     }
 
     public LoginRequest getSavedLoginRequest() {

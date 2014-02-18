@@ -25,6 +25,7 @@ import builders.MultipartRequestBuilder;
 import builders.ParamBuilder;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
+import models.AndroidDeviceToken;
 import models.Badge;
 import models.BaseModel;
 import models.Challenge;
@@ -348,6 +349,16 @@ public class NetworkingManager {
         mRequestQueue.add(builder.build());
     }
 
+    public void sendDeviceToken(final AndroidDeviceToken token, final NetworkCallback<AndroidDeviceToken> callback) {
+        String url = buildUrl("android_device_tokens.json", true, null);
+        executeRequest(Request.Method.POST, url, token, AndroidDeviceToken.class, new NetworkCallback<AndroidDeviceToken>() {
+            @Override
+            public void completionHandler(AndroidDeviceToken object, ServerError error) {
+                callback.completionHandler(object, error);
+            }
+        });
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
@@ -436,6 +447,5 @@ public class NetworkingManager {
             request.setPayload(payload);
 
         mRequestQueue.add(request);
-
     }
 }

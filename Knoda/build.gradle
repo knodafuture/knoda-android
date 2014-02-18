@@ -39,6 +39,7 @@ android {
 dependencies {
     compile project(':libraries:CropImage')
     compile project(':libraries:PullToRefresh')
+    compile 'com.google.android.gms:play-services:3.1.+'
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.knoda:volley:1.0.0'
