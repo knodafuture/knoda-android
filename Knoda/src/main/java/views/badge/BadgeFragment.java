@@ -11,7 +11,6 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 
 import adapters.BadgeAdapter;
-import butterknife.ButterKnife;
 import models.Badge;
 import models.ServerError;
 import networking.NetworkListCallback;
@@ -30,7 +29,6 @@ public class BadgeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_badge, container, false);
-        ButterKnife.inject(this, view);
         return view;
     }
 
@@ -38,8 +36,7 @@ public class BadgeFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final GridView gridview = (GridView) getActivity().findViewById(R.id.grid);
-        final BadgeAdapter adapter = new BadgeAdapter(getActivity().getApplicationContext());
-        adapter.imageLoader = networkingManager.getImageLoader();
+        final BadgeAdapter adapter = new BadgeAdapter(getActivity(), networkingManager.getImageLoader());
         gridview.setAdapter(adapter);
         networkingManager.getBadges(new NetworkListCallback<Badge>() {
             @Override

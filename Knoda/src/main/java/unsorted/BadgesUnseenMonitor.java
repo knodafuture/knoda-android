@@ -34,11 +34,10 @@ public class BadgesUnseenMonitor {
             @Override
             public void completionHandler(ArrayList<Badge> object, ServerError error) {
                 if (object.size() > 0) {
-                    LayoutInflater li = LayoutInflater.from(activity.getApplicationContext());
+                    LayoutInflater li = activity.getLayoutInflater();
                     final View unseenBadgeView = li.inflate(R.layout.view_unseen_badge, null);
                     NetworkImageView imageView = (NetworkImageView) unseenBadgeView.findViewById(R.id.badge_image);
-                    String imageUrl = "http://api-cdn.knoda.com/badges/212/" + object.get(0).name + ".png";
-                    imageView.setImageUrl(imageUrl, imageLoader);
+                    imageView.setImageUrl(object.get(0).url, imageLoader);
                     final AlertDialog alert = new AlertDialog.Builder(activity)
                             .setNegativeButton("Thanks", null)
                             .setView(unseenBadgeView)

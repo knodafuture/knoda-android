@@ -5,4 +5,6 @@ package models;
  */
 public class Badge extends BaseModel {
     public String name;
+
+    public String url;
 }

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
@@ -15,6 +16,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.ISODateTimeFormat;
 
 import java.lang.reflect.Type;
+
+import models.Badge;
 
 /**
  * Created by nick on 1/30/14.
@@ -40,10 +43,23 @@ public class GsonF {
         }
     }
 
+    private final static class BadgeDeserializer implements JsonDeserializer<Badge> {
+        @Override
+        public Badge deserialize(final JsonElement je, final Type type, final JsonDeserializationContext jdc) throws JsonParseException {
+
+            JsonObject obj = (JsonObject)je;
+
+            Badge badge = new Badge();
+            badge.name = obj.get("name").getAsString();
+            badge.url = "http://api-cdn.knoda.com/badges/212/" + badge.name + ".png";
+            return badge;
+        }
+    }
+
     private static GsonBuilder builder;
 
     static {
-        builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeDeserializer());
+        builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeDeserializer()).registerTypeAdapter(Badge.class, new BadgeDeserializer());
     }
 
 

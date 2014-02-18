@@ -13,27 +13,26 @@ import com.knoda.knoda.R;
 import models.Badge;
 
 public class BadgeAdapter extends ArrayAdapter<Badge> {
-    public ImageLoader imageLoader;
+    private ImageLoader imageLoader;
 
-    public BadgeAdapter(Context context) {
+    public BadgeAdapter(Context context, ImageLoader imageLoader) {
         super(context, 0);
+        this.imageLoader = imageLoader;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View gridView;
 
-        if (convertView == null) {
-            gridView = new View(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+
+        View gridView = convertView;
+
+        if (convertView == null)
             gridView = inflater.inflate(R.layout.grid_cell_badges, null);
-            NetworkImageView imageView = (NetworkImageView) gridView
-                    .findViewById(R.id.image);
-            String imageUrl = "http://api-cdn.knoda.com/badges/212/" + getItem(position).name + ".png";
-            imageView.setImageUrl(imageUrl, imageLoader);
-        } else {
-            gridView = (View) convertView;
-        }
+
+            NetworkImageView imageView = (NetworkImageView) gridView.findViewById(R.id.image);
+            imageView.setImageUrl(getItem(position).url, imageLoader);
+
         return gridView;
     }
 }
