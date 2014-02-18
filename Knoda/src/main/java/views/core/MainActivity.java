@@ -30,6 +30,7 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import managers.GcmManager;
 import models.KnodaScreen;
 import models.LoginRequest;
 import models.ServerError;

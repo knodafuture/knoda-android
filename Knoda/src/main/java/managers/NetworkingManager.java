@@ -63,7 +63,7 @@ public class NetworkingManager {
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 25;
-    public static String baseUrl = "http://api-test.knoda.com/api/";
+    public static String baseUrl = "http://api-dev.knoda.com/api/";
 
     private ImageLoader imageLoader;
 

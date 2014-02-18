@@ -1,4 +1,4 @@
-package views.core;
+package managers;
 
 import android.os.AsyncTask;
 import android.util.Log;
