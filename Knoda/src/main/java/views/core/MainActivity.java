@@ -4,9 +4,13 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +19,9 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.google.gson.Gson;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.knoda.knoda.R;
 
 import java.util.ArrayList;
@@ -26,15 +30,13 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import models.Badge;
+import managers.GcmManager;
 import models.KnodaScreen;
 import models.LoginRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
-import networking.NetworkListCallback;
 import unsorted.BadgesUnseenMonitor;
-import unsorted.Logger;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.badge.BadgeFragment;
@@ -48,6 +50,7 @@ import views.search.SearchFragment;
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private GcmManager gcmManager;
     private NavigationDrawerFragment navigationDrawerFragment;
 
     private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
@@ -55,6 +58,9 @@ public class MainActivity extends BaseActivity
 
     @InjectView(R.id.splash_screen)
     public FrameLayout splashScreen;
+
+    GoogleCloudMessaging gcm;
+
 
 
     @Override
@@ -92,7 +98,7 @@ public class MainActivity extends BaseActivity
                 }
             });
         }
-        new ImagePreloader().invoke();
+        new ImagePreloader(networkingManager).invoke();
     }
 
     @Override
@@ -247,8 +253,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void doLogin() {
-
-        Logger.log(new Gson().toJson(userManager.getUser()));
+        registerGcm();
         navigationDrawerFragment.setDrawerToggleEnabled(true);
         navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
@@ -260,6 +265,18 @@ public class MainActivity extends BaseActivity
         if (userManager.getUser().avatar == null) {
             Intent intent = new Intent(this, PhotoChooserActivity.class);
             startActivity(intent);
+        }
+    }
+
+    private void registerGcm() {
+        if (checkPlayServices()) {
+            gcmManager = new GcmManager(networkingManager, sharedPrefManager, GoogleCloudMessaging.getInstance(this));
+            String regId = gcmManager.getRegistrationId(getAppVersion(getApplicationContext()));
+            if (regId.isEmpty()) {
+                gcmManager.registerInBackground(getAppVersion(getApplicationContext()));
+            }
+        } else {
+            Log.i("MainActivity", "No valid Google Play Services APK found.");
         }
     }
 
@@ -308,30 +325,28 @@ public class MainActivity extends BaseActivity
         pushFragment(fragment);
     }
 
-    private class ImagePreloader {
-        public void invoke() {
-            networkingManager.getAvailableBadges(new NetworkListCallback<Badge>() {
-                @Override
-                public void completionHandler(ArrayList<Badge> object, ServerError error) {
-                    for (Badge b: object) {
-                        preloadUrl("http://api-cdn.knoda.com/badges/212/" + b.name + ".png");
-                    }
-                }
-            });
-        }
 
-        private void preloadUrl(final String url) {
-            networkingManager.getImageLoader().get(url, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
-                    Logger.log("PRELOADER# SUCCESS " + url);
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    Logger.log("PRELOADER# ERROR " + url);
-                }
-            });
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (NameNotFoundException e) {
+            throw new RuntimeException("Could not get package name: " + e);
         }
+    }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        9000).show();
+            } else {
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }

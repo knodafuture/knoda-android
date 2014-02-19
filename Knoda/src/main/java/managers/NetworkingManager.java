@@ -25,6 +25,7 @@ import builders.MultipartRequestBuilder;
 import builders.ParamBuilder;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
+import models.AndroidDeviceToken;
 import models.Badge;
 import models.BaseModel;
 import models.Challenge;
@@ -62,7 +63,7 @@ public class NetworkingManager {
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 25;
-    public static String baseUrl = "http://api-test.knoda.com/api/";
+    public static String baseUrl = "http://api-dev.knoda.com/api/";
 
     private ImageLoader imageLoader;
 
@@ -357,6 +358,16 @@ public class NetworkingManager {
         mRequestQueue.add(builder.build());
     }
 
+    public void sendDeviceToken(final AndroidDeviceToken token, final NetworkCallback<AndroidDeviceToken> callback) {
+        String url = buildUrl("android_device_tokens.json", true, null);
+        executeRequest(Request.Method.POST, url, token, AndroidDeviceToken.class, new NetworkCallback<AndroidDeviceToken>() {
+            @Override
+            public void completionHandler(AndroidDeviceToken object, ServerError error) {
+                callback.completionHandler(object, error);
+            }
+        });
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
@@ -445,6 +456,5 @@ public class NetworkingManager {
             request.setPayload(payload);
 
         mRequestQueue.add(request);
-
     }
 }
