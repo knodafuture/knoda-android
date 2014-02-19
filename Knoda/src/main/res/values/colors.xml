@@ -9,4 +9,5 @@
     <color name="transparentBlack">#88000000</color>
     <color name="sideNavBlack">#222222</color>
     <color name="lightGray">#EFEFEF</color>
+    <color name="red">#FE3232</color>
 </resources>

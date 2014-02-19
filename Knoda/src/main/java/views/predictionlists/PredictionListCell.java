@@ -27,7 +27,7 @@ public class PredictionListCell extends RelativeLayout {
     public RelativeLayout bodyView;
 
     public TextView commentCountTextView;
-
+    public TextView resultTextView;
     public Prediction prediction;
 
     public PredictionListCell(Context context) {
@@ -50,9 +50,8 @@ public class PredictionListCell extends RelativeLayout {
         voteImageView = (ImageView)findViewById(R.id.prediction_cell_vote_image);
         usernameView = (RelativeLayout)findViewById(R.id.prediction_cell_top_container);
         commentCountTextView = (TextView)findViewById(R.id.prediction_cell_comment_textview);
+        resultTextView = (TextView)findViewById(R.id.prediction_cell_result_textview);
     }
-
-
 
     public void setAgree(boolean agree) {
         int resId = agree? R.drawable.agree_marker : R.drawable.disagree_marker;
@@ -73,6 +72,43 @@ public class PredictionListCell extends RelativeLayout {
         commentCountTextView.setText(prediction.commentCount.toString());
         if (prediction.challenge != null)
             setAgree(prediction.challenge.agree);
+
+        updateVoteImage();
+    }
+
+
+    private void updateVoteImage() {
+
+        if (prediction.isReadyForResolution && (prediction.challenge != null && prediction.challenge.isOwn) && !prediction.settled)
+            voteImageView.setImageResource(R.drawable.prediction_alert_icon);
+        else
+            voteImageView.setImageResource(getVoteImage());
+
+        if (prediction.challenge == null || !prediction.settled) {
+            resultTextView.setText("");
+            return;
+        }
+
+        if (prediction.challenge.agree && prediction.outcome) {
+            resultTextView.setText("W");
+            resultTextView.setTextColor(getResources().getColor(R.color.knodaLightGreen));
+        } else {
+            resultTextView.setText("L");
+            resultTextView.setTextColor(getResources().getColor(R.color.red));
+
+        }
+    }
+
+    private int getVoteImage() {
+        if (prediction.challenge == null)
+            return 0;
+
+        if (prediction.challenge.agree)
+            return R.drawable.agree_marker;
+        else if (!prediction.challenge.agree)
+            return R.drawable.disagree_marker;
+
+        return 0;
     }
 
 }
