@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,7 +23,15 @@ import com.knoda.knoda.R;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import adapters.NavigationAdapter;
+import managers.NetworkingManager;
+import managers.UserManager;
+import models.ActivityItem;
 import models.KnodaScreen;
+import models.ServerError;
+import networking.NetworkListCallback;
 
 ;
 
@@ -33,9 +42,7 @@ import models.KnodaScreen;
  */
 public class NavigationDrawerFragment extends Fragment {
 
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final int activityRefreshInterval = 3000;
 
     private NavigationDrawerCallbacks mCallbacks;
 
@@ -49,12 +56,29 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ArrayList<KnodaScreen> screens;
 
+    @Inject
+    NetworkingManager networkingManager;
+
+    @Inject
+    UserManager userManager;
+
+    NavigationAdapter adapter;
+
+    private Handler handler = new Handler();
+    private Runnable activityRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshActivity();
+        }
+    };
+
     public NavigationDrawerFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MainActivity) getActivity()).inject(this);
     }
 
     @Override
@@ -224,6 +248,22 @@ public class NavigationDrawerFragment extends Fragment {
 
     public void setScreens(ArrayList<KnodaScreen> screens) {
         this.screens = screens;
-        mDrawerListView.setAdapter(new NavigationAdapter(getActivity().getLayoutInflater(), screens));
+        adapter = new NavigationAdapter(getActivity(), screens);
+        mDrawerListView.setAdapter(adapter);
+        refreshActivity();
+    }
+
+    public void refreshActivity() {
+        networkingManager.getUnseenActivityItems(new NetworkListCallback<ActivityItem>() {
+            @Override
+            public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
+                if (error != null || object == null)
+                    adapter.setAlertsCount(0);
+                else
+                    adapter.setAlertsCount(object.size());
+
+            handler.postDelayed(activityRefreshRunnable, activityRefreshInterval);
+            }
+        });
     }
 }

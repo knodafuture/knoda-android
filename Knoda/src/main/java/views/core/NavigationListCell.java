@@ -19,6 +19,7 @@ public class NavigationListCell extends RelativeLayout implements Checkable {
     public ImageView iconImageView;
     public TextView labelTextView;
     public ImageView selectedBackgroundView;
+    public TextView rightTextView;
 
     public NavigationListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -29,6 +30,7 @@ public class NavigationListCell extends RelativeLayout implements Checkable {
         iconImageView = (ImageView) findViewById(R.id.navigation_list_icon);
         labelTextView = (TextView) findViewById(R.id.navigation_list_text);
         selectedBackgroundView = (ImageView) findViewById(R.id.navigation_list_selected_background);
+        rightTextView = (TextView)findViewById(R.id.navigation_list_right_textview);
     }
 
     public boolean isChecked() {

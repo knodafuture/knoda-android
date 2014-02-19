@@ -215,6 +215,15 @@ public class NetworkingManager {
 
     }
 
+    public void getUnseenActivityItems(final NetworkListCallback<ActivityItem> callback) {
+
+        ParamBuilder builder = ParamBuilder.create().add("list","unseen");
+
+        String url = buildUrl("activityfeed.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getActivityItemTypeToken(), callback);
+    }
+
     public void getHistoryAfter(final Integer lastId, NetworkListCallback<Prediction> callback) {
 
         ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit().add("challenged", "true");

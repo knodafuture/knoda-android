@@ -1,5 +1,6 @@
-package views.core;
+package adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,32 +11,40 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 
 import models.KnodaScreen;
+import views.core.NavigationListCell;
 
 /**
  * Created by nick on 1/27/14.
  */
 public class NavigationAdapter extends BaseAdapter {
 
-    private final LayoutInflater inflater;
+    private final Context context;
     private ArrayList<KnodaScreen> screens;
 
-    public NavigationAdapter(LayoutInflater inflater, ArrayList<KnodaScreen> screens) {
-        this.inflater = inflater;
+    private Integer alertsCount = 0;
+
+    public NavigationAdapter(Context context, ArrayList<KnodaScreen> screens) {
+        this.context = context;
         this.screens = screens;
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         NavigationListCell listItem = (NavigationListCell) convertView;
         if (listItem == null)
-            listItem = (NavigationListCell) inflater.inflate(R.layout.list_cell_navigation, null);
+            listItem = (NavigationListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_navigation, null);
 
         KnodaScreen screen = getItem(position);
 
         listItem.labelTextView.setText(screen.displayName);
         listItem.iconImageView.setImageDrawable(screen.drawable);
+
+        if (position == 1 && alertsCount > 0) {
+            listItem.rightTextView.setVisibility(View.VISIBLE);
+            listItem.rightTextView.setText(alertsCount.toString());
+        } else
+            listItem.rightTextView.setVisibility(View.INVISIBLE);
 
         return listItem;
     }
@@ -53,5 +62,11 @@ public class NavigationAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+
+    public void setAlertsCount(Integer alertCount) {
+        this.alertsCount = alertCount;
+        notifyDataSetChanged();
     }
 }

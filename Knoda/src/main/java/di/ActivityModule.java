@@ -13,6 +13,7 @@ import views.addprediction.AddPredictionFragment;
 import views.badge.BadgeFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
+import views.core.NavigationDrawerFragment;
 import views.core.Spinner;
 import views.details.DetailsFragment;
 import views.login.ForgotPasswordFragment;
@@ -50,7 +51,8 @@ import views.search.SearchFragment;
                 SearchFragment.class,
                 CategoryFragment.class,
                 BadgeFragment.class,
-                DetailsFragment.class
+                DetailsFragment.class,
+                NavigationDrawerFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

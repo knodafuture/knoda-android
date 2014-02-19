@@ -29,4 +29,14 @@
         android:layout_centerVertical="true"
         android:paddingLeft="10dp"/>
 
+    <TextView
+        android:id="@+id/navigation_list_right_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:text="!"
+        android:layout_marginRight="10dp"/>
+
 </views.core.NavigationListCell>

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 /**
  * Created by nick on 1/13/14.
  */
+
 public class KnodaScreen implements Comparable<KnodaScreen>{
 
     public Integer order;
