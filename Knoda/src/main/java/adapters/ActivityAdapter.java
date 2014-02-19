@@ -1,5 +1,6 @@
 package adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,8 @@ import views.activity.ActivityListCell;
  */
 public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
-    public ActivityAdapter(LayoutInflater inflater, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader) {
-        super(inflater, datasource, imageLoader);
+    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader) {
+        super(context, datasource, imageLoader);
     }
 
     @Override
@@ -28,7 +29,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
         ActivityListCell listItem = (ActivityListCell) AdapterHelper.getConvertViewSafely(convertView, ActivityListCell.class);
         if (listItem == null)
-            listItem = (ActivityListCell) inflater.inflate(R.layout.list_cell_activity, null);
+            listItem = (ActivityListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_activity, null);
 
         ActivityItem item = getItem(position);
 

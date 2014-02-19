@@ -1,5 +1,6 @@
 package adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,8 @@ import models.Tag;
  */
 public class TagAdapter extends PagingAdapter<Tag> {
 
-    public TagAdapter(LayoutInflater inflater, PagingAdapterDatasource<Tag> datasource, ImageLoader imageLoader) {
-        super(inflater, datasource, imageLoader);
-        this.inflater = inflater;
+    public TagAdapter(Context context, PagingAdapterDatasource<Tag> datasource, ImageLoader imageLoader) {
+        super(context, datasource, imageLoader);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class TagAdapter extends PagingAdapter<Tag> {
         if (position >= objects.size())
             return super.getView(position, convertView, parent);
 
-        View view = inflater.inflate(R.layout.list_cell_tags, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_cell_tags, null);
 
         ((TextView)view.findViewById(R.id.tag_list_cell_textview)).setText(getItem(position).name);
 

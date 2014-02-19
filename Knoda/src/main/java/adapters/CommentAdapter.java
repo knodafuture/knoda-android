@@ -1,6 +1,6 @@
 package adapters;
 
-import android.view.LayoutInflater;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,8 +21,8 @@ public class CommentAdapter extends DetailsAdapter<Comment> {
         void onUserClicked(Integer userId);
     }
 
-    public CommentAdapter(LayoutInflater inflater, PagingAdapterDatasource<Comment> datasource, CommentAdapterDelegate delegate, ImageLoader imageLoader) {
-        super(inflater, datasource, imageLoader);
+    public CommentAdapter(Context context, PagingAdapterDatasource<Comment> datasource, CommentAdapterDelegate delegate, ImageLoader imageLoader) {
+        super(context, datasource, imageLoader);
         this.delegate = delegate;
     }
 
@@ -37,7 +37,7 @@ public class CommentAdapter extends DetailsAdapter<Comment> {
         CommentCell listItem = (CommentCell) AdapterHelper.getConvertViewSafely(convertView, CommentCell.class);
 
         if (listItem == null)
-            listItem = new CommentCell(inflater.getContext());
+            listItem = new CommentCell(context);
 
         final Comment comment = getItem(position);
 

@@ -1,6 +1,6 @@
 package adapters;
 
-import android.view.LayoutInflater;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,8 +32,8 @@ public class TallyAdapter extends DetailsAdapter<User> {
         void onUserClicked(User user);
     }
 
-    public TallyAdapter(LayoutInflater inflater, TallyAdapterDatasource datasource, TallyAdapterDelegate delegate) {
-        super(inflater, null, null);
+    public TallyAdapter(Context context, TallyAdapterDatasource datasource, TallyAdapterDelegate delegate) {
+        super(context, null, null);
         this.tallyDatasource = datasource;
         this.delegate = delegate;
     }
@@ -96,7 +96,7 @@ public class TallyAdapter extends DetailsAdapter<User> {
             return super.getView(position, convertView, parent);
 
         if (position == 0) {
-            TallyHeaderCell header = new TallyHeaderCell(inflater.getContext());
+            TallyHeaderCell header = new TallyHeaderCell(context);
             header.agreedTextView.setText("Agreed " + agreedUsers.size());
             header.disagreedTextView.setText("Disagreed " + disagreedUsers.size());
             return header;
@@ -110,7 +110,7 @@ public class TallyAdapter extends DetailsAdapter<User> {
         TallyCell listItem = (TallyCell)AdapterHelper.getConvertViewSafely(convertView, TallyCell.class);
 
         if (listItem == null)
-            listItem = new TallyCell(inflater.getContext());
+            listItem = new TallyCell(context);
 
         if (agreeduser != null) {
             listItem.leftTextView.setText(agreeduser.username);

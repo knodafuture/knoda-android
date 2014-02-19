@@ -46,7 +46,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
 
     @Override
     public PagingAdapter getAdapter() {
-        return new AnotherUsersProfileAdapter(getActivity().getLayoutInflater(), this, networkingManager.getImageLoader());
+        return new AnotherUsersProfileAdapter(getActivity(), this, networkingManager.getImageLoader());
     }
 
     @Override

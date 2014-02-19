@@ -1,6 +1,6 @@
 package adapters;
 
-import android.view.LayoutInflater;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,8 +19,8 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
 
     public User user;
 
-    public AnotherUsersProfileAdapter(LayoutInflater inflater, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
-        super(inflater, datasource, imageLoader);
+    public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
+        super(context, datasource, imageLoader);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
         UserProfileHeaderView header = (UserProfileHeaderView) AdapterHelper.getConvertViewSafely(convertView, UserProfileHeaderView.class);
 
         if (header == null)
-            header = new UserProfileHeaderView(inflater.getContext());
+            header = new UserProfileHeaderView(context);
 
         header.pointsTextView.setText(user.points.toString());
 

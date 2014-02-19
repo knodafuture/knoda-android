@@ -1,5 +1,6 @@
 package adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,9 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 
 import managers.NetworkingManager;
-import networking.NetworkListCallback;
 import models.BaseModel;
 import models.ServerError;
+import networking.NetworkListCallback;
 
 /**
  * Created by nick on 2/1/14.
@@ -24,8 +25,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
     protected ArrayList<T> objects = new ArrayList<T>();
     protected PagingAdapterDatasource datasource;
     protected PagingAdapaterPageLoadFinishListener onLoadFinished;
-
-    public LayoutInflater inflater;
+    protected Context context;
     public ImageLoader imageLoader;
 
     public Integer currentPage;
@@ -39,11 +39,11 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         void adapterFinishedLoadingPage(int page);
     }
 
-    public PagingAdapter(LayoutInflater inflater, PagingAdapterDatasource datasource, ImageLoader imageLoader) {
-        this.inflater = inflater;
+    public PagingAdapter(Context context, PagingAdapterDatasource datasource, ImageLoader imageLoader) {
         this.datasource = datasource;
         this.imageLoader = imageLoader;
         this.currentPage = 0;
+        this.context = context;
     }
 
     public void setLoadFinishedListener(PagingAdapaterPageLoadFinishListener<T> onLoadFinished) {
@@ -77,7 +77,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View view = inflater.inflate(R.layout.list_cell_loading, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_cell_loading, null);
         return view;
     }
 

@@ -1,6 +1,6 @@
 package adapters;
 
-import android.view.LayoutInflater;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,8 +15,8 @@ import views.predictionlists.PredictionListCell;
  */
 public class PredictionAdapter extends PagingAdapter<Prediction> {
 
-    public PredictionAdapter(LayoutInflater inflater, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
-        super(inflater, datasource, imageLoader);
+    public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
+        super(context, datasource, imageLoader);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
 
         PredictionListCell listItem = (PredictionListCell) AdapterHelper.getConvertViewSafely(convertView, PredictionListCell.class);
         if (listItem == null)
-            listItem = new PredictionListCell(inflater.getContext());
+            listItem = new PredictionListCell(context);
 
         Prediction prediction = getItem(position);
 

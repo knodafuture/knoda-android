@@ -1,5 +1,6 @@
 package adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class SearchAdapter extends BaseAdapter {
         void onPredictionSelected(Prediction prediciton);
     }
 
-    private LayoutInflater inflater;
+    private Context context;
     private ImageLoader imageLoader;
     private SearchAdapterDatasource datasource;
     private SearchAdapterCallbacks callbacks;
@@ -49,8 +50,8 @@ public class SearchAdapter extends BaseAdapter {
 
     private String searchTerm;
 
-    public SearchAdapter(LayoutInflater inflater, SearchAdapterDatasource datasource, SearchAdapterCallbacks callbacks, ImageLoader imageLoader) {
-        this.inflater = inflater;
+    public SearchAdapter(Context context, SearchAdapterDatasource datasource, SearchAdapterCallbacks callbacks, ImageLoader imageLoader) {
+        this.context = context;
         this.imageLoader = imageLoader;
         this.datasource = datasource;
         this.callbacks = callbacks;
@@ -84,7 +85,7 @@ public class SearchAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (loading)
-            return inflater.inflate(R.layout.list_cell_loading, null);
+            return LayoutInflater.from(context).inflate(R.layout.list_cell_loading, null);
 
 
         ItemEntry entry = getItem(position);
@@ -104,7 +105,7 @@ public class SearchAdapter extends BaseAdapter {
     }
 
     private View getPredictionView(Prediction prediction) {
-        PredictionListCell view = new PredictionListCell(inflater.getContext());
+        PredictionListCell view = new PredictionListCell(context);
         view.setPrediction(prediction);
 
         if (prediction.userAvatar != null)
@@ -114,7 +115,7 @@ public class SearchAdapter extends BaseAdapter {
     }
 
     private View getUserView(User user) {
-        SearchUserCell view = new SearchUserCell(inflater.getContext());
+        SearchUserCell view = new SearchUserCell(context);
         view.textView.setText(user.username);
 
         if (user.avatar != null)
@@ -123,7 +124,7 @@ public class SearchAdapter extends BaseAdapter {
     }
 
     private View getTextCell(String text) {
-        View view = inflater.inflate(R.layout.list_cell_search_section, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_cell_search_section, null);
         TextView textView = (TextView)view.findViewById(R.id.cell_search_header_textview);
 
         textView.setText(text);

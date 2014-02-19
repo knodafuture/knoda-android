@@ -61,8 +61,8 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public void onListViewCreated(ListView listView) {
-        commentAdapter = new CommentAdapter(getActivity().getLayoutInflater(), this, this, networkingManager.getImageLoader());
-        tallyAdapter = new TallyAdapter(getActivity().getLayoutInflater(), this, this);
+        commentAdapter = new CommentAdapter(getActivity(), this, this, networkingManager.getImageLoader());
+        tallyAdapter = new TallyAdapter(getActivity(), this, this);
 
         headerview = new DetailsHeaderView(getActivity());
         headerview.setPrediction(prediction);

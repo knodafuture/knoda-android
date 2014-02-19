@@ -24,7 +24,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
 
     @Override
     public PagingAdapter getAdapter() {
-        return new ActivityAdapter(getActivity().getLayoutInflater(), this, networkingManager.getImageLoader());
+        return new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader());
     }
 
 

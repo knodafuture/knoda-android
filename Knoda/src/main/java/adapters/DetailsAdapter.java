@@ -1,6 +1,6 @@
 package adapters;
 
-import android.view.LayoutInflater;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,8 +18,8 @@ public class DetailsAdapter<T extends BaseModel> extends PagingAdapter<T> {
     private DetailsHeaderView headerView;
     private DetailsActionbar actionBar;
 
-    public DetailsAdapter(LayoutInflater inflater, PagingAdapterDatasource datasource, ImageLoader imageLoader) {
-        super(inflater, datasource, imageLoader);
+    public DetailsAdapter(Context context, PagingAdapterDatasource datasource, ImageLoader imageLoader) {
+        super(context, datasource, imageLoader);
     }
 
     public void setHeader(DetailsHeaderView headerView) {
