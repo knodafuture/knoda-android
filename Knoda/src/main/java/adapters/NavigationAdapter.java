@@ -11,6 +11,7 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 
 import models.KnodaScreen;
+import models.User;
 import views.core.NavigationListCell;
 
 /**
@@ -22,6 +23,7 @@ public class NavigationAdapter extends BaseAdapter {
     private ArrayList<KnodaScreen> screens;
 
     private Integer alertsCount = 0;
+    private User user;
 
     public NavigationAdapter(Context context, ArrayList<KnodaScreen> screens) {
         this.context = context;
@@ -37,7 +39,10 @@ public class NavigationAdapter extends BaseAdapter {
 
         KnodaScreen screen = getItem(position);
 
-        listItem.labelTextView.setText(screen.displayName);
+        if (position == 4 && user != null)
+            listItem.labelTextView.setText(user.username);
+        else
+            listItem.labelTextView.setText(screen.displayName);
         listItem.iconImageView.setImageDrawable(screen.drawable);
 
         if (position == 1 && alertsCount > 0) {
@@ -45,6 +50,7 @@ public class NavigationAdapter extends BaseAdapter {
             listItem.rightTextView.setText(alertsCount.toString());
         } else
             listItem.rightTextView.setVisibility(View.INVISIBLE);
+
 
         return listItem;
     }
@@ -67,6 +73,11 @@ public class NavigationAdapter extends BaseAdapter {
 
     public void setAlertsCount(Integer alertCount) {
         this.alertsCount = alertCount;
+        notifyDataSetChanged();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
         notifyDataSetChanged();
     }
 }

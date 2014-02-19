@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
@@ -31,6 +32,8 @@ import managers.UserManager;
 import models.ActivityItem;
 import models.KnodaScreen;
 import models.ServerError;
+import models.User;
+import networking.NetworkCallback;
 import networking.NetworkListCallback;
 
 ;
@@ -43,6 +46,7 @@ import networking.NetworkListCallback;
 public class NavigationDrawerFragment extends Fragment {
 
     private static final int activityRefreshInterval = 3000;
+    private static final int userRefreshInterval = 3000;
 
     private NavigationDrawerCallbacks mCallbacks;
 
@@ -50,6 +54,11 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
+    private TextView pointsTextView;
+    private TextView winLossTextView;
+    private TextView winPercentTextView;
+    private TextView streakTextView;
+
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
@@ -65,12 +74,7 @@ public class NavigationDrawerFragment extends Fragment {
     NavigationAdapter adapter;
 
     private Handler handler = new Handler();
-    private Runnable activityRefreshRunnable = new Runnable() {
-        @Override
-        public void run() {
-            refreshActivity();
-        }
-    };
+
 
     public NavigationDrawerFragment() {
     }
@@ -90,8 +94,17 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        mDrawerListView = (ListView) view.findViewById(R.id.navigation_drawer_listview);
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -100,7 +113,12 @@ public class NavigationDrawerFragment extends Fragment {
         });
         mDrawerListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-        return mDrawerListView;
+        pointsTextView = (TextView)view.findViewById(R.id.navigation_list_points_textview);
+        winLossTextView = (TextView)view.findViewById(R.id.navigation_list_wl_textview);
+        winPercentTextView = (TextView)view.findViewById(R.id.navigation_list_win_percent_textview);
+        streakTextView = (TextView)view.findViewById(R.id.navigation_list_streak_textview);
+
+        return view;
     }
 
     public boolean isDrawerOpen() {
@@ -251,7 +269,16 @@ public class NavigationDrawerFragment extends Fragment {
         adapter = new NavigationAdapter(getActivity(), screens);
         mDrawerListView.setAdapter(adapter);
         refreshActivity();
+        adapter.setUser(userManager.getUser());
+        refreshUser();
     }
+
+    private Runnable activityRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshActivity();
+        }
+    };
 
     public void refreshActivity() {
         networkingManager.getUnseenActivityItems(new NetworkListCallback<ActivityItem>() {
@@ -265,5 +292,33 @@ public class NavigationDrawerFragment extends Fragment {
             handler.postDelayed(activityRefreshRunnable, activityRefreshInterval);
             }
         });
+    }
+
+    private Runnable userRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshUser();
+        }
+    };
+
+    public void refreshUser() {
+        userManager.refreshUser(new NetworkCallback<User>() {
+            @Override
+            public void completionHandler(User object, ServerError error) {
+                if (error != null)
+                    return;
+
+                adapter.setUser(object);
+                handler.postDelayed(userRefreshRunnable, userRefreshInterval);
+                refreshStats(object);
+            }
+        });
+    }
+
+    private void refreshStats(User user) {
+        pointsTextView.setText(user.points.toString());
+        winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
+        streakTextView.setText(user.streak.toString());
+        winPercentTextView.setText(user.winningPercentage.toString());
     }
 }

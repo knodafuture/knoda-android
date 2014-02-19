@@ -1,9 +1,112 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
-    android:divider="@color/black"
-    android:dividerHeight="2dp"
-    android:background="@color/sideNavBlack"
-    tools:context="views.unsorted.NavigationDrawerFragment" />
+    android:background="@color/sideNavBlack">
+
+    <ListView
+        android:id="@+id/navigation_drawer_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:divider="@color/black"
+        android:dividerHeight="2dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/navigation_drawer_listview"
+        android:background="@color/black"/>
+
+    <RelativeLayout
+        android:layout_below="@id/navigation_drawer_listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:clickable="true">
+        <ImageView
+            android:id="@+id/navigation_list_stats_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_nav_stats_icon"/>
+
+        <TextView
+            android:id="@+id/navigation_list_points_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1,036"
+            android:layout_alignBaseline="@id/navigation_list_stats_icon"
+            android:layout_toRightOf="@id/navigation_list_stats_icon"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView style="@style/smallWhiteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="points"
+            android:layout_alignLeft="@id/navigation_list_points_textview"
+            android:layout_below="@id/navigation_list_points_textview"
+            android:layout_marginTop="-5dp"/>
+        
+        <TextView
+            android:id="@+id/navigation_list_wl_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:text="10-13"
+            android:layout_alignTop="@id/navigation_list_stats_icon"
+            android:layout_alignParentRight="true"/>
+
+        <TextView style="@style/smallWhiteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="W-L"
+            android:layout_alignLeft="@id/navigation_list_wl_textview"
+            android:layout_below="@id/navigation_list_wl_textview"
+            android:layout_marginTop="-5dp"/>
+
+        <TextView
+            android:id="@+id/navigation_list_win_percent_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:text="40.91%"
+            android:layout_marginTop="50dp"
+            android:layout_alignLeft="@id/navigation_list_points_textview"/>
+
+        <TextView style="@style/smallWhiteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="win %"
+            android:layout_marginTop="-5dp"
+            android:layout_below="@id/navigation_list_win_percent_textview"
+            android:layout_alignLeft="@id/navigation_list_win_percent_textview"/>
+
+        <TextView
+            android:id="@+id/navigation_list_streak_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_alignTop="@id/navigation_list_win_percent_textview"
+            android:layout_alignLeft="@id/navigation_list_wl_textview"
+            android:text="W2"/>
+
+        <TextView style="@style/smallWhiteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="streak"
+            android:layout_alignLeft="@id/navigation_list_streak_textview"
+            android:layout_below="@id/navigation_list_streak_textview"
+            android:layout_marginTop="-5dp"/>
+
+        </RelativeLayout>
+
+
+
+</RelativeLayout>
+
+
+
