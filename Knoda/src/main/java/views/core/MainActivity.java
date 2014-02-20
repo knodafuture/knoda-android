@@ -37,6 +37,7 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import unsorted.BadgesUnseenMonitor;
+import unsorted.Logger;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.badge.BadgeFragment;
@@ -99,6 +100,10 @@ public class MainActivity extends BaseActivity
             });
         }
         new ImagePreloader(networkingManager).invoke();
+        if (getIntent().getBooleanExtra("showActivity", false)) {
+            navigationDrawerFragment.selectItem(1);
+        }
+
     }
 
     @Override
