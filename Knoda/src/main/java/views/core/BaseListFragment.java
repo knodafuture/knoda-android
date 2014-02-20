@@ -20,7 +20,6 @@ import butterknife.InjectView;
 import helpers.ListenerHelper;
 
 public class BaseListFragment extends BaseFragment {
-
     @InjectView(R.id.base_listview)
     public PullToRefreshListView pListView;
 
@@ -59,13 +58,16 @@ public class BaseListFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         listView = pListView.getRefreshableView();
         onListViewCreated(listView);
 
-        adapter = getAdapter();
-        pListView.setAdapter(adapter);
+        if (adapter == null) {
+            adapter = getAdapter();
+            adapter.loadPage(0);
+        }
 
-        adapter.loadPage(0);
+        pListView.setAdapter(adapter);
 
         addScrollListener();
 
@@ -110,4 +112,6 @@ public class BaseListFragment extends BaseFragment {
     public void onListViewCreated(ListView listView) {
 
     }
+
+
 }

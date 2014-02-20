@@ -163,7 +163,7 @@ public class MainActivity extends BaseActivity
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.addToBackStack(null).replace(R.id.container, fragment).commit();
+        transaction.replace(R.id.container, fragment).commit();
 
     }
 
@@ -234,7 +234,7 @@ public class MainActivity extends BaseActivity
             public void onBackStackChanged() {
                 Integer count = getFragmentManager().getBackStackEntryCount();
 
-                if (count <= 1)
+                if (count <= 0)
                     navigationDrawerFragment.setDrawerToggleEnabled(true);
             }
         });

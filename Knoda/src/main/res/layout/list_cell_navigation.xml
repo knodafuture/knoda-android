@@ -8,9 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/navigation_list_selected_background"
-        android:visibility="visible"
-        android:src="@drawable/side_nav_active_bg"
-        android:adjustViewBounds="true"/>
+        android:src="@drawable/side_nav_active_bg"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

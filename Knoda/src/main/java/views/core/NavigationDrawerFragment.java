@@ -35,7 +35,6 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import unsorted.Logger;
 
 ;
 
@@ -46,8 +45,8 @@ import unsorted.Logger;
  */
 public class NavigationDrawerFragment extends Fragment {
 
-    private static final int activityRefreshInterval = 3000;
-    private static final int userRefreshInterval = 3000;
+    private static final int activityRefreshInterval = 30000;
+    private static final int userRefreshInterval = 30000;
 
     private NavigationDrawerCallbacks mCallbacks;
 

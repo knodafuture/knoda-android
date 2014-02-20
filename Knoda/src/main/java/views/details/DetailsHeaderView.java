@@ -97,7 +97,7 @@ public class DetailsHeaderView extends RelativeLayout {
 
         pointsView = (LinearLayout)findViewById(R.id.details_cell_points);
         resultImageView = (ImageView)findViewById(R.id.results_outcome_imageview);
-        resultTextView = (TextView)findViewById(R.id.results_points_textview);
+        resultTextView = (TextView)findViewById(R.id.results_outcome_textview);
         pointsTotalTextView = (TextView)findViewById(R.id.results_points_textview);
         pointsDetailsTextView = (TextView)findViewById(R.id.details_cell_points_breakdown_textview);
 
