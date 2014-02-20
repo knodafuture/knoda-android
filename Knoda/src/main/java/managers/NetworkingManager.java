@@ -368,6 +368,12 @@ public class NetworkingManager {
         });
     }
 
+    public void addComment(final Comment comment, final NetworkCallback<Comment> callback) {
+
+        String url = buildUrl("comments.json", true, null);
+        executeRequest(Request.Method.POST, url, comment, Comment.class, callback);
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {

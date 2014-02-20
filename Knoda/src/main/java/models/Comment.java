@@ -30,6 +30,9 @@ public class Comment extends BaseModel {
     @SerializedName("created_at")
     public DateTime creationDate;
 
+    @SerializedName("prediction_id")
+    public Integer predictionId;
+
     public String getCreationString() {
        return "Made " + DateUtil.getPeriodString(creationDate) + " ago";
     }

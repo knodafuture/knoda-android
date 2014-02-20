@@ -94,6 +94,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         datasource.getObjectsAfterObject(object, new NetworkListCallback<T>() {
             @Override
             public void completionHandler(ArrayList<T> objectsToAdd, ServerError error) {
+                loading = false;
 
                 if (error != null || objectsToAdd == null || objectsToAdd.size() == 0)
                     return;
@@ -104,7 +105,6 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
                     objects.addAll(objectsToAdd);
 
                 currentPage = page;
-                loading = false;
                 notifyDataSetChanged();
 
                 if (onLoadFinished != null)

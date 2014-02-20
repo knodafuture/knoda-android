@@ -15,6 +15,7 @@ import views.core.BaseActivity;
 import views.core.MainActivity;
 import views.core.NavigationDrawerFragment;
 import views.core.Spinner;
+import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
@@ -52,7 +53,8 @@ import views.search.SearchFragment;
                 CategoryFragment.class,
                 BadgeFragment.class,
                 DetailsFragment.class,
-                NavigationDrawerFragment.class
+                NavigationDrawerFragment.class,
+                CreateCommentFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

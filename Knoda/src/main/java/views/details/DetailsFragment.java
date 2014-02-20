@@ -4,9 +4,13 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ListView;
+
+import com.knoda.knoda.R;
 
 import org.joda.time.DateTime;
 
@@ -16,6 +20,7 @@ import java.util.Calendar;
 import adapters.CommentAdapter;
 import adapters.PagingAdapter;
 import adapters.TallyAdapter;
+import butterknife.OnClick;
 import models.Challenge;
 import models.Comment;
 import models.Prediction;
@@ -41,9 +46,13 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     private Prediction prediction;
 
-
     public DetailsFragment(Prediction prediction) {
         this.prediction = prediction;
+    }
+
+    @OnClick(R.id.details_action_add_comment) void onComment() {
+        CreateCommentFragment fragment = new CreateCommentFragment(prediction);
+        pushFragment(fragment);
     }
 
 
@@ -52,6 +61,14 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         super.onViewCreated(view, savedInstanceState);
         getActivity().getActionBar().setTitle("Details");
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_details, container, false);
+
+        return view;
     }
 
     @Override
@@ -116,11 +133,13 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public void onComments() {
+        adapter = commentAdapter;
         listView.setAdapter(commentAdapter);
     }
 
     @Override
     public void onTally() {
+        adapter = tallyAdapter;
         listView.setAdapter(tallyAdapter);
     }
 

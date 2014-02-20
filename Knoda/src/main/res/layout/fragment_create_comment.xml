@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="views.details.CreateCommentFragment"
+    android:background="@color/transparentBlack">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        android:id="@+id/add_prediction_body_container">
+
+        <EditText
+            android:id="@+id/add_comment_body_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:inputType="textMultiLine"
+            android:hint="Add a comment..."
+            android:gravity="top"
+            android:imeOptions="actionDone"
+            android:background="@null"/>
+
+        <TextView
+            android:id="@+id/add_comment_counter_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
