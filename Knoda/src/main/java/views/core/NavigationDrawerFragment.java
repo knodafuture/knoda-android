@@ -35,6 +35,7 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import unsorted.Logger;
 
 ;
 
@@ -268,9 +269,11 @@ public class NavigationDrawerFragment extends Fragment {
         this.screens = screens;
         adapter = new NavigationAdapter(getActivity(), screens);
         mDrawerListView.setAdapter(adapter);
-        refreshActivity();
-        adapter.setUser(userManager.getUser());
-        refreshUser();
+        if (userManager.isLoggedIn()) {
+            refreshActivity();
+            adapter.setUser(userManager.getUser());
+            refreshUser();
+        }
     }
 
     private Runnable activityRefreshRunnable = new Runnable() {

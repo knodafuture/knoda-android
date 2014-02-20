@@ -104,7 +104,6 @@ public class UserManager {
     }
 
     public void signout(final NetworkCallback<User> callback) {
-        Logger.log("signout");
         networkingManager.signout(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User u, ServerError error) {
@@ -117,5 +116,9 @@ public class UserManager {
 
     public User getUser() {
         return user;
+    }
+
+    public boolean isLoggedIn() {
+        return sharedPrefManager.getSavedAuthtoken() != null;
     }
 }
