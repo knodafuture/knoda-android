@@ -30,6 +30,8 @@ public class PredictionListCell extends RelativeLayout {
     public TextView resultTextView;
     public Prediction prediction;
 
+    public RelativeLayout agreeView;
+
     public PredictionListCell(Context context) {
         super(context);
         initView(context);
@@ -51,6 +53,7 @@ public class PredictionListCell extends RelativeLayout {
         usernameView = (RelativeLayout)findViewById(R.id.prediction_cell_top_container);
         commentCountTextView = (TextView)findViewById(R.id.prediction_cell_comment_textview);
         resultTextView = (TextView)findViewById(R.id.prediction_cell_result_textview);
+        agreeView = (RelativeLayout)findViewById(R.id.prediction_cell_agreeview);
     }
 
     public void setAgree(boolean agree) {

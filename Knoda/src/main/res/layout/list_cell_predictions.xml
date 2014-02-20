@@ -6,6 +6,55 @@
     android:background="@color/white">
 
     <RelativeLayout
+        android:id="@+id/prediction_cell_agreeview"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="30dp">
+
+        <ImageView
+            android:id="@+id/prediction_cell_agree_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/swipe_agree_arrow"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/prediction_cell_agree_imageview"
+            android:text="AGREE"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/prediction_cell_disagreeview"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp">
+
+        <ImageView
+            android:id="@+id/prediction_cell_disagree_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/swipe_agree_arrow"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/prediction_cell_disagree_imageview"
+            android:text="DISAGREE"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/prediction_cell_body_view"
@@ -101,7 +150,5 @@
                 android:layout_toRightOf="@id/prediction_cell_comment_icon"
                 android:layout_marginLeft="5dp"/>
             </RelativeLayout>
-
-
     </RelativeLayout>
 </merge>
