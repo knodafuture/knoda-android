@@ -6,6 +6,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.flurry.android.FlurryAgent;
+
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
 import listeners.PredictionSwipeListener;
@@ -84,6 +86,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 }
             }
         });
+        FlurryAgent.logEvent("Swiped_Agree");
     }
 
     @Override
@@ -102,6 +105,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 }
             }
         });
+        FlurryAgent.logEvent("Swiped_Disagree");
     }
 
     @Override

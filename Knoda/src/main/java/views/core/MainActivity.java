@@ -19,6 +19,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -376,5 +377,21 @@ public class MainActivity extends BaseActivity
 
     public void showActivities() {
         navigationDrawerFragment.selectItem(1);
+    }
+
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        FlurryAgent.onStartSession(this, "56TTPBKSC2BJZGSW2W76");
+        FlurryAgent.setCaptureUncaughtExceptions(true);
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        FlurryAgent.onEndSession(this);
     }
 }

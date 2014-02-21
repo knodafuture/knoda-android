@@ -3,6 +3,11 @@ package views.predictionlists;
 import android.os.Bundle;
 import android.view.View;
 
+import com.flurry.android.FlurryAgent;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import models.Prediction;
 import networking.NetworkListCallback;
 
@@ -29,6 +34,9 @@ public class CategoryFragment extends BasePredictionListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         getActivity().getActionBar().setTitle(tag.toUpperCase());
+        Map<String, String> flurryParams = new HashMap<String, String>();
+        flurryParams.put("Category", tag.toUpperCase());
+        FlurryAgent.logEvent("Predictions_By_Category_Screen", flurryParams);
     }
 
     @Override

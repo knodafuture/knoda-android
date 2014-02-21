@@ -3,6 +3,8 @@ package views.predictionlists;
 import android.os.Bundle;
 import android.view.View;
 
+import com.flurry.android.FlurryAgent;
+
 import models.Prediction;
 import networking.NetworkListCallback;
 
@@ -22,6 +24,7 @@ public class HistoryFragment extends BasePredictionListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         getActivity().getActionBar().setTitle("History");
+        FlurryAgent.logEvent("History");
     }
 
     @Override

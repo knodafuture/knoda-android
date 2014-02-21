@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ListView;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
 import org.joda.time.DateTime;
@@ -60,7 +61,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getActionBar().setTitle("Details");
-
+        FlurryAgent.logEvent("Prediction_Details_Screen");
     }
 
     @Override
@@ -172,6 +173,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 headerview.setPrediction(prediction);
             }
         });
+        FlurryAgent.logEvent("Agree_Button_Tapped");
     }
 
     @Override
@@ -190,7 +192,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 headerview.setPrediction(prediction);
             }
         });
-
+        FlurryAgent.logEvent("Disagree_Button_Tapped");
     }
 
     @Override
@@ -228,6 +230,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                         headerview.setPrediction(prediction);
                     }
                 });
+                FlurryAgent.logEvent("BS_Button_Tapped");
             }
         };
 

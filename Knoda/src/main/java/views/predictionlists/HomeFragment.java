@@ -3,6 +3,8 @@ package views.predictionlists;
 import android.os.Bundle;
 import android.view.View;
 
+import com.flurry.android.FlurryAgent;
+
 public class HomeFragment extends BasePredictionListFragment {
 
     public static HomeFragment newInstance() {
@@ -16,5 +18,6 @@ public class HomeFragment extends BasePredictionListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         getActivity().getActionBar().setTitle("Home");
+        FlurryAgent.logEvent("Home_Screen");
     }
 }

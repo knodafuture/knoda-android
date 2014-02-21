@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
 import java.util.ArrayList;
@@ -137,6 +138,7 @@ public class AddPredictionFragment extends BaseFragment {
                 hideKeyboard();
             }
         });
+        FlurryAgent.logEvent("Add_Prediction_Screen");
     }
 
     private void buildTopicsDialog() {

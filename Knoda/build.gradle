@@ -39,6 +39,7 @@ android {
 dependencies {
     compile project(':libraries:CropImage')
     compile project(':libraries:PullToRefresh')
+    compile files('lib/FlurryAnalytics_3.3.4.jar')
     compile 'com.google.android.gms:play-services:3.1.+'
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.google.code.gson:gson:2.2.4'

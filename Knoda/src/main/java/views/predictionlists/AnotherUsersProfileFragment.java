@@ -3,6 +3,8 @@ package views.predictionlists;
 import android.os.Bundle;
 import android.view.View;
 
+import com.flurry.android.FlurryAgent;
+
 import adapters.AnotherUsersProfileAdapter;
 import adapters.PagingAdapter;
 import models.Prediction;
@@ -41,7 +43,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
                 }
             }
         });
-
+        FlurryAgent.logEvent("Another_User_Profile_Screen");
     }
 
     @Override

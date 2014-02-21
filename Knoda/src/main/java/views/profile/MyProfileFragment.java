@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
 import butterknife.ButterKnife;
@@ -136,6 +137,7 @@ public class MyProfileFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         final User user = userManager.getUser();
         updateUser(user);
+        FlurryAgent.logEvent("Profile_Screen");
     }
 
     @Override

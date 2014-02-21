@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.flurry.android.FlurryAgent;
+
 import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
 import models.ActivityItem;
@@ -27,6 +29,8 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        FlurryAgent.logEvent("ActivityFeed");
+
     }
 
     @Override

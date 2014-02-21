@@ -52,4 +52,5 @@ public class KnodaApplication extends Application {
     public void setCurrentActivity(Activity mCurrentActivity){
         this.currentActivity = mCurrentActivity;
     }
+
 }
