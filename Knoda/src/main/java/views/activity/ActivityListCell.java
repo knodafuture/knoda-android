@@ -1,6 +1,12 @@
 package views.activity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -63,6 +69,15 @@ public class ActivityListCell extends RelativeLayout {
             iconImageView.setImageResource(resId);
 
         metadataTextView.setText(activityItem.getCreationString());
-        textView.setText(activityItem.title + activityItem.predictionBody);
+        String firstString = activityItem.title + " ";
+        String secondString = "\"" + activityItem.predictionBody + "\"";
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder(firstString + secondString);
+        stringBuilder.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), 0, firstString.length(),
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        stringBuilder.setSpan(new ForegroundColorSpan(Color.rgb(102, 102, 102)), firstString.length(),
+                firstString.length() + secondString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        textView.setText(stringBuilder);
+        textView.setLines(2);
+        textView.setEllipsize(TextUtils.TruncateAt.END);
     }
 }
