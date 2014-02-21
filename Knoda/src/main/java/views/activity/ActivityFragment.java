@@ -2,12 +2,19 @@ package views.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
-import networking.NetworkListCallback;
 import models.ActivityItem;
+import models.Prediction;
+import models.ServerError;
+import networking.NetworkCallback;
+import networking.NetworkListCallback;
+import unsorted.Logger;
 import views.core.BaseListFragment;
+import views.details.DetailsFragment;
 
 public class ActivityFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<ActivityItem> {
 
@@ -34,6 +41,24 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
 
         networkingManager.getActivityItemsAfter(lastId, callback);
 
+    }
+
+    @Override
+    public void onListViewCreated(ListView listView) {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Logger.log("Clicked at : " + i);
+                ActivityItem activityItem = (ActivityItem)adapter.getItem(i-1);
+                networkingManager.getPrediction(activityItem.predictionId, new NetworkCallback<Prediction>() {
+                    @Override
+                    public void completionHandler(Prediction prediction, ServerError error) {
+                        DetailsFragment fragment = new DetailsFragment(prediction);
+                        pushFragment(fragment);
+                    }
+                });
+            }
+        });
     }
 
 }
