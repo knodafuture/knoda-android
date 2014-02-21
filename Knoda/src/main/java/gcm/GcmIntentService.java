@@ -1,16 +1,21 @@
 package gcm;
 
 import android.R;
+import android.app.AlertDialog;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import di.KnodaApplication;
 import views.core.MainActivity;
 
 public class GcmIntentService extends IntentService {
@@ -39,7 +44,11 @@ public class GcmIntentService extends IntentService {
                         extras.toString());
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                sendNotification(extras.getString("alert", ""));
+                if (KnodaApplication.isActivityVisible()) {
+                    handleMessage(extras.getString("alert", ""));
+                } else {
+                    sendNotification(extras.getString("alert", ""));
+                }
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
@@ -66,5 +75,36 @@ public class GcmIntentService extends IntentService {
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    }
+
+    private void handleMessage(final String msg)
+    {
+        Handler h = new Handler(Looper.getMainLooper());
+        h.post(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(((KnodaApplication)getApplication()).getCurrentActivity());
+                builder.setMessage(msg)
+                        .setCancelable(false)
+                        .setPositiveButton("Show", new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                ((MainActivity)((KnodaApplication)getApplication()).getCurrentActivity()).showActivities();
+                                dialog.cancel();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 }

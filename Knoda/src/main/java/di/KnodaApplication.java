@@ -1,5 +1,6 @@
 package di;
 
+import android.app.Activity;
 import android.app.Application;
 
 import java.util.Arrays;
@@ -12,6 +13,8 @@ import dagger.ObjectGraph;
  */
 public class KnodaApplication extends Application {
     private ObjectGraph graph;
+    private static boolean activityVisible;
+    private Activity currentActivity = null;
 
     @Override
     public void onCreate() {
@@ -31,7 +34,22 @@ public class KnodaApplication extends Application {
     }
 
 
+    public static boolean isActivityVisible() {
+        return activityVisible;
+    }
 
+    public static void activityResumed() {
+        activityVisible = true;
+    }
 
+    public static void activityPaused() {
+        activityVisible = false;
+    }
 
+    public Activity getCurrentActivity(){
+        return currentActivity;
+    }
+    public void setCurrentActivity(Activity mCurrentActivity){
+        this.currentActivity = mCurrentActivity;
+    }
 }

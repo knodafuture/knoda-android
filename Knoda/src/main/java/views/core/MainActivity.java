@@ -30,6 +30,7 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import di.KnodaApplication;
 import managers.GcmManager;
 import models.KnodaScreen;
 import models.LoginRequest;
@@ -37,7 +38,6 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import unsorted.BadgesUnseenMonitor;
-import unsorted.Logger;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.badge.BadgeFragment;
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity
         }
         new ImagePreloader(networkingManager).invoke();
         if (getIntent().getBooleanExtra("showActivity", false)) {
-            navigationDrawerFragment.selectItem(1);
+            showActivities();
         }
 
     }
@@ -295,6 +295,26 @@ public class MainActivity extends BaseActivity
         new BadgesUnseenMonitor(this, networkingManager).execute();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        KnodaApplication.activityPaused();
+        ((KnodaApplication)getApplication()).setCurrentActivity(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        KnodaApplication.activityResumed();
+        ((KnodaApplication)getApplication()).setCurrentActivity(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ((KnodaApplication)getApplication()).setCurrentActivity(null);
+    }
+
     private void hideSplash() {
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setDuration(1000);
@@ -318,7 +338,6 @@ public class MainActivity extends BaseActivity
 
         splashScreen.setAnimation(fadeOut);
     }
-
 
     private void onAddPrediction() {
         AddPredictionFragment fragment = new AddPredictionFragment();
@@ -353,5 +372,9 @@ public class MainActivity extends BaseActivity
             return false;
         }
         return true;
+    }
+
+    public void showActivities() {
+        navigationDrawerFragment.selectItem(1);
     }
 }
