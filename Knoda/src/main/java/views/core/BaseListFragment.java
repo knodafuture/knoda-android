@@ -91,6 +91,12 @@ public class BaseListFragment extends BaseFragment {
         pListView.setOnPullEventListener(soundListener);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).checkBadges();
+    }
+
     private void addScrollListener() {
         AbsListView.OnScrollListener listener = getOnScrollListener();
 
