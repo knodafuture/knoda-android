@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 buildscript {
     repositories {
         mavenCentral()
@@ -51,4 +53,19 @@ dependencies {
     compile 'org.apache.httpcomponents:httpmime:4.3'
     compile 'joda-time:joda-time:2.3'
     compile 'commons-io:commons-io:2.4'
+}
+
+task incrementVersionCode << {
+    println(":incrementVersionCode - Incrementing Version Code...")
+    def manifestFile = file("src/main/AndroidManifest.xml")
+    def patternVersionCode = Pattern.compile("versionCode=\"(\\d+)\"")
+    def manifestText = manifestFile.getText()
+    def matcherVersionCode = patternVersionCode.matcher(manifestText)
+    matcherVersionCode.find()
+    def mVersionCode = Integer.parseInt(matcherVersionCode.group(1))
+    def mNextVersionCode = mVersionCode + 1
+    def manifestContent = matcherVersionCode.replaceAll("versionCode=\"" + mNextVersionCode + "\"")
+    println(":incrementVersionCode - current versionCode=" + mVersionCode);
+    println(":incrementVersionCode - next versionCode=" + mNextVersionCode);
+    manifestFile.write(manifestContent)
 }
