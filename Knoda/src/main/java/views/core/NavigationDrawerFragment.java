@@ -181,6 +181,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         handler.removeCallbacks(activityRefreshRunnable);
         handler.removeCallbacks(userRefreshRunnable);
     }
