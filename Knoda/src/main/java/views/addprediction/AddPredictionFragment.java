@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
@@ -57,6 +58,9 @@ public class AddPredictionFragment extends BaseFragment {
 
     @InjectView(R.id.add_prediction_counter_textview)
     TextView bodyCounterTextView;
+
+    @InjectView(R.id.add_prediction_user_avatar)
+    NetworkImageView avatarImageView;
 
 
     private DateTimePicker resolutionDatePicker;
@@ -129,6 +133,9 @@ public class AddPredictionFragment extends BaseFragment {
                 }
             }
         });
+
+
+        avatarImageView.setImageUrl(userManager.getUser().avatar.small, networkingManager.getImageLoader());
 
         bodyCounter = new MessageCounter(bodyEditText, bodyCounterTextView, 300);
 
