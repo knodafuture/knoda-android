@@ -271,7 +271,7 @@ public class NetworkingManager {
     }
 
     public void searchForPredictions(String searchterm, NetworkListCallback<Prediction> callback) {
-        ParamBuilder builder = ParamBuilder.create().add("limit", "5").add("q", searchterm);
+        ParamBuilder builder = ParamBuilder.create().withPageLimit().add("q", searchterm);
 
         String url = buildUrl("search/predictions.json", true, builder);
 
