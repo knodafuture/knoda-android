@@ -16,8 +16,8 @@
         android:layout_width="fill_parent"
         android:layout_marginTop="10dp"
         android:layout_below="@id/login_logo_small"
-        android:hint="username or password"
-        android:inputType="textNoSuggestions"
+        android:hint="@string/login_hint"
+        android:inputType="textEmailAddress|textNoSuggestions"
         android:imeOptions="actionNext" />
 
     <EditText style="@style/edittext_main"
@@ -28,7 +28,7 @@
         android:layout_alignLeft="@id/login_username_edittext"
         android:hint="password"
         android:inputType="textPassword"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone" />
 
     <Button style="@style/smallWhiteText"
         android:id="@+id/login_forgot_button"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_password_edittext"
         android:layout_marginLeft="10dp"
-        android:text="Forgot Password?"/>
+        android:text="@string/forgot_password"/>
 
 
 

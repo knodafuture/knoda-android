@@ -7,13 +7,11 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_out">Sign Out</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tos"><u>Terms of Service</u></string>
     <string name="privacypolicy"><u>Privacy Policy</u></string>
-    <string name="title_activity_photo_chooser">PhotoChooserActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_gcm_notice">Knoda</string>
-    <string name="title_activity_gcm_alert_dialog">Knoda</string>
+    <string name="login_hint">username or email</string>
+    <string name="forgot_password">Forgot Password?</string>
 
 </resources>
