@@ -3,12 +3,14 @@ package views.details;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.knoda.knoda.R;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by nick on 2/13/14.
@@ -51,6 +53,7 @@ public class DetailsActionbar extends LinearLayout {
 
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_details_actionbar, this);
+        ButterKnife.inject(this);
 
         commentImageView = (ImageView)findViewById(R.id.details_action_comment_imageview);
         commentTextView = (TextView)findViewById(R.id.details_action_comment_textview);
@@ -62,34 +65,21 @@ public class DetailsActionbar extends LinearLayout {
         shareImageView = (ImageView)findViewById(R.id.details_action_share_imageview);
 
         setBackgroundColor(getResources().getColor(R.color.lightGray));
+    }
 
-        commentImageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                delegate.onComments();
-            }
-        });
+    @OnClick(R.id.details_action_comment_clickable) void onComment() {
+        delegate.onComments();
+    }
 
-        tallyImageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                delegate.onTally();
-            }
-        });
+    @OnClick(R.id.details_action_share_clickable) void onShare() {
+        delegate.onShare();
+    }
 
-        shareImageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                delegate.onShare();
-            }
-        });
+    @OnClick(R.id.details_action_tally_clickable) void onTally() {
+        delegate.onTally();
+    }
 
-        similarImageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                delegate.onSimilar();
-            }
-        });
-
+    @OnClick(R.id.details_action_similar_clickable) void onSimilar() {
+        delegate.onSimilar();
     }
 }

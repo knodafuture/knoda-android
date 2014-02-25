@@ -141,7 +141,7 @@
                         android:id="@+id/results_outcome_imageview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/results_win_icon"
+                        android:src="@drawable/result_win_icon"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="40dp"
                         />

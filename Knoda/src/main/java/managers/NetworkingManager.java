@@ -188,15 +188,7 @@ public class NetworkingManager {
 
         String url = buildUrl(path, true, null);
 
-        executeRequest(Request.Method.POST, url, null, Prediction.class, new NetworkCallback<Prediction>() {
-            @Override
-            public void completionHandler(Prediction object, ServerError error) {
-                if (error != null)
-                    callback.completionHandler(object, error);
-                else
-                    getPrediction(predictionId, callback);
-            }
-        });
+        executeRequest(Request.Method.POST, url, null, Prediction.class, callback);
     }
 
     public void updatePrediction(final Prediction prediction, final NetworkCallback<Prediction> callback) {

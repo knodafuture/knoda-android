@@ -83,7 +83,7 @@ public class PredictionListCell extends RelativeLayout {
     private void updateVoteImage() {
 
         if (prediction.isReadyForResolution && (prediction.challenge != null && prediction.challenge.isOwn) && !prediction.settled)
-            voteImageView.setImageResource(R.drawable.prediction_alert_icon);
+            voteImageView.setImageResource(R.drawable.prediction_alert);
         else
             voteImageView.setImageResource(getVoteImage());
 

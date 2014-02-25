@@ -63,8 +63,6 @@ public class MainActivity extends BaseActivity
 
     GoogleCloudMessaging gcm;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,11 +193,11 @@ public class MainActivity extends BaseActivity
     private HashMap<KnodaScreen, Class<? extends Fragment>> getClassMap() {
         HashMap<KnodaScreen, Class<? extends Fragment>> map = new HashMap<KnodaScreen, Class<? extends Fragment>>();
 
-        map.put(new KnodaScreen(0, "Home", getResources().getDrawable(R.drawable.side_nav_home_icon)), HomeFragment.class);
-        map.put(new KnodaScreen(1, "Activity", getResources().getDrawable(R.drawable.side_nav_activity_icon)), ActivityFragment.class);
-        map.put(new KnodaScreen(2, "History", getResources().getDrawable(R.drawable.side_nav_history_icon)), HistoryFragment.class);
-        map.put(new KnodaScreen(3, "Badges", getResources().getDrawable(R.drawable.side_nav_badges_icon)), BadgeFragment.class);
-        map.put(new KnodaScreen(4, "Profile", getResources().getDrawable(R.drawable.side_nav_profile_icon)), MyProfileFragment.class);
+        map.put(new KnodaScreen(0, "Home", getResources().getDrawable(R.drawable.drawer_home)), HomeFragment.class);
+        map.put(new KnodaScreen(1, "Activity", getResources().getDrawable(R.drawable.drawer_activity)), ActivityFragment.class);
+        map.put(new KnodaScreen(2, "History", getResources().getDrawable(R.drawable.drawer_history)), HistoryFragment.class);
+        map.put(new KnodaScreen(3, "Badges", getResources().getDrawable(R.drawable.drawer_badges)), BadgeFragment.class);
+        map.put(new KnodaScreen(4, "Profile", getResources().getDrawable(R.drawable.drawer_profile)), MyProfileFragment.class);
         return map;
     }
 
@@ -267,6 +265,7 @@ public class MainActivity extends BaseActivity
         invalidateOptionsMenu();
 
         navigationDrawerFragment.selectStartingItem();
+        navigationDrawerFragment.refreshUser();
 
         if (userManager.getUser().avatar == null) {
             Intent intent = new Intent(this, PhotoChooserActivity.class);

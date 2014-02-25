@@ -179,6 +179,12 @@ public class NavigationDrawerFragment extends Fragment {
         // Select either the default item (0) or the last selected item.
     }
 
+    @Override
+    public void onDestroy() {
+        handler.removeCallbacks(activityRefreshRunnable);
+        handler.removeCallbacks(userRefreshRunnable);
+    }
+
     public void selectStartingItem() {
         selectItem(mCurrentSelectedPosition);
     }
@@ -304,20 +310,20 @@ public class NavigationDrawerFragment extends Fragment {
     };
 
     public void refreshUser() {
+        adapter.setUser(userManager.getUser());
+        refreshStats(userManager.getUser());
         userManager.refreshUser(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User object, ServerError error) {
-                if (error != null)
-                    return;
-
-                adapter.setUser(object);
                 handler.postDelayed(userRefreshRunnable, userRefreshInterval);
-                refreshStats(object);
             }
         });
     }
 
     private void refreshStats(User user) {
+        if (user == null)
+            return;
+
         pointsTextView.setText(user.points.toString());
         winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
         streakTextView.setText(user.streak.toString());

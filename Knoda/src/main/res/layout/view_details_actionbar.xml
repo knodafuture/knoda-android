@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@color/lightGray">
 
     
     <RelativeLayout
+        android:clickable="true"
+        android:id="@+id/details_action_comment_clickable"
         android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -15,7 +17,7 @@
             android:id="@+id/details_action_comment_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/action_comment_icon"
+            android:src="@drawable/action_commenticon"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
         
@@ -31,6 +33,8 @@
         </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/details_action_tally_clickable"
+        android:clickable="true"
         android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -39,7 +43,7 @@
             android:id="@+id/details_action_tally_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/action_other_users_icon"
+            android:src="@drawable/action_tallyicon"
             android:layout_marginTop="13dp"
             android:layout_centerHorizontal="true"/>
 
@@ -55,6 +59,8 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/details_action_similar_clickable"
+        android:clickable="true"
         android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -63,7 +69,7 @@
             android:id="@+id/details_action_similar_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/action_view_similar_icon"
+            android:src="@drawable/action_similaricon"
             android:layout_marginTop="14dp"
             android:layout_centerHorizontal="true"/>
 
@@ -79,6 +85,8 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/details_action_share_clickable"
+        android:clickable="true"
         android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -87,7 +95,7 @@
             android:id="@+id/details_action_share_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/action_share_icon"
+            android:src="@drawable/action_shareicon"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
@@ -104,4 +112,4 @@
     
 
 
-</merge>
+</LinearLayout>

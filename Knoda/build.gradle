@@ -53,6 +53,7 @@ dependencies {
     compile 'org.apache.httpcomponents:httpmime:4.3'
     compile 'joda-time:joda-time:2.3'
     compile 'commons-io:commons-io:2.4'
+    compile 'org.apache.commons:commons-lang3:3.2.1'
 }
 
 task incrementVersionCode << {

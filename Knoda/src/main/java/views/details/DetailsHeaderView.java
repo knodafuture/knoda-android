@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import models.Prediction;
 import views.predictionlists.PredictionListCell;
@@ -88,6 +89,7 @@ public class DetailsHeaderView extends RelativeLayout {
 
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_details_header, this);
+        ButterKnife.inject(this);
 
         agreeDisagreeView = (RelativeLayout)findViewById(R.id.details_cell_agree_disagree);
         agreeButton = (Button)findViewById(R.id.details_cell_agree_button);
@@ -116,17 +118,6 @@ public class DetailsHeaderView extends RelativeLayout {
         configureVariableSpot();
     }
 
-    private boolean showsActionArea() {
-        if (prediction.closeDate != null && prediction.challenge != null)
-            return true;
-        else if (prediction.canSetOutcome())
-            return true;
-        else if (!prediction.expired && !prediction.challenge.isOwn)
-            return true;
-
-        return false;
-    }
-
     private void configureVariableSpot() {
         if (prediction.closeDate != null & prediction.challenge != null)
             updateAndShowPoints();
@@ -148,7 +139,7 @@ public class DetailsHeaderView extends RelativeLayout {
 
         if (prediction.challenge == null) {
             agreeButton.setBackgroundColor(lightGreen);
-            disagreeButton.setBackgroundColor(darkGreen);
+            disagreeButton.setBackgroundColor(lightGreen);
         } else if (prediction.challenge.agree) {
             agreeButton.setBackgroundColor(darkGreen);
             disagreeButton.setBackgroundColor(lightGreen);
@@ -184,10 +175,10 @@ public class DetailsHeaderView extends RelativeLayout {
 
         if (win) {
             resultTextView.setText("YOU WON!");
-            resultImageView.setImageResource(R.drawable.results_win_icon);
+            resultImageView.setImageResource(R.drawable.result_win_icon);
         } else {
             resultTextView.setText("YOU LOSE!");
-            resultImageView.setImageResource(R.drawable.results_lose_icon);
+            resultImageView.setImageResource(R.drawable.result_lose_icon);
         }
     }
 }

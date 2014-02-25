@@ -5,11 +5,11 @@
         android:id="@+id/default_menu_group">
         <item android:id="@+id/action_search"
             android:title="Search"
-            android:icon="@drawable/nav_search_icon"
+            android:icon="@drawable/nav_search"
             android:showAsAction="ifRoom" />
         <item android:id="@+id/action_add_prediction"
             android:title="Add Prediction"
-            android:icon="@drawable/predict_icon"
+            android:icon="@drawable/nav_predict"
             android:orderInCategory="100"
             android:showAsAction="ifRoom" />
     </group>

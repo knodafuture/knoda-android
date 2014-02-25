@@ -82,7 +82,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         commentAdapter = new CommentAdapter(getActivity(), this, this, networkingManager.getImageLoader());
         tallyAdapter = new TallyAdapter(getActivity(), this, this);
 
-        headerview = new DetailsHeaderView(getActivity());
+        headerview = new DetailsHeaderView(getActivity(), this);
         headerview.setPrediction(prediction);
 
         headerview.predictionCell.avatarImageView.setImageUrl(prediction.userAvatar.small, networkingManager.getImageLoader());
@@ -244,7 +244,6 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
             @Override
             public void completionHandler(Prediction object, ServerError error) {
                 spinner.hide();
-
                 if (error != null)
                     return;
                 prediction = object;

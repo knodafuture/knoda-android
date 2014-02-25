@@ -27,7 +27,7 @@
             android:id="@+id/navigation_list_stats_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/side_nav_stats_icon"/>
+            android:src="@drawable/drawer_stats"/>
 
         <TextView
             android:id="@+id/navigation_list_points_textview"
