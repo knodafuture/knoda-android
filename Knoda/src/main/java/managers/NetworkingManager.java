@@ -30,6 +30,7 @@ import models.Badge;
 import models.BaseModel;
 import models.Challenge;
 import models.Comment;
+import models.ForgotPasswordRequest;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.PasswordChangeRequest;
@@ -364,6 +365,12 @@ public class NetworkingManager {
 
         String url = buildUrl("comments.json", true, null);
         executeRequest(Request.Method.POST, url, comment, Comment.class, callback);
+    }
+
+    public void sendForgotPasswordRequest(final ForgotPasswordRequest request, final NetworkCallback<BaseModel> callback) {
+        String url = buildUrl("password.json", false, null);
+
+        executeRequest(Request.Method.POST, url, request, BaseModel.class, callback);
     }
 
     private Map<String, String> getHeaders() {

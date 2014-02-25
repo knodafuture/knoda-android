@@ -7,15 +7,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.knoda.knoda.R;
 
+import butterknife.InjectView;
+import models.BaseModel;
+import models.ForgotPasswordRequest;
+import models.ServerError;
+import networking.NetworkCallback;
 import views.core.BaseFragment;
 
-
-//TODO: Hook this up to network
-
 public class ForgotPasswordFragment extends BaseFragment {
+
+
+    @InjectView(R.id.forgot_username_edittext)
+    EditText editText;
 
     public static ForgotPasswordFragment newInstance() {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
@@ -61,5 +68,35 @@ public class ForgotPasswordFragment extends BaseFragment {
 
     public void submit() {
 
+        if (!validate())
+            return;
+        hideKeyboard();
+        spinner.show();
+
+        ForgotPasswordRequest request = new ForgotPasswordRequest();
+        request.login = editText.getText().toString();
+
+        networkingManager.sendForgotPasswordRequest(request, new NetworkCallback<BaseModel>() {
+            @Override
+            public void completionHandler(BaseModel object, ServerError error) {
+                spinner.hide();
+                if (error != null) {
+                    errorReporter.showError(error);
+                } else {
+                    errorReporter.showError("A link to reset your password was sent to your email");
+                    popFragment();
+                }
+            }
+        });
+
+    }
+
+    public boolean validate() {
+        if (editText.getText().length() == 0) {
+            errorReporter.showError("Please enter your email address.");
+            return false;
+        }
+
+        return true;
     }
 }
