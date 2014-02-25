@@ -17,7 +17,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/login_logo_small"
         android:hint="@string/login_hint"
-        android:inputType="textNoSuggestions"
+        android:inputType="textEmailAddress|textNoSuggestions"
         android:imeOptions="actionNext" />
 
     <EditText style="@style/edittext_main"
@@ -28,7 +28,7 @@
         android:layout_alignLeft="@id/login_username_edittext"
         android:hint="password"
         android:inputType="textPassword"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone" />
 
     <Button style="@style/smallWhiteText"
         android:id="@+id/login_forgot_button"

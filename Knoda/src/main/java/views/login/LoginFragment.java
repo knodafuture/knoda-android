@@ -71,7 +71,6 @@ public class LoginFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-
         return view;
     }
 
@@ -80,6 +79,8 @@ public class LoginFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         configureEditTextListeners();
+        usernameField.requestFocus();
+        showKeyboard(usernameField);
     }
 
     @Override
