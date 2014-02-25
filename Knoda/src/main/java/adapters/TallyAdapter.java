@@ -113,16 +113,28 @@ public class TallyAdapter extends DetailsAdapter<User> {
             listItem = new TallyCell(context);
 
         if (agreeduser != null) {
+
+            if (agreeduser.verified)
+                listItem.leftCheckmark.setVisibility(View.VISIBLE);
+            else
+                listItem.leftCheckmark.setVisibility(View.INVISIBLE);
+
             listItem.leftTextView.setText(agreeduser.username);
             listItem.leftTextView.setOnClickListener(getClickListener(agreeduser));
         } else {
+            listItem.leftCheckmark.setVisibility(View.INVISIBLE);
             listItem.leftTextView.setText("");
             listItem.leftTextView.setOnClickListener(null);
         }
         if (disagreedUser != null) {
+            if (disagreedUser.verified)
+                listItem.rightCheckmark.setVisibility(View.VISIBLE);
+            else
+                listItem.rightCheckmark.setVisibility(View.INVISIBLE);
             listItem.rightTextView.setText(disagreedUser.username);
             listItem.rightTextView.setOnClickListener(getClickListener(disagreedUser));
         } else {
+            listItem.rightCheckmark.setVisibility(View.INVISIBLE);
             listItem.rightTextView.setText("");
             listItem.rightTextView.setOnClickListener(null);
         }

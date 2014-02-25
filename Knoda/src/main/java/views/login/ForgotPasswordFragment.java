@@ -70,6 +70,7 @@ public class ForgotPasswordFragment extends BaseFragment {
 
         if (!validate())
             return;
+
         hideKeyboard();
         spinner.show();
 

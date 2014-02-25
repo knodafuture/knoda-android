@@ -81,6 +81,15 @@
                 android:layout_toRightOf="@id/prediction_cell_avatar_imageview"
                 android:text="test layout text"/>
 
+            <ImageView
+                android:id="@+id/prediction_cell_verified_checkmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/verified_badge"
+                android:layout_toRightOf="@id/prediction_cell_username_textview"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"/>
+
 
             <ImageView
                 android:id="@+id/prediction_cell_vote_image"

@@ -31,6 +31,7 @@ public class PredictionListCell extends RelativeLayout {
     public Prediction prediction;
 
     public RelativeLayout agreeView;
+    public ImageView verifiedCheckmark;
 
     public PredictionListCell(Context context) {
         super(context);
@@ -54,6 +55,7 @@ public class PredictionListCell extends RelativeLayout {
         commentCountTextView = (TextView)findViewById(R.id.prediction_cell_comment_textview);
         resultTextView = (TextView)findViewById(R.id.prediction_cell_result_textview);
         agreeView = (RelativeLayout)findViewById(R.id.prediction_cell_agreeview);
+        verifiedCheckmark = (ImageView)findViewById(R.id.prediction_cell_verified_checkmark);
     }
 
     public void setAgree(boolean agree) {
@@ -75,6 +77,12 @@ public class PredictionListCell extends RelativeLayout {
         commentCountTextView.setText(prediction.commentCount.toString());
         if (prediction.challenge != null)
             setAgree(prediction.challenge.agree);
+
+
+        if (prediction.verifiedAccount)
+            verifiedCheckmark.setVisibility(VISIBLE);
+        else
+            verifiedCheckmark.setVisibility(INVISIBLE);
 
         updateVoteImage();
     }

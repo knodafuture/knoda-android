@@ -41,9 +41,7 @@ public class CommentAdapter extends DetailsAdapter<Comment> {
 
         final Comment comment = getItem(position);
 
-        listItem.usernameTextView.setText(comment.username);
-        listItem.bodyTextView.setText(comment.text);
-        listItem.timestampTextView.setText(comment.getCreationString());
+        listItem.populate(comment);
 
         listItem.topContainer.setOnClickListener(new View.OnClickListener() {
             @Override
