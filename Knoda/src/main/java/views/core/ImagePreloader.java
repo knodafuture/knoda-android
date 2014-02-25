@@ -25,8 +25,10 @@ class ImagePreloader {
         networkingManager.getAvailableBadges(new NetworkListCallback<Badge>() {
             @Override
             public void completionHandler(ArrayList<Badge> object, ServerError error) {
-                for (Badge b: object) {
-                    preloadUrl("http://api-cdn.knoda.com/badges/212/" + b.name + ".png");
+                if (error == null) {
+                    for (Badge b: object) {
+                        preloadUrl("http://api-cdn.knoda.com/badges/212/" + b.name + ".png");
+                    }
                 }
             }
         });

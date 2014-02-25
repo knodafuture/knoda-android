@@ -16,7 +16,7 @@
         android:layout_width="fill_parent"
         android:layout_marginTop="10dp"
         android:layout_below="@id/login_logo_small"
-        android:hint="username or password"
+        android:hint="@string/login_hint"
         android:inputType="textNoSuggestions"
         android:imeOptions="actionNext" />
 
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_password_edittext"
         android:layout_marginLeft="10dp"
-        android:text="Forgot Password?"/>
+        android:text="@string/forgot_password"/>
 
 
 
