@@ -56,6 +56,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     @Override
     public void onPause() {
         super.onPause();
+        hideKeyboard();
     }
 
     @Override
