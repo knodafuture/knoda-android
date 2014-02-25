@@ -202,7 +202,8 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                     else
                         downView.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullRedR, fullRedG, fullRedB));
 
-                    downView.bodyView.setTranslationX(deltaX);
+                    if (Math.abs(deltaX) < downView.getWidth() / 2)
+                        downView.bodyView.setTranslationX(deltaX);
                     return true;
                 }
 
