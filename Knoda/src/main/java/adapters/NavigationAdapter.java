@@ -39,13 +39,13 @@ public class NavigationAdapter extends BaseAdapter {
 
         KnodaScreen screen = getItem(position);
 
-        if (position == 4 && user != null)
+        if (position == KnodaScreen.KnodaScreenOrder.PROFILE.ordinal() && user != null)
             listItem.labelTextView.setText(user.username);
         else
             listItem.labelTextView.setText(screen.displayName);
         listItem.iconImageView.setImageDrawable(screen.drawable);
 
-        if (position == 1 && alertsCount > 0) {
+        if (position == KnodaScreen.KnodaScreenOrder.ACTIVITY.ordinal() && alertsCount > 0) {
             listItem.rightTextView.setVisibility(View.VISIBLE);
             listItem.rightTextView.setText(alertsCount.toString());
         } else

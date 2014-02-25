@@ -12,11 +12,11 @@ import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
 import listeners.PredictionSwipeListener;
 import models.Challenge;
+import models.KnodaScreen;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import unsorted.Logger;
 import views.core.BaseListFragment;
 import views.core.MainActivity;
 import views.details.DetailsFragment;
@@ -114,7 +114,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onProfileTapped(final PredictionListCell cell) {
         if (cell.prediction.userId.equals(userManager.getUser().id)) {
-            Logger.log("current user profile unimplemented");
+            ((MainActivity)getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
         } else {
             AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment(cell.prediction.userId);
             pushFragment(fragment);

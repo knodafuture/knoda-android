@@ -63,6 +63,8 @@ public class MainActivity extends BaseActivity
 
     GoogleCloudMessaging gcm;
 
+    private ArrayList<KnodaScreen> screens;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,11 +195,11 @@ public class MainActivity extends BaseActivity
     private HashMap<KnodaScreen, Class<? extends Fragment>> getClassMap() {
         HashMap<KnodaScreen, Class<? extends Fragment>> map = new HashMap<KnodaScreen, Class<? extends Fragment>>();
 
-        map.put(new KnodaScreen(0, "Home", getResources().getDrawable(R.drawable.drawer_home)), HomeFragment.class);
-        map.put(new KnodaScreen(1, "Activity", getResources().getDrawable(R.drawable.drawer_activity)), ActivityFragment.class);
-        map.put(new KnodaScreen(2, "History", getResources().getDrawable(R.drawable.drawer_history)), HistoryFragment.class);
-        map.put(new KnodaScreen(3, "Badges", getResources().getDrawable(R.drawable.drawer_badges)), BadgeFragment.class);
-        map.put(new KnodaScreen(4, "Profile", getResources().getDrawable(R.drawable.drawer_profile)), MyProfileFragment.class);
+        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.HOME, "Home", getResources().getDrawable(R.drawable.drawer_home)), HomeFragment.class);
+        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.ACTIVITY, "Activity", getResources().getDrawable(R.drawable.drawer_activity)), ActivityFragment.class);
+        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.HISTORY, "History", getResources().getDrawable(R.drawable.drawer_history)), HistoryFragment.class);
+        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.BADGES, "Badges", getResources().getDrawable(R.drawable.drawer_badges)), BadgeFragment.class);
+        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.PROFILE, "Profile", getResources().getDrawable(R.drawable.drawer_profile)), MyProfileFragment.class);
         return map;
     }
 
@@ -209,7 +211,7 @@ public class MainActivity extends BaseActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        ArrayList<KnodaScreen> screens = new ArrayList<KnodaScreen>(classMap.keySet());
+        screens = new ArrayList<KnodaScreen>(classMap.keySet());
         Collections.sort(screens);
 
         navigationDrawerFragment.setScreens(screens);
@@ -229,6 +231,24 @@ public class MainActivity extends BaseActivity
 
     public void popFragment() {
         getFragmentManager().popBackStack();
+    }
+
+    public void showFrament(KnodaScreen.KnodaScreenOrder position) {
+        KnodaScreen screen = findScreen(position);
+
+        if (screen == null)
+            return;
+
+        onNavigationDrawerItemSelected(screen);
+    }
+
+    private KnodaScreen findScreen(KnodaScreen.KnodaScreenOrder position) {
+        KnodaScreen screen = screens.get(position.ordinal());
+
+        if (screen != null && screen.order == position)
+            return screen;
+
+        return null;
     }
 
     private void initializeFragmentBackStack () {

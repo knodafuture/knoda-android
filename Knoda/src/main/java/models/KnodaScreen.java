@@ -8,11 +8,15 @@ import android.graphics.drawable.Drawable;
 
 public class KnodaScreen implements Comparable<KnodaScreen>{
 
-    public Integer order;
+    public enum KnodaScreenOrder {
+        HOME, ACTIVITY, HISTORY, BADGES, PROFILE
+    }
+
+    public KnodaScreenOrder order;
     public String displayName;
     public Drawable drawable;
 
-    public KnodaScreen(Integer order, String displayName, Drawable drawable) {
+    public KnodaScreen(KnodaScreenOrder order, String displayName, Drawable drawable) {
         this.order = order;
         this.displayName = displayName;
         this.drawable = drawable;
@@ -20,6 +24,6 @@ public class KnodaScreen implements Comparable<KnodaScreen>{
 
     @Override
     public int compareTo(KnodaScreen screen) {
-        return this.order.compareTo(screen.order);
+        return this.order.ordinal() > screen.order.ordinal() ? +1 : this.order.ordinal() < screen.order.ordinal() ? -1 : 0;
     }
 }
