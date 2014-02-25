@@ -162,6 +162,9 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                 if (downView == null || paused)
                     break;
 
+                if ((downView.prediction.challenge != null && downView.prediction.challenge.isOwn) || downView.prediction.expired)
+                    break;
+
                 float deltaX = motionEvent.getRawX() - downX;
 
                 if (Math.abs(deltaX) > slop) {
