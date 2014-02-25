@@ -46,9 +46,11 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
 
     @Override
     public void onClick(View v) {
-        if (v == dateEditText)
-            new DatePickerDialog(dateEditText.getContext(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-        else if (v == timeEditText)
+        if (v == dateEditText) {
+            DatePickerDialog dialog = new DatePickerDialog(dateEditText.getContext(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            dialog.getDatePicker().setMinDate(minimumCalender.getTimeInMillis());
+            dialog.show();
+        } else if (v == timeEditText)
             new TimePickerDialog(timeEditText.getContext(), this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(timeEditText.getContext())).show();
     }
 
