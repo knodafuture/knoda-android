@@ -102,7 +102,10 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                     child = listView.getChildAt(i);
                     child.getHitRect(rect);
                     if (rect.contains(x, y)) {
-                        downView = (PredictionListCell)child;
+                        if (child instanceof PredictionListCell)
+                            downView = (PredictionListCell)child;
+                        else
+                            downView = null;
                         break;
                     }
                 }

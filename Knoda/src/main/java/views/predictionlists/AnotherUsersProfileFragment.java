@@ -58,6 +58,15 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         networkingManager.getPredictionsForUserAfter(userId, lastId, callback);
     }
 
+    @Override
+    public void onItemClicked(int position) {
+        position = position - 1;
+        if (position < 0)
+            return;
+
+        super.onItemClicked(position);
+    }
+
 
 
 }

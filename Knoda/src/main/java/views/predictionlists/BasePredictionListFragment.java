@@ -53,12 +53,15 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Logger.log("Clicked at : " + i);
-                Prediction prediction = (Prediction)adapter.getItem(i-1);
-                DetailsFragment fragment = new DetailsFragment(prediction);
-                pushFragment(fragment);
+                onItemClicked(i);
             }
         });
+    }
+
+    public void onItemClicked(int position) {
+        Prediction prediction = (Prediction)adapter.getItem(position-1);
+        DetailsFragment fragment = new DetailsFragment(prediction);
+        pushFragment(fragment);
     }
 
 
@@ -110,7 +113,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
 
     @Override
     public void onProfileTapped(final PredictionListCell cell) {
-        if (cell.prediction.userId == userManager.getUser().id) {
+        if (cell.prediction.userId.equals(userManager.getUser().id)) {
             Logger.log("current user profile unimplemented");
         } else {
             AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment(cell.prediction.userId);
