@@ -30,6 +30,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("ActivityFeed");
+        getActivity().getActionBar().setTitle("Activity");
 
     }
 

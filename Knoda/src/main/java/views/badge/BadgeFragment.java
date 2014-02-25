@@ -50,5 +50,6 @@ public class BadgeFragment extends BaseFragment {
             }
         });
         FlurryAgent.logEvent("Badges_Screen");
+        getActivity().getActionBar().setTitle("Badges");
     }
 }
