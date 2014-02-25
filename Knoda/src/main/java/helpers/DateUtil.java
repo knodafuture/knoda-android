@@ -17,9 +17,10 @@ public class DateUtil {
         else
             period = new Period(now, date);
 
-        if (period.getYears() != 0)
-            return period.getYears() + period.getYears() > 1 ? "yrs" : "yr";
-        else if (period.getMonths() != 0)
+        if (period.getYears() != 0) {
+            String suffix = period.getYears() > 1 ? "yrs" : "yr";
+            return period.getYears() + suffix;
+        } else if (period.getMonths() != 0)
             return period.getMonths() + "mo";
         else if (period.getDays() != 0 || period.getWeeks() != 0) {
             int days = period.getWeeks() != 0 ? period.getWeeks() * 7 : period.getDays();
