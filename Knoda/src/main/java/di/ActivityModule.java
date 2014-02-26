@@ -1,5 +1,7 @@
 package di;
 
+import com.squareup.otto.Bus;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -54,7 +56,8 @@ import views.search.SearchFragment;
                 BadgeFragment.class,
                 DetailsFragment.class,
                 NavigationDrawerFragment.class,
-                CreateCommentFragment.class
+                CreateCommentFragment.class,
+                Bus.class
         },
         addsTo = KnodaModule.class,
         library = true
@@ -81,5 +84,9 @@ public class ActivityModule {
 
     @Provides @Singleton SharedPrefManager provideSharedPrefManager() {
         return new SharedPrefManager(mActivity);
+    }
+
+    @Provides @Singleton Bus provideBus() {
+        return new Bus();
     }
 }

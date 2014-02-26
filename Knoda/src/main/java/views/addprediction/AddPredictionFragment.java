@@ -28,6 +28,7 @@ import models.ServerError;
 import models.Tag;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.NewPredictionEvent;
 import views.core.BaseFragment;
 
 public class AddPredictionFragment extends BaseFragment {
@@ -198,6 +199,7 @@ public class AddPredictionFragment extends BaseFragment {
                 if (error != null) {
                     errorReporter.showError(error);
                 } else {
+                    bus.post(new NewPredictionEvent(object));
                     popFragment();
                 }
             }

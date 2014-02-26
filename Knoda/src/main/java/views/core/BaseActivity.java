@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.knoda.knoda.R;
+import com.squareup.otto.Bus;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +26,8 @@ import unsorted.ErrorReporter;
  */
 public class BaseActivity extends Activity {
     private ObjectGraph activityGraph;
-
+    @Inject
+    public Bus eventBus;
     @Inject
     public NetworkingManager networkingManager;
 
@@ -52,6 +54,7 @@ public class BaseActivity extends Activity {
         activityGraph.inject(this);
         activityGraph.inject(userManager);
         activityGraph.inject(networkingManager);
+        eventBus.register(this);
     }
 
     protected List<Object> getModules() {

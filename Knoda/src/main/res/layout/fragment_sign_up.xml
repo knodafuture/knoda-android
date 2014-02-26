@@ -18,7 +18,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/signup_logo_small"
         android:hint="email"
-        android:inputType="textNoSuggestions"
+        android:inputType="textEmailAddress|textNoSuggestions"
         android:imeOptions="actionNext" />
 
     <EditText style="@style/edittext_main"

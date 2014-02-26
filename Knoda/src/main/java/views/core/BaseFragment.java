@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.squareup.otto.Bus;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import unsorted.ErrorReporter;
 import managers.NetworkingManager;
 import managers.UserManager;
+import unsorted.ErrorReporter;
 
 /**
  * Created by nick on 1/17/14.
@@ -25,6 +27,8 @@ public class BaseFragment extends Fragment {
     @Inject public ErrorReporter errorReporter;
 
     @Inject public UserManager userManager;
+
+    @Inject public Bus bus;
 
     @Override public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -29,11 +29,8 @@ public class HistoryFragment extends BasePredictionListFragment {
 
     @Override
     public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
-        int lastId = object == null ? 0 : object.id;
+        int lastId = (object == null || object.challenge == null) ? 0 : object.challenge.id;
 
         networkingManager.getHistoryAfter(lastId, callback);
     }
-
-
-
 }

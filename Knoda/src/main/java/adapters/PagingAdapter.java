@@ -74,6 +74,10 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         return position;
     }
 
+    public void insertAt(T object, int index) {
+        objects.add(index, object);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

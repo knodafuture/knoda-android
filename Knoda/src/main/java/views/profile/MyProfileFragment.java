@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -72,10 +73,13 @@ public class MyProfileFragment extends BaseFragment {
                 .setTitle("Change Your Username")
                 .create();
         alert.show();
+        username.requestFocus();
+        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(changeUsername(changeUsernameView, alert));
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 alert.dismiss();
+                hideKeyboard();
             }
         });
     }
@@ -93,10 +97,13 @@ public class MyProfileFragment extends BaseFragment {
                 .setTitle("Change Your Email")
                 .create();
         alert.show();
+        email.requestFocus();
+        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(changeEmail(changeEmailView, alert));
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 alert.dismiss();
+                hideKeyboard();
             }
         });
     }
@@ -110,11 +117,16 @@ public class MyProfileFragment extends BaseFragment {
                 .setView(changePasswordView)
                 .setTitle("Change Your Password")
                 .create();
+
         alert.show();
+        EditText currentPassword = (EditText) changePasswordView.findViewById(R.id.current_password);
+        currentPassword.requestFocus();
+        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(changePassword(changePasswordView, alert));
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 alert.dismiss();
+                hideKeyboard();
             }
         });
     }
@@ -176,10 +188,12 @@ public class MyProfileFragment extends BaseFragment {
                     networkingManager.changePassword(pcr, new NetworkCallback<User>() {
                         @Override
                         public void completionHandler(User u, ServerError error) {
-                            if (error == null)
+                            if (error == null) {
                                 dialog.dismiss();
-                            else
+                                hideKeyboard();
+                            } else {
                                 errorReporter.showError(error);
+                            }
                         }
                     });
                 } else {
@@ -201,6 +215,7 @@ public class MyProfileFragment extends BaseFragment {
                         if (error == null) {
                             updateUser(u);
                             dialog.dismiss();
+                            hideKeyboard();
                         } else {
                             errorReporter.showError(error);
                         }
@@ -222,6 +237,7 @@ public class MyProfileFragment extends BaseFragment {
                         if (error == null) {
                             updateUser(u);
                             dialog.dismiss();
+                            hideKeyboard();
                         } else {
                             errorReporter.showError(error);
                         }

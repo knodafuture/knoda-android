@@ -66,6 +66,8 @@ public class SignUpFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupListeners();
+        emailField.requestFocus();
+        showKeyboard(emailField);
     }
 
     @Override
