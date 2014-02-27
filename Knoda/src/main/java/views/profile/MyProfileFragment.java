@@ -51,13 +51,30 @@ public class MyProfileFragment extends BaseFragment {
 
     @OnClick(R.id.button_sign_out) void onClickSignOut() {
         signOutButton.setEnabled(false);
-        userManager.signout(new NetworkCallback<User>() {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .setTitle("Are you sure you wish to sign out?")
+                .create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void completionHandler(User u, ServerError error) {
-                Logger.log("Restart Activity");
-                ((MainActivity)getActivity()).restart();
+            public void onClick(View view) {
+                userManager.signout(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User u, ServerError error) {
+                        Logger.log("Restart Activity");
+                        ((MainActivity)getActivity()).restart();
+                    }
+                });
             }
         });
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+
     }
 
     @OnClick(R.id.profile_username_edittext) void onClickUsername() {
