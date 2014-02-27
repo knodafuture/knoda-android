@@ -155,7 +155,7 @@ public class MyProfileFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        header.setEnabled(true);
+        getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

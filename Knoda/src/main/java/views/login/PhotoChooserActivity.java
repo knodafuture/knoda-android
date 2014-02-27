@@ -120,7 +120,7 @@ public class PhotoChooserActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.select_picture, menu);
         menu.setHeaderTitle("Select a profile picture");
-        menu.findItem(R.id.action_cancel).setVisible(!cancelable);
+        menu.findItem(R.id.action_cancel).setVisible(cancelable);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
