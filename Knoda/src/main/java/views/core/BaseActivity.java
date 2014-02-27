@@ -27,7 +27,7 @@ import unsorted.ErrorReporter;
 public class BaseActivity extends Activity {
     private ObjectGraph activityGraph;
     @Inject
-    public Bus eventBus;
+    public Bus bus;
     @Inject
     public NetworkingManager networkingManager;
 
@@ -54,7 +54,6 @@ public class BaseActivity extends Activity {
         activityGraph.inject(this);
         activityGraph.inject(userManager);
         activityGraph.inject(networkingManager);
-        eventBus.register(this);
     }
 
     protected List<Object> getModules() {

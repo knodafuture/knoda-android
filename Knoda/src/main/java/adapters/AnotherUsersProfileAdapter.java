@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.squareup.otto.Bus;
 
 import helpers.AdapterHelper;
 import models.Prediction;
@@ -20,7 +21,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
     public User user;
 
     public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
-        super(context, datasource, imageLoader);
+        super(context, datasource, imageLoader, new Bus());
     }
 
     @Override

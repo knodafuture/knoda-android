@@ -16,6 +16,7 @@ import managers.NetworkingManager;
 import models.BaseModel;
 import models.ServerError;
 import networking.NetworkListCallback;
+import unsorted.Logger;
 
 /**
  * Created by nick on 2/1/14.
@@ -75,7 +76,10 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
     }
 
     public void insertAt(T object, int index) {
+        Logger.log("OTTO# preinsert " + getCount());
         objects.add(index, object);
+        notifyDataSetChanged();
+        Logger.log("OTTO# postinsert " + getCount());
     }
 
     @Override
@@ -86,7 +90,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
     }
 
     public void loadPage(final int page) {
-
+        Logger.log("OTTO# loading page");
         if (loading)
             return;
 

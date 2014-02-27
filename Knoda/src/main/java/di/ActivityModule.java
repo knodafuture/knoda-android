@@ -4,6 +4,7 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
 
+import adapters.PredictionAdapter;
 import dagger.Module;
 import dagger.Provides;
 import managers.NetworkingManager;
@@ -57,7 +58,8 @@ import views.search.SearchFragment;
                 DetailsFragment.class,
                 NavigationDrawerFragment.class,
                 CreateCommentFragment.class,
-                Bus.class
+                Bus.class,
+                PredictionAdapter.class
         },
         addsTo = KnodaModule.class,
         library = true

@@ -28,7 +28,8 @@
         android:layout_below="@id/signup_email_edittext"
         android:hint="username"
         android:inputType="textNoSuggestions"
-        android:imeOptions="actionNext" />
+        android:imeOptions="actionNext"
+        android:maxLength="15" />
 
     <EditText style="@style/edittext_main"
         android:id="@+id/signup_password_edittext"

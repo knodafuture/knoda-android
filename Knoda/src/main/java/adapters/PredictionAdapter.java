@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import helpers.AdapterHelper;
 import models.Prediction;
+import pubsub.NewPredictionEvent;
 import views.predictionlists.PredictionListCell;
 
 /**
@@ -15,8 +18,17 @@ import views.predictionlists.PredictionListCell;
  */
 public class PredictionAdapter extends PagingAdapter<Prediction> {
 
-    public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
+    public Bus bus;
+
+    public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus) {
         super(context, datasource, imageLoader);
+        this.bus = bus;
+        this.bus.register(this);
+    }
+
+    @Subscribe
+    public void newPrediction(NewPredictionEvent event) {
+        insertAt(event.prediction, 0);
     }
 
     @Override
