@@ -71,6 +71,13 @@ public class PhotoChooserActivity extends BaseActivity {
             }
         });
 
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openContextMenu(imageView);
+            }
+        });
+
 
         Bundle extras = getIntent().getExtras();
         cancelable = extras != null && extras.getBoolean("cancelable");

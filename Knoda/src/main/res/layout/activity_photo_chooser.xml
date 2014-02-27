@@ -13,7 +13,9 @@
         android:layout_height="200dp"
         android:background="@color/knodaLighterGreen"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:src="@drawable/camera_avatar"/>
 
     <FrameLayout
         android:id="@+id/progress_view"
