@@ -82,7 +82,7 @@ public class ForgotPasswordFragment extends BaseFragment {
             public void completionHandler(BaseModel object, ServerError error) {
                 spinner.hide();
                 if (error != null) {
-                    errorReporter.showError(error);
+                    errorReporter.showError("We were unable to reset your password. Are you sure your email address has been registered on Knoda?");
                 } else {
                     errorReporter.showError("A link to reset your password was sent to your email");
                     popFragment();
