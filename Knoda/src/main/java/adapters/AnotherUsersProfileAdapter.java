@@ -61,7 +61,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
 
         header.winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
 
-        header.streakTextView.setText(user.streak.toString());
+        header.setStreak(user.streak);
         header.winPercentTextView.setText(user.winningPercentage.toString());
 
         header.avatarImageView.setImageUrl(user.avatar.big, imageLoader);

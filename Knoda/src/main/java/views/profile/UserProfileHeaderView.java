@@ -49,7 +49,15 @@ public class UserProfileHeaderView extends RelativeLayout {
     public void setUser(User user) {
         pointsTextView.setText(user.points.toString());
         winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
-        streakTextView.setText(user.streak.toString());
+        setStreak(user.streak);
         winPercentTextView.setText(user.winningPercentage.toString());
+    }
+
+    public void setStreak(String streak) {
+        if (streak == null || streak == "") {
+            streakTextView.setText("W0");
+        }else {
+            streakTextView.setText(streak.toString());
+        }
     }
 }
