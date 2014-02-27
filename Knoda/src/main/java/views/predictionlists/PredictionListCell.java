@@ -33,6 +33,9 @@ public class PredictionListCell extends RelativeLayout {
     public RelativeLayout agreeView;
     public ImageView verifiedCheckmark;
 
+    private boolean agreed;
+    private boolean disagreed;
+
     public PredictionListCell(Context context) {
         super(context);
         initView(context);
@@ -61,6 +64,27 @@ public class PredictionListCell extends RelativeLayout {
     public void setAgree(boolean agree) {
         int resId = agree? R.drawable.agree_marker : R.drawable.disagree_marker;
         voteImageView.setImageResource(resId);
+
+
+        if (agree) {
+            if (disagreed) {
+                disagreed = false;
+                prediction.disagreedCount--;
+            }
+
+            agreed = true;
+            prediction.agreedCount++;
+        } else {
+            if (agreed) {
+                agreed = false;
+                prediction.agreedCount--;
+            }
+
+            disagreed = true;
+            prediction.disagreedCount++;
+        }
+
+        update();
     }
 
     public void setPrediction(Prediction prediction) {
