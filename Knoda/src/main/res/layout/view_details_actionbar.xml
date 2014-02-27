@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/action_tallyicon"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
         <TextView
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/action_similaricon"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
         <TextView
