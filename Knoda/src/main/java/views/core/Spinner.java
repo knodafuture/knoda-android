@@ -53,27 +53,8 @@ public class Spinner {
     }
 
     public void hide() {
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setDuration(1000);
-
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                getProgressView().setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        getProgressView().setAnimation(fadeOut);
+        getProgressView().setAlpha(0);
+        getProgressView().setVisibility(View.INVISIBLE);
     }
 
 
