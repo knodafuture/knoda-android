@@ -147,4 +147,9 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         };
     }
 
+    public void reset() {
+        currentPage = 0;
+        objects.clear();
+    }
+
 }

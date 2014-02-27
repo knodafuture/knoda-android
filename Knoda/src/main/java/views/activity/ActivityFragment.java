@@ -35,6 +35,12 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        adapter.reset();
+    }
+
+    @Override
     public PagingAdapter getAdapter() {
         return new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader());
     }
