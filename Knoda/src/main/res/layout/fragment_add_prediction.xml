@@ -44,17 +44,17 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/add_prediction_topic_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="5dp">
 
         <LinearLayout
-            android:id="@+id/add_prediction_topic_view"
             android:layout_centerVertical="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
