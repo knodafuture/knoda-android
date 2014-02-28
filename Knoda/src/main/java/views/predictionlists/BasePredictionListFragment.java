@@ -78,7 +78,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
-        cell.update();
 
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Challenge>() {
             @Override
@@ -98,7 +97,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
-        cell.update();
 
         networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Challenge>() {
             @Override
