@@ -14,7 +14,6 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import unsorted.Logger;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
 
@@ -59,15 +58,16 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Logger.log("Clicked at : " + i);
                 ActivityItem activityItem = (ActivityItem)adapter.getItem(i-1);
-                networkingManager.getPrediction(activityItem.predictionId, new NetworkCallback<Prediction>() {
-                    @Override
-                    public void completionHandler(Prediction prediction, ServerError error) {
-                        DetailsFragment fragment = new DetailsFragment(prediction);
-                        pushFragment(fragment);
-                    }
-                });
+                if (activityItem != null) {
+                    networkingManager.getPrediction(activityItem.predictionId, new NetworkCallback<Prediction>() {
+                        @Override
+                        public void completionHandler(Prediction prediction, ServerError error) {
+                            DetailsFragment fragment = new DetailsFragment(prediction);
+                            pushFragment(fragment);
+                        }
+                    });
+                }
             }
         });
     }

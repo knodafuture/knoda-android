@@ -60,8 +60,10 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
 
     public void onItemClicked(int position) {
         Prediction prediction = (Prediction)adapter.getItem(position-1);
-        DetailsFragment fragment = new DetailsFragment(prediction);
-        pushFragment(fragment);
+        if (prediction != null) {
+            DetailsFragment fragment = new DetailsFragment(prediction);
+            pushFragment(fragment);
+        }
     }
 
 
