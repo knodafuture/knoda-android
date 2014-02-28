@@ -154,7 +154,15 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onShare() {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
-        share.putExtra(Intent.EXTRA_TEXT, prediction.body);
+        String suffix = " #knoda " + prediction.shortUrl;
+        int predictionLength = 139 - suffix.length();
+        String text = "";
+        if (prediction.body.length() > predictionLength) {
+            text = prediction.body.substring(0,predictionLength-3) + "..." + suffix;
+        } else {
+            text = prediction.body + suffix;
+        }
+        share.putExtra(Intent.EXTRA_TEXT, text);
         startActivity(Intent.createChooser(share, "How would you like to share?"));
     }
 
