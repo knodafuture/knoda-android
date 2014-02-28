@@ -332,7 +332,7 @@ public class NavigationDrawerFragment extends Fragment {
         pointsTextView.setText(user.points.toString());
         winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
         setStreak(user.streak);
-        winPercentTextView.setText(user.winningPercentage.toString());
+        winPercentTextView.setText(user.winningPercentage.toString() + "%");
     }
 
     public void setStreak(String streak) {
