@@ -45,7 +45,7 @@ public class GcmIntentService extends IntentService {
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 if (KnodaApplication.isActivityVisible()) {
-                    handleMessage(extras.getString("alert", ""));
+                    showAlert(extras.getString("alert", ""));
                 } else {
                     sendNotification(extras.getString("alert", ""));
                 }
@@ -77,34 +77,35 @@ public class GcmIntentService extends IntentService {
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
-    private void handleMessage(final String msg)
+    private void showAlert(final String msg)
     {
         Handler h = new Handler(Looper.getMainLooper());
         h.post(new Runnable() {
             @Override
             public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(((KnodaApplication)getApplication()).getCurrentActivity());
-                builder.setMessage(msg)
-                        .setCancelable(false)
-                        .setPositiveButton("Show", new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                ((MainActivity)((KnodaApplication)getApplication()).getCurrentActivity()).showActivities();
-                                dialog.cancel();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-                        {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
+                if (!KnodaApplication.alertShowing) {
+                    KnodaApplication.alertShowing = true;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(((KnodaApplication)getApplication()).getCurrentActivity());
+                    builder.setMessage(msg)
+                            .setCancelable(false)
+                            .setPositiveButton("Show", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    ((MainActivity) ((KnodaApplication) getApplication()).getCurrentActivity()).showActivities();
+                                    KnodaApplication.alertShowing = false;
+                                    dialog.cancel();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    KnodaApplication.alertShowing = false;
+                                    dialog.cancel();
+                                }
+                            });
+    
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+        }
         });
     }
 }
