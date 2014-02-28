@@ -290,6 +290,7 @@ public class NavigationDrawerFragment extends Fragment {
     };
 
     public void refreshActivity() {
+        try {
         networkingManager.getUnseenActivityItems(new NetworkListCallback<ActivityItem>() {
             @Override
             public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
@@ -301,6 +302,9 @@ public class NavigationDrawerFragment extends Fragment {
             handler.postDelayed(activityRefreshRunnable, activityRefreshInterval);
             }
         });
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Runnable userRefreshRunnable = new Runnable() {

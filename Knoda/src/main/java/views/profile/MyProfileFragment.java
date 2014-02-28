@@ -24,7 +24,6 @@ import models.PasswordChangeRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
-import unsorted.Logger;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 import views.login.PhotoChooserActivity;
@@ -63,7 +62,6 @@ public class MyProfileFragment extends BaseFragment {
                 userManager.signout(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
-                        Logger.log("Restart Activity");
                         ((MainActivity)getActivity()).restart();
                     }
                 });
