@@ -83,8 +83,6 @@ public class PredictionListCell extends RelativeLayout {
             disagreed = true;
             prediction.disagreedCount++;
         }
-
-        update();
     }
 
     public void setPrediction(Prediction prediction) {
