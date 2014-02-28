@@ -14,6 +14,7 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.ActivitiesViewedEvent;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
 
@@ -26,11 +27,22 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
     public ActivityFragment() {}
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bus.register(this);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("ActivityFeed");
         getActivity().getActionBar().setTitle("Activity");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        bus.post(new ActivitiesViewedEvent());
     }
 
     @Override

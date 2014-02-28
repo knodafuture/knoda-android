@@ -287,6 +287,7 @@ public class MainActivity extends BaseActivity
 
         navigationDrawerFragment.selectStartingItem();
         navigationDrawerFragment.refreshUser();
+        navigationDrawerFragment.refreshActivity();
 
         if (userManager.getUser().avatar == null) {
             Intent intent = new Intent(this, PhotoChooserActivity.class);

@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.knoda.knoda.R;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.ActivitiesViewedEvent;
 
 ;
 
@@ -71,6 +74,9 @@ public class NavigationDrawerFragment extends Fragment {
     @Inject
     UserManager userManager;
 
+    @Inject
+    Bus bus;
+
     NavigationAdapter adapter;
 
     private Handler handler = new Handler();
@@ -78,11 +84,17 @@ public class NavigationDrawerFragment extends Fragment {
 
     public NavigationDrawerFragment() {
     }
+    @Subscribe
+    public void activitiesViewed(ActivitiesViewedEvent event) {
+        handler.removeCallbacks(activityRefreshRunnable);
+        refreshActivity();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MainActivity) getActivity()).inject(this);
+        bus.register(this);
     }
 
     @Override
@@ -294,11 +306,10 @@ public class NavigationDrawerFragment extends Fragment {
         networkingManager.getUnseenActivityItems(new NetworkListCallback<ActivityItem>() {
             @Override
             public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
-                if (error != null || object == null)
-                    adapter.setAlertsCount(0);
-                else
-                    adapter.setAlertsCount(object.size());
-
+            if (error != null || object == null)
+                adapter.setAlertsCount(0);
+            else
+                adapter.setAlertsCount(object.size());
             handler.postDelayed(activityRefreshRunnable, activityRefreshInterval);
             }
         });
