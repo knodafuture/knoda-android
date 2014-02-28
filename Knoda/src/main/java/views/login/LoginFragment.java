@@ -121,7 +121,7 @@ public class LoginFragment extends BaseFragment {
             public void completionHandler(User object, ServerError error) {
                 spinner.hide();
                 if (error != null)
-                    errorReporter.showError(error);
+                    errorReporter.showError("Invalid username or password");
                 else
                     ((MainActivity)getActivity()).doLogin();
             }
