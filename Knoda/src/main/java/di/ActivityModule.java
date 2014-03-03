@@ -8,7 +8,6 @@ import adapters.PredictionAdapter;
 import dagger.Module;
 import dagger.Provides;
 import managers.NetworkingManager;
-import managers.SharedPrefManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
 import views.activity.ActivityFragment;
@@ -78,14 +77,6 @@ public class ActivityModule {
 
     @Provides @Singleton ErrorReporter provideReporter() {
         return new ErrorReporter(mActivity);
-    }
-
-    @Provides @Singleton UserManager provideUserManager() {
-        return new UserManager();
-    }
-
-    @Provides @Singleton SharedPrefManager provideSharedPrefManager() {
-        return new SharedPrefManager(mActivity);
     }
 
     @Provides @Singleton Bus provideBus() {

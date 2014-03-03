@@ -8,7 +8,6 @@ import javax.inject.Singleton;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.SignUpRequest;
-import views.core.BaseActivity;
 
 /**
  * Created by nick on 1/21/14.
@@ -17,7 +16,7 @@ import views.core.BaseActivity;
 @Singleton
 public class SharedPrefManager {
 
-    private BaseActivity activity;
+    private Context context;
 
     private static final String SAVED_USERNAME_KEY = "SAVEDUSERNAME";
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
@@ -25,12 +24,12 @@ public class SharedPrefManager {
     private static final String REG_ID_KEY = "REGISTRATION_ID";
     private static final String APP_VERSION_KEY = "APPVERSION";
 
-    public SharedPrefManager(BaseActivity activity) {
-        this.activity = activity;
+    public SharedPrefManager(Context context) {
+        this.context = context;
     }
 
     private SharedPreferences getSP() {
-        return activity.getSharedPreferences(activity.getPackageName(), Context.MODE_PRIVATE);
+        return context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
 
     }
     public void saveLoginRequestAndResponse(LoginRequest request, LoginResponse response) {
@@ -42,7 +41,7 @@ public class SharedPrefManager {
 
     public void saveSignupRequestAndResponse(SignUpRequest request, LoginResponse response) {
         SharedPreferences sharedPreferences = getSP();
-        sharedPreferences.edit().putString(SAVED_USERNAME_KEY, response.email).commit();
+        sharedPreferences.edit().putString(SAVED_USERNAME_KEY, request.email).commit();
         sharedPreferences.edit().putString(SAVED_PASSWORD_KEY, request.password).commit();
         sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, response.authToken).commit();
     }

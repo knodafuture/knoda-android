@@ -1,17 +1,15 @@
 package managers;
 
-import com.google.gson.Gson;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import unsorted.Logger;
-import networking.NetworkCallback;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.ServerError;
 import models.SignUpRequest;
 import models.User;
+import networking.NetworkCallback;
+import unsorted.Logger;
 
 /**
  * Created by nick on 1/21/14.
@@ -21,8 +19,15 @@ public class UserManager {
 
     public User user;
 
-    @Inject NetworkingManager networkingManager;
-    @Inject SharedPrefManager sharedPrefManager;
+    NetworkingManager networkingManager;
+    SharedPrefManager sharedPrefManager;
+
+    @Inject
+    public UserManager(NetworkingManager networkingManager, SharedPrefManager sharedPrefManager) {
+        this.sharedPrefManager = sharedPrefManager;
+        this.networkingManager = networkingManager;
+        Logger.log("USER MANAGER CONSTRUCTION");
+    }
 
     public void refreshUser(final NetworkCallback<User> callback) {
         networkingManager.getCurrentUser(new NetworkCallback<User>() {
@@ -58,7 +63,6 @@ public class UserManager {
                     return;
                 }
                 else {
-                    Logger.log(new Gson().toJson(loginResponse));
                     sharedPrefManager.setSavedAuthtoken(loginResponse.authToken);
                     refreshUser(new NetworkCallback<User>() {
                         @Override
@@ -108,6 +112,7 @@ public class UserManager {
             @Override
             public void completionHandler(User u, ServerError error) {
                 Logger.log("Clear session");
+                user = null;
                 sharedPrefManager.clearSession();
                 callback.completionHandler(user, error);
             }

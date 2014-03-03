@@ -52,8 +52,6 @@ public class BaseActivity extends Activity {
         KnodaApplication application = (KnodaApplication) getApplication();
         activityGraph = application.getApplicationGraph().plus(getModules().toArray());
         activityGraph.inject(this);
-        activityGraph.inject(userManager);
-        activityGraph.inject(networkingManager);
     }
 
     protected List<Object> getModules() {

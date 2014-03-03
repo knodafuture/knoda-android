@@ -29,7 +29,7 @@ public class NavigationListCell extends RelativeLayout implements Checkable {
     public void onFinishInflate() {
         iconImageView = (ImageView) findViewById(R.id.navigation_list_icon);
         labelTextView = (TextView) findViewById(R.id.navigation_list_text);
-        //selectedBackgroundView = (ImageView) findViewById(R.id.navigation_list_selected_background);
+        selectedBackgroundView = (ImageView) findViewById(R.id.navigation_list_selected_background);
         rightTextView = (TextView)findViewById(R.id.navigation_list_right_textview);
     }
 
@@ -40,10 +40,10 @@ public class NavigationListCell extends RelativeLayout implements Checkable {
     public void setChecked(boolean isChecked) {
         this.isChecked = isChecked;
 
-//        if (isChecked)
-//            selectedBackgroundView.setVisibility(VISIBLE);
-//        else
-//            selectedBackgroundView.setVisibility(INVISIBLE);
+        if (isChecked)
+            selectedBackgroundView.setVisibility(VISIBLE);
+        else
+            selectedBackgroundView.setVisibility(INVISIBLE);
     }
 
     public void toggle() {

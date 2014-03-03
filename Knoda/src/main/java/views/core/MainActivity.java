@@ -288,7 +288,7 @@ public class MainActivity extends BaseActivity
         navigationDrawerFragment.selectStartingItem();
         navigationDrawerFragment.refreshUser();
         navigationDrawerFragment.refreshActivity();
-
+        User u = userManager.getUser();
         if (userManager.getUser().avatar == null) {
             Intent intent = new Intent(this, PhotoChooserActivity.class);
             startActivity(intent);
@@ -415,5 +415,10 @@ public class MainActivity extends BaseActivity
     {
         super.onStop();
         FlurryAgent.onEndSession(this);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        User u = userManager.getUser();
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

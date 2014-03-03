@@ -6,7 +6,10 @@ import android.app.Application;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import dagger.ObjectGraph;
+import managers.UserManager;
 
 /**
  * Created by nick on 1/13/14.
@@ -16,11 +19,16 @@ public class KnodaApplication extends Application {
     private static boolean activityVisible;
     private Activity currentActivity = null;
 
+
+    @Inject
+    UserManager userManager;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         graph = ObjectGraph.create(getModules().toArray());
+        graph.inject(this);
     }
 
     protected List getModules() {

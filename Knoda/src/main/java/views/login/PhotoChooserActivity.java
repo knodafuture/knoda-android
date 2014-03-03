@@ -162,10 +162,15 @@ public class PhotoChooserActivity extends BaseActivity {
             public void completionHandler(User object, ServerError error) {
                 spinner.hide();
                 uploadInProgress = false;
-
-                if (error != null)
-                    errorReporter.showError("Please try again later");
-                finishAndReturnResult();
+                userManager.refreshUser(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        User u = userManager.getUser();
+                        if (error != null)
+                            errorReporter.showError("Please try again later");
+                        finishAndReturnResult();
+                    }
+                });
             }
         });
     }
