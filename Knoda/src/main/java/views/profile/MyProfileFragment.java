@@ -59,6 +59,7 @@ public class MyProfileFragment extends BaseFragment {
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alert.dismiss();
                 userManager.signout(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
