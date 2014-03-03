@@ -4,6 +4,8 @@ package views.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,14 +18,14 @@ import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import managers.NetworkingManager;
-import networking.NetworkCallback;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;
+import managers.NetworkingManager;
 import models.ServerError;
 import models.SignUpRequest;
 import models.User;
+import networking.NetworkCallback;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 
@@ -68,6 +70,18 @@ public class SignUpFragment extends BaseFragment {
         setupListeners();
         emailField.requestFocus();
         showKeyboard(emailField);
+        InputFilter filter = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++) {
+                    if (!Character.isLetterOrDigit(source.charAt(i))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+
+        usernameField.setFilters(new InputFilter[]{filter});
     }
 
     @Override
