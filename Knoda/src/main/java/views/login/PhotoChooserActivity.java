@@ -235,7 +235,7 @@ public class PhotoChooserActivity extends BaseActivity {
         InputStream in = null;
         OutputStream out = null;
         try {
-            in = assetManager.open("avatar_1.png");
+            in = assetManager.open(getRandomOctopus());
             File outFile = new File(getExternalFilesDir(null), CROP_RESULT_FILENAME);
             out = new FileOutputStream(outFile);
             copyFile(in, out);
@@ -257,6 +257,11 @@ public class PhotoChooserActivity extends BaseActivity {
         while((read = in.read(buffer)) != -1){
             out.write(buffer, 0, read);
         }
+    }
+
+    private String getRandomOctopus() {
+        int random = 1 + (int)(Math.random() * ((4) + 1));
+        return "avatar_" + random + ".png";
     }
 }
 
