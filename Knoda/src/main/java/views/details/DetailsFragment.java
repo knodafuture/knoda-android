@@ -265,6 +265,8 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onIDK() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), updateResolutionDate(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        DateTime dt = new DateTime();
+        dialog.getDatePicker().setMinDate(dt.plusDays(1).getMillis());
         dialog.setTitle("When will you know?");
         dialog.show();
 
@@ -279,12 +281,12 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 update.id = prediction.id;
 
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, day);
+                calendar.set(year, month, day, 12, 0);
                 update.resolutionDate = new DateTime(calendar.getTime());
 
                 spinner.show();
 
-                networkingManager.updatePrediction(prediction, new NetworkCallback<Prediction>() {
+                networkingManager.updatePrediction(update, new NetworkCallback<Prediction>() {
                     @Override
                     public void completionHandler(Prediction object, ServerError error) {
                         spinner.show();
@@ -294,6 +296,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                         else {
                             prediction = object;
                             headerview.setPrediction(prediction);
+                            spinner.hide();
                         }
                     }
                 });
