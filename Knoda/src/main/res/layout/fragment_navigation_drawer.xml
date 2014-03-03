@@ -6,7 +6,7 @@
     <ListView
         android:id="@+id/navigation_drawer_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:choiceMode="singleChoice"
         android:divider="@color/black"
         android:dividerHeight="2dp"/>
@@ -54,8 +54,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:text="10-13"
+            android:text="0-0"
             android:layout_alignTop="@id/navigation_list_stats_icon"
+            android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"/>
 
         <TextView style="@style/smallWhiteText"
