@@ -114,9 +114,13 @@ public class PredictionListCell extends RelativeLayout {
 
         if (prediction.isReadyForResolution && (prediction.challenge != null && prediction.challenge.isOwn) && !prediction.settled)
             voteImageView.setImageResource(R.drawable.prediction_alert);
-        else
-            voteImageView.setImageResource(getVoteImage());
+        else if (prediction.challenge != null) {
 
+            if (prediction.challenge.isOwn)
+                voteImageView.setImageBitmap(null);
+            else
+                voteImageView.setImageResource(getVoteImage());
+        }
         if (prediction.challenge == null || !prediction.settled) {
             resultTextView.setText("");
             return;
