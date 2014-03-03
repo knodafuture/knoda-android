@@ -97,14 +97,14 @@ public class PredictionListCell extends RelativeLayout {
         timeStampsTextView.setText(prediction.getMetdataString());
 
         commentCountTextView.setText(prediction.commentCount.toString());
-        if (prediction.challenge != null)
-            setAgree(prediction.challenge.agree);
-
 
         if (prediction.verifiedAccount)
             verifiedCheckmark.setVisibility(VISIBLE);
         else
             verifiedCheckmark.setVisibility(INVISIBLE);
+
+        agreed = (prediction.challenge != null && prediction.challenge.agree);
+        disagreed = (prediction.challenge != null && !prediction.challenge.agree);
 
         updateVoteImage();
     }
