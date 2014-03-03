@@ -23,7 +23,7 @@ public class DateUtil {
         } else if (period.getMonths() != 0)
             return period.getMonths() + "mo";
         else if (period.getDays() != 0 || period.getWeeks() != 0) {
-            int days = period.getWeeks() != 0 ? period.getWeeks() * 7 : period.getDays();
+            int days = period.getWeeks() != 0 ? period.getWeeks() * 7 + period.getDays(): period.getDays();
             return days + "d";
         }
         else if (period.getHours() != 0)
