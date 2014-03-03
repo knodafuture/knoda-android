@@ -25,6 +25,7 @@ public class CommentCell extends RelativeLayout {
     public TextView bodyTextView;
     public TextView timestampTextView;
     public ImageView verifiedCheckmark;
+    public ImageView voteImage;
 
     public CommentCell(Context context) {
         super(context);
@@ -45,6 +46,7 @@ public class CommentCell extends RelativeLayout {
         bodyTextView = (TextView)findViewById(R.id.comment_cell_body_textview);
         timestampTextView = (TextView)findViewById(R.id.comment_cell_timestamps_textview);
         verifiedCheckmark = (ImageView)findViewById(R.id.comment_cell_verified_checkmark);
+        voteImage = (ImageView)findViewById(R.id.comment_cell_vote_image);
     }
 
     public void populate(Comment comment) {
@@ -56,5 +58,19 @@ public class CommentCell extends RelativeLayout {
             verifiedCheckmark.setVisibility(VISIBLE);
         else
             verifiedCheckmark.setVisibility(INVISIBLE);
+
+        voteImage.setImageResource(getVoteImage(comment));
+    }
+
+    private int getVoteImage(Comment comment) {
+        if (comment.challenge == null)
+            return 0;
+
+        if (comment.challenge.agree)
+            return R.drawable.agree_marker;
+        else if (!comment.challenge.agree)
+            return R.drawable.disagree_marker;
+
+        return 0;
     }
 }
