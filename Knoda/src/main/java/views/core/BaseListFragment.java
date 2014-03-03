@@ -12,7 +12,6 @@ import android.widget.ListView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.handmark.pulltorefresh.library.extras.SoundPullEventListener;
 import com.knoda.knoda.R;
 
 import adapters.PagingAdapter;
@@ -84,11 +83,13 @@ public class BaseListFragment extends BaseFragment {
             }
         });
 
+        /*
         SoundPullEventListener<ListView> soundListener = new SoundPullEventListener<ListView>(getActivity());
         soundListener.addSoundEvent(PullToRefreshBase.State.PULL_TO_REFRESH, R.raw.pull_event);
         soundListener.addSoundEvent(PullToRefreshBase.State.RESET, R.raw.reset_sound);
         soundListener.addSoundEvent(PullToRefreshBase.State.REFRESHING, R.raw.refreshing_sound);
         pListView.setOnPullEventListener(soundListener);
+        */
     }
 
     @Override
