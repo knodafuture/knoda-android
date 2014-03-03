@@ -4,10 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -297,9 +294,9 @@ public class MainActivity extends BaseActivity
     private void registerGcm() {
         if (checkPlayServices()) {
             gcmManager = new GcmManager(networkingManager, sharedPrefManager, GoogleCloudMessaging.getInstance(this));
-            String regId = gcmManager.getRegistrationId(getAppVersion(getApplicationContext()));
+            String regId = gcmManager.getRegistrationId();
             if (regId.isEmpty()) {
-                gcmManager.registerInBackground(getAppVersion(getApplicationContext()));
+                gcmManager.registerInBackground();
             }
         } else {
             Log.i("MainActivity", "No valid Google Play Services APK found.");
@@ -369,17 +366,6 @@ public class MainActivity extends BaseActivity
     private void onSearch() {
         SearchFragment fragment = new SearchFragment();
         pushFragment(fragment);
-    }
-
-
-    private static int getAppVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
-        } catch (NameNotFoundException e) {
-            throw new RuntimeException("Could not get package name: " + e);
-        }
     }
 
     private boolean checkPlayServices() {
