@@ -211,7 +211,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 .setMessage("Don't be lame. Tell the truth. It's more fun this way. Is this really the wrong outcome?")
                 .create();
         alert.show();
-        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(sendBS());
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(sendBS(alert));
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 alert.dismiss();
@@ -219,11 +219,12 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         });
     }
 
-    private View.OnClickListener sendBS() {
+    private View.OnClickListener sendBS(final AlertDialog dialog) {
 
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.dismiss();
                 spinner.show();
 
                 networkingManager.sendBS(prediction.id, new NetworkCallback<Prediction>() {

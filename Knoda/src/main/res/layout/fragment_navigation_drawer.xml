@@ -1,15 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="@color/sideNavBlack">
 
     <ListView
         android:id="@+id/navigation_drawer_listview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
-        android:divider="@color/black"
-        android:dividerHeight="2dp"/>
+        android:dividerHeight="1px"/>
 
     <View
         android:layout_width="match_parent"
