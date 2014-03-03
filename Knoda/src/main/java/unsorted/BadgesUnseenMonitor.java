@@ -33,7 +33,7 @@ public class BadgesUnseenMonitor {
         networkingManager.getUnseenBadges(new NetworkListCallback<Badge>() {
             @Override
             public void completionHandler(ArrayList<Badge> object, ServerError error) {
-                if (object.size() > 0) {
+                if (object != null && object.size() > 0) {
                     LayoutInflater li = activity.getLayoutInflater();
                     final View unseenBadgeView = li.inflate(R.layout.view_unseen_badge, null);
                     NetworkImageView imageView = (NetworkImageView) unseenBadgeView.findViewById(R.id.badge_image);
