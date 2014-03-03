@@ -89,9 +89,11 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tagAdapter = new TagAdapter(getActivity(), this, null);
+        if (tagAdapter == null)
+            tagAdapter = new TagAdapter(getActivity(), this, null);
 
-        searchAdapter = new SearchAdapter(getActivity(), this, this, networkingManager.getImageLoader());
+        if (searchAdapter == null)
+            searchAdapter = new SearchAdapter(getActivity(), this, this, networkingManager.getImageLoader());
 
         onCancel();
 
