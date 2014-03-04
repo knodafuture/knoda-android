@@ -3,17 +3,22 @@
     android:layout_height="match_parent"
     android:background="@color/sideNavBlack">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
     <ListView
+        android:layout_marginTop="1dp"
         android:id="@+id/navigation_drawer_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
-        android:dividerHeight="0px"
-        android:divider="@null"/>
+        android:dividerHeight="1dp"
+        android:divider="@color/black"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_below="@id/navigation_drawer_listview"
         android:background="@color/black"/>
 

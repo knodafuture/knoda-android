@@ -40,10 +40,14 @@ public class NavigationListCell extends RelativeLayout implements Checkable {
     public void setChecked(boolean isChecked) {
         this.isChecked = isChecked;
 
-        if (isChecked)
+        if (isChecked) {
+            setBackgroundColor(getResources().getColor(R.color.knodaLightGreen));
             selectedBackgroundView.setVisibility(VISIBLE);
-        else
+        }
+        else {
+            setBackgroundColor(getResources().getColor(android.R.color.transparent));
             selectedBackgroundView.setVisibility(INVISIBLE);
+        }
     }
 
     public void toggle() {
