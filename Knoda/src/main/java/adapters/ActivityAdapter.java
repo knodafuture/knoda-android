@@ -36,10 +36,4 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         listItem.setActivityItem(item);
         return listItem;
     }
-
-    @Override
-    protected String getNoContentString() {
-        return "No Activity";
-    }
-
 }

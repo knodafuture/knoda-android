@@ -55,10 +55,4 @@ public class CommentAdapter extends DetailsAdapter<Comment> {
 
         return listItem;
     }
-
-    @Override
-    protected String getNoContentString() {
-        return "Be the first to comment.";
-    }
-
 }

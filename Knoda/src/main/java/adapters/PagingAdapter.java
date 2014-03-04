@@ -35,6 +35,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
 
     public interface PagingAdapterDatasource <T extends BaseModel> {
         void getObjectsAfterObject(T object, NetworkListCallback<T> callback);
+        String noContentString();
     }
 
     public interface  PagingAdapaterPageLoadFinishListener <T extends BaseModel> {
@@ -154,13 +155,9 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         objects.clear();
     }
 
-    protected String getNoContentString() {
-        return "";
-    }
-
     private View getNoContentView() {
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content, null);
-        ((TextView)view.findViewById(R.id.no_content_textview)).setText(getNoContentString());
+        ((TextView)view.findViewById(R.id.no_content_textview)).setText(datasource.noContentString());
         return view;
     }
 

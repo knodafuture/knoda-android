@@ -302,7 +302,10 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 });
             }
         };
+    }
 
-
+    @Override
+    public String noContentString() {
+        return "Be the first to comment.";
     }
 }

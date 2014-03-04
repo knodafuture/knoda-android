@@ -49,4 +49,9 @@ public class HistoryFragment extends BasePredictionListFragment {
             }
         });
     }
+
+    @Override
+    public String noContentString() {
+        return "Make your first prediction or vote.";
+    }
 }

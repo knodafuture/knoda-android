@@ -49,9 +49,4 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
 
         return listItem;
     }
-
-    @Override
-    protected String getNoContentString() {
-        return "Make your first prediction or vote.";
-    }
 }

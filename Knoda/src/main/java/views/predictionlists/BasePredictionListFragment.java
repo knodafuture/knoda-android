@@ -122,4 +122,9 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
             pushFragment(fragment);
         }
     }
+
+    @Override
+    public String noContentString() {
+        return "";
+    }
 }

@@ -84,4 +84,9 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         });
     }
 
+    @Override
+    public String noContentString() {
+        return "No Activity";
+    }
+
 }

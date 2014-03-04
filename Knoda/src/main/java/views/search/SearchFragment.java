@@ -166,4 +166,9 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         DetailsFragment fragment = new DetailsFragment(prediction);
         pushFragment(fragment);
     }
+
+    @Override
+    public String noContentString() {
+        return "Please try again later.";
+    }
 }
