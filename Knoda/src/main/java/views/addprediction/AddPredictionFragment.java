@@ -115,7 +115,7 @@ public class AddPredictionFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().getActionBar().setTitle("Predict");
+        setTitle("PREDICT");
 
         votingDatePicker = new DateTimePicker(voteDateEditText, voteTimeEditText,Calendar.getInstance(), new DateTimePicker.OnCalenderChangedListener() {
             @Override

@@ -66,7 +66,7 @@ public class HomeFragment extends BasePredictionListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().getActionBar().setTitle("Home");
+        setTitle("HOME");
         FlurryAgent.logEvent("Home_Screen");
         handleOverlay();
     }

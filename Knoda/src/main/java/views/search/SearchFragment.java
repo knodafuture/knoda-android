@@ -63,7 +63,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getActionBar().setTitle("");
+        setTitle("");
         menu.removeGroup(R.id.default_menu_group);
         inflater.inflate(R.menu.search, menu);
 

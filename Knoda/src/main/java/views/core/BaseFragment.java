@@ -68,4 +68,8 @@ public class BaseFragment extends Fragment {
         ((MainActivity) getActivity()).popFragment();
     }
 
+    public void setTitle(String title) {
+        ((MainActivity) getActivity()).setActionBarTitle(title);
+    }
+
 }

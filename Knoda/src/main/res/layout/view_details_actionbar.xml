@@ -2,26 +2,28 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="80dp"
     android:background="@color/lightGray">
 
     
     <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="9dp"
         android:clickable="true"
         android:id="@+id/details_action_comment_clickable"
         android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         
         <ImageView
             android:id="@+id/details_action_comment_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/action_commenticon"
-            android:layout_marginTop="10dp"
+            android:src="@drawable/action_commenticon_active"
             android:layout_centerHorizontal="true"/>
         
         <TextView
+            android:textColor="@color/knodaDarkGreen"
             android:id="@+id/details_action_comment_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,17 +39,19 @@
         android:clickable="true"
         android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="9dp">
 
         <ImageView
             android:id="@+id/details_action_tally_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/action_tallyicon"
-            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
         <TextView
+            android:textColor="@color/darkGray"
             android:id="@+id/details_action_tally_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,17 +67,19 @@
         android:clickable="true"
         android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="9dp">
 
         <ImageView
             android:id="@+id/details_action_similar_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/action_similaricon"
-            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
         <TextView
+            android:textColor="@color/darkGray"
             android:id="@+id/details_action_similar_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,14 +95,15 @@
         android:clickable="true"
         android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="9dp">
 
         <ImageView
             android:id="@+id/details_action_share_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/action_shareicon"
-            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"/>
 
         <TextView
@@ -106,6 +113,7 @@
             android:text="Share"
             android:layout_centerHorizontal="true"
             android:textSize="10dp"
+            android:textColor="@color/darkGray"
             android:layout_below="@id/details_action_share_imageview"/>
 
     </RelativeLayout>

@@ -60,7 +60,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().getActionBar().setTitle("Details");
+        setTitle("DETAILS");
         FlurryAgent.logEvent("Prediction_Details_Screen");
     }
 

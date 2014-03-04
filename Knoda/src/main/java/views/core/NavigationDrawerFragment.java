@@ -258,8 +258,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setTitle(R.string.app_name);
+        ((MainActivity)getActivity()).setActionBarTitle("KNODA");
     }
 
     private ActionBar getActionBar() {

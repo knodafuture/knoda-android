@@ -7,6 +7,8 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +31,7 @@ import java.util.HashMap;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import di.KnodaApplication;
+import helpers.TypefaceSpan;
 import managers.GcmManager;
 import models.KnodaScreen;
 import models.LoginRequest;
@@ -62,6 +65,7 @@ public class MainActivity extends BaseActivity
 
     private ArrayList<KnodaScreen> screens;
     private boolean actionBarEnabled = true;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,6 +223,7 @@ public class MainActivity extends BaseActivity
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        setActionBarTitle(title);
     }
 
     public void pushFragment(Fragment fragment) {
@@ -405,5 +410,21 @@ public class MainActivity extends BaseActivity
 
     public void setActionBarEnabled(boolean enabled) {
         actionBarEnabled = enabled;
+    }
+
+    public void setActionBarTitle(String title) {
+        if (title == "" || title == null) {
+            title = "KNODA";
+        }
+
+        SpannableString s = new SpannableString(title);
+        s.setSpan(new TypefaceSpan(this, "KronaOne-Regular.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(s);
+
+        if (title != "KNODA")
+            this.title = title;
     }
 }

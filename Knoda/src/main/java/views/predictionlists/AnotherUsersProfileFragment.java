@@ -29,7 +29,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().getActionBar().setTitle("");
+        setTitle("");
 
 
         networkingManager.getUser(userId, new NetworkCallback<User>() {
@@ -38,7 +38,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
                 if (error != null)
                     errorReporter.showError(error);
                 else {
-                    getActivity().getActionBar().setTitle(object.username);
+                    setTitle(object.username.toUpperCase());
                     ((AnotherUsersProfileAdapter)adapter).setUser(object);
                 }
             }

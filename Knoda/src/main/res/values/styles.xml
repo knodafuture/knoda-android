@@ -33,7 +33,7 @@
 
     <style name="smallDarkGreenText">
         <item name="android:textColor">@color/knodaDarkGreen</item>
-        <item name="android:textSize">5dp</item>
+        <item name="android:textSize">10dp</item>
     </style>
 
     <style name="largeWhiteText">

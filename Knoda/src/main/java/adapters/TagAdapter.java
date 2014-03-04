@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import models.Tag;
 
 /**
@@ -28,7 +30,7 @@ public class TagAdapter extends PagingAdapter<Tag> {
 
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_tags, null);
 
-        ((TextView)view.findViewById(R.id.tag_list_cell_textview)).setText(getItem(position).name);
+        ((TextView)view.findViewById(R.id.tag_list_cell_textview)).setText(WordUtils.capitalizeFully(getItem(position).name));
 
         return view;
     }

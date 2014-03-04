@@ -33,7 +33,7 @@ public class CategoryFragment extends BasePredictionListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().getActionBar().setTitle(tag.toUpperCase());
+        setTitle(tag.toUpperCase());
         Map<String, String> flurryParams = new HashMap<String, String>();
         flurryParams.put("Category", tag.toUpperCase());
         FlurryAgent.logEvent("Predictions_By_Category_Screen", flurryParams);

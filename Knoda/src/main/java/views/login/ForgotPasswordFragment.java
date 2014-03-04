@@ -40,7 +40,7 @@ public class ForgotPasswordFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.submit, menu);
         menu.removeGroup(R.id.default_menu_group);
-        getActivity().getActionBar().setTitle("");
+        setTitle("");
     }
 
     @Override

@@ -68,6 +68,10 @@ public class DetailsActionbar extends LinearLayout {
     }
 
     @OnClick(R.id.details_action_comment_clickable) void onComment() {
+        commentTextView.setTextColor(getResources().getColor(R.color.knodaDarkGreen));
+        commentImageView.setImageResource(R.drawable.action_commenticon_active);
+        tallyImageView.setImageResource(R.drawable.action_tallyicon);
+        tallyTextView.setTextColor(getResources().getColor(R.color.darkGray));
         delegate.onComments();
     }
 
@@ -76,6 +80,10 @@ public class DetailsActionbar extends LinearLayout {
     }
 
     @OnClick(R.id.details_action_tally_clickable) void onTally() {
+        commentTextView.setTextColor(getResources().getColor(R.color.darkGray));
+        commentImageView.setImageResource(R.drawable.action_commenticon);
+        tallyImageView.setImageResource(R.drawable.action_tallyicon_active);
+        tallyTextView.setTextColor(getResources().getColor(R.color.knodaDarkGreen));
         delegate.onTally();
     }
 

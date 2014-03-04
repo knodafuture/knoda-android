@@ -16,7 +16,6 @@
             android:id="@+id/add_prediction_user_avatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/knodaDarkGreen"
             android:layout_margin="10dp"/>
 
         <EditText
@@ -46,7 +45,7 @@
     <RelativeLayout
         android:id="@+id/add_prediction_topic_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/white"
         android:layout_marginTop="5dp">
 
@@ -76,7 +75,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/white"
         android:layout_marginTop="5dp">
 
@@ -129,7 +128,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/white"
         android:layout_marginTop="5dp">
 

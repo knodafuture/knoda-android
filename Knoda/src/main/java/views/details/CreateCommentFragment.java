@@ -44,7 +44,7 @@ public class CreateCommentFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        getActivity().getActionBar().setTitle("Comment");
+        setTitle("COMMENT");
     }
 
     @Override

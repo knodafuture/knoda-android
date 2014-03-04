@@ -184,7 +184,7 @@ public class MyProfileFragment extends BaseFragment {
         header.avatarImageView.setImageBitmap(bitmap);
     }
     private void updateUser(User user) {
-        getActivity().getActionBar().setTitle(user.username);
+        setTitle(user.username.toUpperCase());
         username.setText(user.username);
         email.setText(user.email);
         header.setUser(user);
