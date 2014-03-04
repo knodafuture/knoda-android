@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import managers.NetworkingManager;
+import managers.SharedPrefManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
 
@@ -29,6 +30,8 @@ public class BaseFragment extends Fragment {
     @Inject public UserManager userManager;
 
     @Inject public Bus bus;
+
+    @Inject public SharedPrefManager sharedPrefManager;
 
     @Override public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

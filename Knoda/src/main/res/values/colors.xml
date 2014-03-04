@@ -10,4 +10,5 @@
     <color name="sideNavBlack">#222222</color>
     <color name="lightGray">#EFEFEF</color>
     <color name="red">#FE3232</color>
+    <color name="darkerTransparentBlack">#CC000000</color>
 </resources>

@@ -22,6 +22,7 @@ public class SharedPrefManager {
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
     private static final String REG_ID_KEY = "REGISTRATION_ID";
+    private static final String FIRST_LAUNCH_KEY = "FIRST_LAUNCH";
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -86,6 +87,17 @@ public class SharedPrefManager {
             .remove(SAVED_USERNAME_KEY)
             .remove(SAVED_AUTHTOKEN_KEY)
             .commit();
+    }
+
+    public void setFirstLaunch(boolean firstLaunch) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putBoolean(FIRST_LAUNCH_KEY, firstLaunch).commit();
+    }
+
+    public boolean getFirstLaunch() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getBoolean(FIRST_LAUNCH_KEY, true);
+
     }
 
 }

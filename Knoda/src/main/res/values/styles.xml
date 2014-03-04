@@ -35,4 +35,9 @@
         <item name="android:textColor">@color/knodaDarkGreen</item>
         <item name="android:textSize">5dp</item>
     </style>
+
+    <style name="largeWhiteText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18dp</item>
+    </style>
 </resources>

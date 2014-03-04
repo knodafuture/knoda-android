@@ -137,8 +137,10 @@ public class SignUpFragment extends BaseFragment {
                 spinner.hide();
                 if (error != null)
                     errorReporter.showError(error);
-                else
+                else {
+                    sharedPrefManager.setFirstLaunch(true);
                     ((MainActivity)getActivity()).doLogin();
+                }
             }
         });
 

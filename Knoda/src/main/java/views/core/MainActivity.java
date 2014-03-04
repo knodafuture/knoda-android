@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity
     GoogleCloudMessaging gcm;
 
     private ArrayList<KnodaScreen> screens;
+    private boolean actionBarEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,7 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (progressView.getVisibility() == View.VISIBLE)
+        if (progressView.getVisibility() == View.VISIBLE || !actionBarEnabled)
             return true;
 
         switch (item.getItemId()) {
@@ -400,5 +401,9 @@ public class MainActivity extends BaseActivity
     {
         super.onStop();
         FlurryAgent.onEndSession(this);
+    }
+
+    public void setActionBarEnabled(boolean enabled) {
+        actionBarEnabled = enabled;
     }
 }
