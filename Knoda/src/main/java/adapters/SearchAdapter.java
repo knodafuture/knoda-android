@@ -44,7 +44,7 @@ public class SearchAdapter extends BaseAdapter {
     private ArrayList<Prediction> predictions = new ArrayList<Prediction>();
     private ArrayList<User> users = new ArrayList<User>();
 
-    private ArrayList<ItemEntry> items = new ArrayList<ItemEntry>();
+    public ArrayList<ItemEntry> items = new ArrayList<ItemEntry>();
 
     boolean loading;
 

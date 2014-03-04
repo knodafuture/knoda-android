@@ -35,6 +35,8 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     SearchAdapter searchAdapter;
     SearchView searchView;
 
+    private String searchTerm;
+
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
         return fragment;
@@ -68,7 +70,12 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         MenuItem menuItem = menu.findItem(R.id.search);
         searchView = (SearchView)menuItem.getActionView();
         searchView.setCallbacks(this);
-        showKeyboard(searchView.searchField);
+
+
+        if (searchTerm != null) {
+            searchView.searchField.setText(searchTerm);
+        } else
+            showKeyboard(searchView.searchField);
 
     }
 
@@ -95,9 +102,10 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         if (searchAdapter == null)
             searchAdapter = new SearchAdapter(getActivity(), this, this, networkingManager.getImageLoader());
 
-        onCancel();
-
-
+        if (searchAdapter.items.size() > 0)
+            listview.setAdapter(searchAdapter);
+        else
+            onCancel();
     }
 
 
@@ -105,6 +113,8 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     public void onSearch(String string) {
 
         hideKeyboard();
+
+        searchTerm = string;
 
         listview.setAdapter(searchAdapter);
 
