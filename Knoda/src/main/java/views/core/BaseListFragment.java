@@ -82,14 +82,6 @@ public class BaseListFragment extends BaseFragment {
                 adapter.loadPage(0);
             }
         });
-
-        /*
-        SoundPullEventListener<ListView> soundListener = new SoundPullEventListener<ListView>(getActivity());
-        soundListener.addSoundEvent(PullToRefreshBase.State.PULL_TO_REFRESH, R.raw.pull_event);
-        soundListener.addSoundEvent(PullToRefreshBase.State.RESET, R.raw.reset_sound);
-        soundListener.addSoundEvent(PullToRefreshBase.State.REFRESHING, R.raw.refreshing_sound);
-        pListView.setOnPullEventListener(soundListener);
-        */
     }
 
     @Override

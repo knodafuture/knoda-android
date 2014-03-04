@@ -1,9 +1,12 @@
 package views.predictionlists;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.flurry.android.FlurryAgent;
+import com.knoda.knoda.R;
 
 public class HomeFragment extends BasePredictionListFragment {
 
@@ -13,10 +16,12 @@ public class HomeFragment extends BasePredictionListFragment {
     }
     public HomeFragment() {}
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        return view;
     }
 
     @Override

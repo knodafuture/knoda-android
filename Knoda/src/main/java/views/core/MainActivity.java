@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity
     private HashMap<KnodaScreen, Fragment> instanceMap;
 
     @InjectView(R.id.splash_screen)
-    public FrameLayout splashScreen;
+    public RelativeLayout splashScreen;
 
     GoogleCloudMessaging gcm;
 

@@ -18,17 +18,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/splash_screen"
         android:clickable="true"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/knodaLightGreen">
         <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:src="@drawable/splash"/>
-    </FrameLayout>
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/splash_logo"/>
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/progress_view"
