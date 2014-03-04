@@ -125,8 +125,7 @@ public class WelcomeFragment extends BaseFragment {
 
     private class ImagePagerAdapter extends PagerAdapter {
         private int[] mImages = new int[] {
-                R.drawable.splash_logo,
-                R.drawable.no_content_placeholder
+                R.drawable.splash_logo
         };
 
         @Override
