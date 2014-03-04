@@ -59,9 +59,13 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
     }
 
     @Override
+    public void onProfileTapped(final PredictionListCell cell) {
+    }
+
+    @Override
     public void onItemClicked(int position) {
         position = position - 1;
-        if (position < 0)
+        if (position <= 0)
             return;
 
         super.onItemClicked(position);
