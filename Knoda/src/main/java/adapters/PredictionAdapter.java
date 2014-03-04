@@ -48,6 +48,10 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
 
         return listItem;
+    }
 
+    @Override
+    protected String getNoContentString() {
+        return "Make your first prediction or vote.";
     }
 }

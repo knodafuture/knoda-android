@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
@@ -16,7 +17,6 @@ import managers.NetworkingManager;
 import models.BaseModel;
 import models.ServerError;
 import networking.NetworkListCallback;
-import unsorted.Logger;
 
 /**
  * Created by nick on 2/1/14.
@@ -31,6 +31,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
 
     public Integer currentPage;
     public boolean loading;
+    public boolean noObjectsRetrieved;
 
     public interface PagingAdapterDatasource <T extends BaseModel> {
         void getObjectsAfterObject(T object, NetworkListCallback<T> callback);
@@ -76,21 +77,20 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
     }
 
     public void insertAt(T object, int index) {
-        Logger.log("OTTO# preinsert " + getCount());
         objects.add(index, object);
         notifyDataSetChanged();
-        Logger.log("OTTO# postinsert " + getCount());
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        if (objects.size() == 0 && noObjectsRetrieved)
+            return getNoContentView();
 
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_loading, null);
         return view;
     }
 
     public void loadPage(final int page) {
-        Logger.log("OTTO# loading page");
         if (loading)
             return;
 
@@ -104,11 +104,13 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
             public void completionHandler(ArrayList<T> objectsToAdd, ServerError error) {
                 loading = false;
 
-                if (error != null || objectsToAdd == null || objectsToAdd.size() == 0)
+                if (error != null || objectsToAdd == null)
                     return;
 
-                if (page == 0)
+                if (page == 0) {
+                    noObjectsRetrieved = objectsToAdd.size() == 0;
                     objects = objectsToAdd;
+                }
                 else
                     objects.addAll(objectsToAdd);
 
@@ -141,7 +143,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
             public void onScroll(AbsListView absListView, int firstVisible, int visibleCount, int totalCount) {
                 boolean shouldLoadMore = firstVisible + visibleCount >= totalCount;
 
-                if (shouldLoadMore)
+                if (shouldLoadMore && totalCount > NetworkingManager.PAGE_LIMIT)
                     loadPage(currentPage + 1);
             }
         };
@@ -150,6 +152,16 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
     public void reset() {
         currentPage = 0;
         objects.clear();
+    }
+
+    protected String getNoContentString() {
+        return "";
+    }
+
+    private View getNoContentView() {
+        View view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content, null);
+        ((TextView)view.findViewById(R.id.no_content_textview)).setText(getNoContentString());
+        return view;
     }
 
 }
