@@ -149,7 +149,8 @@
                 android:src="@drawable/comment_icon"
                 android:layout_toRightOf="@id/prediction_cell_timestamps_textview"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:paddingBottom="10dp"/>
 
             <TextView style="@style/smallGreenText"
                 android:id="@+id/prediction_cell_comment_textview"
