@@ -1,12 +1,9 @@
 package views.core;
 
 import android.app.ActionBar;
-import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -110,16 +107,6 @@ public class MainActivity extends BaseActivity
         if (getIntent().getBooleanExtra("showActivity", false)) {
             showActivities();
         }
-        final PendingIntent intent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,
-                new Intent(getIntent()), getIntent().getFlags());
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, Throwable throwable) {
-                AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 500, intent);
-                System.exit(2);
-            }
-        });
     }
 
     @Override

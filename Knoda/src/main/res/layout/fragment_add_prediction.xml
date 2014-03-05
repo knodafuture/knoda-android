@@ -27,7 +27,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:inputType="textMultiLine"
-            android:hint="Make a  prediction..."
+            android:hint="Make a prediction..."
             android:gravity="top"
             android:background="@null"/>
 
