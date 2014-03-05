@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.knoda.knoda.R;
@@ -15,7 +15,7 @@ import butterknife.OnClick;
 /**
  * Created by nick on 2/13/14.
  */
-public class DetailsActionbar extends LinearLayout {
+public class DetailsActionbar extends RelativeLayout {
 
     public interface DetailsActionBarDelegate {
         void onComments();

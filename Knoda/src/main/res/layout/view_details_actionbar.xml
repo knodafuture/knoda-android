@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
     android:background="@color/lightGray">
-
+<LinearLayout
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true">
     
     <RelativeLayout
         android:layout_marginTop="10dp"
         android:layout_marginBottom="9dp"
         android:clickable="true"
         android:id="@+id/details_action_comment_clickable"
-        android:layout_marginLeft="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         
@@ -117,7 +118,5 @@
             android:layout_below="@id/details_action_share_imageview"/>
 
     </RelativeLayout>
-    
-
-
+</LinearLayout>
 </merge>
