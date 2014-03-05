@@ -43,6 +43,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
     public void onResume() {
         super.onResume();
         bus.post(new ActivitiesViewedEvent());
+        adapter.loadPage(0);
     }
 
     @Override
