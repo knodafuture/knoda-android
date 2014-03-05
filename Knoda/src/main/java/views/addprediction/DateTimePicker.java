@@ -36,7 +36,8 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
         this.dateEditText = dateEditText;
         this.timeEditText = timeEditText;
         this.callback = listener;
-        this.calendar = minimumCalender;
+        this.calendar = Calendar.getInstance();
+        this.calendar.setTime(minimumCalender.getTime());
         this.minimumCalender = minimumCalender;
         this.dateEditText.setOnClickListener(this);
         this.timeEditText.setOnClickListener(this);
@@ -48,7 +49,6 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
     public void onClick(View v) {
         if (v == dateEditText) {
             DatePickerDialog dialog = new DatePickerDialog(dateEditText.getContext(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            dialog.getDatePicker().setMinDate(minimumCalender.getTimeInMillis());
             dialog.show();
         } else if (v == timeEditText) {
             TimePickerDialog dialog = new TimePickerDialog(timeEditText.getContext(), this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), android.text.format.DateFormat.is24HourFormat(timeEditText.getContext()));
@@ -59,6 +59,8 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         calendar.set(year, month, day);
+        if (calendar.getTime().before(minimumCalender.getTime()))
+            calendar.setTime(minimumCalender.getTime());
         updateLabels();
         if (callback != null) {
             Calendar newCalender = Calendar.getInstance();
@@ -72,13 +74,13 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minutes);
 
-        if (calendar.getTimeInMillis() < minimumCalender.getTimeInMillis())
-            calendar.setTimeInMillis(minimumCalender.getTimeInMillis());
+        if (calendar.getTime().before(minimumCalender.getTime()))
+            calendar.setTime(minimumCalender.getTime());
 
         updateLabels();
         if (callback != null) {
             Calendar newCalender = Calendar.getInstance();
-            newCalender.setTimeInMillis(calendar.getTimeInMillis());
+            newCalender.setTime(calendar.getTime());
             callback.onCalenderChanged(newCalender);
         }
     }
@@ -93,8 +95,8 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
     }
 
     public void setMinimumCalender(Calendar minimumCalender) {
-        if (this.calendar.getTimeInMillis() < minimumCalender.getTimeInMillis()) {
-            this.calendar.setTimeInMillis(minimumCalender.getTimeInMillis());
+        if (this.calendar.getTime().before(minimumCalender.getTime())) {
+            this.calendar.setTime(minimumCalender.getTime());
             updateLabels();
         }
 
