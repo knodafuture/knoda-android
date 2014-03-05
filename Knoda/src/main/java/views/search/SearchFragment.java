@@ -56,11 +56,10 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroyView() {
+        super.onDestroyView();
         hideKeyboard();
     }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         setTitle("");
@@ -70,13 +69,6 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         MenuItem menuItem = menu.findItem(R.id.search);
         searchView = (SearchView)menuItem.getActionView();
         searchView.setCallbacks(this);
-
-
-        if (searchTerm != null) {
-            searchView.searchField.setText(searchTerm);
-        } else
-            showKeyboard(searchView.searchField);
-
     }
 
     @Override
@@ -106,6 +98,12 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
             listview.setAdapter(searchAdapter);
         else
             onCancel();
+
+
+        if (searchTerm != null) {
+            searchView.searchField.setText(searchTerm);
+        } else
+            showKeyboard(searchView.searchField);
     }
 
 

@@ -48,10 +48,10 @@ public class BaseActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         KnodaApplication application = (KnodaApplication) getApplication();
         activityGraph = application.getApplicationGraph().plus(getModules().toArray());
         activityGraph.inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     protected List<Object> getModules() {

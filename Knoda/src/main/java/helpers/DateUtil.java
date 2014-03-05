@@ -12,7 +12,7 @@ public class DateUtil {
         DateTime now = new DateTime();
 
         Period period;
-        if (date.isBeforeNow())
+        if (date.isBeforeNow() || date.isEqualNow())
             period = new Period(date, now);
         else
             period = new Period(now, date);

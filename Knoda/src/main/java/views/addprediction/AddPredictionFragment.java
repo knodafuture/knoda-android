@@ -16,6 +16,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -210,13 +212,17 @@ public class AddPredictionFragment extends BaseFragment {
     private boolean validate() {
         String errorMessage = null;
 
+        DateTime votingDate = votingDatePicker.getDateTime();
+        DateTime resolutionDate = resolutionDatePicker.getDateTime();
+        DateTime now = new DateTime();
+
         if (bodyEditText.getText().length() == 0)
             errorMessage = "Please enter a prediction.";
         else if (selectedTag == null)
             errorMessage = "Please select a category.";
-        else if (resolutionDatePicker.getDateTime().isBefore(votingDatePicker.getDateTime()))
+        else if (resolutionDate.isBefore(votingDate))
             errorMessage = "You can't Knoda Future before the voting deadline.";
-        else if (resolutionDatePicker.getDateTime().isBeforeNow() || votingDatePicker.getDateTime().isBeforeNow())
+        else if (resolutionDate.isBefore(now) || votingDate.isBefore(now))
             errorMessage = "You can't end voting or resolve your prediction in the past";
 
         if (errorMessage != null) {
