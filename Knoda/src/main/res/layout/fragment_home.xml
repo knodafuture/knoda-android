@@ -80,6 +80,7 @@
                 <TextView style="@style/largeWhiteText"
                     android:layout_toLeftOf="@id/overlay_agree_arrows"
                     android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Swipe right to agree with a prediction"/>
@@ -112,13 +113,13 @@
 
             </RelativeLayout>
 
-            <TextView style="@style/largeWhiteText"
+            <!--<TextView style="@style/largeWhiteText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tap on a prediction to view more details"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/overlay_disagree_prompt"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"/>-->
 
             </RelativeLayout>
         <Button style="@style/largeWhiteText"

@@ -107,7 +107,6 @@ public class MainActivity extends BaseActivity
         if (getIntent().getBooleanExtra("showActivity", false)) {
             showActivities();
         }
-
     }
 
     @Override

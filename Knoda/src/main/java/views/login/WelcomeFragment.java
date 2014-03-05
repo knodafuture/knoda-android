@@ -1,13 +1,17 @@
 package views.login;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.knoda.knoda.R;
 
@@ -73,7 +77,31 @@ public class WelcomeFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         setUpOnClickListeners();
+        final View swipeMore = (View) view.findViewById(R.id.swipe_more);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_flipper);
+        final ImagePagerAdapter adapter = new ImagePagerAdapter();
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
 
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if (i == (adapter.getCount() - 1)) {
+                      swipeMore.setVisibility(View.INVISIBLE);
+                } else {
+                    swipeMore.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     public void setUpOnClickListeners() {
@@ -94,4 +122,35 @@ public class WelcomeFragment extends BaseFragment {
         });
     }
 
+
+    private class ImagePagerAdapter extends PagerAdapter {
+        private int[] mImages = new int[] {
+                R.drawable.splash_logo
+        };
+
+        @Override
+        public int getCount() {
+            return mImages.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == ((ImageView) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Context context = getActivity();
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setImageResource(mImages[position]);
+            ((ViewPager) container).addView(imageView, 0);
+            return imageView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ((ViewPager) container).removeView((ImageView) object);
+        }
+    }
 }
