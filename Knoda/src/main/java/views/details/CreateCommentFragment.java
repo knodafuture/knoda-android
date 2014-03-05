@@ -21,6 +21,7 @@ import models.Comment;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
+import pubsub.NewCommentEvent;
 import views.addprediction.MessageCounter;
 import views.core.BaseFragment;
 
@@ -118,6 +119,7 @@ public class CreateCommentFragment extends BaseFragment {
                 if (error != null)
                     errorReporter.showError(error);
                 else
+                    bus.post(new NewCommentEvent(object));
                     popFragment();
             }
         });
