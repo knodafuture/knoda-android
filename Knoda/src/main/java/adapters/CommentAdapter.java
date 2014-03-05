@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import helpers.AdapterHelper;
 import models.Comment;
+import pubsub.NewCommentEvent;
 import views.details.CommentCell;
 
 /**
@@ -16,14 +19,22 @@ import views.details.CommentCell;
 public class CommentAdapter extends DetailsAdapter<Comment> {
 
     private CommentAdapterDelegate delegate;
+    public Bus bus;
+
+    @Subscribe
+    public void newComment(NewCommentEvent event) {
+        insertAt(event.comment, 0);
+    }
 
     public interface CommentAdapterDelegate {
         void onUserClicked(Integer userId);
     }
 
-    public CommentAdapter(Context context, PagingAdapterDatasource<Comment> datasource, CommentAdapterDelegate delegate, ImageLoader imageLoader) {
+    public CommentAdapter(Context context, PagingAdapterDatasource<Comment> datasource, CommentAdapterDelegate delegate, ImageLoader imageLoader, Bus bus) {
         super(context, datasource, imageLoader);
         this.delegate = delegate;
+        this.bus = bus;
+        this.bus.register(this);
     }
 
     @Override
