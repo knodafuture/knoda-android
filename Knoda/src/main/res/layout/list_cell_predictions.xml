@@ -132,7 +132,7 @@
             android:layout_below="@id/prediction_cell_body_container"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:paddingBottom="10dp"
             android:layout_marginTop="5dp">
 
             <TextView style="@style/smallGreenText"
