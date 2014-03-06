@@ -36,6 +36,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     SearchView searchView;
 
     private String searchTerm;
+    private boolean keyboardHandled = false;
 
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
@@ -69,9 +70,11 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         MenuItem menuItem = menu.findItem(R.id.search);
         searchView = (SearchView)menuItem.getActionView();
         searchView.setCallbacks(this);
-        if (searchTerm == null) {
+        if (searchTerm == null && !keyboardHandled) {
             showKeyboard(searchView.searchField);
+            keyboardHandled = true;
         }
+
     }
 
     @Override
@@ -102,12 +105,12 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         else
             onCancel();
 
-
         if (searchTerm != null) {
             searchView.searchField.setText(searchTerm);
         } else {
-            if (searchView != null) {
+            if (searchView != null && !keyboardHandled) {
                 showKeyboard(searchView.searchField);
+                keyboardHandled = true;
             }
         }
     }
