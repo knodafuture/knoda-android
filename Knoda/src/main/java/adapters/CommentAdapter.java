@@ -23,7 +23,7 @@ public class CommentAdapter extends DetailsAdapter<Comment> {
 
     @Subscribe
     public void newComment(NewCommentEvent event) {
-        insertAt(event.comment, 0);
+        insertAt(event.comment, objects.size());
     }
 
     public interface CommentAdapterDelegate {
