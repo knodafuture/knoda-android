@@ -13,6 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.InjectView;
+import butterknife.Optional;
 import dagger.ObjectGraph;
 import di.ActivityModule;
 import di.KnodaApplication;
@@ -37,6 +38,7 @@ public class BaseActivity extends Activity {
     @Inject
     public SharedPrefManager sharedPrefManager;
 
+    @Optional
     @InjectView(R.id.progress_view)
     public FrameLayout progressView;
 

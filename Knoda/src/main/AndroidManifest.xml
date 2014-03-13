@@ -31,11 +31,6 @@
             android:name="views.core.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="views.login.PhotoChooserActivity"
@@ -48,6 +43,15 @@
             android:label="@string/app_name"
             android:parentActivityName="views.login.PhotoChooserActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="views.core.SplashActivity"
+            android:label="Knoda"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name="gcm.GcmBroadcastReceiver"

@@ -188,7 +188,8 @@ public class MyProfileFragment extends BaseFragment {
         username.setText(user.username);
         email.setText(user.email);
         header.setUser(user);
-        header.avatarImageView.setImageUrl(user.avatar.big, networkingManager.getImageLoader());
+        if (user.avatar != null)
+            header.avatarImageView.setImageUrl(user.avatar.big, networkingManager.getImageLoader());
     }
 
     private View.OnClickListener changePassword(final View changePasswordView, final AlertDialog dialog) {

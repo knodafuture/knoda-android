@@ -4,6 +4,7 @@ package views.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -43,6 +44,8 @@ public class SignUpFragment extends BaseFragment {
 
     @OnClick(R.id.signup_privacy_button) void onPP() {openUrl(NetworkingManager.privacyPolicyUrl);}
 
+    private static final int avatarResultCode = 123988123;
+
     public static SignUpFragment newInstance() {
         SignUpFragment fragment = new SignUpFragment();
         return fragment;
@@ -70,7 +73,8 @@ public class SignUpFragment extends BaseFragment {
         setupListeners();
         emailField.requestFocus();
         showKeyboard(emailField);
-        InputFilter filter = new InputFilter() {
+        InputFilter[] filterArray = new InputFilter[2];
+        filterArray[0] = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 for (int i = start; i < end; i++) {
                     if (!Character.isLetterOrDigit(source.charAt(i))) {
@@ -80,8 +84,8 @@ public class SignUpFragment extends BaseFragment {
                 return null;
             }
         };
-
-        usernameField.setFilters(new InputFilter[]{filter});
+        filterArray[1] = new InputFilter.LengthFilter(15);
+        usernameField.setFilters(filterArray);
     }
 
     @Override
@@ -115,6 +119,12 @@ public class SignUpFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideKeyboard();
+    }
+
     public void doSignup() {
         hideKeyboard();
         emailField.clearFocus();
@@ -139,7 +149,8 @@ public class SignUpFragment extends BaseFragment {
                     errorReporter.showError(error);
                 else {
                     sharedPrefManager.setFirstLaunch(true);
-                    ((MainActivity)getActivity()).doLogin();
+                    Intent intent = new Intent(getActivity(), PhotoChooserActivity.class);
+                    startActivityForResult(intent, avatarResultCode);
                 }
             }
         });
@@ -171,5 +182,17 @@ public class SignUpFragment extends BaseFragment {
         return true;
 
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                ((MainActivity) getActivity()).doLogin();
+            }
+        };
 
+        handler.postDelayed(runnable, 500);
+
+    }
 }

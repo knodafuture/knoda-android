@@ -12,6 +12,7 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import views.profile.PhotoFragment;
 
 /**
  * Created by nick on 2/3/14.
@@ -19,6 +20,7 @@ import networking.NetworkListCallback;
 public class AnotherUsersProfileFragment extends BasePredictionListFragment {
 
     private Integer userId;
+    private User user;
 
     public AnotherUsersProfileFragment(Integer userId) {
         super();
@@ -35,9 +37,10 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         networkingManager.getUser(userId, new NetworkCallback<User>() {
             @Override
             public void completionHandler(User object, ServerError error) {
-                if (error != null)
+                if (error != null || object == null)
                     errorReporter.showError(error);
                 else {
+                    user = object;
                     setTitle(object.username.toUpperCase());
                     ((AnotherUsersProfileAdapter)adapter).setUser(object);
                 }
@@ -65,8 +68,13 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
     @Override
     public void onItemClicked(int position) {
         position = position - 1;
-        if (position <= 0)
+        if (position <= 0) {
+            if (user.avatar != null) {
+                PhotoFragment fragment = new PhotoFragment(user.avatar.big);
+                pushFragment(fragment);
+            }
             return;
+        }
 
         super.onItemClicked(position);
     }

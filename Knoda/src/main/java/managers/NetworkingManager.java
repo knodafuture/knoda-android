@@ -418,7 +418,6 @@ public class NetworkingManager {
         Response.Listener<T> responseListener = new Response.Listener<T>() {
             @Override
             public void onResponse(T t) {
-                Logger.log("RESPONSE RECEIVED.");
                 callback.completionHandler(t, null);
             }
         };

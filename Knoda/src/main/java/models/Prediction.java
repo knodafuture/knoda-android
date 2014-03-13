@@ -104,13 +104,13 @@ public class Prediction extends BaseModel {
         String string = "";
 
         if (points.basePoints > 0)
-            string += "+" + points.basePoints + "Base \n";
+            string += "+" + points.basePoints + " Base \n";
         if (points.outcomePoints > 0)
-            string += "+" + points.outcomePoints + "Outcome \n";
+            string += "+" + points.outcomePoints + " Outcome \n";
         if (points.marketSizePoints > 0)
-            string += "+" + points.marketSizePoints + "Market \n";
+            string += "+" + points.marketSizePoints +  "Market \n";
         if (points.predictionMarketPoints > 0)
-            string += "+" + points.predictionMarketPoints + marketSizeNameForPoints(points.predictionMarketPoints) + "\n";
+            string += "+" + points.predictionMarketPoints + " " + marketSizeNameForPoints(points.predictionMarketPoints) + "\n";
 
         return string;
 

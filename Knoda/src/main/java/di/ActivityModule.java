@@ -17,6 +17,7 @@ import views.core.BaseActivity;
 import views.core.MainActivity;
 import views.core.NavigationDrawerFragment;
 import views.core.Spinner;
+import views.core.SplashActivity;
 import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
 import views.login.ForgotPasswordFragment;
@@ -29,6 +30,7 @@ import views.predictionlists.CategoryFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
+import views.profile.PhotoFragment;
 import views.search.SearchFragment;
 
 /**
@@ -58,7 +60,9 @@ import views.search.SearchFragment;
                 NavigationDrawerFragment.class,
                 CreateCommentFragment.class,
                 Bus.class,
-                PredictionAdapter.class
+                PredictionAdapter.class,
+                SplashActivity.class,
+                PhotoFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

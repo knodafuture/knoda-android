@@ -14,9 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
@@ -29,15 +26,11 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import di.KnodaApplication;
 import helpers.TypefaceSpan;
 import managers.GcmManager;
 import models.KnodaScreen;
-import models.LoginRequest;
-import models.ServerError;
 import models.User;
-import networking.NetworkCallback;
 import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
@@ -57,9 +50,6 @@ public class MainActivity extends BaseActivity
 
     private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
     private HashMap<KnodaScreen, Fragment> instanceMap;
-
-    @InjectView(R.id.splash_screen)
-    public RelativeLayout splashScreen;
 
     GoogleCloudMessaging gcm;
 
@@ -86,22 +76,12 @@ public class MainActivity extends BaseActivity
         initializeFragmentBackStack();
         setUpNavigation();
 
-        final LoginRequest request = sharedPrefManager.getSavedLoginRequest();
+        final User user = userManager.getUser();
 
-        if (request == null) {
+        if (user == null) {
             showLogin();
-            hideSplash();
         } else {
-            userManager.login(request, new NetworkCallback<User>() {
-                @Override
-                public void completionHandler(User object, ServerError error) {
-                    if (error != null)
-                        showLogin();
-                    else
-                        doLogin();
-                    hideSplash();
-                }
-            });
+            doLogin();
         }
         new ImagePreloader(networkingManager).invoke();
         if (getIntent().getBooleanExtra("showActivity", false)) {
@@ -171,7 +151,7 @@ public class MainActivity extends BaseActivity
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.container, fragment).commit();
+        transaction.replace(R.id.container, fragment).commitAllowingStateLoss();
 
     }
 
@@ -228,7 +208,7 @@ public class MainActivity extends BaseActivity
     public void pushFragment(Fragment fragment) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null).replace(R.id.container, fragment).commit();
+        transaction.addToBackStack(null).replace(R.id.container, fragment).commitAllowingStateLoss();
         navigationDrawerFragment.setDrawerToggleEnabled(false);
     }
 
@@ -271,7 +251,7 @@ public class MainActivity extends BaseActivity
        WelcomeFragment welcome = WelcomeFragment.newInstance();
        FragmentManager fragmentManager = getFragmentManager();
        FragmentTransaction transaction = fragmentManager.beginTransaction();
-       transaction.replace(R.id.container, welcome).commit();
+       transaction.replace(R.id.container, welcome).commitAllowingStateLoss();
 
        navigationDrawerFragment.setDrawerToggleEnabled(false);
        navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -337,30 +317,6 @@ public class MainActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         ((KnodaApplication)getApplication()).setCurrentActivity(null);
-    }
-
-    private void hideSplash() {
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setDuration(1000);
-
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                splashScreen.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        splashScreen.setAnimation(fadeOut);
     }
 
     private void onAddPrediction() {

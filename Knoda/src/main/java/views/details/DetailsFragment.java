@@ -85,7 +85,9 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         headerview = new DetailsHeaderView(getActivity(), this);
         headerview.setPrediction(prediction);
 
-        headerview.predictionCell.avatarImageView.setImageUrl(prediction.userAvatar.small, networkingManager.getImageLoader());
+        if (prediction.userAvatar != null)
+            headerview.predictionCell.avatarImageView.setImageUrl(prediction.userAvatar.small, networkingManager.getImageLoader());
+
         actionbar = new DetailsActionbar(getActivity(), this);
 
         commentAdapter.setActionBar(actionbar);
