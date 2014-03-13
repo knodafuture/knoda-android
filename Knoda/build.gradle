@@ -71,3 +71,15 @@ task incrementVersionCode << {
     println(":incrementVersionCode - next versionCode=" + mNextVersionCode);
     manifestFile.write(manifestContent)
 }
+
+
+task verifyRelease << {
+    println(":verifyProd - Ensure that NetworkingManager is pointed at production")
+    def networkingManagerFile = file("src/main/java/managers/NetworkingManager.java")
+    def networkingText = networkingManagerFile.getText()
+    def testOccurrences = networkingText.indexOf("api-test.knoda.com");
+    def prodOccurrences = networkingText.indexOf("api.knoda.com");
+    if (testOccurrences >= 0 || prodOccurrences < 0) {
+        throw new GradleException("Build is not pointed at production.  Failing.")
+    }
+}
