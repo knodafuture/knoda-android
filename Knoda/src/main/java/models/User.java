@@ -32,7 +32,4 @@ public class User extends BaseModel {
 
     @SerializedName("avatar_image")
     public RemoteImage avatar;
-
-
-
 }

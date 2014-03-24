@@ -77,7 +77,7 @@ public class SignUpFragment extends BaseFragment {
         filterArray[0] = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 for (int i = start; i < end; i++) {
-                    if (!Character.isLetterOrDigit(source.charAt(i))) {
+                    if (Character.isWhitespace(source.charAt(i))) {
                         return "";
                     }
                 }

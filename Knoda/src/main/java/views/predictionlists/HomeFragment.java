@@ -13,8 +13,14 @@ import android.widget.RelativeLayout;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.InjectView;
 import butterknife.OnClick;
+import models.Group;
+import models.ServerError;
+import networking.NetworkListCallback;
 import views.core.MainActivity;
 
 public class HomeFragment extends BasePredictionListFragment {
@@ -73,6 +79,12 @@ public class HomeFragment extends BasePredictionListFragment {
 
 
     private void handleOverlay() {
+        networkingManager.getGroups(new NetworkListCallback<Group>() {
+            @Override
+            public void completionHandler(ArrayList<Group> object, ServerError error) {
+                List<Group> groups = object;
+            }
+        });
         boolean firstLaunch = sharedPrefManager.getFirstLaunch();
 
         if (firstLaunch) {

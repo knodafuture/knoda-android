@@ -39,18 +39,13 @@ import models.ServerError;
 import models.SignUpRequest;
 import models.Tag;
 import models.User;
+import models.Group;
 import networking.BitmapLruCache;
 import networking.GsonArrayRequest;
 import networking.GsonRequest;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import unsorted.Logger;
-
-
-/**
- * Created by nick on 1/8/14.
- */
-
 
 @Singleton
 public class NetworkingManager {
@@ -64,7 +59,7 @@ public class NetworkingManager {
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
-    public static String baseUrl = "http://api.knoda.com/api/";
+    public static String baseUrl = "http://api-test.knoda.com/api/";
 
     private ImageLoader imageLoader;
 
@@ -371,6 +366,12 @@ public class NetworkingManager {
         String url = buildUrl("password.json", false, null);
 
         executeRequest(Request.Method.POST, url, request, BaseModel.class, callback);
+    }
+
+    public void getGroups(NetworkListCallback<Group> callback) {
+        String url = buildUrl("groups.json", true, null);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getGroupListTypeToken(), callback);
     }
 
     private Map<String, String> getHeaders() {
