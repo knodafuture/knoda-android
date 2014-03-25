@@ -111,7 +111,6 @@ public class NetworkingManager {
             builder.add("tag", tag);
 
         String url = buildUrl("predictions.json", true, builder);
-
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
@@ -370,7 +369,7 @@ public class NetworkingManager {
 
     public void getGroups(NetworkListCallback<Group> callback) {
         String url = buildUrl("groups.json", true, null);
-
+        Logger.log("#URL: " + url);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getGroupListTypeToken(), callback);
     }
 
@@ -379,7 +378,7 @@ public class NetworkingManager {
         if (headers == null) {
             headers = new HashMap<String, String>();
             headers.put("Content-Type", "application/json; charset=utf-8;");
-            headers.put("Accept", "application/json; api_version=2;");
+            headers.put("Accept", "application/json; api_version=3;");
         }
 
         Logger.log("using headers" + headers.toString());

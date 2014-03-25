@@ -3,7 +3,6 @@ package models;
 import com.google.gson.annotations.SerializedName;
 
 public class Group extends BaseModel {
-
     public Integer id;
     public String name;
     public String description;
