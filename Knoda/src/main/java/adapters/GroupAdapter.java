@@ -10,7 +10,7 @@ import com.knoda.knoda.R;
 
 import helpers.AdapterHelper;
 import models.Group;
-import views.activity.GroupListCell;
+import views.group.GroupListCell;
 
 public class GroupAdapter extends PagingAdapter<Group> {
 

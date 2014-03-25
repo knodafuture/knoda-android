@@ -8,6 +8,7 @@ public class Group extends BaseModel {
     public String description;
     @SerializedName("member_count")
     public Integer memberCount;
+    @SerializedName("my_info")
     public Leader rank;
     public Integer owner;
     @SerializedName("share_url")
