@@ -66,6 +66,9 @@ public class Prediction extends BaseModel {
     @SerializedName("comment_count")
     public Integer commentCount;
 
+    @SerializedName("group_name")
+    public String groupName;
+
     public String getCreationString() {
         return "made " + DateUtil.getPeriodString(creationDate) + " ago";
     }

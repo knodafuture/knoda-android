@@ -33,6 +33,9 @@ public class PredictionListCell extends RelativeLayout {
     public RelativeLayout agreeView;
     public ImageView verifiedCheckmark;
 
+    public RelativeLayout groupView;
+    public TextView groupTextView;
+
     private boolean agreed;
     private boolean disagreed;
 
@@ -59,6 +62,8 @@ public class PredictionListCell extends RelativeLayout {
         resultTextView = (TextView)findViewById(R.id.prediction_cell_result_textview);
         agreeView = (RelativeLayout)findViewById(R.id.prediction_cell_agreeview);
         verifiedCheckmark = (ImageView)findViewById(R.id.prediction_cell_verified_checkmark);
+        groupView = (RelativeLayout)findViewById(R.id.prediction_cell_group_container);
+        groupTextView = (TextView)findViewById(R.id.prediction_cell_group_textview);
     }
 
     public void setAgree(boolean agree) {
@@ -107,6 +112,14 @@ public class PredictionListCell extends RelativeLayout {
         disagreed = (prediction.challenge != null && !prediction.challenge.agree);
 
         updateVoteImage();
+
+        if (prediction.groupName == null) {
+            groupView.setVisibility(GONE);
+        } else {
+            groupView.setVisibility(VISIBLE);
+            groupTextView.setText(prediction.groupName);
+        }
+
     }
 
 

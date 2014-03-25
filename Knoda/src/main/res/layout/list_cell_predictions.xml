@@ -127,6 +127,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/prediction_cell_stats_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/prediction_cell_body_container"
@@ -159,6 +160,33 @@
                 android:text="1000"
                 android:layout_toRightOf="@id/prediction_cell_comment_icon"
                 android:layout_marginLeft="5dp"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/prediction_cell_group_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/prediction_cell_stats_container"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginTop="0dp">
+
+                <ImageView
+                    android:id="@+id/prediction_cell_group_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/group_prediction_badge"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:paddingBottom="8dp"/>
+
+                <TextView style="@style/darkGreenText"
+                    android:id="@+id/prediction_cell_group_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1000"
+                    android:layout_toRightOf="@id/prediction_cell_group_icon"
+                    android:layout_marginLeft="5dp"/>
             </RelativeLayout>
     </RelativeLayout>
 </merge>
