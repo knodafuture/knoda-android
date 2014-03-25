@@ -28,9 +28,11 @@ public class GroupAdapter extends PagingAdapter<Group> {
         if (listItem == null)
             listItem = (GroupListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_group, null);
 
-        Group item = getItem(position);
+        Group group = getItem(position);
 
-        listItem.setGroup(item);
+        listItem.setGroup(group);
+        if (group.avatar != null && group.avatar.small != null)
+            listItem.avatarImageView.setImageUrl(group.avatar.small, imageLoader);
         return listItem;
     }
 }

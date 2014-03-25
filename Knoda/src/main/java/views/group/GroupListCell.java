@@ -1,26 +1,25 @@
 package views.activity;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
-import models.ActivityItem;
 import models.Group;
+import unsorted.Logger;
 
 public class GroupListCell extends RelativeLayout {
+    public NetworkImageView avatarImageView;
     public TextView nameView;
 
     public Group group;
+
+    public GroupListCell(Context context) {
+        super(context);
+    }
 
     public GroupListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -30,6 +29,7 @@ public class GroupListCell extends RelativeLayout {
     @Override
     public void onFinishInflate() {
         nameView = (TextView)findViewById(R.id.group_cell_name);
+        avatarImageView = (NetworkImageView) findViewById(R.id.group_cell_avatar_imageview);
     }
 
 

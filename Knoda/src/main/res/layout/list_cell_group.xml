@@ -5,20 +5,86 @@
     android:layout_height="wrap_content"
     android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/activity_cell_imageview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
 
-
-    <TextView
-        android:id="@+id/group_cell_name"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/activity_cell_imageview"
-        android:layout_margin="10dp"/>
+        android:layout_height="90dp"
+        android:background="@color/lightGray">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/group_cell_avatar_imageview"
+            android:layout_width="90dp"
+            android:layout_height="90dp"/>
+
+        <RelativeLayout
+            android:id="@+id/user_profile_header_top"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_toRightOf="@id/group_cell_avatar_imageview"
+            android:background="@color/white">
+
+            <TextView style="@style/darkGreenText"
+                android:textSize="20dp"
+                android:id="@+id/group_cell_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:lines="1"
+                android:ellipsize="end"
+                android:text="test"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="1dp"
+            android:layout_below="@id/user_profile_header_top"
+            android:layout_alignLeft="@id/user_profile_header_top"
+            android:background="@color/white">
+
+            <TextView style="@style/darkGreenText"
+                android:textSize="20dp"
+                android:id="@+id/user_profile_header_win_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:text="1"/>
+
+            <TextView style="@style/darkGreenText"
+                android:textSize="20dp"
+                android:id="@+id/user_profile_header_wl_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="PacmanJames"/>
+
+
+            <TextView style="@style/smallDarkGreenText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="rank (5)"
+                android:layout_marginTop="-5dp"
+                android:layout_below="@id/user_profile_header_win_textview"
+                android:layout_alignLeft="@id/user_profile_header_win_textview"/>
+
+            <TextView style="@style/smallDarkGreenText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="current 7 Day leader"
+                android:layout_marginTop="-5dp"
+                android:layout_below="@id/user_profile_header_wl_textview"
+                android:layout_alignLeft="@id/user_profile_header_wl_textview"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 
 </views.activity.GroupListCell>
+
+
