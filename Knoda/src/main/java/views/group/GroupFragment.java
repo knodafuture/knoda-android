@@ -49,10 +49,12 @@ public class GroupFragment extends BaseListFragment implements PagingAdapter.Pag
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity().getApplicationContext(), "Show Group", 10);
+                errorReporter.showError("Show Group");
             }
         });
     }
+
+
 
     @Override
     public String noContentString() {
