@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 public class KnodaScreen implements Comparable<KnodaScreen>{
 
     public enum KnodaScreenOrder {
-        HOME, ACTIVITY, HISTORY, BADGES, PROFILE
+        HOME, ACTIVITY, GROUP, HISTORY, BADGES, PROFILE
     }
 
     public KnodaScreenOrder order;

@@ -35,6 +35,7 @@ import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.badge.BadgeFragment;
+import views.group.GroupFragment;
 import views.login.PhotoChooserActivity;
 import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
@@ -179,6 +180,7 @@ public class MainActivity extends BaseActivity
 
         map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.HOME, "Home", getResources().getDrawable(R.drawable.drawer_home)), HomeFragment.class);
         map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.ACTIVITY, "Activity", getResources().getDrawable(R.drawable.drawer_activity)), ActivityFragment.class);
+        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.GROUP, "Groups", getResources().getDrawable(R.drawable.drawer_home)), GroupFragment.class);
         map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.HISTORY, "History", getResources().getDrawable(R.drawable.drawer_history)), HistoryFragment.class);
         map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.BADGES, "Badges", getResources().getDrawable(R.drawable.drawer_badges)), BadgeFragment.class);
         map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.PROFILE, "Profile", getResources().getDrawable(R.drawable.drawer_profile)), MyProfileFragment.class);

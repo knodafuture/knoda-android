@@ -20,6 +20,7 @@ import views.core.Spinner;
 import views.core.SplashActivity;
 import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
+import views.group.GroupFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.login.PhotoChooserActivity;
@@ -52,6 +53,7 @@ import views.search.SearchFragment;
                 HistoryFragment.class,
                 AnotherUsersProfileFragment.class,
                 MyProfileFragment.class,
+                GroupFragment.class,
                 AddPredictionFragment.class,
                 SearchFragment.class,
                 CategoryFragment.class,

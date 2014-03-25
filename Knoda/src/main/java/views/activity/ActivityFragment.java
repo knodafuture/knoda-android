@@ -61,9 +61,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
     @Override
     public void getObjectsAfterObject(ActivityItem object, NetworkListCallback<ActivityItem> callback) {
         int lastId = object == null ? 0 : object.id;
-
         networkingManager.getActivityItemsAfter(lastId, callback);
-
     }
 
     @Override
