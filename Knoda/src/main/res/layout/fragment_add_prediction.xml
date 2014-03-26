@@ -43,6 +43,36 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/add_prediction_group_view"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/predict_group_icon"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/add_prediction_group_textview"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select a Group"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/add_prediction_topic_view"
         android:layout_width="match_parent"
         android:layout_height="60dp"

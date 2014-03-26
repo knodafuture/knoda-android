@@ -28,6 +28,7 @@ import helpers.EditTextHelper;
 import models.Prediction;
 import models.ServerError;
 import models.Tag;
+import models.Group;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.NewPredictionEvent;
@@ -56,8 +57,17 @@ public class AddPredictionFragment extends BaseFragment {
             topicsDialog.show();
     }
 
+    @OnClick(R.id.add_prediction_group_view) void onGroupClicked() {
+        hideKeyboard();
+        if (groupsDialog != null)
+            groupsDialog.show();
+    }
+
     @InjectView(R.id.add_prediction_topic_textview)
     TextView topicTextView;
+
+    @InjectView(R.id.add_prediction_group_textview)
+    TextView groupTextView;
 
     @InjectView(R.id.add_prediction_counter_textview)
     TextView bodyCounterTextView;
@@ -72,6 +82,8 @@ public class AddPredictionFragment extends BaseFragment {
     private ArrayList<Tag> tags;
     private Tag selectedTag;
     private AlertDialog topicsDialog;
+    private Group selectedGroup;
+    private AlertDialog groupsDialog;
 
     private MessageCounter bodyCounter;
 
@@ -137,6 +149,7 @@ public class AddPredictionFragment extends BaseFragment {
             }
         });
 
+        buildGroupsDialog();
 
         avatarImageView.setImageUrl(userManager.getUser().avatar.small, networkingManager.getImageLoader());
 
@@ -173,6 +186,28 @@ public class AddPredictionFragment extends BaseFragment {
         topicTextView.setText(tag.name);
     }
 
+    private void buildGroupsDialog() {
+        String[] items = new String[userManager.groups.size()+1];
+        items[0] = "Public";
+        for (int i = 0; i < userManager.groups.size(); i++) {
+            items[i+1] = userManager.groups.get(i).name;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Select a group")
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (i == 0) {
+                            selectedGroup = null;
+                        } else {
+                            selectedGroup = userManager.groups.get(i-1);
+                            groupTextView.setText(userManager.groups.get(i-1).name);
+                        }
+                    }
+                });
+        groupsDialog = builder.create();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -189,6 +224,9 @@ public class AddPredictionFragment extends BaseFragment {
 
         prediction.body = bodyEditText.getText().toString();
         prediction.tags.add(selectedTag.name);
+        if (selectedGroup != null) {
+            prediction.groupId = selectedGroup.id;
+        }
         prediction.expirationDate = votingDatePicker.getDateTime();
         prediction.resolutionDate = resolutionDatePicker.getDateTime();
 

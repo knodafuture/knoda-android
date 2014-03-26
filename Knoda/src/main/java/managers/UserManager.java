@@ -1,14 +1,19 @@
 package managers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import models.Group;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.ServerError;
 import models.SignUpRequest;
 import models.User;
 import networking.NetworkCallback;
+import networking.NetworkListCallback;
 import unsorted.Logger;
 
 /**
@@ -18,6 +23,7 @@ import unsorted.Logger;
 public class UserManager {
 
     public User user;
+    public List<Group> groups;
 
     NetworkingManager networkingManager;
     SharedPrefManager sharedPrefManager;
@@ -26,7 +32,6 @@ public class UserManager {
     public UserManager(NetworkingManager networkingManager, SharedPrefManager sharedPrefManager) {
         this.sharedPrefManager = sharedPrefManager;
         this.networkingManager = networkingManager;
-        Logger.log("USER MANAGER CONSTRUCTION");
     }
 
     public void refreshUser(final NetworkCallback<User> callback) {
@@ -35,11 +40,18 @@ public class UserManager {
             public void completionHandler(User object, ServerError error) {
                 if (error == null) {
                     user = object;
+                    networkingManager.getGroups(new NetworkListCallback<Group>() {
+                        @Override
+                        public void completionHandler(ArrayList<Group> object, ServerError error) {
+                            if (error == null) {
+                                groups = object;
+                            }
+                            callback.completionHandler(user, error);
+                        }
+                    });
                 } else {
                     Logger.log("Error getting user" + error.statusCode);
                 }
-
-                callback.completionHandler(user, error);
             }
         });
     }
