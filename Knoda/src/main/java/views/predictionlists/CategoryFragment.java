@@ -22,11 +22,23 @@ public class CategoryFragment extends BasePredictionListFragment {
         CategoryFragment fragment = new CategoryFragment();
         return fragment;
     }
+
+    public static CategoryFragment newInstance(String tag) {
+        CategoryFragment fragment = new CategoryFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("TAG", tag);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     public CategoryFragment() {}
 
-    public CategoryFragment(String tag) {
-        super();
-        this.tag = tag;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null && getArguments().containsKey("TAG")) {
+            tag = getArguments().getString("TAG");
+        }
     }
 
     @Override

@@ -61,7 +61,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onItemClicked(int position) {
         Prediction prediction = (Prediction)adapter.getItem(position-1);
         if (prediction != null) {
-            DetailsFragment fragment = new DetailsFragment(prediction);
+            DetailsFragment fragment = DetailsFragment.newInstance(prediction);
             pushFragment(fragment);
         }
     }
@@ -118,7 +118,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
         if (cell.prediction.userId.equals(userManager.getUser().id)) {
             ((MainActivity)getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
         } else {
-            AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment(cell.prediction.userId);
+            AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(cell.prediction.userId);
             pushFragment(fragment);
         }
     }

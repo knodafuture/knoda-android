@@ -74,7 +74,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                     networkingManager.getPrediction(activityItem.predictionId, new NetworkCallback<Prediction>() {
                         @Override
                         public void completionHandler(Prediction prediction, ServerError error) {
-                            DetailsFragment fragment = new DetailsFragment(prediction);
+                            DetailsFragment fragment = DetailsFragment.newInstance(prediction);
                             pushFragment(fragment);
                         }
                     });

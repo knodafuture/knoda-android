@@ -15,6 +15,7 @@ import com.knoda.knoda.R;
 import org.joda.time.DateTime;
 
 import butterknife.InjectView;
+import factories.GsonF;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import models.Comment;
@@ -24,6 +25,7 @@ import networking.NetworkCallback;
 import pubsub.NewCommentEvent;
 import views.addprediction.MessageCounter;
 import views.core.BaseFragment;
+
 
 public class CreateCommentFragment extends BaseFragment {
 
@@ -37,13 +39,20 @@ public class CreateCommentFragment extends BaseFragment {
     @InjectView(R.id.add_comment_counter_textview)
     TextView messageCounterTextView;
 
-    public CreateCommentFragment(Prediction prediction) {
-        this.prediction = prediction;
+    public static CreateCommentFragment newInstance(Prediction prediction) {
+        CreateCommentFragment fragment = new CreateCommentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("PREDICTION", GsonF.actory().toJson(prediction));
+        fragment.setArguments(bundle);
+        return fragment;
     }
+
+    public CreateCommentFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.prediction = GsonF.actory().fromJson(getArguments().getString("PREDICTION"), Prediction.class);
         setHasOptionsMenu(true);
         setTitle("COMMENT");
     }

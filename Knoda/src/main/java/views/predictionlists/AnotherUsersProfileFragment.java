@@ -14,17 +14,23 @@ import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import views.profile.PhotoFragment;
 
-/**
- * Created by nick on 2/3/14.
- */
 public class AnotherUsersProfileFragment extends BasePredictionListFragment {
 
     private Integer userId;
     private User user;
 
-    public AnotherUsersProfileFragment(Integer userId) {
-        super();
-        this.userId = userId;
+    public static AnotherUsersProfileFragment newInstance(Integer userId) {
+        AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("USER_ID", userId);
+        fragment.setArguments(bundle);
+        return fragment ;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        userId = getArguments().getInt("USER_ID");
     }
 
     @Override
@@ -70,7 +76,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         position = position - 1;
         if (position <= 0) {
             if (user.avatar != null) {
-                PhotoFragment fragment = new PhotoFragment(user.avatar.big);
+                PhotoFragment fragment = PhotoFragment.newInstance(user.avatar.big);
                 pushFragment(fragment);
             }
             return;

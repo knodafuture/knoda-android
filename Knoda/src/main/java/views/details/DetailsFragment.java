@@ -32,7 +32,7 @@ import networking.NetworkListCallback;
 import views.core.BaseListFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
-
+import factories.GsonF;
 /**
  * Created by nick on 2/13/14.
  */
@@ -47,15 +47,28 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     private Prediction prediction;
 
-    public DetailsFragment(Prediction prediction) {
-        this.prediction = prediction;
+    public static DetailsFragment newInstance(Prediction prediction) {
+        DetailsFragment fragment = new DetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("PREDICTION", GsonF.actory().toJson(prediction));
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public DetailsFragment() {
     }
 
     @OnClick(R.id.details_action_add_comment) void onComment() {
-        CreateCommentFragment fragment = new CreateCommentFragment(prediction);
+        CreateCommentFragment fragment = CreateCommentFragment.newInstance(prediction);
         pushFragment(fragment);
     }
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.prediction = GsonF.actory().fromJson(getArguments().getString("PREDICTION"), Prediction.class);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -124,13 +137,13 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public void onUserClicked(User user) {
-        AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment(user.userId);
+        AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(user.userId);
         pushFragment(fragment);
     }
 
     @Override
     public void onUserClicked(Integer userId) {
-        AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment(userId);
+        AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(userId);
         pushFragment(fragment);
     }
 
@@ -148,7 +161,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public void onSimilar() {
-        CategoryFragment fragment = new CategoryFragment(prediction.tags.get(0));
+        CategoryFragment fragment = CategoryFragment.newInstance(prediction.tags.get(0));
         pushFragment(fragment);
     }
 

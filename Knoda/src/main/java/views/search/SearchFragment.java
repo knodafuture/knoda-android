@@ -141,7 +141,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Tag tag = tagAdapter.getItem(position);
                 if (tag != null) {
-                    CategoryFragment fragment = new CategoryFragment(tag.name);
+                    CategoryFragment fragment = CategoryFragment.newInstance(tag.name);
                     pushFragment(fragment);
                 }
             }
@@ -166,13 +166,13 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
 
     @Override
     public void onUserSelected(User user) {
-        AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment(user.id);
+        AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(user.id);
         pushFragment(fragment);
     }
 
     @Override
     public void onPredictionSelected(Prediction prediction) {
-        DetailsFragment fragment = new DetailsFragment(prediction);
+        DetailsFragment fragment = DetailsFragment.newInstance(prediction);
         pushFragment(fragment);
     }
 

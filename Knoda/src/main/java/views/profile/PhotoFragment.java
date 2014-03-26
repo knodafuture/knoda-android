@@ -21,13 +21,19 @@ public class PhotoFragment extends BaseFragment {
 
     private String imageUrl;
 
-    public PhotoFragment(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public static PhotoFragment newInstance(String imageUrl) {
+        PhotoFragment fragment = new PhotoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("IMAGE_URL", imageUrl);
+        fragment.setArguments(bundle);
+        return fragment;
     }
+    public PhotoFragment(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.imageUrl = getArguments().getString("IMAGE_URL");
     }
 
     @Override
