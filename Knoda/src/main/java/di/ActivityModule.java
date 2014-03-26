@@ -29,6 +29,7 @@ import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
+import views.predictionlists.GroupPredictionListFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
@@ -63,6 +64,7 @@ import views.search.SearchFragment;
                 NavigationDrawerFragment.class,
                 CreateCommentFragment.class,
                 AddGroupFragment.class,
+                GroupPredictionListFragment.class,
                 Bus.class,
                 PredictionAdapter.class,
                 SplashActivity.class,

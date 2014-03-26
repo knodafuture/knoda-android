@@ -11,7 +11,9 @@ import adapters.GroupAdapter;
 import adapters.PagingAdapter;
 import models.Group;
 import networking.NetworkListCallback;
+import views.core.BaseFragment;
 import views.core.BaseListFragment;
+import views.predictionlists.GroupPredictionListFragment;
 
 public class GroupFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Group> {
     public static GroupFragment newInstance() {
@@ -48,12 +50,14 @@ public class GroupFragment extends BaseListFragment implements PagingAdapter.Pag
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                BaseFragment fragment;
                 if (view instanceof CreateGroupHeaderView) {
-                    AddGroupFragment fragment = AddGroupFragment.newInstance();
-                    pushFragment(fragment);
+                    fragment = AddGroupFragment.newInstance();
                 } else {
-                    errorReporter.showError("Show Group");
+                    GroupListCell v = ((GroupListCell)view);
+                    fragment = GroupPredictionListFragment.newInstance(v.group);
                 }
+                pushFragment(fragment);
             }
         });
     }
