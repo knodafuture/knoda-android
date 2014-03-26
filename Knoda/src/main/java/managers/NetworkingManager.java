@@ -369,8 +369,12 @@ public class NetworkingManager {
 
     public void getGroups(NetworkListCallback<Group> callback) {
         String url = buildUrl("groups.json", true, null);
-        Logger.log("#URL: " + url);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getGroupListTypeToken(), callback);
+    }
+
+    public void submitGroup(final Group group, final NetworkCallback<Group> callback) {
+        String url = buildUrl("groups.json", true, null);
+        executeRequest(Request.Method.POST, url, group, Group.class, callback);
     }
 
     private Map<String, String> getHeaders() {

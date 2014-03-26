@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_group_container"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <ImageView
@@ -21,7 +22,7 @@
         android:text="Create new group"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="2dp"
         android:background="@color/lightGray"
         android:layout_below="@+id/new_group_icon"
         android:layout_marginTop="15dp"/>

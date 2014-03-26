@@ -15,6 +15,8 @@ import views.group.GroupListCell;
 
 public class GroupAdapter extends PagingAdapter<Group> {
 
+    public CreateGroupHeaderView header;
+
     public GroupAdapter(Context context, PagingAdapterDatasource<Group> datasource, ImageLoader imageLoader) {
         super(context, datasource, imageLoader);
     }
@@ -41,9 +43,7 @@ public class GroupAdapter extends PagingAdapter<Group> {
     }
 
     View getHeaderView(View convertView) {
-
-        CreateGroupHeaderView header = (CreateGroupHeaderView) AdapterHelper.getConvertViewSafely(convertView, CreateGroupHeaderView.class);
-
+        header = (CreateGroupHeaderView) AdapterHelper.getConvertViewSafely(convertView, CreateGroupHeaderView.class);
         if (header == null)
             header = new CreateGroupHeaderView(context);
         return header;

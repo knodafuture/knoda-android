@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
@@ -49,7 +48,12 @@ public class GroupFragment extends BaseListFragment implements PagingAdapter.Pag
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                errorReporter.showError("Show Group");
+                if (view instanceof CreateGroupHeaderView) {
+                    AddGroupFragment fragment = AddGroupFragment.newInstance();
+                    pushFragment(fragment);
+                } else {
+                    errorReporter.showError("Show Group");
+                }
             }
         });
     }
