@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views.group.LeaderListCell xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+    <TextView style="@style/darkGreenText"
+        android:textSize="20dp"
+        android:id="@+id/group_leader_username_textview"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:lines="1"
+        android:ellipsize="end"
+        android:text="test"/>
+    <TextView style="@style/darkGreenText"
+        android:textSize="20dp"
+        android:id="@+id/group_leader_wins_textview"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:lines="1"
+        android:ellipsize="end"
+        android:text="test"
+        android:layout_toLeftOf="@+id/group_leader_winpercent_textview"/>
+    <TextView style="@style/darkGreenText"
+        android:textSize="20dp"
+        android:id="@+id/group_leader_winpercent_textview"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:lines="1"
+        android:ellipsize="end"
+        android:text="test"
+        android:layout_alignParentRight="true"/>
+</views.group.LeaderListCell>
+
+

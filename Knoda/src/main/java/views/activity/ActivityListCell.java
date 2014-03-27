@@ -35,7 +35,6 @@ public class ActivityListCell extends RelativeLayout {
 
     @Override
     public void onFinishInflate() {
-
         iconImageView = (ImageView)findViewById(R.id.activity_cell_imageview);
         textView = (TextView)findViewById(R.id.activity_cell_textview);
         metadataTextView = (TextView)findViewById(R.id.activity_cell_metadata_textview);

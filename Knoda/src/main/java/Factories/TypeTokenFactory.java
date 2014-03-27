@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import models.ActivityItem;
 import models.Badge;
 import models.Comment;
+import models.Group;
+import models.Leader;
 import models.Prediction;
 import models.Tag;
 import models.User;
-import models.Group;
 
 /**
  * Created by nick on 1/27/14.
@@ -42,4 +43,6 @@ public class TypeTokenFactory {
     }
 
     public static TypeToken getGroupListTypeToken() { return new TypeToken<ArrayList<Group>>(){}; }
+
+    public static TypeToken getLeaderListTypeToken() { return new TypeToken<ArrayList<Leader>>(){}; }
 }

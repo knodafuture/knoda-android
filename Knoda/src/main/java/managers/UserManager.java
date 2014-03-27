@@ -1,7 +1,6 @@
 package managers;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,7 +22,7 @@ import unsorted.Logger;
 public class UserManager {
 
     public User user;
-    public List<Group> groups;
+    public ArrayList<Group> groups;
 
     NetworkingManager networkingManager;
     SharedPrefManager sharedPrefManager;

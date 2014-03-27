@@ -22,6 +22,7 @@ import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
 import views.group.AddGroupFragment;
 import views.group.GroupFragment;
+import views.group.GroupLeaderboardFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.login.PhotoChooserActivity;
@@ -65,6 +66,7 @@ import views.search.SearchFragment;
                 CreateCommentFragment.class,
                 AddGroupFragment.class,
                 GroupPredictionListFragment.class,
+                GroupLeaderboardFragment.class,
                 Bus.class,
                 PredictionAdapter.class,
                 SplashActivity.class,

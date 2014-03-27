@@ -1,6 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:id="@+id/group_prediction_list_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/group_prediction_list_leader_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="2dp"
+            android:text="adam1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/group_prediction_list_leader_textview"
+            android:layout_marginLeft="10dp"
+            android:text="current 7 day leader"/>
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/group_rankings_container"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/group_settings_container">
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray"
+            android:layout_toLeftOf="@+id/group_rankings_icon"
+            android:layout_marginLeft="-1dp"/>
+        <ImageView
+            android:id="@+id/group_rankings_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rankings_icon"
+            android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"/>
+        <TextView style="@style/smallDarkGreenText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rankings"
+            android:layout_marginTop="-5dp"
+            android:layout_below="@id/group_rankings_icon"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/group_settings_container"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true">
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray"
+            android:layout_toLeftOf="@+id/group_settings_icon"
+            android:layout_marginTop="0dp"/>
+        <ImageView
+            android:id="@+id/group_settings_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/group_settings_icon"
+            android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView style="@style/smallDarkGreenText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="settings"
+            android:layout_marginTop="-5dp"
+            android:layout_below="@id/group_settings_icon"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightGray"
+        android:layout_below="@+id/group_prediction_list_info"
+        android:layout_marginTop="3dp"/>
 </RelativeLayout>

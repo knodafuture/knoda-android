@@ -15,6 +15,7 @@ import views.group.GroupPredictionListHeader;
 public class GroupPredictionAdapter extends PredictionAdapter {
 
     public Group group;
+    public GroupPredictionListHeader header;
 
     public GroupPredictionAdapter(Context context, PagingAdapter.PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
         super(context, datasource, imageLoader, new Bus());
@@ -48,7 +49,7 @@ public class GroupPredictionAdapter extends PredictionAdapter {
 
     View getHeaderView(View convertView) {
 
-        GroupPredictionListHeader header = (GroupPredictionListHeader) AdapterHelper.getConvertViewSafely(convertView, GroupPredictionListHeader.class);
+        header = (GroupPredictionListHeader) AdapterHelper.getConvertViewSafely(convertView, GroupPredictionListHeader.class);
 
         if (header == null)
             header = new GroupPredictionListHeader(context);

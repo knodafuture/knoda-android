@@ -31,6 +31,8 @@ import models.BaseModel;
 import models.Challenge;
 import models.Comment;
 import models.ForgotPasswordRequest;
+import models.Group;
+import models.Leader;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.PasswordChangeRequest;
@@ -39,7 +41,6 @@ import models.ServerError;
 import models.SignUpRequest;
 import models.Tag;
 import models.User;
-import models.Group;
 import networking.BitmapLruCache;
 import networking.GsonArrayRequest;
 import networking.GsonRequest;
@@ -379,6 +380,12 @@ public class NetworkingManager {
     public void submitGroup(final Group group, final NetworkCallback<Group> callback) {
         String url = buildUrl("groups.json", true, null);
         executeRequest(Request.Method.POST, url, group, Group.class, callback);
+    }
+
+    public void getGroupLeaderboard(final Integer groupId, final NetworkListCallback<Leader> callback) {
+        ParamBuilder builder = new ParamBuilder().create();
+        String url = buildUrl("groups/" + groupId + "/leaderboard.json", true, builder);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getLeaderListTypeToken(), callback);
     }
 
     private Map<String, String> getHeaders() {

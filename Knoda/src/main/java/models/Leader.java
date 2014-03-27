@@ -2,7 +2,7 @@ package models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Leader {
+public class Leader extends BaseModel {
     public String username;
     public Integer rank;
     @SerializedName("avatar_image")
@@ -11,4 +11,13 @@ public class Leader {
     public boolean verifiedAccount;
     public Integer won;
     public Integer lost;
+
+    public String getWinPercentageString() {
+        if ((won + lost) == 0) {
+            return "0%";
+        } else {
+            float winPercent = (float) won / (float) (won + lost) * 100;
+            return (int) winPercent + "%";
+        }
+    }
 }

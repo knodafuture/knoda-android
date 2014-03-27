@@ -42,7 +42,8 @@ public class GroupFragment extends BaseListFragment implements PagingAdapter.Pag
 
     @Override
     public void getObjectsAfterObject(Group object, NetworkListCallback<Group> callback) {
-        networkingManager.getGroups(callback);
+        //networkingManager.getGroups(callback);
+        callback.completionHandler(userManager.groups, null);
     }
 
     @Override
