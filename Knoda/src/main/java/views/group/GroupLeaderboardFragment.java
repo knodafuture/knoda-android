@@ -15,11 +15,13 @@ import views.core.BaseListFragment;
 
 public class GroupLeaderboardFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Leader> {
     public Group group;
+    public String board;
 
-    public static GroupLeaderboardFragment newInstance(Group group) {
+    public static GroupLeaderboardFragment newInstance(Group group, String board) {
         GroupLeaderboardFragment fragment = new GroupLeaderboardFragment();
         Bundle bundle = new Bundle();
         bundle.putString("GROUP", GsonF.actory().toJson(group));
+        bundle.putString("BOARD", board.toUpperCase());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -30,13 +32,14 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
+        board = getArguments().getString("BOARD");
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setTitle(group.name.toUpperCase());
-        FlurryAgent.logEvent("Group_Leaderboard");
+        FlurryAgent.logEvent("GROUP_LEADERBOARD_" + board);
     }
 
     @Override
@@ -46,7 +49,7 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
 
     @Override
     public void getObjectsAfterObject(Leader object, NetworkListCallback<Leader> callback) {
-        networkingManager.getGroupLeaderboard(group.id, callback);
+        networkingManager.getGroupLeaderboard(group.id, board, callback);
     }
 
     @Override

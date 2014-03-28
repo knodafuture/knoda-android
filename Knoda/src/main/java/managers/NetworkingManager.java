@@ -382,9 +382,10 @@ public class NetworkingManager {
         executeRequest(Request.Method.POST, url, group, Group.class, callback);
     }
 
-    public void getGroupLeaderboard(final Integer groupId, final NetworkListCallback<Leader> callback) {
-        ParamBuilder builder = new ParamBuilder().create();
+    public void getGroupLeaderboard(final Integer groupId, final String board, final NetworkListCallback<Leader> callback) {
+        ParamBuilder builder = new ParamBuilder().create().add("board", board.toLowerCase());
         String url = buildUrl("groups/" + groupId + "/leaderboard.json", true, builder);
+        Logger.log("LEADERBOARD# " + url);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getLeaderListTypeToken(), callback);
     }
 

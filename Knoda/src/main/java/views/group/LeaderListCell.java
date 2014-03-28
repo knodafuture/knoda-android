@@ -40,7 +40,7 @@ public class LeaderListCell  extends RelativeLayout {
 
     public void update() {
         nameView.setText(leader.username);
-        winsView.setText(leader.won.toString());
+        winsView.setText(leader.won.toString() + "-" + leader.lost.toString());
         winpercentView.setText(leader.getWinPercentageString());
 
     }

@@ -12,7 +12,7 @@ import factories.GsonF;
 import models.Group;
 import models.Prediction;
 import networking.NetworkListCallback;
-import views.group.GroupLeaderboardFragment;
+import views.group.GroupLeaderboardsFragment;
 
 public class GroupPredictionListFragment extends BasePredictionListFragment {
     public Group group;
@@ -43,7 +43,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment {
                 a.header.findViewById(R.id.group_rankings_container).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        GroupLeaderboardFragment fragment = GroupLeaderboardFragment.newInstance(group);
+                        GroupLeaderboardsFragment fragment = GroupLeaderboardsFragment.newInstance(group);
                         pushFragment(fragment);
                     }
                 });
