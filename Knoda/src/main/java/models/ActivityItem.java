@@ -26,7 +26,7 @@ public class ActivityItem extends BaseModel {
     public DateTime creationDate;
 
     public String text;
-
+    public String target;
     public boolean seen;
 
 

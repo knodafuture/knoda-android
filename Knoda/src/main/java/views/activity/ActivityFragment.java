@@ -75,7 +75,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                     if (activityItem.type == ActivityItemType.INVITATION) {
                         errorReporter.showError("Take you to the join screen");
                     } else {
-                        networkingManager.getPrediction(activityItem.predictionId, new NetworkCallback<Prediction>() {
+                        networkingManager.getPrediction(Integer.parseInt(activityItem.target), new NetworkCallback<Prediction>() {
                             @Override
                             public void completionHandler(Prediction prediction, ServerError error) {
                                 DetailsFragment fragment = DetailsFragment.newInstance(prediction);
