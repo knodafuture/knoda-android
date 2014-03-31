@@ -10,6 +10,7 @@ import com.flurry.android.FlurryAgent;
 import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
 import models.ActivityItem;
+import models.ActivityItemType;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
@@ -71,13 +72,17 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ActivityItem activityItem = (ActivityItem)adapter.getItem(i-1);
                 if (activityItem != null) {
-                    networkingManager.getPrediction(activityItem.predictionId, new NetworkCallback<Prediction>() {
-                        @Override
-                        public void completionHandler(Prediction prediction, ServerError error) {
-                            DetailsFragment fragment = DetailsFragment.newInstance(prediction);
-                            pushFragment(fragment);
-                        }
-                    });
+                    if (activityItem.type == ActivityItemType.INVITATION) {
+                        errorReporter.showError("Take you to the join screen");
+                    } else {
+                        networkingManager.getPrediction(activityItem.predictionId, new NetworkCallback<Prediction>() {
+                            @Override
+                            public void completionHandler(Prediction prediction, ServerError error) {
+                                DetailsFragment fragment = DetailsFragment.newInstance(prediction);
+                                pushFragment(fragment);
+                            }
+                        });
+                    }
                 }
             }
         });

@@ -25,10 +25,7 @@ public class ActivityItem extends BaseModel {
     @SerializedName("created_at")
     public DateTime creationDate;
 
-    @SerializedName("prediction_body")
-    public String predictionBody;
-
-    public String title;
+    public String text;
 
     public boolean seen;
 

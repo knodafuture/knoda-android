@@ -62,20 +62,27 @@ public class ActivityListCell extends RelativeLayout {
                 break;
             case COMMENT:
                 resId = R.drawable.activity_comment_icon;
+                break;
+            case INVITATION:
+                resId = R.drawable.activity_groups_icon;
+
         }
 
         if (resId != 0)
             iconImageView.setImageResource(resId);
 
         metadataTextView.setText(activityItem.getCreationString());
-        String firstString = activityItem.title + " ";
-        String secondString = "\"" + activityItem.predictionBody + "\"";
+        String t = activityItem.text.replace("<p>", "");
+        t = t.replace("</p>", "");
+        String[] parts = t.split("</b>");
+        String firstString = parts[0].replace("<b>", "");
+        String secondString = parts[1];
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder(firstString + secondString);
         stringBuilder.setSpan(new StyleSpan(android.graphics.Typeface.NORMAL), 0, firstString.length(),
                 Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         stringBuilder.setSpan(new ForegroundColorSpan(Color.rgb(102, 102, 102)), firstString.length(),
                 firstString.length() + secondString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        textView.setText(stringBuilder);
+        textView.setText(stringBuilder.toString());
         textView.setLines(2);
         textView.setEllipsize(TextUtils.TruncateAt.END);
     }
