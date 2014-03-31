@@ -28,7 +28,7 @@
             android:id="@+id/details_action_comment_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Comments"
+            android:text="COMMENTS"
             android:layout_centerHorizontal="true"
             android:textSize="10dp"
             android:layout_below="@id/details_action_comment_imageview"/>
@@ -56,7 +56,7 @@
             android:id="@+id/details_action_tally_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The Tally"
+            android:text="THE TALLY"
             android:layout_centerHorizontal="true"
             android:textSize="10dp"
             android:layout_below="@id/details_action_tally_imageview"/>
@@ -84,7 +84,7 @@
             android:id="@+id/details_action_similar_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Similar"
+            android:text="SIMILAR"
             android:layout_centerHorizontal="true"
             android:textSize="10dp"
             android:layout_below="@id/details_action_similar_imageview"/>
@@ -111,7 +111,7 @@
             android:id="@+id/details_action_share_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Share"
+            android:text="SHARE"
             android:layout_centerHorizontal="true"
             android:textSize="10dp"
             android:textColor="@color/darkGray"
