@@ -12,12 +12,14 @@ import android.widget.TextView;
 import com.knoda.knoda.R;
 
 import adapters.LeaderboardPagerAdapter;
+import butterknife.OnClick;
 import factories.GsonF;
 import models.Group;
 import views.core.BaseFragment;
 
 public class GroupLeaderboardsFragment extends BaseFragment {
     public Group group;
+    private ViewPager mViewPager;
 
     public static GroupLeaderboardsFragment newInstance(Group group) {
         GroupLeaderboardsFragment fragment = new GroupLeaderboardsFragment();
@@ -28,6 +30,21 @@ public class GroupLeaderboardsFragment extends BaseFragment {
     }
 
     public GroupLeaderboardsFragment() {}
+
+    @OnClick(R.id.board_1)
+    public void onBoard1Click() {
+        mViewPager.setCurrentItem(0);
+    }
+
+    @OnClick(R.id.board_2)
+    public void onBoard2Click() {
+        mViewPager.setCurrentItem(1);
+    }
+
+    @OnClick(R.id.board_3)
+    public void onBoard3Click() {
+        mViewPager.setCurrentItem(2);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +57,7 @@ public class GroupLeaderboardsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_group_leaderboards, container, false);
         LinearLayout ll = (LinearLayout)view.findViewById(R.id.groups_leaderboards_container);
-        ViewPager mViewPager = new ViewPager(getActivity().getApplicationContext());
+        mViewPager = new ViewPager(getActivity().getApplicationContext());
         mViewPager.setId(20000 + group.id);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
