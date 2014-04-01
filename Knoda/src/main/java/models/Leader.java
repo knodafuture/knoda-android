@@ -14,7 +14,7 @@ public class Leader extends BaseModel {
 
     public String getWinPercentageString() {
         if ((won + lost) == 0) {
-            return "0%";
+            return "-";
         } else {
             float winPercent = (float) won / (float) (won + lost) * 100;
             return (int) winPercent + "%";

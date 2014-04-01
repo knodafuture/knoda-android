@@ -13,7 +13,7 @@ public class LeaderListCell  extends RelativeLayout {
     public TextView nameView;
     public TextView winsView;
     public TextView winpercentView;
-
+    public TextView positionView;
     public Leader leader;
 
     public LeaderListCell(Context context) {
@@ -30,6 +30,7 @@ public class LeaderListCell  extends RelativeLayout {
         nameView = (TextView) findViewById(R.id.group_leader_username_textview);
         winsView = (TextView) findViewById(R.id.group_leader_wins_textview);
         winpercentView = (TextView) findViewById(R.id.group_leader_winpercent_textview);
+        positionView = (TextView) findViewById(R.id.group_leader_position_textview);
     }
 
 
@@ -42,6 +43,11 @@ public class LeaderListCell  extends RelativeLayout {
         nameView.setText(leader.username);
         winsView.setText(leader.won.toString() + "-" + leader.lost.toString());
         winpercentView.setText(leader.getWinPercentageString());
-
+        positionView.setText(leader.rank.toString());
+        if (leader.rank % 2 == 0) {
+            setBackgroundColor(getResources().getColor(R.color.lightGray));
+        } else {
+            setBackgroundColor(getResources().getColor(R.color.white));
+        }
     }
 }

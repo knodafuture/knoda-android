@@ -3,21 +3,35 @@
 <views.group.LeaderListCell xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
-    <TextView style="@style/darkGreenText"
-        android:textSize="20dp"
-        android:id="@+id/group_leader_username_textview"
-        android:layout_width="160dp"
+    android:background="@color/white"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+    <TextView
+        android:textSize="14dp"
+        android:textColor="@color/knodaLightGreen"
+        android:id="@+id/group_leader_position_textview"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         android:lines="1"
         android:ellipsize="end"
-        android:text="test"/>
-    <TextView style="@style/darkGreenText"
-        android:textSize="20dp"
+        android:text="1"/>
+    <TextView
+        android:textSize="14dp"
+        android:id="@+id/group_leader_username_textview"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:lines="1"
+        android:ellipsize="end"
+        android:text="test"
+        android:layout_toRightOf="@+id/group_leader_position_textview"/>
+    <TextView
+        android:textSize="14dp"
+        android:textColor="@color/knodaLightGreen"
         android:id="@+id/group_leader_wins_textview"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
@@ -25,10 +39,11 @@
         android:ellipsize="end"
         android:text="test"
         android:layout_toLeftOf="@+id/group_leader_winpercent_textview"/>
-    <TextView style="@style/darkGreenText"
-        android:textSize="20dp"
+    <TextView
+        android:textSize="14dp"
+        android:textColor="@color/knodaLightGreen"
         android:id="@+id/group_leader_winpercent_textview"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
