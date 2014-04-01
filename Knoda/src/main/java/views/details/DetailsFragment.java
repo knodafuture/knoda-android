@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
@@ -22,6 +23,7 @@ import adapters.CommentAdapter;
 import adapters.PagingAdapter;
 import adapters.TallyAdapter;
 import butterknife.OnClick;
+import factories.GsonF;
 import models.Challenge;
 import models.Comment;
 import models.Prediction;
@@ -32,7 +34,6 @@ import networking.NetworkListCallback;
 import views.core.BaseListFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
-import factories.GsonF;
 import views.predictionlists.GroupPredictionListFragment;
 
 public class DetailsFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Comment>, TallyAdapter.TallyAdapterDatasource,
@@ -113,9 +114,10 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public void onInit(DetailsActionbar actionbar) {
-        if (prediction.groupId != null && prediction.groupId > 0) {
+        if (prediction.hasGroup()) {
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.GONE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.VISIBLE);
+            ((ImageView)actionbar.findViewById(R.id.details_action_share_imageview)).setImageResource(R.drawable.action_shareicon_inactive);
         } else {
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.VISIBLE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.GONE);
@@ -183,18 +185,22 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public void onShare() {
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        String suffix = " #knoda " + prediction.shortUrl;
-        int predictionLength = 139 - suffix.length();
-        String text = "";
-        if (prediction.body.length() > predictionLength) {
-            text = prediction.body.substring(0,predictionLength-3) + "..." + suffix;
+        if (prediction.hasGroup()) {
+            errorReporter.showError("Hold on, this is a private group prediction. You won't be be able to share it with the world.");
         } else {
-            text = prediction.body + suffix;
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            String suffix = " #knoda " + prediction.shortUrl;
+            int predictionLength = 139 - suffix.length();
+            String text = "";
+            if (prediction.body.length() > predictionLength) {
+                text = prediction.body.substring(0, predictionLength - 3) + "..." + suffix;
+            } else {
+                text = prediction.body + suffix;
+            }
+            share.putExtra(Intent.EXTRA_TEXT, text);
+            startActivity(Intent.createChooser(share, "How would you like to share?"));
         }
-        share.putExtra(Intent.EXTRA_TEXT, text);
-        startActivity(Intent.createChooser(share, "How would you like to share?"));
     }
 
     @Override

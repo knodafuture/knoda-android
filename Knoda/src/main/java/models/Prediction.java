@@ -141,4 +141,8 @@ public class Prediction extends BaseModel {
             default: return "";
         }
     }
+
+    public boolean hasGroup() {
+        return this.groupId != null && this.groupId > 0;
+    }
 }
