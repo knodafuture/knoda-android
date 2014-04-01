@@ -88,8 +88,37 @@
             android:layout_centerHorizontal="true"
             android:textSize="10dp"
             android:layout_below="@id/details_action_similar_imageview"/>
-
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/details_action_group_clickable"
+        android:clickable="true"
+        android:layout_marginLeft="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="9dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/details_action_group_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/action_group_icon"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:textColor="@color/darkGray"
+            android:id="@+id/details_action_group_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIEW GROUP"
+            android:layout_centerHorizontal="true"
+            android:textSize="10dp"
+            android:layout_below="@id/details_action_group_imageview"/>
+    </RelativeLayout>
+
+    details_action_group_clickable
 
     <RelativeLayout
         android:id="@+id/details_action_share_clickable"

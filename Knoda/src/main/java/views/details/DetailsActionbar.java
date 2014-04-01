@@ -21,7 +21,9 @@ public class DetailsActionbar extends RelativeLayout {
         void onComments();
         void onTally();
         void onSimilar();
+        void onGroup();
         void onShare();
+        void onInit(DetailsActionbar actionbar);
     }
 
     private DetailsActionBarDelegate delegate;
@@ -47,8 +49,8 @@ public class DetailsActionbar extends RelativeLayout {
 
     public DetailsActionbar(Context context, DetailsActionBarDelegate delegate) {
         super(context);
-        initView(context);
         this.delegate = delegate;
+        initView(context);
     }
 
     private void initView(Context context) {
@@ -64,7 +66,9 @@ public class DetailsActionbar extends RelativeLayout {
         similarImageView = (ImageView)findViewById(R.id.details_action_similar_imageview);
         shareImageView = (ImageView)findViewById(R.id.details_action_share_imageview);
 
+
         setBackgroundColor(getResources().getColor(R.color.lightGray));
+        delegate.onInit(this);
     }
 
     @OnClick(R.id.details_action_comment_clickable) void onComment() {
@@ -89,5 +93,9 @@ public class DetailsActionbar extends RelativeLayout {
 
     @OnClick(R.id.details_action_similar_clickable) void onSimilar() {
         delegate.onSimilar();
+    }
+
+    @OnClick(R.id.details_action_group_clickable) void onGroup() {
+        delegate.onGroup();
     }
 }

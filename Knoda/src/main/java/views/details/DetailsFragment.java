@@ -33,9 +33,8 @@ import views.core.BaseListFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import factories.GsonF;
-/**
- * Created by nick on 2/13/14.
- */
+import views.predictionlists.GroupPredictionListFragment;
+
 public class DetailsFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Comment>, TallyAdapter.TallyAdapterDatasource,
         TallyAdapter.TallyAdapterDelegate, DetailsActionbar.DetailsActionBarDelegate,
         CommentAdapter.CommentAdapterDelegate, DetailsHeaderView.DetailsHeaderViewDelegate {
@@ -113,6 +112,17 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     }
 
     @Override
+    public void onInit(DetailsActionbar actionbar) {
+        if (prediction.groupId != null && prediction.groupId > 0) {
+            actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.GONE);
+            actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.VISIBLE);
+        } else {
+            actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.VISIBLE);
+            actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void getObjectsAfterObject(Comment comment, final NetworkListCallback<Comment> callback) {
 
         Integer lastId = comment == null ? 0 : comment.id;
@@ -162,6 +172,12 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     @Override
     public void onSimilar() {
         CategoryFragment fragment = CategoryFragment.newInstance(prediction.tags.get(0));
+        pushFragment(fragment);
+    }
+
+    @Override
+    public void onGroup() {
+        GroupPredictionListFragment fragment = GroupPredictionListFragment.newInstance(userManager.getGroupById(prediction.groupId));
         pushFragment(fragment);
     }
 

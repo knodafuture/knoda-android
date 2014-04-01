@@ -137,4 +137,13 @@ public class UserManager {
     public boolean isLoggedIn() {
         return sharedPrefManager.getSavedAuthtoken() != null;
     }
+
+    public Group getGroupById(Integer id) {
+        for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i).id.equals(id)) {
+                return groups.get(i);
+            }
+        }
+        return null;
+    }
 }
