@@ -11,4 +11,5 @@
     <color name="lightGray">#EFEFEF</color>
     <color name="red">#FE3232</color>
     <color name="darkerTransparentBlack">#CC000000</color>
+    <color name="defaultHintColor">#B7B7B7</color>
 </resources>
