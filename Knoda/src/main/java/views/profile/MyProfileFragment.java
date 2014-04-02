@@ -26,7 +26,7 @@ import models.User;
 import networking.NetworkCallback;
 import views.core.BaseFragment;
 import views.core.MainActivity;
-import views.login.PhotoChooserActivity;
+import views.avatar.UserAvatarChooserActivity;
 
 public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.profile_username_edittext)
@@ -42,7 +42,7 @@ public class MyProfileFragment extends BaseFragment {
 
     @OnClick(R.id.user_profile_header_avatar) void onClickAvatar() {
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(false);
-        Intent intent = new Intent(getActivity(), PhotoChooserActivity.class);
+        Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
         intent.putExtra("cancelable", true);
         startActivityForResult(intent, PHOTO_RESULT_CODE);
     }

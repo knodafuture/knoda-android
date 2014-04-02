@@ -1,13 +1,11 @@
-package views.login;
+package views.avatar;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,38 +19,32 @@ import com.android.volley.toolbox.Volley;
 import com.knoda.knoda.R;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import models.ServerError;
-import models.User;
-import networking.NetworkCallback;
 import views.core.BaseActivity;
 
-public class PhotoChooserActivity extends BaseActivity {
+public abstract class AvatarChooserActivity extends BaseActivity {
 
-    @InjectView(R.id.photo_chooser_imageview) ImageView imageView;
+    @InjectView(R.id.photo_chooser_imageview)
+    ImageView imageView;
 
     private boolean madeInitialSelection = false;
 
-    private static final int AVATAR_SIZE = 1000;
-    private static final int CAMERA_RESULT = 187;
-    private static final int CROP_RESULT = 1827323;
-    private static final int GALLERY_RESULT = 12312312;
+    public static final int AVATAR_SIZE = 1000;
+    public static final int CAMERA_RESULT = 187;
+    public static final int CROP_RESULT = 1827323;
+    public static final int GALLERY_RESULT = 12312312;
 
-    private static final String FROM_CAMERA_FILENAME = "FROMCAMERA";
-    private static final String CROP_RESULT_FILENAME = "CROPRESULT";
+    public static final String FROM_CAMERA_FILENAME = "FROMCAMERA";
+    public static final String CROP_RESULT_FILENAME = "CROPRESULT";
 
     private File cameraOutputFile;
-    private File cropResultFile;
+    public File cropResultFile;
 
     private RequestQueue requestQueue;
 
-    private boolean uploadInProgress = false;
+    public boolean uploadInProgress = false;
 
     private boolean cancelable;
 
@@ -137,7 +129,7 @@ public class PhotoChooserActivity extends BaseActivity {
                 startCamera();
                 break;
             case R.id.action_none:
-                loadOctopus();
+                useDefault();
                 break;
             case R.id.action_from_gallery:
                 startGallery();
@@ -158,33 +150,17 @@ public class PhotoChooserActivity extends BaseActivity {
     }
 
 
-    private void submit() {
-        if (uploadInProgress)
-            return;
+    public abstract void submit();
 
-        spinner.show();
-
-        networkingManager.uploadAvatar(cropResultFile, new NetworkCallback<User>() {
-            @Override
-            public void completionHandler(User object, ServerError error) {
-                spinner.hide();
-                uploadInProgress = false;
-                userManager.refreshUser(new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User object, ServerError error) {
-                        User u = userManager.getUser();
-                        if (error != null)
-                            errorReporter.showError("Please try again later");
-                        finishAndReturnResult();
-                    }
-                });
-            }
-        });
-    }
-
-    private void finishAndReturnResult() {
+    public void finishAndReturnResult() {
         Intent intent = getIntent();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, cropResultFile.getPath());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    public void finishAndReturnDefaultResult() {
+        Intent intent = getIntent();
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -198,7 +174,11 @@ public class PhotoChooserActivity extends BaseActivity {
         if (requestCode == CAMERA_RESULT && resultCode == RESULT_OK) {
             startCrop(Uri.fromFile(cameraOutputFile));
         } else if (requestCode == CROP_RESULT && resultCode == RESULT_OK) {
-            showCroppedImage();
+            if (showFinalCropped()) {
+                showCroppedImage();
+            } else {
+                submit();
+            }
         } else if (requestCode == GALLERY_RESULT && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
             startCrop(imageUri);
@@ -230,39 +210,7 @@ public class PhotoChooserActivity extends BaseActivity {
         imageView.setImageBitmap(bitmap);
     }
 
-    private void loadOctopus() {
-        AssetManager assetManager = getAssets();
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = assetManager.open(getRandomOctopus());
-            File outFile = new File(getExternalFilesDir(null), CROP_RESULT_FILENAME);
-            out = new FileOutputStream(outFile);
-            copyFile(in, out);
-            in.close();
-            in = null;
-            out.flush();
-            out.close();
-            out = null;
-        } catch(IOException e) {
-            Log.e("tag", "Failed to copy asset file: " + CROP_RESULT_FILENAME, e);
-        }
+    protected abstract void useDefault();
 
-        showCroppedImage();
-    }
-
-    private void copyFile(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
-        int read;
-        while((read = in.read(buffer)) != -1){
-            out.write(buffer, 0, read);
-        }
-    }
-
-    private String getRandomOctopus() {
-        int random = 1 + (int)(Math.random() * ((4) + 1));
-        return "avatar_" + random + ".png";
-    }
+    protected boolean showFinalCropped() { return true; };
 }
-
-

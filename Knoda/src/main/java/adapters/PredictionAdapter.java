@@ -13,9 +13,6 @@ import models.Prediction;
 import pubsub.NewPredictionEvent;
 import views.predictionlists.PredictionListCell;
 
-/**
- * Created by nick on 1/27/14.
- */
 public class PredictionAdapter extends PagingAdapter<Prediction> {
 
     public Bus bus;

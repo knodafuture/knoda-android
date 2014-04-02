@@ -7,7 +7,7 @@
     <item android:id="@+id/action_from_gallery"
         android:title="Choose existing" />
     <item android:id="@+id/action_none"
-        android:title="No thanks" />
+        android:title="Use Default" />
     <item android:id="@+id/action_cancel"
         android:title="Cancel" />
 

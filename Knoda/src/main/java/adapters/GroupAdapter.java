@@ -7,18 +7,32 @@ import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
+import javax.inject.Inject;
 
 import helpers.AdapterHelper;
+import managers.UserManager;
 import models.Group;
+import pubsub.NewGroupEvent;
 import views.group.CreateGroupHeaderView;
 import views.group.GroupListCell;
 
 public class GroupAdapter extends PagingAdapter<Group> {
 
+    @Inject
+    public UserManager userManager;
     public CreateGroupHeaderView header;
+    public Bus bus;
 
     public GroupAdapter(Context context, PagingAdapterDatasource<Group> datasource, ImageLoader imageLoader) {
         super(context, datasource, imageLoader);
+    }
+
+    @Subscribe
+    public void newPrediction(NewGroupEvent event) {
+        notifyDataSetChanged();
     }
 
     @Override

@@ -12,6 +12,7 @@ import managers.UserManager;
 import unsorted.ErrorReporter;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
+import views.avatar.GroupAvatarChooserActivity;
 import views.badge.BadgeFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
@@ -26,7 +27,7 @@ import views.group.GroupLeaderboardFragment;
 import views.group.GroupLeaderboardsFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
-import views.login.PhotoChooserActivity;
+import views.avatar.UserAvatarChooserActivity;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
@@ -47,7 +48,8 @@ import views.search.SearchFragment;
                 UserManager.class,
                 NetworkingManager.class,
                 MainActivity.class,
-                PhotoChooserActivity.class,
+                UserAvatarChooserActivity.class,
+                GroupAvatarChooserActivity.class,
                 WelcomeFragment.class,
                 LoginFragment.class,
                 SignUpFragment.class,

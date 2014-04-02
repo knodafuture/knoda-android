@@ -1,6 +1,10 @@
 package views.group;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -8,14 +12,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.knoda.knoda.R;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import butterknife.InjectView;
+import butterknife.OnClick;
 import models.Group;
 import models.ServerError;
 import networking.NetworkCallback;
+import networking.NetworkListCallback;
 import pubsub.NewGroupEvent;
+import views.avatar.GroupAvatarChooserActivity;
 import views.core.BaseFragment;
 
 public class AddGroupFragment extends BaseFragment {
@@ -26,12 +37,26 @@ public class AddGroupFragment extends BaseFragment {
     @InjectView(R.id.add_group_description_edittext)
     EditText descriptionEditText;
 
+    @InjectView(R.id.add_group_avatar_imageview)
+    ImageView avatarImageView;
+
+    private File avatarFile;
+
+    private static final int PHOTO_RESULT_CODE = 123123129;
+
     public static AddGroupFragment newInstance() {
         AddGroupFragment fragment = new AddGroupFragment();
         return fragment;
     }
 
     public AddGroupFragment() {}
+
+    @OnClick(R.id.add_group_avatar_imageview) void onClickAvatar() {
+        getActivity().findViewById(R.id.add_group_avatar_imageview).setEnabled(false);
+        Intent intent = new Intent(getActivity(), GroupAvatarChooserActivity.class);
+        intent.putExtra("cancelable", true);
+        startActivityForResult(intent, PHOTO_RESULT_CODE);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,16 +106,34 @@ public class AddGroupFragment extends BaseFragment {
         networkingManager.submitGroup(group, new NetworkCallback<Group>() {
             @Override
             public void completionHandler(Group object, ServerError error) {
-                spinner.hide();
-                if (error != null) {
-                    errorReporter.showError(error);
+                if (avatarFile != null) {
+                    networkingManager.uploadGroupAvatar(object.id, avatarFile, new NetworkCallback<Group>() {
+                        @Override
+                        public void completionHandler(Group group, ServerError error) {
+                            spinner.hide();
+                            if (error != null) {
+                                errorReporter.showError(error);
+                            } else {
+                                finish(group);
+                            }
+                        }
+                    });
                 } else {
-                    bus.post(new NewGroupEvent(object));
-                    popFragment();
+                    finish(object);
                 }
             }
         });
+    }
 
+    private void finish(final Group group) {
+        userManager.refreshGroups(new NetworkListCallback<Group>() {
+            @Override
+            public void completionHandler(ArrayList<Group> object, ServerError error) {
+                bus.post(new NewGroupEvent(group));
+                popFragment();
+                spinner.hide();
+            }
+        });
     }
 
     private boolean validate() {
@@ -100,5 +143,17 @@ public class AddGroupFragment extends BaseFragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null)
+            return;
+        if (data.getExtras().containsKey(MediaStore.EXTRA_OUTPUT)) {
+            String avatarPath = data.getExtras().getString(MediaStore.EXTRA_OUTPUT);
+            avatarFile = new File(avatarPath);
+            Bitmap bitmap = BitmapFactory.decodeFile(avatarPath);
+            avatarImageView.setImageBitmap(bitmap);
+        }
     }
 }

@@ -36,7 +36,7 @@ import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.badge.BadgeFragment;
 import views.group.GroupFragment;
-import views.login.PhotoChooserActivity;
+import views.avatar.UserAvatarChooserActivity;
 import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
@@ -273,7 +273,7 @@ public class MainActivity extends BaseActivity
         navigationDrawerFragment.refreshUser();
         navigationDrawerFragment.refreshActivity();
         if (userManager.getUser().avatar == null) {
-            Intent intent = new Intent(this, PhotoChooserActivity.class);
+            Intent intent = new Intent(this, UserAvatarChooserActivity.class);
             startActivity(intent);
         }
     }

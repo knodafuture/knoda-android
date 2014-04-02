@@ -309,9 +309,8 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
     }
 
-    public void uploadAvatar(final File avatarFile, final NetworkCallback<User> callback) {
+    public void uploadUserAvatar(final File avatarFile, final NetworkCallback<User> callback) {
         String url = buildUrl("profile.json", true, null);
-
         MultipartRequestBuilder builder = MultipartRequestBuilder.create().forUrl(url);
         builder.addErrorListener(new Response.ErrorListener() {
             @Override
@@ -319,7 +318,6 @@ public class NetworkingManager {
                 callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
         });
-
         builder.addListener(new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -327,10 +325,27 @@ public class NetworkingManager {
                 callback.completionHandler(u, null);
             }
         });
-
-
         builder.addFilePart("user[avatar]", avatarFile, ContentType.APPLICATION_OCTET_STREAM, "image.jpg");
+        mRequestQueue.add(builder.build());
+    }
 
+    public void uploadGroupAvatar(final Integer groupId, final File avatarFile, final NetworkCallback<Group> callback) {
+        String url = buildUrl("groups/" + groupId.toString() + ".json", true, null);
+        MultipartRequestBuilder builder = MultipartRequestBuilder.create().forUrl(url);
+        builder.addErrorListener(new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
+            }
+        });
+        builder.addListener(new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                Group g = new Gson().fromJson(s, Group.class);
+                callback.completionHandler(g, null);
+            }
+        });
+        builder.addFilePart("avatar", avatarFile, ContentType.APPLICATION_OCTET_STREAM, "image.jpg");
         mRequestQueue.add(builder.build());
     }
 

@@ -36,7 +36,7 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_margin="10dp"
-            android:background="@color/lightGray"/>
+            android:src="@drawable/groups_avatar_default"/>
         <EditText style="@style/edittext_main"
             android:id="@+id/add_group_description_edittext"
             android:layout_width="match_parent"

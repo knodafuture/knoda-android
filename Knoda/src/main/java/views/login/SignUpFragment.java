@@ -27,6 +27,7 @@ import models.ServerError;
 import models.SignUpRequest;
 import models.User;
 import networking.NetworkCallback;
+import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 
@@ -149,14 +150,12 @@ public class SignUpFragment extends BaseFragment {
                     errorReporter.showError(error);
                 else {
                     sharedPrefManager.setFirstLaunch(true);
-                    Intent intent = new Intent(getActivity(), PhotoChooserActivity.class);
+                    Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
                     startActivityForResult(intent, avatarResultCode);
+
                 }
             }
         });
-
-
-
     }
 
     public void openUrl(String url) {
@@ -191,8 +190,6 @@ public class SignUpFragment extends BaseFragment {
                 ((MainActivity) getActivity()).doLogin();
             }
         };
-
         handler.postDelayed(runnable, 500);
-
     }
 }

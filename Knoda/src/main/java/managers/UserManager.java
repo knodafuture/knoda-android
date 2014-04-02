@@ -55,6 +55,18 @@ public class UserManager {
         });
     }
 
+    public void refreshGroups(final NetworkListCallback<Group> callback) {
+        networkingManager.getGroups(new NetworkListCallback<Group>() {
+            @Override
+            public void completionHandler(ArrayList<Group> object, ServerError error) {
+                if (error == null) {
+                    groups = object;
+                }
+                callback.completionHandler(object, error);
+            }
+        });
+    }
+
     public void updateUser(final User u, final NetworkCallback<User> callback) {
         networkingManager.updateUser(u, new NetworkCallback<User>() {
             @Override
