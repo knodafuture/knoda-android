@@ -24,23 +24,7 @@ import javax.inject.Singleton;
 import builders.MultipartRequestBuilder;
 import builders.ParamBuilder;
 import factories.TypeTokenFactory;
-import models.ActivityItem;
-import models.AndroidDeviceToken;
-import models.Badge;
-import models.BaseModel;
-import models.Challenge;
-import models.Comment;
-import models.ForgotPasswordRequest;
-import models.Group;
-import models.Leader;
-import models.LoginRequest;
-import models.LoginResponse;
-import models.PasswordChangeRequest;
-import models.Prediction;
-import models.ServerError;
-import models.SignUpRequest;
-import models.Tag;
-import models.User;
+import models.*;
 import networking.BitmapLruCache;
 import networking.GsonArrayRequest;
 import networking.GsonRequest;
@@ -385,8 +369,12 @@ public class NetworkingManager {
     public void getGroupLeaderboard(final Integer groupId, final String board, final NetworkListCallback<Leader> callback) {
         ParamBuilder builder = new ParamBuilder().create().add("board", board.toLowerCase());
         String url = buildUrl("groups/" + groupId + "/leaderboard.json", true, builder);
-        Logger.log("LEADERBOARD# " + url);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getLeaderListTypeToken(), callback);
+    }
+
+    public void getInvitationByCode(final String code, final NetworkCallback<Invitation> callback) {
+        String url = buildUrl("invitations/" + code + ".json", true, null);
+        executeRequest(Request.Method.GET, url, null, Invitation.class, callback);
     }
 
     private Map<String, String> getHeaders() {

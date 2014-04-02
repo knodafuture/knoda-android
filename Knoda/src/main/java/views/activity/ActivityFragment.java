@@ -11,11 +11,14 @@ import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
 import models.ActivityItem;
 import models.ActivityItemType;
+import models.Group;
+import models.Invitation;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.ActivitiesViewedEvent;
+import views.core.BaseFragment;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
 
@@ -73,7 +76,24 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                 ActivityItem activityItem = (ActivityItem)adapter.getItem(i-1);
                 if (activityItem != null) {
                     if (activityItem.type == ActivityItemType.INVITATION) {
-                        errorReporter.showError("Take you to the join screen");
+                        spinner.show();
+                        networkingManager.getInvitationByCode(activityItem.target, new NetworkCallback<Invitation>() {
+                            @Override
+                            public void completionHandler(Invitation invitation, ServerError error) {
+                                spinner.hide();
+                                Group group = userManager.getGroupById(invitation.group.id);
+                                BaseFragment fragment;
+                                if (group != null) {
+                                    errorReporter.showError("Direct user to the group settings, as they are a member of the group");
+                                    //fragment = GroupPredictionListFragment.newInstance(group);
+                                } else {
+                                    errorReporter.showError("Direct user to the group join, as they are NOT a member of the group");
+                                    //fragment = GroupSettingsFragment.newInstance(invitation);
+                                }
+                            }
+                        });
+
+
                     } else {
                         networkingManager.getPrediction(Integer.parseInt(activityItem.target), new NetworkCallback<Prediction>() {
                             @Override
