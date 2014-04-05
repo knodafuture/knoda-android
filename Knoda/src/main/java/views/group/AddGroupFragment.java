@@ -89,6 +89,12 @@ public class AddGroupFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideKeyboard();
+    }
+
 
     private void submitGroup() {
 
