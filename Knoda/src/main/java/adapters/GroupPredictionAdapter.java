@@ -3,8 +3,10 @@ package adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.knoda.knoda.R;
 import com.squareup.otto.Bus;
 
 import helpers.AdapterHelper;
@@ -53,7 +55,7 @@ public class GroupPredictionAdapter extends PredictionAdapter {
 
         if (header == null)
             header = new GroupPredictionListHeader(context);
-
+        ((TextView)header.findViewById(R.id.group_prediction_list_leader_textview)).setText(group.leader.username);
         return header;
     }
 }
