@@ -17,12 +17,13 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/new_group_icon"
         android:textSize="18dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="13dp"
         android:layout_marginLeft="10dp"
-        android:text="Create new group"/>
+        android:text="Create new group"
+        android:textColor="@color/darkGray" />
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="4dp"
         android:background="@color/lightGray"
         android:layout_below="@+id/new_group_icon"
         android:layout_marginTop="15dp"/>

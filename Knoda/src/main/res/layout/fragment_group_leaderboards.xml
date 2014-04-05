@@ -14,7 +14,7 @@
             android:layout_weight=".33"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Last 7"
+            android:text="7 DAY"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:textColor="@color/white"/>
@@ -23,7 +23,7 @@
             android:layout_weight=".33"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Last 30"
+            android:text="30 DAY"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:textColor="@color/knodaLighterGreen"/>
@@ -32,7 +32,7 @@
             android:layout_weight=".33"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="All Time"
+            android:text="ALL-TIME"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:textColor="@color/knodaLighterGreen"/>

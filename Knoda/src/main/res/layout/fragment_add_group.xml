@@ -18,7 +18,8 @@
             android:layout_marginTop="10dp"
             android:hint="Group Name"
             android:maxLength="30"
-            android:background="@null"/>
+            android:background="@null"
+            android:inputType="textCapSentences"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -45,7 +46,7 @@
             android:hint="Description"
             android:gravity="top"
             android:singleLine="false"
-            android:inputType="textMultiLine"
+            android:inputType="textCapSentences|textMultiLine"
             android:maxLength="140"
             android:layout_toRightOf="@+id/add_group_avatar_imageview"/>
     </RelativeLayout>
