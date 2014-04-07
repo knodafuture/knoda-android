@@ -201,26 +201,28 @@ public class AddPredictionFragment extends BaseFragment {
     }
 
     private void buildGroupsDialog() {
-        String[] items = new String[userManager.groups.size()+1];
-        items[0] = "Public";
-        for (int i = 0; i < userManager.groups.size(); i++) {
-            items[i+1] = userManager.groups.get(i).name;
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select a group")
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (i == 0) {
-                            selectedGroup = null;
-                            groupTextView.setText("Public");
-                        } else {
-                            selectedGroup = userManager.groups.get(i-1);
-                            groupTextView.setText(userManager.groups.get(i-1).name);
+        if (!userManager.groups.isEmpty()) {
+            String[] items = new String[userManager.groups.size() + 1];
+            items[0] = "Public";
+            for (int i = 0; i < userManager.groups.size(); i++) {
+                items[i + 1] = userManager.groups.get(i).name;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Select a group")
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (i == 0) {
+                                selectedGroup = null;
+                                groupTextView.setText("Public");
+                            } else {
+                                selectedGroup = userManager.groups.get(i - 1);
+                                groupTextView.setText(userManager.groups.get(i - 1).name);
+                            }
                         }
-                    }
-                });
-        groupsDialog = builder.create();
+                    });
+            groupsDialog = builder.create();
+        }
     }
 
     @Override

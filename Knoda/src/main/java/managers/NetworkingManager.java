@@ -84,9 +84,12 @@ public class NetworkingManager {
     }
 
     public void getCurrentUser(final NetworkCallback<User> callback) {
-        String url = buildUrl("profile.json", true, null);
-
-        executeRequest(Request.Method.GET, url, null, User.class, callback);
+        try {
+            String url = buildUrl("profile.json", true, null);
+            executeRequest(Request.Method.GET, url, null, User.class, callback);
+        } catch (Exception e) {
+            callback.completionHandler(null, ServerError.newInstanceWithVolleyError(new VolleyError("Unable to get current user")));
+        }
     }
 
     public void getPredictionsWithTagAfter(final String tag, final Integer lastId, final NetworkListCallback<Prediction> callback) {
