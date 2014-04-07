@@ -2,9 +2,9 @@ package views.predictionlists;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
-import com.knoda.knoda.R;
 
 import adapters.GroupPredictionAdapter;
 import adapters.PagingAdapter;
@@ -14,10 +14,12 @@ import models.Prediction;
 import networking.NetworkListCallback;
 import pubsub.ChangeGroupEvent;
 import views.group.GroupLeaderboardsFragment;
+import views.group.GroupPredictionListHeader;
 import views.group.GroupSettingsFragment;
 
-public class GroupPredictionListFragment extends BasePredictionListFragment {
+public class GroupPredictionListFragment extends BasePredictionListFragment implements GroupPredictionListHeader.GroupPredictionListHeaderDelegate {
     public Group group;
+    //private GroupPredictionListHeader headerview;
 
     public static GroupPredictionListFragment newInstance(Group group) {
         GroupPredictionListFragment fragment = new GroupPredictionListFragment();
@@ -40,31 +42,44 @@ public class GroupPredictionListFragment extends BasePredictionListFragment {
         setTitle(group.name.toUpperCase());
         final GroupPredictionAdapter a = ((GroupPredictionAdapter)adapter);
         a.setGroup(group);
+        /*
+        headerview = new GroupPredictionListHeader(getActivity(), this);
+        headerview.group = group;
+        final GroupPredictionAdapter a = ((GroupPredictionAdapter)adapter);
         a.setLoadFinishedListener(new PagingAdapter.PagingAdapaterPageLoadFinishListener<Prediction>() {
             @Override
             public void adapterFinishedLoadingPage(int page) {
-                a.header.findViewById(R.id.group_rankings_container).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        GroupLeaderboardsFragment fragment = GroupLeaderboardsFragment.newInstance(group);
-                        pushFragment(fragment);
-                    }
-                });
-                a.header.findViewById(R.id.group_settings_container).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(group, null);
-                        pushFragment(fragment);
-                    }
-                });
+                a.header = headerview;
             }
         });
+        */
         FlurryAgent.logEvent("Group_Prediction_List");
     }
 
     @Override
+    public void onRankings() {
+        GroupLeaderboardsFragment fragment = GroupLeaderboardsFragment.newInstance(group);
+        pushFragment(fragment);
+    }
+
+    @Override
+    public void onSettings() {
+        GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(group, null);
+        pushFragment(fragment);
+    }
+
+    @Override
+    public void onListViewCreated(ListView listView) {
+        super.onListViewCreated(listView);
+    }
+
+
+
+    @Override
     public PagingAdapter getAdapter() {
-        return new GroupPredictionAdapter(getActivity(), this, networkingManager.getImageLoader());
+        GroupPredictionAdapter a = new GroupPredictionAdapter(getActivity(), this, networkingManager.getImageLoader());
+        a.delegate = this;
+        return a;
     }
 
     @Override
@@ -87,6 +102,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment {
     public void onResume() {
         super.onResume();
         bus.post(new ChangeGroupEvent(group));
+
     }
 
     @Override
