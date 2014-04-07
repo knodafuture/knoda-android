@@ -19,15 +19,14 @@ import java.util.ArrayList;
 import adapters.MembershipAdapter;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import factories.GsonF;
 import models.Group;
 import models.Member;
 import models.ServerError;
-import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.ChangeGroupEvent;
 import views.core.BaseFragment;
-import factories.GsonF;
 
 public class GroupSettingsFragment extends BaseFragment implements MembershipCell.MembershipCellCallbacks {
 
@@ -104,7 +103,6 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_settings, container, false);
-
         return view;
     }
 
@@ -193,13 +191,12 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
             public void onClick(View view) {
                 alert.dismiss();
                 spinner.show();
-
                 networkingManager.deleteMembership(group.myMembership.id, new NetworkCallback<Member>() {
                     @Override
                     public void completionHandler(Member object, ServerError error) {
-                        userManager.refreshUser(new NetworkCallback<User>() {
+                        userManager.refreshGroups(new NetworkListCallback<Group>() {
                             @Override
-                            public void completionHandler(User object, ServerError error) {
+                            public void completionHandler(ArrayList<Group> object, ServerError error) {
                                 spinner.hide();
                                 popToRootFragment();
                             }
@@ -218,7 +215,6 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
 
     public void joinGroup() {
         spinner.show();
-
         networkingManager.joinGroup(invitationCode, group.id, new NetworkCallback<Member>() {
             @Override
             public void completionHandler(Member object, ServerError error) {
@@ -226,9 +222,9 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
                     spinner.hide();
                     errorReporter.showError("Unable to join the group at this time.");
                 } else {
-                    userManager.refreshUser(new NetworkCallback<User>() {
+                    userManager.refreshGroups(new NetworkListCallback<Group>() {
                         @Override
-                        public void completionHandler(User object, ServerError error) {
+                        public void completionHandler(ArrayList<Group> object, ServerError error) {
                             spinner.hide();
                             group = userManager.getGroupById(group.id);
                             invitationCode = null;
