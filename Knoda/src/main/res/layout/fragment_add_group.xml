@@ -41,6 +41,7 @@
         <EditText style="@style/edittext_main"
             android:id="@+id/add_group_description_edittext"
             android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:hint="Description"
@@ -48,6 +49,7 @@
             android:singleLine="false"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="140"
-            android:layout_toRightOf="@+id/add_group_avatar_imageview"/>
+            android:minLines="5"
+            android:layout_toRightOf="@+id/add_group_avatar_imageview" />
     </RelativeLayout>
 </LinearLayout>

@@ -116,9 +116,9 @@ public class AddGroupFragment extends BaseFragment {
                     networkingManager.uploadGroupAvatar(object.id, avatarFile, new NetworkCallback<Group>() {
                         @Override
                         public void completionHandler(Group group, ServerError error) {
-                            spinner.hide();
                             if (error != null) {
                                 errorReporter.showError(error);
+                                spinner.hide();
                             } else {
                                 finish(group);
                             }
@@ -144,6 +144,10 @@ public class AddGroupFragment extends BaseFragment {
 
     private boolean validate() {
         String errorMessage = null;
+        if (nameEditText.getText().length() == 0)
+            errorMessage = "Please enter a name.";
+        else if (descriptionEditText.getText().length() == 0)
+            errorMessage = "Please select a description.";
         if (errorMessage != null) {
             errorReporter.showError(errorMessage);
             return false;
