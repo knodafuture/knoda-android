@@ -27,6 +27,7 @@ import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.ChangeGroupEvent;
 import views.core.BaseFragment;
+import factories.GsonF;
 
 public class GroupSettingsFragment extends BaseFragment implements MembershipCell.MembershipCellCallbacks {
 
@@ -58,7 +59,7 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
     private String invitationCode;
 
     @OnClick(R.id.group_settings_invite_button) void onInvite() {
-        InvitationsFragment fragment = new InvitationsFragment(group);
+        InvitationsFragment fragment = InvitationsFragment.newInstance(group);
         pushFragment(fragment);
     }
 
@@ -78,17 +79,24 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
         joinGroup();
     }
 
-    public GroupSettingsFragment(Group group, String invitationCode) {
-        this.group = group;
-        this.invitationCode = invitationCode;
-    }
-    public GroupSettingsFragment(Group group) {
-        this.group = group;
+    public static GroupSettingsFragment newInstance(Group group, String invitationCode) {
+        GroupSettingsFragment fragment = new GroupSettingsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("GROUP", GsonF.actory().toJson(group));
+        if (invitationCode != null) {
+            bundle.putString("INVITATION_CODE", invitationCode);
+        }
+        fragment.setArguments(bundle);
+        return fragment ;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
+        if (getArguments().containsKey("INVITATION_CODE")) {
+            invitationCode = getArguments().getString("INVITATION_CODE");
+        }
         bus.register(this);
     }
 

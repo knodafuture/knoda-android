@@ -53,7 +53,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment {
                 a.header.findViewById(R.id.group_settings_container).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        GroupSettingsFragment fragment = new GroupSettingsFragment(group);
+                        GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(group, null);
                         pushFragment(fragment);
                     }
                 });

@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.knoda.knoda.R;
+import factories.GsonF;
 
 import java.util.ArrayList;
 
@@ -58,13 +59,19 @@ public class InvitationsFragment extends BaseFragment implements InvitationsList
 
     long animationTime;
 
-    public InvitationsFragment(Group group) {
-        this.group = group;
+    public static InvitationsFragment newInstance(Group group) {
+        InvitationsFragment fragment = new InvitationsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("GROUP", GsonF.actory().toJson(group));
+        fragment.setArguments(bundle);
+        return fragment ;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
+        bus.register(this);
     }
 
     @Override

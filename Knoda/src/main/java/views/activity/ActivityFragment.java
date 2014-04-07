@@ -80,7 +80,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                             @Override
                             public void completionHandler(Invitation invitation, ServerError error) {
                                 spinner.hide();
-                                GroupSettingsFragment fragment = new GroupSettingsFragment(invitation.group, activityItem.target);
+                                GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(invitation.group, activityItem.target);
                                 pushFragment(fragment);
                             }
                         });
