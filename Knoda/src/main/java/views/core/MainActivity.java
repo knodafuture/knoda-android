@@ -20,6 +20,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,19 +30,22 @@ import butterknife.ButterKnife;
 import di.KnodaApplication;
 import helpers.TypefaceSpan;
 import managers.GcmManager;
+import models.Group;
 import models.KnodaScreen;
 import models.User;
+import pubsub.ChangeGroupEvent;
 import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
+import views.avatar.UserAvatarChooserActivity;
 import views.badge.BadgeFragment;
 import views.group.GroupFragment;
-import views.avatar.UserAvatarChooserActivity;
 import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
+import pubsub.ChangeGroupEvent;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -58,6 +62,12 @@ public class MainActivity extends BaseActivity
     private boolean actionBarEnabled = true;
     private String title;
     private int rootFragmentId;
+    private Group currentGroup;
+
+    @Subscribe
+    public void changeGroup(ChangeGroupEvent event) {
+        currentGroup = event.group;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -326,7 +336,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void onAddPrediction() {
-        AddPredictionFragment fragment = new AddPredictionFragment();
+        AddPredictionFragment fragment = AddPredictionFragment.newInstance(currentGroup);
         pushFragment(fragment);
     }
 

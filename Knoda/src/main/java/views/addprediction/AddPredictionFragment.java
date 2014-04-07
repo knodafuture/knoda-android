@@ -25,14 +25,15 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
+import models.Group;
 import models.Prediction;
 import models.ServerError;
 import models.Tag;
-import models.Group;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.NewPredictionEvent;
 import views.core.BaseFragment;
+import factories.GsonF;
 
 public class AddPredictionFragment extends BaseFragment {
 
@@ -86,10 +87,16 @@ public class AddPredictionFragment extends BaseFragment {
     private AlertDialog groupsDialog;
 
     private MessageCounter bodyCounter;
+    private Group group;
 
 
-    public static AddPredictionFragment newInstance() {
+    public static AddPredictionFragment newInstance(Group group) {
         AddPredictionFragment fragment = new AddPredictionFragment();
+        Bundle bundle = new Bundle();
+        if (group != null) {
+            bundle.putString("GROUP", GsonF.actory().toJson(group));
+        }
+        fragment.setArguments(bundle);
         return fragment;
     }
     public AddPredictionFragment() {}
@@ -97,6 +104,9 @@ public class AddPredictionFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments().containsKey("GROUP")) {
+            group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
+        }
         setHasOptionsMenu(true);
     }
 
@@ -150,6 +160,10 @@ public class AddPredictionFragment extends BaseFragment {
         });
 
         buildGroupsDialog();
+        if (group != null) {
+            selectedGroup = userManager.getGroupById(group.id);
+            groupTextView.setText(group.name);
+        }
 
         avatarImageView.setImageUrl(userManager.getUser().avatar.small, networkingManager.getImageLoader());
 

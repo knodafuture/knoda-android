@@ -12,6 +12,7 @@ import factories.GsonF;
 import models.Group;
 import models.Prediction;
 import networking.NetworkListCallback;
+import pubsub.ChangeGroupEvent;
 import views.group.GroupLeaderboardsFragment;
 import views.group.GroupSettingsFragment;
 
@@ -30,6 +31,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
+        bus.register(this);
     }
 
     @Override
@@ -80,4 +82,17 @@ public class GroupPredictionListFragment extends BasePredictionListFragment {
         }
         super.onItemClicked(position);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bus.post(new ChangeGroupEvent(group));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.post(new ChangeGroupEvent(null));
+    }
+
 }

@@ -15,6 +15,7 @@ import adapters.LeaderboardPagerAdapter;
 import butterknife.OnClick;
 import factories.GsonF;
 import models.Group;
+import pubsub.ChangeGroupEvent;
 import views.core.BaseFragment;
 
 public class GroupLeaderboardsFragment extends BaseFragment {
@@ -50,6 +51,7 @@ public class GroupLeaderboardsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
+        bus.register(this);
     }
 
     @Override
@@ -100,4 +102,17 @@ public class GroupLeaderboardsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setTitle(group.name.toUpperCase());
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bus.post(new ChangeGroupEvent(group));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.post(new ChangeGroupEvent(null));
+    }
+
 }

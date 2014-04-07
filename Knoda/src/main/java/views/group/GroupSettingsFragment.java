@@ -25,6 +25,7 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.ChangeGroupEvent;
 import views.core.BaseFragment;
 
 public class GroupSettingsFragment extends BaseFragment implements MembershipCell.MembershipCellCallbacks {
@@ -86,6 +87,12 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bus.register(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group_settings, container, false);
@@ -98,6 +105,18 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
         super.onViewCreated(view, savedInstanceState);
         setTitle("SETTINGS");
         populate();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bus.post(new ChangeGroupEvent(group));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bus.post(new ChangeGroupEvent(null));
     }
 
     private void populate() {
