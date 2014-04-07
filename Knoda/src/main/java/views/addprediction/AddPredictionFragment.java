@@ -213,6 +213,7 @@ public class AddPredictionFragment extends BaseFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0) {
                             selectedGroup = null;
+                            groupTextView.setText("Public");
                         } else {
                             selectedGroup = userManager.groups.get(i-1);
                             groupTextView.setText(userManager.groups.get(i-1).name);
