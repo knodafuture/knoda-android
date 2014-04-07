@@ -207,7 +207,7 @@ public class AddPredictionFragment extends BaseFragment {
             items[i+1] = userManager.groups.get(i).name;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Public")
+        builder.setTitle("Select a group")
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
