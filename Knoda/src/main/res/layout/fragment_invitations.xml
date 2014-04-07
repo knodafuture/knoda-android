@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="views.group.InvitationsFragment">
+
+    <RelativeLayout
+        android:id="@+id/invitations_search_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/invitations_search_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="15dp"
+            android:hint="Type a name, phone number, or email address"/>
+        <View
+            android:id="@+id/invitations_spacer"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/lightGray"
+            android:layout_below="@id/invitations_search_edittext"/>
+        <ListView
+            android:id="@+id/invitations_results_listview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/invitations_spacer">
+
+            </ListView>
+
+        </RelativeLayout>
+
+    <ListView
+        android:id="@+id/invitations_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/invitations_search_container">
+
+
+        </ListView>
+
+
+
+</RelativeLayout>

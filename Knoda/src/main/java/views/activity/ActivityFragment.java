@@ -11,16 +11,15 @@ import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
 import models.ActivityItem;
 import models.ActivityItemType;
-import models.Group;
 import models.Invitation;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.ActivitiesViewedEvent;
-import views.core.BaseFragment;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
+import views.group.GroupSettingsFragment;
 
 public class ActivityFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<ActivityItem> {
 
@@ -73,7 +72,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ActivityItem activityItem = (ActivityItem)adapter.getItem(i-1);
+                final ActivityItem activityItem = (ActivityItem)adapter.getItem(i-1);
                 if (activityItem != null) {
                     if (activityItem.type == ActivityItemType.INVITATION) {
                         spinner.show();
@@ -81,15 +80,8 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                             @Override
                             public void completionHandler(Invitation invitation, ServerError error) {
                                 spinner.hide();
-                                Group group = userManager.getGroupById(invitation.group.id);
-                                BaseFragment fragment;
-                                if (group != null) {
-                                    errorReporter.showError("Direct user to the group settings, as they are a member of the group");
-                                    //fragment = GroupPredictionListFragment.newInstance(group);
-                                } else {
-                                    errorReporter.showError("Direct user to the group join, as they are NOT a member of the group");
-                                    //fragment = GroupSettingsFragment.newInstance(invitation);
-                                }
+                                GroupSettingsFragment fragment = new GroupSettingsFragment(invitation.group, activityItem.target);
+                                pushFragment(fragment);
                             }
                         });
 

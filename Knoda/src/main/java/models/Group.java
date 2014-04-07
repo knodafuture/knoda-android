@@ -19,4 +19,6 @@ public class Group extends BaseModel {
     @SerializedName("avatar_image")
     public RemoteImage avatar;
 
+    @SerializedName("my_membership")
+    public Member myMembership;
 }

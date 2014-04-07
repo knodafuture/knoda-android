@@ -13,6 +13,7 @@ import models.Group;
 import models.Prediction;
 import networking.NetworkListCallback;
 import views.group.GroupLeaderboardsFragment;
+import views.group.GroupSettingsFragment;
 
 public class GroupPredictionListFragment extends BasePredictionListFragment {
     public Group group;
@@ -50,7 +51,8 @@ public class GroupPredictionListFragment extends BasePredictionListFragment {
                 a.header.findViewById(R.id.group_settings_container).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        errorReporter.showError("Show Settings");
+                        GroupSettingsFragment fragment = new GroupSettingsFragment(group);
+                        pushFragment(fragment);
                     }
                 });
             }

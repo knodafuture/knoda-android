@@ -46,10 +46,14 @@ public class BaseFragment extends Fragment {
 
 
     public void hideKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager)
-                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        try {
+            InputMethodManager inputManager = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (NullPointerException ex) {
+
+        }
     }
 
     public void showKeyboard(View focusable) {
@@ -66,6 +70,11 @@ public class BaseFragment extends Fragment {
     public void popFragment() {
         hideKeyboard();
         ((MainActivity) getActivity()).popFragment();
+    }
+
+    public void popToRootFragment() {
+        hideKeyboard();
+        ((MainActivity) getActivity()).popToRootFragment();
     }
 
     public void setTitle(String title) {

@@ -9,6 +9,7 @@ import models.Badge;
 import models.Comment;
 import models.Group;
 import models.Leader;
+import models.Member;
 import models.Prediction;
 import models.Tag;
 import models.User;
@@ -45,4 +46,6 @@ public class TypeTokenFactory {
     public static TypeToken getGroupListTypeToken() { return new TypeToken<ArrayList<Group>>(){}; }
 
     public static TypeToken getLeaderListTypeToken() { return new TypeToken<ArrayList<Leader>>(){}; }
+
+    public static TypeToken getMemberListTypeToken() { return new TypeToken<ArrayList<Member>>(){}; }
 }

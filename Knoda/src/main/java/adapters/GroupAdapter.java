@@ -62,5 +62,9 @@ public class GroupAdapter extends PagingAdapter<Group> {
             header = new CreateGroupHeaderView(context);
         return header;
     }
+
+    public boolean canLoadNextPage() {
+        return false;
+    }
 }
 

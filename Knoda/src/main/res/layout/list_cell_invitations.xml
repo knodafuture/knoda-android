@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/invitations_cell_knoda_user_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/knoda_user_icon"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/invitations_textview_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/invitations_cell_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/darkGray"
+                android:text="Nick Rellihan"/>
+
+            <TextView style="@style/smallGreenText"
+                android:id="@+id/invitations_cell_metadata_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/invitations_cell_name_textview"
+                android:layout_below="@id/invitations_cell_name_textview"
+                android:text="8167198666"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/invitations_cell_remove"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/remove_user_icon"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:clickable="true"
+        android:visibility="invisible"
+        android:id="@+id/invitations_cell_confirm_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/red">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="REMOVE?"
+            android:layout_margin="10dp"/>
+    </RelativeLayout>
+</merge>

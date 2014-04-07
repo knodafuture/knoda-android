@@ -392,6 +392,36 @@ public class NetworkingManager {
         executeRequest(Request.Method.GET, url, null, Invitation.class, callback);
     }
 
+    public void getMembersInGroup(final Integer groupId, final NetworkListCallback<Member> callback) {
+        String url = buildUrl("groups/" + groupId + "/memberships.json", true, null);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getMemberListTypeToken(), callback);
+    }
+
+    public void deleteMembership(final Integer membershipid, final NetworkCallback<Member> callback) {
+        String url = buildUrl("memberships/" + membershipid + ".json", true, null);
+        executeRequest(Request.Method.DELETE, url, null, Member.class, callback);
+    }
+
+    public void autoCompleteUsers(final String query, final NetworkListCallback<User> callback) {
+        ParamBuilder builder = ParamBuilder.create().add("query", query);
+
+        String url = buildUrl("users/autocomplete.json", true, builder);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
+    }
+
+    public void sendInvitations(final ArrayList<GroupInvitation> invitations, final NetworkCallback<GroupInvitation> callback) {
+        String url = buildUrl("invitations.json", true, null);
+        executeRequest(Request.Method.POST, url, invitations, GroupInvitation.class, callback);
+    }
+
+    public void joinGroup(final String invitationCode, final Integer groupId, final NetworkCallback<Member> callback) {
+        String url = buildUrl("memberships.json", true, null);
+        JoinGroupRequest obj = new JoinGroupRequest();
+        obj.code = invitationCode;
+        obj.groupId = groupId;
+        executeRequest(Request.Method.POST, url, obj, Member.class, callback);
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
@@ -431,7 +461,7 @@ public class NetworkingManager {
     }
 
 
-    private <T extends BaseModel> void executeRequest (int httpMethod, String url, final BaseModel payload, final Class responseClass, final NetworkCallback<T> callback) {
+    private <T extends BaseModel> void executeRequest (int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback) {
 
         Logger.log("Executing request" + url);
         Response.Listener<T> responseListener = new Response.Listener<T>() {

@@ -57,6 +57,7 @@ public class MainActivity extends BaseActivity
     private ArrayList<KnodaScreen> screens;
     private boolean actionBarEnabled = true;
     private String title;
+    private int rootFragmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +219,9 @@ public class MainActivity extends BaseActivity
         getFragmentManager().popBackStack();
     }
 
+    public void popToRootFragment() {
+        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
     public void showFrament(KnodaScreen.KnodaScreenOrder position) {
         KnodaScreen screen = findScreen(position);
 

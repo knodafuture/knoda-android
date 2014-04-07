@@ -25,6 +25,8 @@ import views.group.AddGroupFragment;
 import views.group.GroupFragment;
 import views.group.GroupLeaderboardFragment;
 import views.group.GroupLeaderboardsFragment;
+import views.group.GroupSettingsFragment;
+import views.group.InvitationsFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.avatar.UserAvatarChooserActivity;
@@ -74,7 +76,9 @@ import views.search.SearchFragment;
                 Bus.class,
                 PredictionAdapter.class,
                 SplashActivity.class,
-                PhotoFragment.class
+                PhotoFragment.class,
+                GroupSettingsFragment.class,
+                InvitationsFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

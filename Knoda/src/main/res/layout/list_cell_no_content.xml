@@ -18,7 +18,9 @@
         android:textColor="@color/darkGray"
         android:text="Placeholder no content text"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/no_content_imageview"/>
+        android:layout_margin="10dp"
+        android:textAlignment="center"
+        android:layout_below="@id/no_content_imageview"
+        android:gravity="center"/>
 
 </RelativeLayout>
