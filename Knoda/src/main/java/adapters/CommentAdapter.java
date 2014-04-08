@@ -24,6 +24,7 @@ public class CommentAdapter extends DetailsAdapter<Comment> {
     @Subscribe
     public void newComment(NewCommentEvent event) {
         insertAt(event.comment, objects.size());
+        notifyDataSetChanged();
     }
 
     public interface CommentAdapterDelegate {

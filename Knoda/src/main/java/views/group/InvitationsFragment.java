@@ -1,5 +1,6 @@
 package views.group;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,13 +19,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.knoda.knoda.R;
-import factories.GsonF;
 
 import java.util.ArrayList;
 
 import adapters.InvitationsAdapter;
 import adapters.InvitationsSearchAdapter;
 import butterknife.InjectView;
+import factories.GsonF;
 import helpers.ContactsHelper;
 import models.Contact;
 import models.Group;
@@ -106,8 +107,10 @@ public class InvitationsFragment extends BaseFragment implements InvitationsList
         setHasOptionsMenu(true);
         animationTime = getActivity().getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-        if (contacts == null)
-            contacts = ContactsHelper.getContacts(getActivity());
+        if (contacts == null) {
+            spinner.show();
+            new LoadContactsTask().execute();
+        }
 
         searchAdapter = new InvitationsSearchAdapter(getActivity());
         invitationsAdapter = new InvitationsAdapter(getActivity(), this);
@@ -361,5 +364,18 @@ public class InvitationsFragment extends BaseFragment implements InvitationsList
             }
         });
 
+    }
+
+    private class LoadContactsTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            contacts = ContactsHelper.getContacts(getActivity());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            spinner.hide();
+        }
     }
 }
