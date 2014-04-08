@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
+import java.util.Random;
+
 import adapters.LeaderboardPagerAdapter;
 import butterknife.OnClick;
 import factories.GsonF;
@@ -21,6 +23,7 @@ import views.core.BaseFragment;
 public class GroupLeaderboardsFragment extends BaseFragment {
     public Group group;
     private ViewPager mViewPager;
+    private View view;
 
     public static GroupLeaderboardsFragment newInstance(Group group) {
         GroupLeaderboardsFragment fragment = new GroupLeaderboardsFragment();
@@ -57,10 +60,26 @@ public class GroupLeaderboardsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_group_leaderboards, container, false);
+        view = inflater.inflate(R.layout.fragment_group_leaderboards, container, false);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setTitle(group.name.toUpperCase());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bus.post(new ChangeGroupEvent(group));
         LinearLayout ll = (LinearLayout)view.findViewById(R.id.groups_leaderboards_container);
+        if (mViewPager != null) {
+            ll.removeView(mViewPager);
+        }
         mViewPager = new ViewPager(getActivity().getApplicationContext());
-        mViewPager.setId(20000 + group.id);
+        mViewPager.setId(2000 + group.id + new Random().nextInt(100));
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -94,19 +113,6 @@ public class GroupLeaderboardsFragment extends BaseFragment {
         ll.addView(mViewPager);
         FragmentPagerAdapter adapter = new LeaderboardPagerAdapter(getFragmentManager(), group);
         mViewPager.setAdapter(adapter);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setTitle(group.name.toUpperCase());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        bus.post(new ChangeGroupEvent(group));
     }
 
     @Override
