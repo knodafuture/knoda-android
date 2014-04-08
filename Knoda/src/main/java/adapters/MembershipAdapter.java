@@ -72,6 +72,10 @@ public class MembershipAdapter extends BaseAdapter {
 
         cell.setMember(member, position, group);
 
+        if (position % 2 == 0)
+            cell.setBackgroundColor(context.getResources().getColor(R.color.lightGray));
+        else
+            cell.setBackgroundColor(context.getResources().getColor(R.color.white));
         return cell;
     }
 }

@@ -69,7 +69,10 @@ public class PredictionListCell extends RelativeLayout {
     public void setAgree(boolean agree) {
         int resId = agree? R.drawable.agree_marker : R.drawable.disagree_marker;
         voteImageView.setImageResource(resId);
-
+        if (agree && agreed)
+            return;
+        if (!agree && disagreed)
+            return;
 
         if (agree) {
             if (disagreed) {
