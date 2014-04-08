@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/lightGray"
+        android:textColor="@color/darkGray"
         android:text="Add a comment..."
         android:textSize="15dp"
         android:padding="10dp"/>

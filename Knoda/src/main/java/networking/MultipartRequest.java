@@ -1,6 +1,7 @@
 package networking;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -34,6 +35,8 @@ public class MultipartRequest extends Request<String> {
         this.listener = listener;
         this.entity = entity;
         writeBody();
+        this.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+
     }
 
     private void writeBody() {

@@ -40,7 +40,7 @@
             android:layout_below="@+id/group_settings_avatar"
             android:id="@+id/group_settings_invite_view"
             android:weightSum="1.0"
-            android:visibility="invisible">
+            android:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -50,22 +50,29 @@
                 android:id="@+id/group_settings_invite_button"
                 android:background="@color/knodaDarkGreen"
                 android:layout_marginRight="1dp">
-                <TextView
-                    android:id="@+id/group_settings_invite_textview"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Send Invite"
-                    android:textColor="@color/white"
-                    android:paddingRight="10dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/invite_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/group_settings_invite_textview"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_centerInParent="true">
+                    <ImageView
+                        android:id="@+id/group_settings_invite_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/invite_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"/>
+                    <TextView
+                        android:id="@+id/group_settings_invite_textview"
+                        android:layout_toRightOf="@id/group_settings_invite_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Send Invite"
+                        android:textColor="@color/white"
+                        android:paddingRight="10dp"
+                        android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
                 </RelativeLayout>
             <RelativeLayout
                 android:layout_marginLeft="1dp"
@@ -75,23 +82,31 @@
                 android:clickable="true"
                 android:id="@+id/group_settings_share_button"
                 android:background="@color/knodaDarkGreen">
-                <TextView
-                    android:id="@+id/group_settings_share_textview"
-                    android:layout_gravity="center"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Share Link"
-                    android:textColor="@color/white"
-                    android:paddingRight="10dp"
-                    android:layout_centerInParent="true"/>
-                <ImageView
-                    android:layout_margin="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/share_link_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/group_settings_share_textview"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_centerInParent="true">
+                    <ImageView
+                        android:id="@+id/group_settings_share_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/share_link_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"/>
+                    <TextView
+                        android:id="@+id/group_settings_share_textview"
+                        android:layout_toRightOf="@id/group_settings_share_image"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share Link"
+                        android:textColor="@color/white"
+                        android:paddingRight="10dp"
+                        android:paddingTop="2dp"
+                        android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
             </RelativeLayout>
             </LinearLayout>
         <RelativeLayout
