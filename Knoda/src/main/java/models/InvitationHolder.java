@@ -82,5 +82,28 @@ public class InvitationHolder {
         return result;
     }
 
+    @Override
+    public boolean equals(Object obj2) {
+
+        if (obj2 == null)
+            return false;
+        if (!(obj2 instanceof InvitationHolder))
+            return false;
+
+        InvitationHolder obj3 = (InvitationHolder)obj2;
+
+
+
+        if (user != null && obj3.user != null && user.equals(obj3.user))
+            return true;
+        if (contact != null && obj3.contact != null & contact.equals(obj3.contact))
+            return true;
+        if (selectedPhoneNumber != null && obj3.selectedPhoneNumber != null && selectedPhoneNumber.equals(obj3.selectedPhoneNumber))
+            return true;
+        if (selectedEmail != null && obj3.selectedEmail != null && selectedEmail.equals(obj3.selectedEmail))
+            return true;
+
+        return false;
+    }
 
 }
