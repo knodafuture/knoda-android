@@ -67,7 +67,7 @@ public class GroupFragment extends BaseListFragment implements PagingAdapter.Pag
 
     @Override
     public String noContentString() {
-        return "No Groups";
+        return "You are not in any groups. Create a group with your friends to start making private predictions.";
     }
 }
 

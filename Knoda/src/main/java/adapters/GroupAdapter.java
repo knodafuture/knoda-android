@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import helpers.AdapterHelper;
 import managers.UserManager;
 import models.Group;
+import pubsub.GroupChangedEvent;
 import pubsub.NewGroupEvent;
 import views.group.CreateGroupHeaderView;
 import views.group.GroupListCell;
@@ -35,6 +36,13 @@ public class GroupAdapter extends PagingAdapter<Group> {
         notifyDataSetChanged();
     }
 
+    @Subscribe
+    public void groupChanged(GroupChangedEvent event) {notifyDataSetChanged();}
+
+    @Override
+    public int getCount() {
+        return super.getCount() + 1;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == 0)

@@ -22,7 +22,7 @@
         android:id="@+id/details_cell_actions_container"
         android:layout_marginTop="1dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_below="@id/details_cell_prediction_cell">
 
 
@@ -73,7 +73,7 @@
             android:visibility="invisible"
             android:id="@+id/details_cell_settle"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="80dp">
 
             <TextView
                 android:id="@+id/details_cell_settle_textview"
@@ -126,6 +126,7 @@
             </RelativeLayout>
 
             <LinearLayout
+
                 android:visibility="visible"
                 android:orientation="horizontal"
                 android:id="@+id/details_cell_points"
@@ -143,7 +144,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/result_win_icon"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="30dp"
                         />
                     <TextView
                         android:id="@+id/results_outcome_textview"
@@ -157,7 +158,7 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="90dp"
+                    android:layout_height="70dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:background="@color/lightGray" />
@@ -175,7 +176,7 @@
                         android:textColor="@color/knodaDarkGreen"
                         android:layout_centerHorizontal="true"
                         android:gravity="top"
-                        android:layout_marginTop="33dp"
+                        android:layout_marginTop="23dp"
                         android:textSize="40dp"/>
 
                     <TextView
@@ -191,7 +192,7 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="90dp"
+                    android:layout_height="70dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:background="@color/lightGray" />
@@ -201,13 +202,13 @@
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="30dp"
                     android:textSize="10dp"
                     android:text="+20 Underdog\n+20 Win\n+10 Market"/>
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="90dp"
+                    android:layout_height="70dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:background="@color/lightGray" />
@@ -218,7 +219,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -227,21 +228,15 @@
 
                     <Button
                         android:id="@+id/details_cell_bs_button"
-                        android:layout_width="140dp"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:background="@color/knodaLightGreen"
                         android:text="BS"
                         android:textColor="@color/white"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="30dp"
                         android:layout_centerHorizontal="true"/>
 
                     </RelativeLayout>
                 </LinearLayout>
         </RelativeLayout>
-
-
-
-
-
-
 </merge>

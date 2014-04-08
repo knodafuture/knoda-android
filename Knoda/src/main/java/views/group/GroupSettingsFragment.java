@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.ChangeGroupEvent;
+import pubsub.GroupChangedEvent;
 import views.core.BaseFragment;
 
 public class GroupSettingsFragment extends BaseFragment implements MembershipCell.MembershipCellCallbacks {
@@ -57,6 +59,12 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
     private Group group;
     private String invitationCode;
 
+    @Subscribe
+    public void groupChanged(GroupChangedEvent event) {
+        group = event.group;
+        populate();
+    }
+
     @OnClick(R.id.group_settings_invite_button) void onInvite() {
         InvitationsFragment fragment = InvitationsFragment.newInstance(group);
         pushFragment(fragment);
@@ -67,6 +75,8 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
         share.setType("text/plain");
         String text = "Join my group " + group.name + " on Knoda! " + group.shareUrl;
         share.putExtra(Intent.EXTRA_TEXT, text);
+        String subject = userManager.getUser().username + " invited you to join a group on Knoda";
+        share.putExtra(Intent.EXTRA_SUBJECT, subject);
         startActivity(Intent.createChooser(share, "How would you like to share?"));
     }
 
@@ -76,6 +86,11 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
 
     @OnClick(R.id.group_settings_join_group_button) void onJoin() {
         joinGroup();
+    }
+
+    @OnClick(R.id.group_settings_edit_group_button) void onEdit() {
+        EditGroupFragment fragment = EditGroupFragment.newInstance(group);
+        pushFragment(fragment);
     }
 
     public static GroupSettingsFragment newInstance(Group group, String invitationCode) {

@@ -19,7 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/group_settings_avatar"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             android:text="KU Crew"
             android:id="@+id/group_settings_name_textview"/>
 
@@ -27,9 +28,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:textSize="12dp"
             android:id="@+id/group_settings_description_textview"
             android:layout_below="@id/group_settings_name_textview"
-            android:layout_alignLeft="@id/group_settings_name_textview"
+            android:layout_toRightOf="@id/group_settings_avatar"
             android:text="The rootin tootinest group of KU bros ever assembled"/>
 
         <LinearLayout

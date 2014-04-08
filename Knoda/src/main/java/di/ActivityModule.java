@@ -22,6 +22,7 @@ import views.core.SplashActivity;
 import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
 import views.group.AddGroupFragment;
+import views.group.EditGroupFragment;
 import views.group.GroupFragment;
 import views.group.GroupLeaderboardFragment;
 import views.group.GroupLeaderboardsFragment;
@@ -78,7 +79,8 @@ import views.search.SearchFragment;
                 SplashActivity.class,
                 PhotoFragment.class,
                 GroupSettingsFragment.class,
-                InvitationsFragment.class
+                InvitationsFragment.class,
+                EditGroupFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

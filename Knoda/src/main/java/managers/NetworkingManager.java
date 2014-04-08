@@ -384,6 +384,11 @@ public class NetworkingManager {
         executeRequest(Request.Method.POST, url, group, Group.class, callback);
     }
 
+    public void updateGroup(final Group group, final NetworkCallback<Group> callback) {
+        String url = buildUrl("groups/" + group.id + ".json", true, null);
+        executeRequest(Request.Method.PUT, url, group, Group.class, callback);
+    }
+
     public void getGroupLeaderboard(final Integer groupId, final String board, final NetworkListCallback<Leader> callback) {
         ParamBuilder builder = new ParamBuilder().create().add("board", board.toLowerCase());
         String url = buildUrl("groups/" + groupId + "/leaderboard.json", true, builder);
