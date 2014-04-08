@@ -77,7 +77,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
 
     @Override
     public PagingAdapter getAdapter() {
-        GroupPredictionAdapter a = new GroupPredictionAdapter(getActivity(), this, networkingManager.getImageLoader());
+        GroupPredictionAdapter a = new GroupPredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus);
         a.delegate = this;
         return a;
     }
