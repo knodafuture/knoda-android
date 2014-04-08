@@ -38,7 +38,7 @@ public class GsonRequest<T> extends Request<T> {
         this.clazz = clazz;
         this.headers = headers;
         this.listener = listener;
-        this.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
+        this.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, 1.0f));
     }
 
     public void setPayload(Object jsonObject) {

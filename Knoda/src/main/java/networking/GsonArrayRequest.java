@@ -4,6 +4,7 @@ package networking;
  */
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -45,6 +46,7 @@ public class GsonArrayRequest<T> extends Request<T> {
         this.token = token;
         this.headers = headers;
         this.listener = listener;
+        this.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, 1.0f));
     }
 
     public void setPayload(Object jsonObject) {
