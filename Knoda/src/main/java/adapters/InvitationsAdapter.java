@@ -53,6 +53,8 @@ public class InvitationsAdapter extends BaseAdapter {
 
 
     public void addInvitation(InvitationHolder holder) {
+        if (objects.contains(holder))
+            return;
         objects.add(holder);
         Collections.sort(objects, InvitationHolder.comparator());
         notifyDataSetChanged();

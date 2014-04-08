@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="50dp">
     
     <TextView
         android:id="@+id/member_cell_name_textview"
@@ -9,12 +9,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="KnodaUser123"
+        android:layout_centerVertical="true"
         android:textColor="@color/darkGray"/>
 
     <RelativeLayout
         android:id="@+id/member_cell_remove"
         android:clickable="true"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true">
@@ -23,7 +24,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/remove_user_icon"
-            android:layout_centerInParent="true"/>
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"/>
         </RelativeLayout>
 
 
@@ -31,7 +34,7 @@
         android:clickable="true"
         android:visibility="invisible"
         android:id="@+id/member_cell_confirm_remove"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:background="@color/red">
 
@@ -40,6 +43,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="REMOVE?"
+            android:layout_centerInParent="true"
+
             android:layout_margin="10dp"/>
         </RelativeLayout>
 </merge>

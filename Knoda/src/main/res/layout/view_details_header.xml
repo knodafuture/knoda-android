@@ -176,7 +176,7 @@
                         android:textColor="@color/knodaDarkGreen"
                         android:layout_centerHorizontal="true"
                         android:gravity="top"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="10dp"
                         android:textSize="40dp"/>
 
                     <TextView
@@ -216,10 +216,11 @@
                 <RelativeLayout
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
 
                     <TextView
-                        android:layout_marginTop="1dp"
+                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -233,7 +234,7 @@
                         android:background="@color/knodaLightGreen"
                         android:text="BS"
                         android:textColor="@color/white"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="25dp"
                         android:layout_centerHorizontal="true"/>
 
                     </RelativeLayout>
