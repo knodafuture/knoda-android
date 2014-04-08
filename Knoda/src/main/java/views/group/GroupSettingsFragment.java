@@ -73,7 +73,7 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
     @OnClick(R.id.group_settings_share_button) void onShare() {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
-        String text = "Join my group " + group.name + " on Knoda! " + group.shareUrl;
+        String text = "Join my group " + group.name + " on @KNODAfuture! " + group.shareUrl;
         share.putExtra(Intent.EXTRA_TEXT, text);
         String subject = userManager.getUser().username + " invited you to join a group on Knoda";
         share.putExtra(Intent.EXTRA_SUBJECT, subject);

@@ -53,15 +53,15 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/group_rankings_icon">
                 <TextView style="@style/darkGreenText"
-                    android:textSize="20dp"
+                    android:textSize="16dp"
                     android:id="@+id/group_my_rank"
-                    android:layout_width="75dp"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="sans-serif-light"
                     android:text="1"/>
                 <TextView style="@style/darkGreenText"
-                    android:textSize="20dp"
+                    android:textSize="16dp"
                     android:id="@+id/group_leader_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                     android:fontFamily="sans-serif-light"/>
                 <TextView style="@style/smallDarkGreenText"
                     android:id="@+id/group_member_count"
-                    android:layout_width="75dp"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:text="rank (5)"
                     android:layout_marginTop="-5dp"

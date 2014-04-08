@@ -137,6 +137,7 @@ public class AddGroupFragment extends BaseFragment {
             public void completionHandler(ArrayList<Group> object, ServerError error) {
                 bus.post(new NewGroupEvent(group));
                 popFragment();
+                pushFragment(GroupSettingsFragment.newInstance(group, null));
                 spinner.hide();
             }
         });
