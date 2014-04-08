@@ -242,9 +242,7 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
                         @Override
                         public void completionHandler(ArrayList<Group> object, ServerError error) {
                             spinner.hide();
-                            //group = userManager.getGroupById(group.id);
-                            //invitationCode = null;
-                            //populate();
+                            popFragment();
                             pushFragment(GroupPredictionListFragment.newInstance(userManager.getGroupById(membership.groupId)));
                         }
                     });
