@@ -19,7 +19,6 @@ import views.group.GroupSettingsFragment;
 
 public class GroupPredictionListFragment extends BasePredictionListFragment implements GroupPredictionListHeader.GroupPredictionListHeaderDelegate {
     public Group group;
-    //private GroupPredictionListHeader headerview;
 
     public static GroupPredictionListFragment newInstance(Group group) {
         GroupPredictionListFragment fragment = new GroupPredictionListFragment();

@@ -115,9 +115,11 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     @Override
     public void onInit(DetailsActionbar actionbar) {
         if (prediction.hasGroup()) {
+            ((ImageView) actionbar.findViewById(R.id.details_action_share_imageview)).setImageResource(R.drawable.action_shareicon_inactive);
+        }
+        if (prediction.hasGroup() && (userManager.getGroupById(prediction.groupId) != null)) {
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.GONE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.VISIBLE);
-            ((ImageView)actionbar.findViewById(R.id.details_action_share_imageview)).setImageResource(R.drawable.action_shareicon_inactive);
         } else {
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.VISIBLE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.GONE);
@@ -186,7 +188,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     @Override
     public void onShare() {
         if (prediction.hasGroup()) {
-            errorReporter.showError("Hold on, this is a private group prediction. You won't be be able to share it with the world.");
+            errorReporter.showError("Hold on, this is a private group prediction. You won't be able to share it with the world.");
         } else {
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("text/plain");
