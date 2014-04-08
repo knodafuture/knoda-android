@@ -53,7 +53,6 @@ public class Spinner {
     }
 
     public void hide() {
-        getProgressView().setAlpha(0);
         getProgressView().setVisibility(View.INVISIBLE);
     }
 
