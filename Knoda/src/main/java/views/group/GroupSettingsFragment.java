@@ -29,6 +29,7 @@ import networking.NetworkListCallback;
 import pubsub.ChangeGroupEvent;
 import pubsub.GroupChangedEvent;
 import views.core.BaseFragment;
+import views.predictionlists.GroupPredictionListFragment;
 
 public class GroupSettingsFragment extends BaseFragment implements MembershipCell.MembershipCellCallbacks {
 
@@ -232,7 +233,7 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
         spinner.show();
         networkingManager.joinGroup(invitationCode, group.id, new NetworkCallback<Member>() {
             @Override
-            public void completionHandler(Member object, ServerError error) {
+            public void completionHandler(final Member membership, ServerError error) {
                 if (error != null) {
                     spinner.hide();
                     errorReporter.showError("Unable to join the group at this time.");
@@ -241,9 +242,10 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
                         @Override
                         public void completionHandler(ArrayList<Group> object, ServerError error) {
                             spinner.hide();
-                            group = userManager.getGroupById(group.id);
-                            invitationCode = null;
-                            populate();
+                            //group = userManager.getGroupById(group.id);
+                            //invitationCode = null;
+                            //populate();
+                            pushFragment(GroupPredictionListFragment.newInstance(userManager.getGroupById(membership.groupId)));
                         }
                     });
                 }
