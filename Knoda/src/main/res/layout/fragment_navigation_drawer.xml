@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
         android:dividerHeight="1dp"
-        android:divider="@color/black"/>
+        android:divider="@color/black"
+        android:listSelector="#00000000"/>
 
     <View
         android:layout_width="match_parent"

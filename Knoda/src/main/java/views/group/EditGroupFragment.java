@@ -1,7 +1,7 @@
 package views.group;
 
 
-
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -178,7 +178,7 @@ public class EditGroupFragment extends BaseFragment {
         if (data == null) {
             return;
         }
-        if (data.getExtras().containsKey(MediaStore.EXTRA_OUTPUT)) {
+        if (data.getExtras().containsKey(MediaStore.EXTRA_OUTPUT) && resultCode == Activity.RESULT_OK) {
             String avatarPath = data.getExtras().getString(MediaStore.EXTRA_OUTPUT);
             avatarFile = new File(avatarPath);
             Bitmap bitmap = BitmapFactory.decodeFile(avatarPath);

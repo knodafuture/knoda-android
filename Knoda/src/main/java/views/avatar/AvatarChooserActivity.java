@@ -154,14 +154,21 @@ public abstract class AvatarChooserActivity extends BaseActivity {
 
     public void finishAndReturnResult() {
         Intent intent = getIntent();
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, cropResultFile.getPath());
-        setResult(RESULT_OK, intent);
+        if (cropResultFile == null)
+            setResult(RESULT_CANCELED, intent);
+        else {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, cropResultFile.getPath());
+            setResult(RESULT_OK, intent);
+        }
         finish();
     }
 
     public void finishAndReturnDefaultResult() {
         Intent intent = getIntent();
-        setResult(RESULT_OK, intent);
+        if (cropResultFile == null)
+            setResult(RESULT_CANCELED, intent);
+        else
+            setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -173,11 +180,16 @@ public abstract class AvatarChooserActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_RESULT && resultCode == RESULT_OK) {
             startCrop(Uri.fromFile(cameraOutputFile));
-        } else if (requestCode == CROP_RESULT && resultCode == RESULT_OK) {
-            if (showFinalCropped()) {
-                showCroppedImage();
+        } else if (requestCode == CROP_RESULT) {
+            if (resultCode == RESULT_OK) {
+                if (showFinalCropped()) {
+                    showCroppedImage();
+                } else {
+                    submit();
+                }
             } else {
-                submit();
+                cropResultFile = null;
+                openContextMenu(imageView);
             }
         } else if (requestCode == GALLERY_RESULT && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();

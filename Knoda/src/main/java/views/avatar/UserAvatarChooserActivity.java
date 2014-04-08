@@ -16,7 +16,7 @@ import networking.NetworkCallback;
 public class UserAvatarChooserActivity extends AvatarChooserActivity {
     @Override
     public void submit() {
-        if (uploadInProgress)
+        if (uploadInProgress || cropResultFile == null)
             return;
 
         spinner.show();

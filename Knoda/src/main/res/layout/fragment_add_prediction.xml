@@ -29,7 +29,8 @@
             android:inputType="textMultiLine"
             android:hint="Make a prediction..."
             android:gravity="top"
-            android:background="@null"/>
+            android:background="@null"
+            android:capitalize="sentences"/>
 
         <TextView
             android:id="@+id/add_prediction_counter_textview"
