@@ -165,6 +165,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onComments() {
         adapter = commentAdapter;
         listView.setAdapter(commentAdapter);
+        adapter.loadPage(0);
     }
 
     @Override
