@@ -83,12 +83,16 @@ public class InvitationsSearchAdapter extends BaseAdapter {
 
         ArrayList<InvitationHolder> tmp = new ArrayList<InvitationHolder>();
 
-        for (User u : knodaResults) {
-            tmp.add(InvitationHolder.withUser(u));
+        if (knodaResults != null) {
+            for (User u : knodaResults) {
+                tmp.add(InvitationHolder.withUser(u));
+            }
         }
 
-        for (Contact c : contactResults) {
-            tmp.add(InvitationHolder.withContact(c));
+        if (contactResults != null) {
+            for (Contact c : contactResults) {
+                tmp.add(InvitationHolder.withContact(c));
+            }
         }
 
         Collections.sort(tmp, InvitationHolder.comparator());
