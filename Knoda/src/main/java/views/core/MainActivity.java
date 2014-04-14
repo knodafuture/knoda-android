@@ -21,6 +21,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
+import com.tapjoy.TapjoyConnect;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import di.KnodaApplication;
+import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
 import managers.GcmManager;
 import models.Group;
@@ -45,7 +47,6 @@ import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
-import pubsub.ChangeGroupEvent;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -99,6 +100,8 @@ public class MainActivity extends BaseActivity
         if (getIntent().getBooleanExtra("showActivity", false)) {
             showActivities();
         }
+
+        TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
     }
 
     @Override

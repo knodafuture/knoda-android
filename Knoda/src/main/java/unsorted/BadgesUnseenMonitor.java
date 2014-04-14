@@ -9,9 +9,11 @@ import android.view.View;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
+import com.tapjoy.TapjoyConnect;
 
 import java.util.ArrayList;
 
+import helpers.TapjoyPPA;
 import managers.NetworkingManager;
 import models.Badge;
 import models.ServerError;
@@ -44,8 +46,18 @@ public class BadgesUnseenMonitor {
                             .setTitle("You earned a new badge.")
                             .create();
                     alert.show();
+                    checkTapJoy(object);
                 }
             }
         });
+    }
+
+    public void checkTapJoy(ArrayList<Badge> badges) {
+        for (Badge badge : badges) {
+            if (badge.name.equals("1_challenge")) {
+                TapjoyConnect.getTapjoyConnectInstance().actionComplete(TapjoyPPA.TJC_AGREE_OR_DISAGREE_WITH_A_PREDICTION___ANDROID_PPE);
+                return;
+            }
+        }
     }
 }

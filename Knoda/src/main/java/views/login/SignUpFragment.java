@@ -16,12 +16,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.knoda.knoda.R;
+import com.tapjoy.TapjoyConnect;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;
+import helpers.TapjoyPPA;
 import managers.NetworkingManager;
 import models.ServerError;
 import models.SignUpRequest;
@@ -149,6 +151,7 @@ public class SignUpFragment extends BaseFragment {
                 if (error != null)
                     errorReporter.showError(error);
                 else {
+                    TapjoyConnect.getTapjoyConnectInstance().actionComplete(TapjoyPPA.TJC_SIGN_UP_FOR_KNODA___ANDROID_PPE);
                     sharedPrefManager.setFirstLaunch(true);
                     Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
                     startActivityForResult(intent, avatarResultCode);

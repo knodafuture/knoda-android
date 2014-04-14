@@ -10,6 +10,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -61,7 +63,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.tapjoy.TJCOffersWebView"
+        android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name="com.tapjoy.TapjoyFullScreenAdWebView"
+        android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name="com.tapjoy.TapjoyVideoView"
+        android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name="com.tapjoy.TJAdUnitView"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+        android:hardwareAccelerated="true" />
+        <activity
+            android:name="com.tapjoy.mraid.view.ActionHandler"
+        android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name="com.tapjoy.mraid.view.Browser"
+        android:configChanges="orientation|keyboardHidden|screenSize" />
         <receiver
             android:name="gcm.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
