@@ -49,8 +49,12 @@ public class GcmManager {
         networkingManager.sendDeviceToken(t, new NetworkCallback<AndroidDeviceToken>() {
             @Override
             public void completionHandler(AndroidDeviceToken object, ServerError error) {
-                if (error == null)
+                if (error == null) {
                     sharedPrefManager.saveGcm(regid);
+                } else {
+                    Logger.log("GCM# " + error.getDescription() + " " + error.statusCode);
+                }
+
             }
         });
     }

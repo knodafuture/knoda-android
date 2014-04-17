@@ -298,10 +298,7 @@ public class MainActivity extends BaseActivity
     private void registerGcm() {
         if (checkPlayServices()) {
             gcmManager = new GcmManager(networkingManager, sharedPrefManager, GoogleCloudMessaging.getInstance(this));
-            String regId = gcmManager.getRegistrationId();
-            if (regId.isEmpty()) {
-                gcmManager.registerInBackground();
-            }
+            gcmManager.registerInBackground();
         } else {
             Log.i("MainActivity", "No valid Google Play Services APK found.");
         }
