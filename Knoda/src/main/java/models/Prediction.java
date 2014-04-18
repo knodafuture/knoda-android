@@ -102,7 +102,7 @@ public class Prediction extends BaseModel {
     }
 
     public boolean passed72HoursSinceExpiration() {
-        return expirationDate.minusHours(72).isAfterNow();
+        return resolutionDate.plusHours(72).isBeforeNow();
     }
 
     public String pointsString() {

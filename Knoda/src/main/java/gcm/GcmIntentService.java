@@ -1,6 +1,5 @@
 package gcm;
 
-import android.R;
 import android.app.AlertDialog;
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -66,11 +65,12 @@ public class GcmIntentService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_dialog_info)
+                        .setSmallIcon(com.knoda.knoda.R.drawable.ic_notification)
                         .setContentTitle("KNODA")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
-                        .setContentText(msg);
+                        .setContentText(msg)
+                        .setAutoCancel(true);
 
 
         mBuilder.setContentIntent(contentIntent);
