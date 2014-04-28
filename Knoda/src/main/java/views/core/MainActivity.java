@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity
 
         final User user = userManager.getUser();
 
-        if (user == null) {
+        if (user == null && sharedPrefManager.getSavedAuthtoken() == null) {
             showLogin();
         } else {
             doLogin();
@@ -327,6 +327,7 @@ public class MainActivity extends BaseActivity
         super.onResume();
         KnodaApplication.activityResumed();
         ((KnodaApplication)getApplication()).setCurrentActivity(this);
+        com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
     }
 
     @Override

@@ -1,3 +1,4 @@
 include ':Knoda'
 include ':libraries:CropImage'
 include ':libraries:PullToRefresh'
+include ':libraries:facebook'

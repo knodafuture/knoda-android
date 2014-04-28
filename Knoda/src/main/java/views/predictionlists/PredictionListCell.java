@@ -145,7 +145,13 @@ public class PredictionListCell extends RelativeLayout {
             return;
         }
 
-        if (prediction.challenge.agree && prediction.outcome) {
+        boolean win = false;
+        if (prediction.challenge.agree)
+            win = prediction.outcome ? true : false;
+        else
+            win = prediction.outcome ? false : true;
+
+        if (win) {
             resultTextView.setText("W");
             resultTextView.setTextColor(getResources().getColor(R.color.knodaLightGreen));
         } else {
