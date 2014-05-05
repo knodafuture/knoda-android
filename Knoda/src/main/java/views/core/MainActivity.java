@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity
 
         final User user = userManager.getUser();
 
-        if (user == null && sharedPrefManager.getSavedAuthtoken() == null) {
+        if (user == null) {
             showLogin();
         } else {
             doLogin();
