@@ -24,7 +24,28 @@ import javax.inject.Singleton;
 import builders.MultipartRequestBuilder;
 import builders.ParamBuilder;
 import factories.TypeTokenFactory;
-import models.*;
+import models.ActivityItem;
+import models.AndroidDeviceToken;
+import models.Badge;
+import models.BaseModel;
+import models.Challenge;
+import models.Comment;
+import models.ForgotPasswordRequest;
+import models.Group;
+import models.GroupInvitation;
+import models.Invitation;
+import models.JoinGroupRequest;
+import models.Leader;
+import models.LoginRequest;
+import models.LoginResponse;
+import models.Member;
+import models.PasswordChangeRequest;
+import models.Prediction;
+import models.ServerError;
+import models.SignUpRequest;
+import models.SocialAccount;
+import models.Tag;
+import models.User;
 import networking.BitmapLruCache;
 import networking.GsonArrayRequest;
 import networking.GsonRequest;
@@ -45,8 +66,8 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
 
-   // public static String baseUrl = "http://captaincold.knoda.com/api/";
-    public static String baseUrl = "http://api.knoda.com/api/";
+    public static String baseUrl = "http://captaincold.knoda.com/api/";
+    //public static String baseUrl = "http://api.knoda.com/api/";
     private ImageLoader imageLoader;
 
     @Inject SharedPrefManager sharedPrefManager;
@@ -69,6 +90,21 @@ public class NetworkingManager {
 
         executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
 
+    }
+
+    public void socialSignIn(final SocialAccount payload, final NetworkCallback<LoginResponse> callback) {
+        String url = buildUrl("session.json", false, null);
+        executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
+    }
+
+    public void deleteSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
+        String url = buildUrl("social_accounts/" + socialAccount.id + ".json", true, null);
+        executeRequest(Request.Method.DELETE, url, null, SocialAccount.class, callback);
+    }
+
+    public void createSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
+        String url = buildUrl("social_accounts.json", true, null);
+        executeRequest(Request.Method.POST, url, socialAccount, SocialAccount.class, callback);
     }
 
     public void signup(final SignUpRequest payload, final NetworkCallback<LoginResponse> callback) {
@@ -431,6 +467,22 @@ public class NetworkingManager {
         executeRequest(Request.Method.POST, url, obj, Member.class, callback);
     }
 
+    public void sharePredictionOnFacebook(final Prediction prediction, final NetworkCallback<BaseModel> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        builder.add("prediction_id", prediction.id.toString());
+        String url = buildUrl("facebook.json", true, builder);
+
+        executeRequest(Request.Method.POST, url, null, BaseModel.class, callback);
+    }
+
+    public void sharePredictionOnTwitter(final Prediction prediction, final NetworkCallback<BaseModel> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        builder.add("prediction_id", prediction.id.toString());
+        String url = buildUrl("twitter.json", true, builder);
+
+        executeRequest(Request.Method.POST, url, null, BaseModel.class, callback);
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
@@ -476,14 +528,16 @@ public class NetworkingManager {
         Response.Listener<T> responseListener = new Response.Listener<T>() {
             @Override
             public void onResponse(T t) {
-                callback.completionHandler(t, null);
+                if (callback != null)
+                    callback.completionHandler(t, null);
             }
         };
 
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
+                if (callback != null)
+                    callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
         };
 
@@ -501,14 +555,16 @@ public class NetworkingManager {
         Response.Listener<ArrayList<T>> responseListener = new Response.Listener<ArrayList<T>>() {
             @Override
             public void onResponse(ArrayList<T> response) {
-                callback.completionHandler(response, null);
+                if (callback != null)
+                    callback.completionHandler(response, null);
             }
         };
 
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
+                if (callback != null)
+                    callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
         };
 

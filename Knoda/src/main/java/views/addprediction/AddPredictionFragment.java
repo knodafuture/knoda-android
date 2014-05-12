@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import factories.GsonF;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import models.Group;
@@ -33,7 +35,6 @@ import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.NewPredictionEvent;
 import views.core.BaseFragment;
-import factories.GsonF;
 
 public class AddPredictionFragment extends BaseFragment {
 
@@ -52,6 +53,13 @@ public class AddPredictionFragment extends BaseFragment {
     @InjectView(R.id.add_prediction_vote_time_edittext)
     EditText voteTimeEditText;
 
+    @InjectView(R.id.add_prediction_twitter_share_imageview)
+    ImageView twitterShareImageView;
+
+    @InjectView(R.id.add_prediction_facebook_share_imageview)
+    ImageView facebookShareImageView;
+
+
     @OnClick(R.id.add_prediction_topic_view) void onTopicClicked() {
         hideKeyboard();
         if (topicsDialog != null)
@@ -62,6 +70,26 @@ public class AddPredictionFragment extends BaseFragment {
         hideKeyboard();
         if (groupsDialog != null)
             groupsDialog.show();
+    }
+
+    @OnClick(R.id.add_prediction_facebook_share) void onFBShare() {
+        if (shouldShareToFacebook) {
+            shouldShareToFacebook = false;
+            facebookShareImageView.setImageResource(R.drawable.facebook_share);
+        } else {
+            shouldShareToFacebook = true;
+            facebookShareImageView.setImageResource(R.drawable.facebook_share_active);
+        }
+    }
+
+    @OnClick(R.id.add_prediction_twitter_share) void onTwitterShare() {
+        if (shouldShareToTwitter) {
+            shouldShareToTwitter = false;
+            twitterShareImageView.setImageResource(R.drawable.twitter_share);
+        } else {
+            shouldShareToTwitter = true;
+            twitterShareImageView.setImageResource(R.drawable.twitter_share_active);
+        }
     }
 
     @InjectView(R.id.add_prediction_topic_textview)
@@ -89,6 +117,8 @@ public class AddPredictionFragment extends BaseFragment {
     private MessageCounter bodyCounter;
     private Group group;
 
+    private boolean shouldShareToFacebook;
+    private boolean shouldShareToTwitter;
 
     public static AddPredictionFragment newInstance(Group group) {
         AddPredictionFragment fragment = new AddPredictionFragment();
@@ -257,6 +287,10 @@ public class AddPredictionFragment extends BaseFragment {
                     errorReporter.showError(error);
                 } else {
                     bus.post(new NewPredictionEvent(object));
+                    if (shouldShareToFacebook)
+                        networkingManager.sharePredictionOnFacebook(object, null);
+                    if (shouldShareToTwitter)
+                        networkingManager.sharePredictionOnTwitter(object, null);
                     popFragment();
                 }
             }

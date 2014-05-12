@@ -7,12 +7,15 @@ import javax.inject.Singleton;
 import adapters.PredictionAdapter;
 import dagger.Module;
 import dagger.Provides;
+import managers.FacebookManager;
 import managers.NetworkingManager;
+import managers.TwitterManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
+import views.avatar.UserAvatarChooserActivity;
 import views.badge.BadgeFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
@@ -30,7 +33,6 @@ import views.group.GroupSettingsFragment;
 import views.group.InvitationsFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
-import views.avatar.UserAvatarChooserActivity;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
@@ -104,4 +106,8 @@ public class ActivityModule {
     @Provides @Singleton Bus provideBus() {
         return new Bus();
     }
+
+    @Provides @Singleton FacebookManager provideFacebookManager() { return new FacebookManager();}
+
+    @Provides @Singleton TwitterManager provideTwitterManager() {return new TwitterManager();}
 }

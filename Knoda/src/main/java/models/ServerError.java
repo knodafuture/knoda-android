@@ -22,6 +22,7 @@ public class ServerError extends BaseModel {
     public Map<String, String> headers;
     public ArrayList<FieldError> serverErrors = new ArrayList<FieldError>();
     public Throwable cause;
+    public String errorString;
 
     private ServerError(VolleyError error) {
         try {
@@ -43,10 +44,19 @@ public class ServerError extends BaseModel {
             Logger.log(error.toString());
             return new ServerError(error);
         }
+    }
 
+    public ServerError() {
+
+    }
+    public ServerError(String errorString) {
+        this.errorString = errorString;
     }
 
     public String getDescription() {
+        if (errorString != null)
+            return errorString;
+
         if (serverErrors == null || serverErrors.size() == 0)
             return "Unkown error. Please try again later.";
 

@@ -2,6 +2,7 @@ package views.details;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,12 +19,14 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import adapters.CommentAdapter;
 import adapters.PagingAdapter;
 import adapters.TallyAdapter;
 import butterknife.OnClick;
 import factories.GsonF;
+import models.BaseModel;
 import models.Challenge;
 import models.Comment;
 import models.Prediction;
@@ -190,20 +193,80 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onShare() {
         if (prediction.hasGroup()) {
             errorReporter.showError("Hold on, this is a private group prediction. You won't be able to share it with the world.");
-        } else {
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
-            String suffix = " #knoda " + prediction.shortUrl;
-            int predictionLength = 139 - suffix.length();
-            String text = "";
-            if (prediction.body.length() > predictionLength) {
-                text = prediction.body.substring(0, predictionLength - 3) + "..." + suffix;
-            } else {
-                text = prediction.body + suffix;
-            }
-            share.putExtra(Intent.EXTRA_TEXT, text);
-            startActivity(Intent.createChooser(share, "How would you like to share?"));
+            return;
         }
+
+        if (userManager.getUser().getTwitterAccount() == null && userManager.getUser().getFacebookAccount() == null) {
+            showDefaultShare();
+            return;
+        }
+
+        List<String> listItems = new ArrayList<String>();
+
+
+        if (userManager.getUser().getTwitterAccount() != null) {
+            listItems.add("Twitter");
+        }
+        if (userManager.getUser().getFacebookAccount() != null) {
+            listItems.add("Facebook");
+        }
+
+        listItems.add("Other");
+
+        final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("How would you like to share?");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == items.length - 1) {
+                    showDefaultShare();
+                } else if (items[i].equals("Twitter")) {
+                    twitterShare();
+                } else if (items[i].equals("Facebook")) {
+                    facebookShare();
+                }
+            }
+        });
+        builder.create().show();
+
+
+    }
+
+    public void twitterShare() {
+        spinner.show();
+        networkingManager.sharePredictionOnTwitter(prediction, new NetworkCallback<BaseModel>() {
+            @Override
+            public void completionHandler(BaseModel object, ServerError error) {
+                spinner.hide();
+            }
+        });
+    }
+
+    public void facebookShare() {
+        spinner.show();
+        networkingManager.sharePredictionOnFacebook(prediction, new NetworkCallback<BaseModel>() {
+            @Override
+            public void completionHandler(BaseModel object, ServerError error) {
+                spinner.hide();
+            }
+        });
+    }
+
+    public void showDefaultShare() {
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        String suffix = " #knoda " + prediction.shortUrl;
+        int predictionLength = 139 - suffix.length();
+        String text = "";
+        if (prediction.body.length() > predictionLength) {
+            text = prediction.body.substring(0, predictionLength - 3) + "..." + suffix;
+        } else {
+            text = prediction.body + suffix;
+        }
+        share.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(Intent.createChooser(share, "How would you like to share?"));
     }
 
     @Override

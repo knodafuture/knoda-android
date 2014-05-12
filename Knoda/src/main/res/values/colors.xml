@@ -12,4 +12,6 @@
     <color name="red">#FE3232</color>
     <color name="darkerTransparentBlack">#CC000000</color>
     <color name="defaultHintColor">#B7B7B7</color>
+    <color name="facebookColor">#3B5998</color>
+    <color name="twitterColor">#2BA9E1</color>
 </resources>

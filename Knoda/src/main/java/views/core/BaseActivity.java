@@ -19,6 +19,7 @@ import di.ActivityModule;
 import di.KnodaApplication;
 import managers.NetworkingManager;
 import managers.SharedPrefManager;
+import managers.TwitterManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
 
@@ -47,6 +48,9 @@ public class BaseActivity extends Activity {
 
     @Inject
     public ErrorReporter errorReporter;
+
+    @Inject
+    public TwitterManager twitterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

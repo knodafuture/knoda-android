@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
+import factories.GsonF;
 import models.LoginRequest;
 import models.LoginResponse;
 import models.SignUpRequest;
+import models.SocialAccount;
 
 /**
  * Created by nick on 1/21/14.
@@ -23,6 +25,7 @@ public class SharedPrefManager {
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
     private static final String REG_ID_KEY = "REGISTRATION_ID";
     private static final String FIRST_LAUNCH_KEY = "FIRST_LAUNCH";
+    private static final String SAVED_SOCIAL_ACCOUNT_KEY = "SOCIAL_ACCOUNT_SAVED";
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -44,6 +47,12 @@ public class SharedPrefManager {
         sharedPreferences.edit().putString(SAVED_USERNAME_KEY, request.email).commit();
         sharedPreferences.edit().putString(SAVED_PASSWORD_KEY, request.password).commit();
         sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, response.authToken).commit();
+    }
+
+    public void saveSocialAccountAndResponse(SocialAccount account, LoginResponse response) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, response.authToken).commit();
+        sharedPreferences.edit().putString(SAVED_SOCIAL_ACCOUNT_KEY, GsonF.actory().toJson(account)).commit();
     }
 
     public void saveGcm(String regId) {
@@ -69,6 +78,18 @@ public class SharedPrefManager {
         return new LoginRequest(login, password);
     }
 
+    public SocialAccount getSavedSocialAccount() {
+        SharedPreferences sharedPreferences = getSP();
+        String json = sharedPreferences.getString(SAVED_SOCIAL_ACCOUNT_KEY, null);
+
+        if (json == null)
+            return null;
+
+        SocialAccount account = GsonF.actory().fromJson(json, SocialAccount.class);
+
+        return account;
+    }
+
     public void setSavedAuthtoken(String authtoken) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, authtoken).commit();
@@ -86,6 +107,7 @@ public class SharedPrefManager {
             .remove(SAVED_PASSWORD_KEY)
             .remove(SAVED_USERNAME_KEY)
             .remove(SAVED_AUTHTOKEN_KEY)
+            .remove(SAVED_SOCIAL_ACCOUNT_KEY)
             .commit();
     }
 

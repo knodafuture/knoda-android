@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -37,6 +38,7 @@ import models.KnodaScreen;
 import models.User;
 import pubsub.ChangeGroupEvent;
 import unsorted.BadgesUnseenMonitor;
+import unsorted.Logger;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserActivity;
@@ -65,6 +67,8 @@ public class MainActivity extends BaseActivity
     private int rootFragmentId;
     private Group currentGroup;
 
+    private static KnodaScreen.KnodaScreenOrder startupScreen;
+
     @Subscribe
     public void changeGroup(ChangeGroupEvent event) {
         currentGroup = event.group;
@@ -85,6 +89,9 @@ public class MainActivity extends BaseActivity
 
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
+
+        if (getIntent().getData() != null)
+            twitterManager.checkIntentData(getIntent());
 
         initializeFragmentBackStack();
         setUpNavigation();
@@ -286,7 +293,10 @@ public class MainActivity extends BaseActivity
         getActionBar().show();
         invalidateOptionsMenu();
 
-        navigationDrawerFragment.selectStartingItem();
+        if (startupScreen == null)
+            navigationDrawerFragment.selectStartingItem();
+        else
+            navigationDrawerFragment.selectItem(startupScreen.ordinal());
         navigationDrawerFragment.refreshUser();
         navigationDrawerFragment.refreshActivity();
         if (userManager.getUser().avatar == null) {
@@ -398,5 +408,15 @@ public class MainActivity extends BaseActivity
 
         if (title != "KNODA")
             this.title = title;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Logger.log("ON ACTIVITY RESULT");
+        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+    }
+
+    public void requestStartupScreen(KnodaScreen.KnodaScreenOrder screen) {
+        startupScreen = screen;
     }
 }

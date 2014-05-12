@@ -10,6 +10,7 @@ import models.LoginRequest;
 import models.LoginResponse;
 import models.ServerError;
 import models.SignUpRequest;
+import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
@@ -31,6 +32,20 @@ public class UserManager {
     public UserManager(NetworkingManager networkingManager, SharedPrefManager sharedPrefManager) {
         this.sharedPrefManager = sharedPrefManager;
         this.networkingManager = networkingManager;
+    }
+
+    public void loginSavedUser(final NetworkCallback<User> callback) {
+        LoginRequest request = sharedPrefManager.getSavedLoginRequest();
+        SocialAccount account = sharedPrefManager.getSavedSocialAccount();
+
+        if (request != null) {
+            login(request, callback);
+        } else if (account != null) {
+            socialSignIn(account, callback);
+        } else {
+            callback.completionHandler(null, new ServerError("No saved account."));
+        }
+
     }
 
     public void refreshUser(final NetworkCallback<User> callback) {
@@ -104,6 +119,33 @@ public class UserManager {
         });
     }
 
+    public void socialSignIn(final SocialAccount request, final NetworkCallback<User> callback) {
+        networkingManager.socialSignIn(request, new NetworkCallback<LoginResponse>() {
+            @Override
+            public void completionHandler(final LoginResponse loginResponse, ServerError error) {
+                if (error != null) {
+                    callback.completionHandler(null, error);
+                    return;
+                } else {
+                    sharedPrefManager.setSavedAuthtoken(loginResponse.authToken);
+                    refreshUser(new NetworkCallback<User>() {
+                        @Override
+                        public void completionHandler(User object, ServerError error) {
+                            if (error != null) {
+                                callback.completionHandler(null, error);
+                                return;
+                            } else {
+                                sharedPrefManager.saveSocialAccountAndResponse(request, loginResponse);
+                                callback.completionHandler(getUser(), null);
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+
     public void signup(final SignUpRequest request, final NetworkCallback<User> callback) {
         networkingManager.signup(request, new NetworkCallback<LoginResponse>() {
             @Override
@@ -138,6 +180,24 @@ public class UserManager {
                 user = null;
                 sharedPrefManager.clearSession();
                 callback.completionHandler(user, error);
+            }
+        });
+    }
+
+    public void deleteSocialAccount(final SocialAccount socialAccount, final NetworkCallback<User> callback) {
+        networkingManager.deleteSocialAccount(socialAccount, new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                refreshUser(callback);
+            }
+        });
+    }
+
+    public void addSocialAccount(final SocialAccount socialAccount, final NetworkCallback<User> callback) {
+        networkingManager.createSocialAccount(socialAccount, new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                refreshUser(callback);
             }
         });
     }
