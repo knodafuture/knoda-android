@@ -11,6 +11,7 @@ import com.squareup.otto.Subscribe;
 import helpers.AdapterHelper;
 import models.Prediction;
 import pubsub.NewPredictionEvent;
+import pubsub.PredictionChangeEvent;
 import views.predictionlists.PredictionListCell;
 
 public class PredictionAdapter extends PagingAdapter<Prediction> {
@@ -26,6 +27,11 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
     @Subscribe
     public void newPrediction(NewPredictionEvent event) {
         insertAt(event.prediction, 0);
+    }
+
+    @Subscribe
+    public void changedPrediction(PredictionChangeEvent event) {
+        updatePrediction(event.prediction);
     }
 
     @Override
@@ -45,5 +51,15 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
 
         return listItem;
+    }
+
+    private void updatePrediction(Prediction prediction) {
+        for (int i = 0; i < objects.size(); i++) {
+            Prediction p = objects.get(i);
+            if (p.id.equals(prediction.id)) {
+                objects.set(i, prediction);
+                return;
+            }
+        }
     }
 }

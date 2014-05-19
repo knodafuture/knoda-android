@@ -17,6 +17,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -56,7 +57,10 @@ public class AddPredictionFragment extends BaseFragment {
     @InjectView(R.id.add_prediction_twitter_share_imageview)
     ImageView twitterShareImageView;
 
-    @InjectView(R.id.add_prediction_facebook_share_imageview)
+    @InjectView(R.id.add_prediction_twitter_share_textview)
+    TextView twitterShareTextView;
+
+    //@InjectView(R.id.add_prediction_facebook_share_imageview)
     ImageView facebookShareImageView;
 
 
@@ -72,24 +76,12 @@ public class AddPredictionFragment extends BaseFragment {
             groupsDialog.show();
     }
 
-    @OnClick(R.id.add_prediction_facebook_share) void onFBShare() {
-        if (shouldShareToFacebook) {
-            shouldShareToFacebook = false;
-            facebookShareImageView.setImageResource(R.drawable.facebook_share);
-        } else {
-            shouldShareToFacebook = true;
-            facebookShareImageView.setImageResource(R.drawable.facebook_share_active);
-        }
-    }
+//    @OnClick(R.id.add_prediction_facebook_share) void onFBShare() {
+//        setShouldShareToFacebook(!shouldShareToFacebook);
+//    }
 
     @OnClick(R.id.add_prediction_twitter_share) void onTwitterShare() {
-        if (shouldShareToTwitter) {
-            shouldShareToTwitter = false;
-            twitterShareImageView.setImageResource(R.drawable.twitter_share);
-        } else {
-            shouldShareToTwitter = true;
-            twitterShareImageView.setImageResource(R.drawable.twitter_share_active);
-        }
+        setShouldShareToTwitter(!shouldShareToTwitter);
     }
 
     @InjectView(R.id.add_prediction_topic_textview)
@@ -248,6 +240,8 @@ public class AddPredictionFragment extends BaseFragment {
                             } else {
                                 selectedGroup = userManager.groups.get(i - 1);
                                 groupTextView.setText(userManager.groups.get(i - 1).name);
+                                setShouldShareToFacebook(false);
+                                setShouldShareToFacebook(false);
                             }
                         }
                     });
@@ -318,6 +312,50 @@ public class AddPredictionFragment extends BaseFragment {
             errorReporter.showError(errorMessage);
             return false;
         }
+
+        return true;
+    }
+
+    private void setShouldShareToFacebook (boolean shouldShare) {
+        if (shouldShare) {
+
+            if (!checkSharability("facebook"))
+                return;
+            this.shouldShareToFacebook = false;
+            facebookShareImageView.setImageResource(R.drawable.facebook_share);
+        } else {
+            this.shouldShareToFacebook = true;
+            facebookShareImageView.setImageResource(R.drawable.facebook_share_active);
+        }
+    }
+
+    private void setShouldShareToTwitter (boolean shouldShare) {
+        if (shouldShare) {
+
+            if (!checkSharability("twitter"))
+                return;
+
+            this.shouldShareToTwitter = false;
+            twitterShareImageView.setImageResource(R.drawable.twitter_share);
+            twitterShareTextView.setTextColor(getResources().getColor(R.color.black));
+        } else {
+            this.shouldShareToTwitter = true;
+            twitterShareImageView.setImageResource(R.drawable.twitter_share_active);
+            twitterShareTextView.setTextColor(getResources().getColor(R.color.twitterColor));
+        }
+    }
+
+    private boolean checkSharability(String provider) {
+        if (group != null) {
+            errorReporter.showError("Hold on, this is a private group prediction. You won't be able to share it with the world.");
+            return false;
+        }
+
+        if (provider.equals("twitter") && userManager.getUser().getTwitterAccount() == null) {
+            errorReporter.showError("You need to have a " + WordUtils.capitalize(provider) + " account in your profile in order to share instantly.");
+            return false;
+        }
+
 
         return true;
     }

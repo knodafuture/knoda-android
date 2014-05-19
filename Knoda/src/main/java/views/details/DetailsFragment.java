@@ -2,7 +2,6 @@ package views.details;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +13,12 @@ import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import adapters.CommentAdapter;
 import adapters.PagingAdapter;
@@ -34,6 +33,8 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.NewCommentEvent;
+import pubsub.PredictionChangeEvent;
 import views.core.BaseListFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
@@ -49,6 +50,12 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     private DetailsActionbar actionbar;
 
     private Prediction prediction;
+
+    @Subscribe
+    public void newComment(NewCommentEvent event) {
+        prediction.commentCount++;
+        headerview.setPrediction(prediction);
+    }
 
     public static DetailsFragment newInstance(Prediction prediction) {
         DetailsFragment fragment = new DetailsFragment();
@@ -71,6 +78,14 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.prediction = GsonF.actory().fromJson(getArguments().getString("PREDICTION"), Prediction.class);
+        bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        bus.post(new PredictionChangeEvent(prediction));
     }
 
     @Override
@@ -195,41 +210,43 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
             errorReporter.showError("Hold on, this is a private group prediction. You won't be able to share it with the world.");
             return;
         }
+        showDefaultShare();
+        return;
 
-        if (userManager.getUser().getTwitterAccount() == null && userManager.getUser().getFacebookAccount() == null) {
-            showDefaultShare();
-            return;
-        }
-
-        List<String> listItems = new ArrayList<String>();
-
-
-        if (userManager.getUser().getTwitterAccount() != null) {
-            listItems.add("Twitter");
-        }
-        if (userManager.getUser().getFacebookAccount() != null) {
-            listItems.add("Facebook");
-        }
-
-        listItems.add("Other");
-
-        final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("How would you like to share?");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (i == items.length - 1) {
-                    showDefaultShare();
-                } else if (items[i].equals("Twitter")) {
-                    twitterShare();
-                } else if (items[i].equals("Facebook")) {
-                    facebookShare();
-                }
-            }
-        });
-        builder.create().show();
+//        if (userManager.getUser().getTwitterAccount() == null && userManager.getUser().getFacebookAccount() == null) {
+//            showDefaultShare();
+//            return;
+//        }
+//
+//        List<String> listItems = new ArrayList<String>();
+//
+//
+//        if (userManager.getUser().getTwitterAccount() != null) {
+//            listItems.add("Twitter");
+//        }
+//        if (userManager.getUser().getFacebookAccount() != null) {
+//            listItems.add("Facebook");
+//        }
+//
+//        listItems.add("Other");
+//
+//        final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setTitle("How would you like to share?");
+//        builder.setItems(items, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                if (i == items.length - 1) {
+//                    showDefaultShare();
+//                } else if (items[i].equals("Twitter")) {
+//                    twitterShare();
+//                } else if (items[i].equals("Facebook")) {
+//                    facebookShare();
+//                }
+//            }
+//        });
+//        builder.create().show();
 
 
     }
@@ -257,7 +274,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void showDefaultShare() {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
-        String suffix = " #knoda " + prediction.shortUrl;
+        String suffix = " via @KNODAfuture " + prediction.shortUrl;
         int predictionLength = 139 - suffix.length();
         String text = "";
         if (prediction.body.length() > predictionLength) {

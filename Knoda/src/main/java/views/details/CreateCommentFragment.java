@@ -127,9 +127,10 @@ public class CreateCommentFragment extends BaseFragment {
                 inProgress = false;
                 if (error != null)
                     errorReporter.showError(error);
-                else
+                else {
                     bus.post(new NewCommentEvent(object));
                     popFragment();
+                }
             }
         });
     }

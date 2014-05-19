@@ -1,13 +1,9 @@
 package managers;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-
-import com.android.volley.Network;
-
-import java.util.ArrayList;
 
 import models.ServerError;
 import models.SocialAccount;
@@ -36,8 +32,8 @@ public class TwitterManager {
     private static AccessToken accessToken;
     private static Intent savedData;
 
-    public void openSession(Context context) {
-        new GetOauthTask().execute(context);
+    public void openSession(Activity activity) {
+        new GetOauthTask().execute(activity);
     }
 
     public boolean hasAuthInfo() {
@@ -84,14 +80,15 @@ public class TwitterManager {
 
     }
 
-    private class GetOauthTask extends AsyncTask<Context, Void, Void> {
+    private class GetOauthTask extends AsyncTask<Activity, Void, Void> {
         @Override
-        protected Void doInBackground(Context... params) {
+        protected Void doInBackground(Activity... params) {
             Twitter twitter = getTwitter();
             try {
                 token = twitter.getOAuthRequestToken(callbackURL);
-                Context context = params[0];
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(token.getAuthenticationURL())));
+                Activity activity = params[0];
+                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(token.getAuthenticationURL())));
+                //activity.finish();
             }
             catch (TwitterException e) {
                 e.printStackTrace();

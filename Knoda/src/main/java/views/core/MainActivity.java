@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
@@ -27,6 +28,7 @@ import com.tapjoy.TapjoyConnect;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import di.KnodaApplication;
@@ -35,7 +37,10 @@ import helpers.TypefaceSpan;
 import managers.GcmManager;
 import models.Group;
 import models.KnodaScreen;
+import models.Prediction;
+import models.ServerError;
 import models.User;
+import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
 import unsorted.BadgesUnseenMonitor;
 import unsorted.Logger;
@@ -43,6 +48,7 @@ import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserActivity;
 import views.badge.BadgeFragment;
+import views.details.DetailsFragment;
 import views.group.GroupFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
@@ -89,9 +95,6 @@ public class MainActivity extends BaseActivity
 
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
-
-        if (getIntent().getData() != null)
-            twitterManager.checkIntentData(getIntent());
 
         initializeFragmentBackStack();
         setUpNavigation();
@@ -303,6 +306,29 @@ public class MainActivity extends BaseActivity
             Intent intent = new Intent(this, UserAvatarChooserActivity.class);
             startActivity(intent);
         }
+
+        if (getIntent().getExtras() != null) {
+            String launchInfo = getIntent().getExtras().getString("launchInfo");
+            if (launchInfo != null) {
+                Uri uri = Uri.parse(launchInfo);
+
+                List<String> parts = uri.getPathSegments();
+                if (parts.get(0).equals("predictions")) {
+                    spinner.show();
+                    networkingManager.getPrediction(Integer.parseInt(parts.get(1)), new NetworkCallback<Prediction>() {
+                        @Override
+                        public void completionHandler(Prediction object, ServerError error) {
+                            spinner.hide();
+
+                            if (error == null) {
+                                DetailsFragment fragment = DetailsFragment.newInstance(object);
+                                pushFragment(fragment);
+                            }
+                        }
+                    });
+                }
+            }
+        }
     }
 
     private void registerGcm() {
@@ -315,6 +341,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void restart() {
+        finish();
         Intent i = getBaseContext().getPackageManager()
                 .getLaunchIntentForPackage( getBaseContext().getPackageName() );
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -338,6 +365,15 @@ public class MainActivity extends BaseActivity
         KnodaApplication.activityResumed();
         ((KnodaApplication)getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Logger.log("NEW INTENT");
+
+        if (intent.getData() != null)
+            twitterManager.checkIntentData(intent);
     }
 
     @Override

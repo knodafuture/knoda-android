@@ -1,6 +1,7 @@
 package views.core;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 
@@ -40,7 +41,11 @@ public class SplashActivity extends BaseActivity {
     private void launchMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("showActivity", getIntent().getBooleanArrayExtra("showActivity"));
-        startActivity(new Intent(this, MainActivity.class));
+
+        Uri targetUri = getIntent().getData();
+        if (targetUri != null)
+            intent.putExtra("launchInfo", targetUri.toString());
+        startActivity(intent);
         finish();
     }
 }
