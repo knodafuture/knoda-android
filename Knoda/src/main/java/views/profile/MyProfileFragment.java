@@ -120,8 +120,10 @@ public class MyProfileFragment extends BaseFragment {
         LayoutInflater li = getActivity().getLayoutInflater();
         final View changeEmailView = li.inflate(R.layout.dialog_change_email, null);
         EditText email = (EditText) changeEmailView.findViewById(R.id.email);
-        email.setText("");
-        email.append(userManager.getUser().email);
+        if (userManager.getUser().email != null)
+            email.setText(userManager.getUser().email);
+        else
+            email.setText("");
         final AlertDialog alert = new AlertDialog.Builder(getActivity())
                 .setPositiveButton("Ok", null)
                 .setNegativeButton("Cancel", null)

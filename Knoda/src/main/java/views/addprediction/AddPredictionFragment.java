@@ -331,17 +331,17 @@ public class AddPredictionFragment extends BaseFragment {
 
     private void setShouldShareToTwitter (boolean shouldShare) {
         if (shouldShare) {
-
             if (!checkSharability("twitter"))
                 return;
-
-            this.shouldShareToTwitter = false;
-            twitterShareImageView.setImageResource(R.drawable.twitter_share);
-            twitterShareTextView.setTextColor(getResources().getColor(R.color.black));
-        } else {
             this.shouldShareToTwitter = true;
             twitterShareImageView.setImageResource(R.drawable.twitter_share_active);
             twitterShareTextView.setTextColor(getResources().getColor(R.color.twitterColor));
+
+        } else {
+            this.shouldShareToTwitter = false;
+            twitterShareImageView.setImageResource(R.drawable.twitter_share);
+            twitterShareTextView.setTextColor(getResources().getColor(R.color.black));
+
         }
     }
 

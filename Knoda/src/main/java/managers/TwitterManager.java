@@ -24,7 +24,7 @@ public class TwitterManager {
 
     private static final String twitterConsumerKey = "14fSb3CT7EEQkoryO8RNx7BrG";
     private static final String twitterConsumerSecret = "6Z5OGzxLL9NqVEpAbLs9FFd2PyLm6pd7j5r98IZr5e0HRr73bo";
-    private static final String callbackURL = "oauth://knoda";
+    private static final String callbackURL = "knodaoauth://knoda";
     private static final String IEXTRA_AUTH_URL = "auth_url";
     private static final String IEXTRA_OAUTH_VERIFIER = "oauth_verifier";
     private static final String IEXTRA_OAUTH_TOKEN = "oauth_token";
@@ -50,7 +50,6 @@ public class TwitterManager {
     }
 
     public void checkIntentData(Intent data) {
-        Logger.log("GOT RESULT");
         savedData = data;
     }
     public void getSocialAccount(final NetworkCallback<SocialAccount> callback) {
@@ -88,7 +87,7 @@ public class TwitterManager {
                 token = twitter.getOAuthRequestToken(callbackURL);
                 Activity activity = params[0];
                 activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(token.getAuthenticationURL())));
-                //activity.finish();
+                activity.finish();
             }
             catch (TwitterException e) {
                 e.printStackTrace();

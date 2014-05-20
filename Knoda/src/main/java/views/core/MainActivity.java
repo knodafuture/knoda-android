@@ -99,6 +99,8 @@ public class MainActivity extends BaseActivity
         initializeFragmentBackStack();
         setUpNavigation();
 
+        if (getIntent().getData() != null)
+            twitterManager.checkIntentData(getIntent());
         final User user = userManager.getUser();
 
         if (user == null) {
@@ -298,8 +300,10 @@ public class MainActivity extends BaseActivity
 
         if (startupScreen == null)
             navigationDrawerFragment.selectStartingItem();
-        else
+        else {
             navigationDrawerFragment.selectItem(startupScreen.ordinal());
+            startupScreen = null;
+        }
         navigationDrawerFragment.refreshUser();
         navigationDrawerFragment.refreshActivity();
         if (userManager.getUser().avatar == null) {
@@ -365,15 +369,6 @@ public class MainActivity extends BaseActivity
         KnodaApplication.activityResumed();
         ((KnodaApplication)getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Logger.log("NEW INTENT");
-
-        if (intent.getData() != null)
-            twitterManager.checkIntentData(intent);
     }
 
     @Override
