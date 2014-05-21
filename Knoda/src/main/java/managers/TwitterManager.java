@@ -53,12 +53,17 @@ public class TwitterManager {
         savedData = data;
     }
     public void getSocialAccount(final NetworkCallback<SocialAccount> callback) {
-        Uri uri = savedData.getData();
-        if (uri != null && uri.toString().startsWith(callbackURL)) {
-            AccessTokenContainer container = new AccessTokenContainer();
-            container.callback = callback;
-            container.uri = uri;
-            new GetAccessTokenTask().execute(container);
+        if (savedData != null) {
+            Uri uri = savedData.getData();
+            if (uri != null && uri.toString().startsWith(callbackURL)) {
+                AccessTokenContainer container = new AccessTokenContainer();
+                container.callback = callback;
+                container.uri = uri;
+                new GetAccessTokenTask().execute(container);
+            } else {
+                token = null;
+                callback.completionHandler(null, new ServerError("Error authorizing with Twitter."));
+            }
         } else {
             token = null;
             callback.completionHandler(null, new ServerError("Error authorizing with Twitter."));

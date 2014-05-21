@@ -188,6 +188,10 @@ public class UserManager {
         networkingManager.deleteSocialAccount(socialAccount, new NetworkCallback<SocialAccount>() {
             @Override
             public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    callback.completionHandler(getUser(), error);
+                    return;
+                }
                 refreshUser(callback);
             }
         });
@@ -197,6 +201,10 @@ public class UserManager {
         networkingManager.createSocialAccount(socialAccount, new NetworkCallback<SocialAccount>() {
             @Override
             public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    callback.completionHandler(getUser(), error);
+                    return;
+                }
                 refreshUser(callback);
             }
         });

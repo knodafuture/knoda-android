@@ -79,6 +79,19 @@ public class ServerError extends BaseModel {
 
         JSONObject errors = obj.getJSONObject("errors");
 
+        if (errors == null)
+            return;
+
+        if (errors.has("user_facing")) {
+            JSONArray reasons = errors.getJSONArray("user_facing");
+            if (reasons.length() > 0) {
+                errorString = reasons.getString(0);
+            } else {
+                errorString = "An unknown error occurred, please try again later.";
+            }
+            return;
+        }
+
         Iterator<?> keys = errors.keys();
         while( keys.hasNext() ){
             String key = (String)keys.next();
