@@ -63,6 +63,9 @@ public class AddPredictionFragment extends BaseFragment {
     //@InjectView(R.id.add_prediction_facebook_share_imageview)
     ImageView facebookShareImageView;
 
+    //@InjectView(R.id.add_prediction_facebook_share_textview)
+    TextView facebookShareTextView;
+
 
     @OnClick(R.id.add_prediction_topic_view) void onTopicClicked() {
         hideKeyboard();
@@ -241,7 +244,7 @@ public class AddPredictionFragment extends BaseFragment {
                                 selectedGroup = userManager.groups.get(i - 1);
                                 groupTextView.setText(userManager.groups.get(i - 1).name);
                                 setShouldShareToFacebook(false);
-                                setShouldShareToFacebook(false);
+                                setShouldShareToTwitter(false);
                             }
                         }
                     });
@@ -317,16 +320,17 @@ public class AddPredictionFragment extends BaseFragment {
     }
 
     private void setShouldShareToFacebook (boolean shouldShare) {
-        if (shouldShare) {
-
-            if (!checkSharability("facebook"))
-                return;
-            this.shouldShareToFacebook = false;
-            facebookShareImageView.setImageResource(R.drawable.facebook_share);
-        } else {
-            this.shouldShareToFacebook = true;
-            facebookShareImageView.setImageResource(R.drawable.facebook_share_active);
-        }
+//        if (shouldShare) {
+//            if (!checkSharability("facebook"))
+//                return;
+//            this.shouldShareToFacebook = true;
+//            facebookShareImageView.setImageResource(R.drawable.facebook_share_active);
+//            facebookShareTextView.setTextColor(getResources().getColor(R.color.facebookColor));
+//        } else {
+//            this.shouldShareToFacebook = false;
+//            facebookShareImageView.setImageResource(R.drawable.facebook_share);
+//            facebookShareTextView.setTextColor(getResources().getColor(R.color.black));
+//        }
     }
 
     private void setShouldShareToTwitter (boolean shouldShare) {
@@ -346,7 +350,7 @@ public class AddPredictionFragment extends BaseFragment {
     }
 
     private boolean checkSharability(String provider) {
-        if (group != null) {
+        if (selectedGroup != null) {
             errorReporter.showError("Hold on, this is a private group prediction. You won't be able to share it with the world.");
             return false;
         }

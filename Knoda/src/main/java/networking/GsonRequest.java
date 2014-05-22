@@ -33,12 +33,12 @@ public class GsonRequest<T> extends Request<T> {
     private Object payload;
 
     public GsonRequest(int httpMethod, String url, Class clazz, Map<String, String> headers,
-                       Listener<T> listener, ErrorListener errorListener) {
+                       Listener<T> listener, ErrorListener errorListener, Integer timeout) {
         super(httpMethod, url, errorListener);
         this.clazz = clazz;
         this.headers = headers;
         this.listener = listener;
-        this.setRetryPolicy(new DefaultRetryPolicy(15 * 1000, 4, 2.0f));
+        this.setRetryPolicy(new DefaultRetryPolicy(timeout * 1000, 4, 2.0f));
     }
 
     public void setPayload(Object jsonObject) {

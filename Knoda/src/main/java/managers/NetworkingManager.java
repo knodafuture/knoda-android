@@ -94,7 +94,7 @@ public class NetworkingManager {
 
     public void socialSignIn(final SocialAccount payload, final NetworkCallback<LoginResponse> callback) {
         String url = buildUrl("session.json", false, null);
-        executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
+        executeRequestWithTimeout(Request.Method.POST, url, payload, LoginResponse.class, callback, 30);
     }
 
     public void deleteSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
@@ -521,9 +521,7 @@ public class NetworkingManager {
         return sharedPrefManager.getSavedAuthtoken();
     }
 
-
-    private <T extends BaseModel> void executeRequest (int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback) {
-
+    private <T extends BaseModel> void executeRequestWithTimeout(int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback, Integer timeout) {
         Logger.log("Executing request" + url);
         Response.Listener<T> responseListener = new Response.Listener<T>() {
             @Override
@@ -541,12 +539,16 @@ public class NetworkingManager {
             }
         };
 
-        GsonRequest<T> request = new GsonRequest<T>(httpMethod, url, responseClass, getHeaders(), responseListener, errorListener);
+        GsonRequest<T> request = new GsonRequest<T>(httpMethod, url, responseClass, getHeaders(), responseListener, errorListener, timeout);
 
         if (payload != null)
             request.setPayload(payload);
 
         mRequestQueue.add(request);
+    }
+
+    private <T extends BaseModel> void executeRequest (int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback) {
+        executeRequestWithTimeout(httpMethod, url, payload, responseClass, callback, 15);
     }
 
     private <T extends BaseModel> void executeListRequest (int httpMethod, final String url, final BaseModel payload, final TypeToken token, final NetworkListCallback<T> callback) {

@@ -58,7 +58,7 @@ public class ServerError extends BaseModel {
             return errorString;
 
         if (serverErrors == null || serverErrors.size() == 0)
-            return "Unkown error. Please try again later.";
+            return "Unknown error. Please try again later.";
 
         FieldError firstError = serverErrors.get(0);
         return WordUtils.capitalizeFully(firstError.field) + " " + firstError.reasons.get(0);
