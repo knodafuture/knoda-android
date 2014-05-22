@@ -43,6 +43,7 @@ public class NavigationAdapter extends BaseAdapter {
             listItem.labelTextView.setText(user.username);
         else
             listItem.labelTextView.setText(screen.displayName);
+
         listItem.iconImageView.setImageDrawable(screen.drawable);
 
         if (position == KnodaScreen.KnodaScreenOrder.ACTIVITY.ordinal() && alertsCount > 0) {

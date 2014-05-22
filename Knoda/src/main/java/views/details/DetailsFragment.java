@@ -28,7 +28,6 @@ import adapters.TallyAdapter;
 import butterknife.OnClick;
 import factories.GsonF;
 import models.BaseModel;
-import models.Challenge;
 import models.Comment;
 import models.Prediction;
 import models.ServerError;
@@ -290,14 +289,14 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onAgree() {
         spinner.show();
 
-        networkingManager.agreeWithPrediction(prediction.id, new NetworkCallback<Challenge>() {
+        networkingManager.agreeWithPrediction(prediction.id, new NetworkCallback<Prediction>() {
             @Override
-            public void completionHandler(Challenge object, ServerError error) {
+            public void completionHandler(Prediction object, ServerError error) {
                 spinner.hide();
                 if (error != null)
                     return;
 
-                prediction.challenge = object;
+                prediction = object;
                 headerview.setPrediction(prediction);
             }
         });
@@ -308,15 +307,15 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onDisagree() {
         spinner.show();
 
-        networkingManager.disagreeWithPrediction(prediction.id, new NetworkCallback<Challenge>() {
+        networkingManager.disagreeWithPrediction(prediction.id, new NetworkCallback<Prediction>() {
             @Override
-            public void completionHandler(Challenge object, ServerError error) {
+            public void completionHandler(Prediction object, ServerError error) {
                 spinner.hide();
 
                 if (error != null)
                     return;
 
-                prediction.challenge = object;
+                prediction = object;
                 headerview.setPrediction(prediction);
             }
         });

@@ -86,6 +86,7 @@ public class MyProfileFragment extends BaseFragment {
         });
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                signOutButton.setEnabled(true);
                 alert.dismiss();
             }
         });

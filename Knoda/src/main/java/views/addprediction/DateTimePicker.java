@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by nick on 2/10/14.
@@ -105,6 +106,15 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
 
     public Calendar getCalendar() {
         return calendar;
+    }
+
+    public void setDateTime(DateTime dateTime) {
+        if (dateTime.getMillis() < minimumCalender.getTime().getTime()) {
+            calendar.setTime(minimumCalender.getTime());
+        } else {
+            calendar.setTime(new Date(dateTime.getMillis()));
+        }
+        updateLabels();
     }
 
 }

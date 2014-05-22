@@ -151,7 +151,7 @@ public class NetworkingManager {
         executeRequest(Request.Method.GET, url, null, Challenge.class, callback);
     }
 
-    public void agreeWithPrediction(final Integer predictionId, final NetworkCallback<Challenge> callback) {
+    public void agreeWithPrediction(final Integer predictionId, final NetworkCallback<Prediction> callback) {
 
         ParamBuilder builder = new ParamBuilder().create().add("prediction_id", predictionId.toString());
 
@@ -163,12 +163,12 @@ public class NetworkingManager {
                 if (error != null)
                     callback.completionHandler(null, error);
                 else
-                    getChallengeForPrediction(predictionId, callback);
+                    getPrediction(predictionId, callback);
             }
         });
     }
 
-    public void disagreeWithPrediction(final Integer predictionId, final NetworkCallback<Challenge> callback) {
+    public void disagreeWithPrediction(final Integer predictionId, final NetworkCallback<Prediction> callback) {
 
         ParamBuilder builder = new ParamBuilder().create().add("prediction_id", predictionId.toString());
 
@@ -180,7 +180,7 @@ public class NetworkingManager {
                 if (error != null) {
                     callback.completionHandler(null, error);
                 } else
-                    getChallengeForPrediction(predictionId, callback);
+                    getPrediction(predictionId, callback);
             }
         });
     }

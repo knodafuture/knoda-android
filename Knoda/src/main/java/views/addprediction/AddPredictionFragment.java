@@ -17,11 +17,11 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
-import org.apache.commons.lang3.text.WordUtils;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -31,7 +31,9 @@ import helpers.EditTextHelper;
 import models.Group;
 import models.Prediction;
 import models.ServerError;
+import models.SocialAccount;
 import models.Tag;
+import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.NewPredictionEvent;
@@ -114,6 +116,9 @@ public class AddPredictionFragment extends BaseFragment {
 
     private boolean shouldShareToFacebook;
     private boolean shouldShareToTwitter;
+
+    private static boolean requestingTwitterConnect;
+
 
     public static AddPredictionFragment newInstance(Group group) {
         AddPredictionFragment fragment = new AddPredictionFragment();
@@ -258,12 +263,23 @@ public class AddPredictionFragment extends BaseFragment {
         hideKeyboard();
     }
 
-    private void submitPrediction() {
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        hideKeyboard();
-        if (!validate())
-            return;
+        Prediction savedPrediction = sharedPrefManager.getPredictionInProgress();
 
+        if (savedPrediction != null) {
+            restoreFromPrediction(savedPrediction);
+            sharedPrefManager.clearPredictionInProgress();
+        }
+
+        if (requestingTwitterConnect) {
+            finishTwitter();
+            requestingTwitterConnect = false;
+        }
+    }
+    private Prediction buildPrediction() {
         Prediction prediction = new Prediction();
 
         prediction.body = bodyEditText.getText().toString();
@@ -273,6 +289,55 @@ public class AddPredictionFragment extends BaseFragment {
         }
         prediction.expirationDate = votingDatePicker.getDateTime();
         prediction.resolutionDate = resolutionDatePicker.getDateTime();
+
+        return prediction;
+    }
+
+    private void savePrediction() {
+        Prediction predictionToSave = buildPrediction();
+        sharedPrefManager.setPredictionInProgress(predictionToSave);
+    }
+
+    private void restoreFromPrediction(final Prediction prediction) {
+        bodyEditText.setText(prediction.body);
+        votingDatePicker.setDateTime(prediction.expirationDate);
+        resolutionDatePicker.setDateTime(prediction.resolutionDate);
+        networkingManager.getTags(new NetworkListCallback<Tag>() {
+            @Override
+            public void completionHandler(ArrayList<Tag> object, ServerError error) {
+
+                if (prediction.tags.size() > 0) {
+                    for (Tag tag : object) {
+                        if (tag.name.equals(prediction.tags.get(0))) {
+                            onTopicSelected(tag);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+        if (prediction.groupId != null) {
+            List<Group> groups = userManager.groups;
+            for (Group group : groups) {
+                if (group.id == prediction.groupId) {
+                    selectedGroup = group;
+                    groupTextView.setText(group.name);
+                }
+            }
+
+        }
+
+
+    }
+
+    private void submitPrediction() {
+
+        hideKeyboard();
+        if (!validate())
+            return;
+
+        Prediction prediction = buildPrediction();
 
         spinner.show();
 
@@ -356,11 +421,62 @@ public class AddPredictionFragment extends BaseFragment {
         }
 
         if (provider.equals("twitter") && userManager.getUser().getTwitterAccount() == null) {
-            errorReporter.showError("You need to have a " + WordUtils.capitalize(provider) + " account in your profile in order to share instantly.");
+            showTwitterAlert();
             return false;
         }
 
-
         return true;
+    }
+
+    private void showTwitterAlert() {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .setMessage("You need to have a Twitter account in your profile in order to share instantly. Would you like to add one now?")
+                .create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                addTwitter();
+            }
+        });
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+    }
+    private void addTwitter() {
+        requestingTwitterConnect = true;
+        savePrediction();
+        spinner.show();
+        twitterManager.openSession(getActivity());
+    }
+
+    private void finishTwitter() {
+        spinner.show();
+        twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    errorReporter.showError(error);
+                    spinner.hide();
+                    return;
+                }
+                userManager.addSocialAccount(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User user, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+                        setShouldShareToTwitter(true);
+                    }
+                });
+            }
+        });
     }
 }

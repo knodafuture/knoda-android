@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import factories.GsonF;
 import models.LoginRequest;
 import models.LoginResponse;
+import models.Prediction;
 import models.SignUpRequest;
 import models.SocialAccount;
 
@@ -26,6 +27,7 @@ public class SharedPrefManager {
     private static final String REG_ID_KEY = "REGISTRATION_ID";
     private static final String FIRST_LAUNCH_KEY = "FIRST_LAUNCH";
     private static final String SAVED_SOCIAL_ACCOUNT_KEY = "SOCIAL_ACCOUNT_SAVED";
+    private static final String SAVED_PREDICTION_IN_PROGESS_KEY = "PREDICTION_IN_PROGRESS";
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -120,6 +122,26 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getBoolean(FIRST_LAUNCH_KEY, true);
 
+    }
+
+    public void setPredictionInProgress(Prediction prediction) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putString(SAVED_PREDICTION_IN_PROGESS_KEY, GsonF.actory().toJson(prediction)).commit();
+    }
+
+    public void clearPredictionInProgress() {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().remove(SAVED_PREDICTION_IN_PROGESS_KEY).commit();
+    }
+
+    public Prediction getPredictionInProgress() {
+        SharedPreferences sharedPreferences = getSP();
+        String predictionJson = sharedPreferences.getString(SAVED_PREDICTION_IN_PROGESS_KEY, null);
+
+        if (predictionJson == null)
+            return null;
+
+        return GsonF.actory().fromJson(predictionJson, Prediction.class);
     }
 
 }

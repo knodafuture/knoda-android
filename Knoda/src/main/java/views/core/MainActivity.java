@@ -333,6 +333,11 @@ public class MainActivity extends BaseActivity
                 }
             }
         }
+
+        Prediction p = sharedPrefManager.getPredictionInProgress();
+
+        if (p != null)
+            onAddPrediction();
     }
 
     private void registerGcm() {

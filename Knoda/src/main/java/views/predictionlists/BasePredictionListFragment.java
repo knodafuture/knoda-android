@@ -11,7 +11,6 @@ import com.flurry.android.FlurryAgent;
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
 import listeners.PredictionSwipeListener;
-import models.Challenge;
 import models.KnodaScreen;
 import models.Prediction;
 import models.ServerError;
@@ -79,13 +78,13 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
 
-        networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Challenge>() {
+        networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
-            public void completionHandler(Challenge object, ServerError error) {
+            public void completionHandler(Prediction object, ServerError error) {
                 if (error != null)
                     errorReporter.showError(error);
                 else {
-                    cell.prediction.challenge = object;
+                    cell.prediction = object;
                     cell.update();
                     ((MainActivity) getActivity()).checkBadges();
                 }
@@ -98,13 +97,13 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
 
-        networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Challenge>() {
+        networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
-            public void completionHandler(Challenge object, ServerError error) {
+            public void completionHandler(Prediction object, ServerError error) {
                 if (error != null) {
                     errorReporter.showError(error);
                 } else {
-                    cell.prediction.challenge = object;
+                    cell.prediction = object;
                     cell.update();
                     ((MainActivity) getActivity()).checkBadges();
                 }
