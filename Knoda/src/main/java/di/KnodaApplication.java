@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
+import managers.AppOutdatedManager;
 import managers.UserManager;
 
 /**
@@ -22,6 +23,9 @@ public class KnodaApplication extends Application {
 
     @Inject
     UserManager userManager;
+
+    @Inject
+    AppOutdatedManager appOutdatedManager;
 
     @Override
     public void onCreate() {

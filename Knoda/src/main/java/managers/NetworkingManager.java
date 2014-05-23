@@ -10,6 +10,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.otto.Bus;
 
 import org.apache.http.entity.ContentType;
 
@@ -51,6 +52,7 @@ import networking.GsonArrayRequest;
 import networking.GsonRequest;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.AppOutdatedEvent;
 import unsorted.Logger;
 
 @Singleton
@@ -66,11 +68,12 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
 
-    public static String baseUrl = "http://captaincold.knoda.com/api/";
-    //public static String baseUrl = "http://api.knoda.com/api/";
+    //public static String baseUrl = "http://captaincold.knoda.com/api/";
+    public static String baseUrl = "http://192.168.1.217:3000/api/";
     private ImageLoader imageLoader;
 
     @Inject SharedPrefManager sharedPrefManager;
+    @Inject Bus bus;
 
     @Inject
     public NetworkingManager (Context applicationContext) {
@@ -105,6 +108,11 @@ public class NetworkingManager {
     public void createSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
         String url = buildUrl("social_accounts.json", true, null);
         executeRequest(Request.Method.POST, url, socialAccount, SocialAccount.class, callback);
+    }
+
+    public void updateSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
+        String url = buildUrl("social_accounts.json", true, null);
+        executeRequest(Request.Method.PUT, url, socialAccount, SocialAccount.class, callback);
     }
 
     public void signup(final SignUpRequest payload, final NetworkCallback<LoginResponse> callback) {
@@ -534,6 +542,10 @@ public class NetworkingManager {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+
+                if (checkAndHandleOutdated(volleyError))
+                    return;
+
                 if (callback != null)
                     callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
@@ -565,6 +577,8 @@ public class NetworkingManager {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                if (checkAndHandleOutdated(volleyError))
+                    return;
                 if (callback != null)
                     callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
@@ -576,5 +590,14 @@ public class NetworkingManager {
             request.setPayload(payload);
 
         mRequestQueue.add(request);
+    }
+
+    private boolean checkAndHandleOutdated(VolleyError error) {
+        if (error.networkResponse.statusCode == 410) {
+            bus.post(new AppOutdatedEvent());
+            return true;
+        }
+
+        return false;
     }
 }

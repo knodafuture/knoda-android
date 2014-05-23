@@ -31,6 +31,7 @@ public class PredictionListCell extends RelativeLayout {
     public Prediction prediction;
 
     public RelativeLayout agreeView;
+    public RelativeLayout disagreeView;
     public ImageView verifiedCheckmark;
 
     public RelativeLayout groupView;
@@ -61,6 +62,7 @@ public class PredictionListCell extends RelativeLayout {
         commentCountTextView = (TextView)findViewById(R.id.prediction_cell_comment_textview);
         resultTextView = (TextView)findViewById(R.id.prediction_cell_result_textview);
         agreeView = (RelativeLayout)findViewById(R.id.prediction_cell_agreeview);
+        disagreeView = (RelativeLayout)findViewById(R.id.prediction_cell_disagreeview);
         verifiedCheckmark = (ImageView)findViewById(R.id.prediction_cell_verified_checkmark);
         groupView = (RelativeLayout)findViewById(R.id.prediction_cell_group_container);
         groupTextView = (TextView)findViewById(R.id.prediction_cell_group_textview);

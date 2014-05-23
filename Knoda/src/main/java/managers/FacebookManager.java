@@ -5,10 +5,13 @@ import android.app.Activity;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.SessionDefaultAudience;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import models.ServerError;
 import models.SocialAccount;
@@ -26,7 +29,37 @@ public class FacebookManager {
 
         callbacks.add(callback);
 
-        Session.openActiveSession(activity, true, getCallback());
+        openActiveSession(activity, true, getCallback(), Arrays.asList("email", "public_profile"));
+    }
+
+
+    public void reauthorizeWithPublishPermissions(final Activity activity, final NetworkCallback<SocialAccount> callback) {
+
+        if (Session.getActiveSession() == null) {
+            openSession(activity, new NetworkCallback<SocialAccount>() {
+                @Override
+                public void completionHandler(SocialAccount object, ServerError error) {
+                    reauthorizeWithPublishPermissions(activity, callback);
+                }
+            });
+
+            return;
+        }
+
+        callbacks.add(callback);
+
+        if (Session.getActiveSession().getPermissions().contains("publish_actions")) {
+            getUserProfile();
+            return;
+        }
+
+        Session.NewPermissionsRequest req = new Session.NewPermissionsRequest(activity, Arrays.asList("publish_actions"));
+        req.setDefaultAudience(SessionDefaultAudience.FRIENDS);
+        Session.getActiveSession().requestNewPublishPermissions(req);
+    }
+
+    public boolean hasPublishPermissions() {
+        return false;
     }
 
     private Session.StatusCallback getCallback() {
@@ -73,6 +106,17 @@ public class FacebookManager {
         account.accessToken = Session.getActiveSession().getAccessToken();
 
         return account;
+    }
+
+    private static Session openActiveSession(Activity activity, boolean allowLoginUI, Session.StatusCallback callback, List<String> permissions) {
+        Session.OpenRequest openRequest = new Session.OpenRequest(activity).setPermissions(permissions).setCallback(callback);
+        Session session = new Session.Builder(activity).build();
+        if (SessionState.CREATED_TOKEN_LOADED.equals(session.getState()) || allowLoginUI) {
+            Session.setActiveSession(session);
+            session.openForRead(openRequest);
+            return session;
+        }
+        return null;
     }
 
 

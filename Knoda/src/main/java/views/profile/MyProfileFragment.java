@@ -27,6 +27,7 @@ import models.ServerError;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
 import views.core.MainActivity;
@@ -79,6 +80,7 @@ public class MyProfileFragment extends BaseFragment {
                 userManager.signout(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
+                        alert.dismiss();
                         ((MainActivity)getActivity()).restart();
                     }
                 });
@@ -211,6 +213,9 @@ public class MyProfileFragment extends BaseFragment {
         header.avatarImageView.setImageBitmap(bitmap);
     }
     private void updateUser(User user) {
+        if (user == null)
+            return;
+
         setTitle(user.username.toUpperCase());
         username.setText(user.username);
         if (user.email == null) {
@@ -414,6 +419,7 @@ public class MyProfileFragment extends BaseFragment {
     }
 
     private void finishAddingTwitterAccount() {
+        Logger.log("FINISHING TWITTER -------");
         spinner.show();
         twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
             @Override

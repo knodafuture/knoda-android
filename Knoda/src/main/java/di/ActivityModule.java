@@ -103,10 +103,6 @@ public class ActivityModule {
         return new ErrorReporter(mActivity);
     }
 
-    @Provides @Singleton Bus provideBus() {
-        return new Bus();
-    }
-
     @Provides @Singleton FacebookManager provideFacebookManager() { return new FacebookManager();}
 
     @Provides @Singleton TwitterManager provideTwitterManager() {return new TwitterManager();}

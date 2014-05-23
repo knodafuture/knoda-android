@@ -84,6 +84,12 @@ public class BaseFragment extends Fragment {
     }
 
     public void setTitle(String title) {
+        if (title == null)
+            return;
+        MainActivity activity = (MainActivity)getActivity();
+
+        if (activity == null)
+            return;
         ((MainActivity) getActivity()).setActionBarTitle(title);
     }
 

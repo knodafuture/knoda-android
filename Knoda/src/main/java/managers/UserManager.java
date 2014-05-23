@@ -210,6 +210,19 @@ public class UserManager {
         });
     }
 
+    public void updateSocialAccount(final SocialAccount socialAccount, final NetworkCallback<User> callback) {
+        networkingManager.updateSocialAccount(socialAccount, new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    callback.completionHandler(getUser(), error);
+                    return;
+                }
+                refreshUser(callback);
+            }
+        });
+    }
+
     public User getUser() {
         return user;
     }

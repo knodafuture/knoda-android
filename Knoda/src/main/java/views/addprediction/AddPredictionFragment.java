@@ -62,11 +62,11 @@ public class AddPredictionFragment extends BaseFragment {
     @InjectView(R.id.add_prediction_twitter_share_textview)
     TextView twitterShareTextView;
 
-    //@InjectView(R.id.add_prediction_facebook_share_imageview)
-    ImageView facebookShareImageView;
-
-    //@InjectView(R.id.add_prediction_facebook_share_textview)
-    TextView facebookShareTextView;
+//    @InjectView(R.id.add_prediction_facebook_share_imageview)
+//    ImageView facebookShareImageView;
+//
+//    @InjectView(R.id.add_prediction_facebook_share_textview)
+//    TextView facebookShareTextView;
 
 
     @OnClick(R.id.add_prediction_topic_view) void onTopicClicked() {
@@ -282,8 +282,11 @@ public class AddPredictionFragment extends BaseFragment {
     private Prediction buildPrediction() {
         Prediction prediction = new Prediction();
 
-        prediction.body = bodyEditText.getText().toString();
-        prediction.tags.add(selectedTag.name);
+        if (bodyEditText.getText() != null)
+            prediction.body = bodyEditText.getText().toString();
+
+        if (selectedTag != null)
+            prediction.tags.add(selectedTag.name);
         if (selectedGroup != null) {
             prediction.groupId = selectedGroup.id;
         }
@@ -325,10 +328,7 @@ public class AddPredictionFragment extends BaseFragment {
                     groupTextView.setText(group.name);
                 }
             }
-
         }
-
-
     }
 
     private void submitPrediction() {
@@ -343,16 +343,36 @@ public class AddPredictionFragment extends BaseFragment {
 
         networkingManager.submitPrediction(prediction, new NetworkCallback<Prediction>() {
             @Override
-            public void completionHandler(Prediction object, ServerError error) {
+            public void completionHandler(final Prediction prediction1, ServerError error) {
                 spinner.hide();
                 if (error != null) {
                     errorReporter.showError(error);
                 } else {
-                    bus.post(new NewPredictionEvent(object));
-                    if (shouldShareToFacebook)
-                        networkingManager.sharePredictionOnFacebook(object, null);
+                    bus.post(new NewPredictionEvent(prediction1));
+//                    if (shouldShareToFacebook) {
+//                        if (facebookManager.hasPublishPermissions())
+//                            networkingManager.sharePredictionOnFacebook(prediction1, null);
+//                        else {
+//                            facebookManager.reauthorizeWithPublishPermissions(getActivity(), new NetworkCallback<SocialAccount>() {
+//                                @Override
+//                                public void completionHandler(SocialAccount object, ServerError error) {
+//                                    if (error != null) {
+//                                        errorReporter.showError(error);
+//                                        return;
+//                                    }
+//
+//                                    userManager.updateSocialAccount(object, new NetworkCallback<User>() {
+//                                        @Override
+//                                        public void completionHandler(User object, ServerError error) {
+//                                            networkingManager.sharePredictionOnFacebook(prediction1, null);
+//                                        }
+//                                    });
+//                                }
+//                            });
+//                        }
+//                    }
                     if (shouldShareToTwitter)
-                        networkingManager.sharePredictionOnTwitter(object, null);
+                        networkingManager.sharePredictionOnTwitter(prediction1, null);
                     popFragment();
                 }
             }
