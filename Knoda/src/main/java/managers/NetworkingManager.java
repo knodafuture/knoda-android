@@ -1,6 +1,11 @@
 package managers;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +20,7 @@ import com.squareup.otto.Bus;
 import org.apache.http.entity.ContentType;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,8 +74,13 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
 
+<<<<<<< HEAD
     //public static String baseUrl = "http://captaincold.knoda.com/api/";
     public static String baseUrl = "http://192.168.1.217:3000/api/";
+=======
+    public static String baseUrl = "http://localhost:3000/api/";
+    //public static String baseUrl = "http://api.knoda.com/api/";
+>>>>>>> added alert
     private ImageLoader imageLoader;
 
     @Inject SharedPrefManager sharedPrefManager;
