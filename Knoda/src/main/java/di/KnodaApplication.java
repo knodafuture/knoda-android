@@ -24,9 +24,6 @@ public class KnodaApplication extends Application {
     @Inject
     UserManager userManager;
 
-    @Inject
-    AppOutdatedManager appOutdatedManager;
-
     @Override
     public void onCreate() {
         super.onCreate();

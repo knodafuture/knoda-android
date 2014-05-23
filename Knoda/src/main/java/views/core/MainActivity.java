@@ -30,10 +30,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import di.KnodaApplication;
 import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
+import managers.AppOutdatedManager;
 import managers.GcmManager;
 import models.Group;
 import models.KnodaScreen;
@@ -43,7 +46,6 @@ import models.User;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
 import unsorted.BadgesUnseenMonitor;
-import unsorted.Logger;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserActivity;
@@ -79,6 +81,9 @@ public class MainActivity extends BaseActivity
     public void changeGroup(ChangeGroupEvent event) {
         currentGroup = event.group;
     }
+
+    @Inject
+    AppOutdatedManager appOutdatedManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
