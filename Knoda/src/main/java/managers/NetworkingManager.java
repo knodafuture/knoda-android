@@ -74,13 +74,9 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
 
-<<<<<<< HEAD
     //public static String baseUrl = "http://captaincold.knoda.com/api/";
     public static String baseUrl = "http://192.168.1.217:3000/api/";
-=======
-    public static String baseUrl = "http://localhost:3000/api/";
-    //public static String baseUrl = "http://api.knoda.com/api/";
->>>>>>> added alert
+
     private ImageLoader imageLoader;
 
     @Inject SharedPrefManager sharedPrefManager;

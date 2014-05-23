@@ -1,5 +1,16 @@
 package managers;
 
+import android.net.Uri;
+
+<<<<<<< HEAD
+=======
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+
+>>>>>>> added alert
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -26,9 +37,31 @@ public class AppOutdatedManager {
         this.bus = bus;
         bus.register(this);
     }
+    private void alertPopUp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("The version of the app you are using is out of date, please update to continue enjoying Knoda.")
+                .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
 
+                    }
+                })
+                .setNegativeButton("Market", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent marketIntent = new Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=com.knoda.knoda"
+                                        + context.getPackageName())
+                        );
+                        context.startActivity(marketIntent);
+                    }
+                });
+        builder.create().show();
+    }
 
     private void handleAppOutdated() {
-        //This is your here.
+
+        alertPopUp();
+
     }
 }
