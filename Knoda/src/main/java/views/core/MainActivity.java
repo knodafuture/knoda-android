@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         bus.register(this);
-
+        appOutdatedManager.setBus(bus);
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
 

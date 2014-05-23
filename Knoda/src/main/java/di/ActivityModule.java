@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import adapters.PredictionAdapter;
 import dagger.Module;
 import dagger.Provides;
+import managers.AppOutdatedManager;
 import managers.FacebookManager;
 import managers.NetworkingManager;
 import managers.TwitterManager;
@@ -106,4 +107,6 @@ public class ActivityModule {
     @Provides @Singleton FacebookManager provideFacebookManager() { return new FacebookManager();}
 
     @Provides @Singleton TwitterManager provideTwitterManager() {return new TwitterManager();}
+
+    @Provides @Singleton AppOutdatedManager provideAppOutdatedManager() {return new AppOutdatedManager(mActivity);}
 }

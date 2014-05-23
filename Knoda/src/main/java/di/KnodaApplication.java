@@ -9,7 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
-import managers.AppOutdatedManager;
 import managers.UserManager;
 
 /**
@@ -19,7 +18,6 @@ public class KnodaApplication extends Application {
     private ObjectGraph graph;
     private static boolean activityVisible;
     private Activity currentActivity = null;
-
 
     @Inject
     UserManager userManager;
