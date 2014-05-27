@@ -11,7 +11,6 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Singleton;
 
 import pubsub.AppOutdatedEvent;
-import unsorted.Logger;
 import views.core.BaseActivity;
 
 /**
@@ -56,9 +55,7 @@ public class AppOutdatedManager {
                         }
                     });
             builder.create().show();
-        } catch (Exception e) {
-            Logger.log("TRIED SHOWING POPUP TOO SOON");
-        }
+        } catch (Exception e) {}
     }
 
     private void handleAppOutdated() {

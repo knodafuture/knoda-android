@@ -68,8 +68,8 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
 
-    //public static String baseUrl = "http://captaincold.knoda.com/api/";
-    public static String baseUrl = "http://192.168.1.217:3000/api/";
+    public static String baseUrl = "http://captaincold.knoda.com/api/";
+    //public static String baseUrl = "http://192.168.1.217:3000/api/";
 
     private ImageLoader imageLoader;
 
@@ -112,7 +112,7 @@ public class NetworkingManager {
     }
 
     public void updateSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
-        String url = buildUrl("social_accounts.json", true, null);
+        String url = buildUrl("social_accounts/" + socialAccount.id + ".json", true, null);
         executeRequest(Request.Method.PUT, url, socialAccount, SocialAccount.class, callback);
     }
 

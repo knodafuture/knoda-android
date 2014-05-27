@@ -8,7 +8,6 @@ import adapters.PredictionAdapter;
 import dagger.Module;
 import dagger.Provides;
 import managers.AppOutdatedManager;
-import managers.FacebookManager;
 import managers.NetworkingManager;
 import managers.TwitterManager;
 import managers.UserManager;
@@ -103,8 +102,6 @@ public class ActivityModule {
     @Provides @Singleton ErrorReporter provideReporter() {
         return new ErrorReporter(mActivity);
     }
-
-    @Provides @Singleton FacebookManager provideFacebookManager() { return new FacebookManager();}
 
     @Provides @Singleton TwitterManager provideTwitterManager() {return new TwitterManager();}
 
