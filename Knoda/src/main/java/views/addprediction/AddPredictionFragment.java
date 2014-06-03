@@ -126,6 +126,7 @@ public class AddPredictionFragment extends BaseFragment {
         if (group != null) {
             bundle.putString("GROUP", GsonF.actory().toJson(group));
         }
+        FlurryAgent.logEvent("CREATE_PREDICITON_START");
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -349,6 +350,7 @@ public class AddPredictionFragment extends BaseFragment {
                     errorReporter.showError(error);
                 } else {
                     bus.post(new NewPredictionEvent(prediction1));
+                    FlurryAgent.logEvent("CREATE_PREDICTION_SUCCESS");
 //                    if (shouldShareToFacebook) {
 //                        if (facebookManager.hasPublishPermissions())
 //                            networkingManager.sharePredictionOnFacebook(prediction1, null);

@@ -2,6 +2,8 @@ package models;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,7 @@ public class User extends BaseModel {
     public Integer id;
     public String username;
     public String email;
+    public DateTime created_at;
 
     @SerializedName("verified_account")
     public boolean verified;

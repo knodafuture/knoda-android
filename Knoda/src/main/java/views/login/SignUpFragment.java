@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 import com.tapjoy.TapjoyConnect;
 
@@ -155,7 +156,7 @@ public class SignUpFragment extends BaseFragment {
                     sharedPrefManager.setFirstLaunch(true);
                     Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
                     startActivityForResult(intent, avatarResultCode);
-
+                    FlurryAgent.logEvent("SIGNUP_EMAIL");
                 }
             }
         });

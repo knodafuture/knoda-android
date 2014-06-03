@@ -388,6 +388,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         dialog.getDatePicker().setMinDate(dt.plusDays(1).getMillis());
         dialog.setTitle("When will you know?");
         dialog.show();
+        FlurryAgent.logEvent("UNFINISHED_BUTTON_TAPPED");
 
     }
 

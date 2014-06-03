@@ -10,7 +10,10 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+
+import org.joda.time.DateTime;
 
 import butterknife.OnClick;
 import managers.NetworkingManager;
@@ -63,6 +66,7 @@ public class WelcomeFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        FlurryAgent.logEvent("LANDING");
     }
 
     @Override
@@ -123,6 +127,13 @@ public class WelcomeFragment extends BaseFragment {
                             errorReporter.showError(error);
                         } else {
                             ((MainActivity)getActivity()).doLogin();
+                            int i = (int) (newTime.getMillis()/1000);
+                            int j = (int) (userManager.user.created_at.getMillis()/1000);
+                            if(i <= j) {
+                                FlurryAgent.logEvent("SIGNUP_FACEBOOK");
+                            } else {
+                                FlurryAgent.logEvent("LOGIN_FACEBOOK");
+                            }
                         }
                     }
                 });
@@ -164,6 +175,16 @@ public class WelcomeFragment extends BaseFragment {
                         }
 
                         ((MainActivity)getActivity()).doLogin();
+                        DateTime curTime = new DateTime();
+                        DateTime newTime = curTime.minusMinutes(1);
+                        int i = (int) (newTime.getMillis()/1000);
+                        int j = (int) (userManager.user.created_at.getMillis()/1000);
+                        if(j >= i) {
+                            FlurryAgent.logEvent("SIGNUP_TWITTER");
+                        } else {
+                            FlurryAgent.logEvent("LOGIN_TWITTER");
+                        }
+
                     }
                 });
             }
