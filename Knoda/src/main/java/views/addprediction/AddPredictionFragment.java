@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import factories.GsonF;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
+import models.BaseModel;
 import models.Group;
 import models.Prediction;
 import models.ServerError;
@@ -62,11 +63,11 @@ public class AddPredictionFragment extends BaseFragment {
     @InjectView(R.id.add_prediction_twitter_share_textview)
     TextView twitterShareTextView;
 
-//    @InjectView(R.id.add_prediction_facebook_share_imageview)
-//    ImageView facebookShareImageView;
-//
-//    @InjectView(R.id.add_prediction_facebook_share_textview)
-//    TextView facebookShareTextView;
+    @InjectView(R.id.add_prediction_facebook_share_imageview)
+    ImageView facebookShareImageView;
+
+    @InjectView(R.id.add_prediction_facebook_share_textview)
+    TextView facebookShareTextView;
 
 
     @OnClick(R.id.add_prediction_topic_view) void onTopicClicked() {
@@ -81,9 +82,9 @@ public class AddPredictionFragment extends BaseFragment {
             groupsDialog.show();
     }
 
-//    @OnClick(R.id.add_prediction_facebook_share) void onFBShare() {
-//        setShouldShareToFacebook(!shouldShareToFacebook);
-//    }
+    @OnClick(R.id.add_prediction_facebook_share) void onFBShare() {
+        setShouldShareToFacebook(!shouldShareToFacebook);
+    }
 
     @OnClick(R.id.add_prediction_twitter_share) void onTwitterShare() {
         setShouldShareToTwitter(!shouldShareToTwitter);
@@ -345,11 +346,11 @@ public class AddPredictionFragment extends BaseFragment {
         networkingManager.submitPrediction(prediction, new NetworkCallback<Prediction>() {
             @Override
             public void completionHandler(final Prediction prediction1, ServerError error) {
-                spinner.hide();
                 if (error != null) {
                     errorReporter.showError(error);
                 } else {
                     bus.post(new NewPredictionEvent(prediction1));
+
                     FlurryAgent.logEvent("CREATE_PREDICTION_SUCCESS");
 //                    if (shouldShareToFacebook) {
 //                        if (facebookManager.hasPublishPermissions())
@@ -375,7 +376,18 @@ public class AddPredictionFragment extends BaseFragment {
 //                    }
                     if (shouldShareToTwitter)
                         networkingManager.sharePredictionOnTwitter(prediction1, null);
-                    popFragment();
+                    if (shouldShareToFacebook) {
+                        facebookManager.share(prediction1, getActivity(), new NetworkCallback<BaseModel>() {
+                            @Override
+                            public void completionHandler(BaseModel object, ServerError error) {
+                                spinner.hide();
+                                popFragment();
+                            }
+                        });
+                    } else {
+                        spinner.hide();
+                        popFragment();
+                    }
                 }
             }
         });
@@ -407,17 +419,17 @@ public class AddPredictionFragment extends BaseFragment {
     }
 
     private void setShouldShareToFacebook (boolean shouldShare) {
-//        if (shouldShare) {
-//            if (!checkSharability("facebook"))
-//                return;
-//            this.shouldShareToFacebook = true;
-//            facebookShareImageView.setImageResource(R.drawable.facebook_share_active);
-//            facebookShareTextView.setTextColor(getResources().getColor(R.color.facebookColor));
-//        } else {
-//            this.shouldShareToFacebook = false;
-//            facebookShareImageView.setImageResource(R.drawable.facebook_share);
-//            facebookShareTextView.setTextColor(getResources().getColor(R.color.black));
-//        }
+        if (shouldShare) {
+            if (!checkSharability("facebook"))
+                return;
+            this.shouldShareToFacebook = true;
+            facebookShareImageView.setImageResource(R.drawable.facebook_share_active);
+            facebookShareTextView.setTextColor(getResources().getColor(R.color.facebookColor));
+        } else {
+            this.shouldShareToFacebook = false;
+            facebookShareImageView.setImageResource(R.drawable.facebook_share);
+            facebookShareTextView.setTextColor(getResources().getColor(R.color.black));
+        }
     }
 
     private void setShouldShareToTwitter (boolean shouldShare) {

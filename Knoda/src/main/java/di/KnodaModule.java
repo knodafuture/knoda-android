@@ -25,20 +25,13 @@ public class KnodaModule extends Object {
         this.application = application;
     }
 
-
     @Provides @Singleton Context provideContext() {
         return application;
     }
 
-    @Provides @Singleton
-    SharedPrefManager provideSharedPrefManager() {
-        return new SharedPrefManager(application);
-    }
+    @Provides @Singleton SharedPrefManager provideSharedPrefManager() {return new SharedPrefManager(application);}
 
-    @Provides @Singleton
-    Bus provideBus() {
-        return new Bus();
-    }
+    @Provides @Singleton Bus provideBus() {return new Bus();}
 
 }
 
