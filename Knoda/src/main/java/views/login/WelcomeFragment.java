@@ -127,7 +127,9 @@ public class WelcomeFragment extends BaseFragment {
                             errorReporter.showError(error);
                         } else {
                             ((MainActivity)getActivity()).doLogin();
-                            int i = (int) (newTime.getMillis()/1000);
+                            DateTime curTime = new DateTime();
+                            DateTime newTime = curTime.minusMinutes(1);
+			    int i = (int) (newTime.getMillis()/1000);
                             int j = (int) (userManager.user.created_at.getMillis()/1000);
                             if(i <= j) {
                                 FlurryAgent.logEvent("SIGNUP_FACEBOOK");
