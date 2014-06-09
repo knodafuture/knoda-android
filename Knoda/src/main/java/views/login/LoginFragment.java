@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
 import butterknife.InjectView;
@@ -124,6 +125,7 @@ public class LoginFragment extends BaseFragment {
                     errorReporter.showError("Invalid username or password");
                 else
                     ((MainActivity)getActivity()).doLogin();
+                FlurryAgent.logEvent("LOGIN_EMAIL");
             }
         });
 

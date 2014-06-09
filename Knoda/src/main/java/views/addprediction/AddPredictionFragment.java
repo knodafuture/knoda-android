@@ -127,6 +127,7 @@ public class AddPredictionFragment extends BaseFragment {
         if (group != null) {
             bundle.putString("GROUP", GsonF.actory().toJson(group));
         }
+        FlurryAgent.logEvent("CREATE_PREDICITON_START");
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -349,6 +350,30 @@ public class AddPredictionFragment extends BaseFragment {
                     errorReporter.showError(error);
                 } else {
                     bus.post(new NewPredictionEvent(prediction1));
+
+                    FlurryAgent.logEvent("CREATE_PREDICTION_SUCCESS");
+//                    if (shouldShareToFacebook) {
+//                        if (facebookManager.hasPublishPermissions())
+//                            networkingManager.sharePredictionOnFacebook(prediction1, null);
+//                        else {
+//                            facebookManager.reauthorizeWithPublishPermissions(getActivity(), new NetworkCallback<SocialAccount>() {
+//                                @Override
+//                                public void completionHandler(SocialAccount object, ServerError error) {
+//                                    if (error != null) {
+//                                        errorReporter.showError(error);
+//                                        return;
+//                                    }
+//
+//                                    userManager.updateSocialAccount(object, new NetworkCallback<User>() {
+//                                        @Override
+//                                        public void completionHandler(User object, ServerError error) {
+//                                            networkingManager.sharePredictionOnFacebook(prediction1, null);
+//                                        }
+//                                    });
+//                                }
+//                            });
+//                        }
+//                    }
                     if (shouldShareToTwitter)
                         networkingManager.sharePredictionOnTwitter(prediction1, null);
                     if (shouldShareToFacebook) {
