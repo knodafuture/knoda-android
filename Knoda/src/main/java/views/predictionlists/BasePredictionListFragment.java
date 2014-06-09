@@ -5,11 +5,16 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
+import com.knoda.knoda.R;
+
+import java.util.ArrayList;
 
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
+import butterknife.InjectView;
 import listeners.PredictionSwipeListener;
 import models.KnodaScreen;
 import models.Prediction;
@@ -24,7 +29,6 @@ import views.details.DetailsFragment;
  * Created by nick on 2/3/14.
  */
 public class BasePredictionListFragment extends BaseListFragment implements PredictionSwipeListener.PredictionCellCallbacks, PagingAdapter.PagingAdapterDatasource<Prediction> {
-
 
     PredictionSwipeListener swipeListener;
 
@@ -55,6 +59,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 onItemClicked(i);
             }
         });
+
     }
 
     public void onItemClicked(int position) {
@@ -67,10 +72,27 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
 
 
     @Override
-    public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
+    public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {
         int lastId = object == null ? 0 : object.id;
 
-        networkingManager.getPredictionsAfter(lastId, callback);
+        boolean firstLaunch = sharedPrefManager.getFirstLaunch();
+        if(false || firstLaunch){
+            NetworkListCallback<Prediction> callback2 = new NetworkListCallback<Prediction>() {
+                @Override
+                public void completionHandler(ArrayList<Prediction> object, ServerError error) {
+                    FlurryAgent.logEvent("First_Screen_Overlay");
+                    //overlay.setVisibility(View.VISIBLE);
+                    sharedPrefManager.setFirstLaunch(false);
+                }
+            };
+            networkingManager.getPredictionsAfter(lastId, callback2);
+        }else{
+            networkingManager.getPredictionsAfter(lastId, callback);
+        }
+
+
+
+
     }
 
 
