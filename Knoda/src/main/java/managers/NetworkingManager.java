@@ -8,7 +8,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Bus;
 
@@ -24,6 +23,7 @@ import javax.inject.Singleton;
 
 import builders.MultipartRequestBuilder;
 import builders.ParamBuilder;
+import factories.GsonF;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
 import models.AndroidDeviceToken;
@@ -368,7 +368,7 @@ public class NetworkingManager {
         builder.addListener(new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                User u = new Gson().fromJson(s, User.class);
+                User u = GsonF.actory().fromJson(s, User.class);
                 callback.completionHandler(u, null);
             }
         });
@@ -388,7 +388,7 @@ public class NetworkingManager {
         builder.addListener(new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                Group g = new Gson().fromJson(s, Group.class);
+                Group g = GsonF.actory().fromJson(s, Group.class);
                 callback.completionHandler(g, null);
             }
         });
