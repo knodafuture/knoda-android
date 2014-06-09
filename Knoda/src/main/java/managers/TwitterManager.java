@@ -52,6 +52,9 @@ public class TwitterManager {
     public void checkIntentData(Intent data) {
         savedData = data;
     }
+    public boolean hasData() {
+        return savedData != null;
+    }
     public void getSocialAccount(final NetworkCallback<SocialAccount> callback) {
         if (savedData != null) {
             Uri uri = savedData.getData();

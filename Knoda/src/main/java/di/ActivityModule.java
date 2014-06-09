@@ -16,6 +16,7 @@ import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
 import views.avatar.UserAvatarChooserActivity;
+import views.avatar.UserAvatarChooserFragment;
 import views.badge.BadgeFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
@@ -82,7 +83,8 @@ import views.search.SearchFragment;
                 PhotoFragment.class,
                 GroupSettingsFragment.class,
                 InvitationsFragment.class,
-                EditGroupFragment.class
+                EditGroupFragment.class,
+                UserAvatarChooserFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

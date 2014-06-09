@@ -3,80 +3,242 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="views.login.SignUpFragment"
-    android:background="@color/knodaLightGreen">
+    android:background="@color/knodaLightGreenTransparent">
 
-    <ImageView
-        android:id="@+id/signup_logo_small"
+    <Button
+        android:id="@+id/signup_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/login_logo_small"
-        android:layout_centerHorizontal="true"/>
+        android:text="X"
+        android:textColor="@color/knodaDarkGreen"
+        android:textSize="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"/>
 
-    <EditText style="@style/edittext_main"
-        android:id="@+id/signup_email_edittext"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/signup_logo_small"
-        android:hint="email"
-        android:inputType="textEmailAddress|textNoSuggestions"
-        android:imeOptions="actionNext" />
-
-    <EditText style="@style/edittext_main"
-        android:id="@+id/signup_username_edittext"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/signup_email_edittext"
-        android:hint="username"
-        android:inputType="textNoSuggestions"
-        android:imeOptions="actionNext"
-        android:maxLength="15" />
-
-    <EditText style="@style/edittext_main"
-        android:id="@+id/signup_password_edittext"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/signup_username_edittext"
-        android:layout_alignLeft="@id/login_username_edittext"
-        android:hint="password"
-        android:inputType="textPassword"
-        android:imeOptions="actionDone"/>
-
-    <TextView style="@style/smallWhiteText"
-        android:id="@+id/signup_textview_termsstart"
+    <TextView
+        android:id="@+id/signup_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/signup_password_edittext"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:text="By signing up, I agree to the"/>
+        android:textColor="@color/white"
+        android:text="Sign Up"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:layout_below="@id/signup_close"/>
 
-    <Button style="@style/smallWhiteText"
-        android:id="@+id/signup_terms_button"
-        android:layout_width="wrap_content"
-        android:background="@android:color/transparent"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/signup_textview_termsstart"
-        android:layout_toRightOf="@id/signup_textview_termsstart"
-        android:layout_marginLeft="1dp"
-        android:text="@string/tos"/>
-
-    <TextView style="@style/smallWhiteText"
-        android:id="@+id/signup_terms_and"
+    <TextView
+        android:id="@+id/signup_copy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="1dp"
-        android:layout_alignBaseline="@id/signup_textview_termsstart"
-        android:layout_toRightOf="@id/signup_terms_button"
-        android:text="and"/>
-
-    <Button style="@style/smallWhiteText"
-        android:id="@+id/signup_privacy_button"
-        android:layout_width="wrap_content"
-        android:background="@android:color/transparent"
+        android:layout_below="@id/signup_welcome"
+        android:text="Some rando milkshake copy goes here"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="15dp"/>
+    <LinearLayout
+        android:id="@+id/signup_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/signup_textview_termsstart"
-        android:layout_toRightOf="@id/signup_terms_and"
-        android:layout_marginLeft="1dp"
-        android:text="@string/privacypolicy"/>
+        android:background="@color/white"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/signup_copy"
+        android:orientation="vertical">
+
+        <EditText style="@style/edittext_main"
+            android:id="@+id/signup_email_edittext"
+            android:layout_width="fill_parent"
+            android:hint="email"
+            android:inputType="textEmailAddress|textNoSuggestions"
+            android:imeOptions="actionNext"
+            android:textColorHint="@color/knodaDarkGreen"
+            android:textColor="@color/knodaDarkGreen"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGray"
+            android:layout_below="@id/login_username_edittext"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="0dp"/>
+
+        <EditText style="@style/edittext_main"
+            android:id="@+id/signup_username_edittext"
+            android:layout_width="fill_parent"
+            android:hint="username"
+            android:inputType="textEmailAddress|textNoSuggestions"
+            android:imeOptions="actionNext"
+            android:textColorHint="@color/knodaDarkGreen"
+            android:textColor="@color/knodaDarkGreen"/>
+        <View
+            android:id="@+id/login_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGray"
+            android:layout_below="@id/login_username_edittext"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="0dp"/>
+        <EditText style="@style/edittext_main"
+            android:id="@+id/signup_password_edittext"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/login_divider"
+            android:layout_alignLeft="@id/login_username_edittext"
+            android:hint="password"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"
+            android:textColorHint="@color/knodaDarkGreen"
+            android:textColor="@color/knodaDarkGreen"/>
+
+        <Button style="@style/button_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_container"
+            android:id="@+id/signup_button"
+            android:text="Sign Up"
+            android:textColor="@color/white"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/signup_or"
+        android:layout_below="@id/signup_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- or -"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"/>
+    <LinearLayout
+        android:background="@drawable/facebook_button_background"
+        android:layout_margin="10dp"
+        android:id="@+id/welcome_login_facebook"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/signup_or">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_login_facebook"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_gravity="center"/>
+
+        <View
+            android:layout_marginRight="10dp"
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/facebookBorder"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In with Facebook"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:id="@+id/welcome_login_twitter"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/welcome_login_facebook"
+        android:background="@drawable/twitter_button_background">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_login_twitter"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="center"/>
+
+        <View
+            android:layout_marginRight="10dp"
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/twitterBorder"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In with Twitter"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+        <TextView style="@style/smallWhiteText"
+            android:id="@+id/signup_textview_termsstart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="By signing up, I agree to the"
+            android:textColor="@color/knodaDarkGreen"/>
+
+        <LinearLayout
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/signup_textview_termsstart">
+            <TextView style="@style/smallWhiteText"
+                android:id="@+id/signup_terms_button"
+                android:layout_width="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="@string/tos"
+                android:textColor="@color/knodaDarkGreen"
+                android:textStyle="bold"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:clickable="true"/>
+
+            <TextView style="@style/smallWhiteText"
+                android:id="@+id/signup_terms_and"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="&amp;"
+                android:textColor="@color/knodaDarkGreen"/>
+
+            <TextView style="@style/smallWhiteText"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/signup_privacy_button"
+                android:layout_width="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="@string/privacypolicy"
+                android:textColor="@color/knodaDarkGreen"
+                android:textStyle="bold"
+                android:clickable="true"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+
 
 </RelativeLayout>

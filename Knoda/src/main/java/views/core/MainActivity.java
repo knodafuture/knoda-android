@@ -13,7 +13,6 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 
 import com.facebook.Session;
@@ -42,16 +41,16 @@ import models.Group;
 import models.KnodaScreen;
 import models.Prediction;
 import models.ServerError;
-import models.User;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
 import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
-import views.avatar.UserAvatarChooserActivity;
+import views.avatar.UserAvatarChooserFragment;
 import views.badge.BadgeFragment;
 import views.details.DetailsFragment;
 import views.group.GroupFragment;
+import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
@@ -92,7 +91,6 @@ public class MainActivity extends BaseActivity
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        getActionBar().hide();
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
@@ -106,13 +104,8 @@ public class MainActivity extends BaseActivity
 
         if (getIntent().getData() != null)
             twitterManager.checkIntentData(getIntent());
-        final User user = userManager.getUser();
 
-        if (user == null) {
-            showLogin();
-        } else {
-            doLogin();
-        }
+        launch();
         new ImagePreloader(networkingManager).invoke();
         if (getIntent().getBooleanExtra("showActivity", false)) {
             showActivities();
@@ -139,7 +132,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (progressView.getVisibility() == View.VISIBLE)
+        if (spinner.isVisible())
             return;
 
         if (getFragmentManager().getBackStackEntryCount() > 1)
@@ -150,7 +143,7 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (progressView.getVisibility() == View.VISIBLE || !actionBarEnabled)
+        if (spinner.isVisible() || !actionBarEnabled)
             return true;
 
         switch (item.getItemId()) {
@@ -176,9 +169,15 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onNavigationDrawerItemSelected(KnodaScreen screen) {
+
+
+
         Fragment fragment;
 
         fragment = getFragment(screen);
+
+        if (!checkFragment(fragment))
+            return;
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -239,10 +238,26 @@ public class MainActivity extends BaseActivity
     }
 
     public void pushFragment(Fragment fragment) {
+
+        if (!checkFragment(fragment))
+            return;
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null).replace(R.id.container, fragment).commitAllowingStateLoss();
         navigationDrawerFragment.setDrawerToggleEnabled(false);
+    }
+
+    public boolean checkFragment(Fragment fragment) {
+        if (userManager.getUser() != null)
+            return true;
+
+        if (fragment instanceof HomeFragment || fragment instanceof SearchFragment)
+            return true;
+
+        showLogin();
+
+        return false;
     }
 
     public void popFragment() {
@@ -283,24 +298,15 @@ public class MainActivity extends BaseActivity
         });
     }
 
-    private void showLogin () {
-       WelcomeFragment welcome = WelcomeFragment.newInstance();
-       FragmentManager fragmentManager = getFragmentManager();
-       FragmentTransaction transaction = fragmentManager.beginTransaction();
-       transaction.replace(R.id.container, welcome).commitAllowingStateLoss();
+    public void showLogin() {
 
-       navigationDrawerFragment.setDrawerToggleEnabled(false);
-       navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
-       invalidateOptionsMenu();
+        WelcomeFragment f = WelcomeFragment.newInstance();
+        f.show(getFragmentManager().beginTransaction(), "dialog");
     }
-
-    public void doLogin() {
+    public void launch() {
         registerGcm();
         navigationDrawerFragment.setDrawerToggleEnabled(true);
         navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-
-        getActionBar().show();
         invalidateOptionsMenu();
 
         if (startupScreen == null)
@@ -311,10 +317,6 @@ public class MainActivity extends BaseActivity
         }
         navigationDrawerFragment.refreshUser();
         navigationDrawerFragment.refreshActivity();
-        if (userManager.getUser().avatar == null) {
-            Intent intent = new Intent(this, UserAvatarChooserActivity.class);
-            startActivity(intent);
-        }
 
         if (getIntent().getExtras() != null) {
             String launchInfo = getIntent().getExtras().getString("launchInfo");
@@ -343,6 +345,18 @@ public class MainActivity extends BaseActivity
 
         if (p != null)
             onAddPrediction();
+
+        if (userManager.getUser() == null) {
+
+            if (twitterManager.hasData()) {
+                SignUpFragment f = SignUpFragment.newInstance();
+                f.show(getFragmentManager(), "signup");
+            } else
+                showLogin();
+        } else if (userManager.getUser().avatar == null) {
+            UserAvatarChooserFragment f = new UserAvatarChooserFragment();
+            f.show(getFragmentManager(), "avatar");
+        }
     }
 
     private void registerGcm() {
@@ -458,5 +472,9 @@ public class MainActivity extends BaseActivity
 
     public void requestStartupScreen(KnodaScreen.KnodaScreenOrder screen) {
         startupScreen = screen;
+    }
+
+    public void doLogin() {
+        navigationDrawerFragment.refreshUser();
     }
 }

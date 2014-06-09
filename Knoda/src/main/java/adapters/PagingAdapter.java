@@ -160,5 +160,4 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         ((TextView)view.findViewById(R.id.no_content_textview)).setText(datasource.noContentString());
         return view;
     }
-
 }

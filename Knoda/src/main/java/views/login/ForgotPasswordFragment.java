@@ -2,9 +2,6 @@ package views.login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -12,18 +9,20 @@ import android.widget.EditText;
 import com.knoda.knoda.R;
 
 import butterknife.InjectView;
+import butterknife.OnClick;
 import models.BaseModel;
 import models.ForgotPasswordRequest;
 import models.ServerError;
 import networking.NetworkCallback;
-import views.core.BaseFragment;
+import views.core.BaseDialogFragment;
 
-public class ForgotPasswordFragment extends BaseFragment {
+public class ForgotPasswordFragment extends BaseDialogFragment {
 
 
     @InjectView(R.id.forgot_username_edittext)
     EditText editText;
 
+    @OnClick(R.id.forgot_close) void onClose() {dismiss();}
     public static ForgotPasswordFragment newInstance() {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
         return fragment;
@@ -34,23 +33,6 @@ public class ForgotPasswordFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.submit, menu);
-        menu.removeGroup(R.id.default_menu_group);
-        setTitle("");
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_submit) {
-            submit();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -85,7 +67,7 @@ public class ForgotPasswordFragment extends BaseFragment {
                     errorReporter.showError("We were unable to reset your password. Are you sure your email address has been registered on Knoda?");
                 } else {
                     errorReporter.showError("A link to reset your password was sent to your email");
-                    popFragment();
+                    dismiss();
                 }
             }
         });

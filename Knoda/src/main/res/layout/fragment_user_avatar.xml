@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/knodaLightGreenTransparent">
+
+
+    <Button
+        android:id="@+id/avatar_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"/>
+
+    <TextView
+        android:id="@+id/avatar_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Profile"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:layout_below="@id/avatar_done"/>
+
+    <TextView
+        android:id="@+id/avatar_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/avatar_welcome"
+        android:text="Add a totally rad picture to your profile"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="15dp"/>
+
+
+    <ImageView
+        android:id="@+id/avatar_imageview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/avatar_copy"
+        android:background="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"/>
+
+    <Button style="@style/button_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/avatar_imageview"
+        android:id="@+id/avatar_take_photo_button"
+        android:text="Take Photo"
+        android:textColor="@color/white"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
+
+    <Button style="@style/button_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/avatar_take_photo_button"
+        android:id="@+id/avatar_gallery_button"
+        android:text="Choose from Library"
+        android:textColor="@color/white"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
+
+    <Button style="@style/button_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/avatar_gallery_button"
+        android:id="@+id/avatar_skip"
+        android:text="Skip"
+        android:textColor="@color/white"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"/>
+
+</RelativeLayout>

@@ -142,7 +142,7 @@ public class NetworkingManager {
         if (tag != null)
             builder.add("tag", tag);
 
-        String url = buildUrl("predictions.json", true, builder);
+        String url = buildUrl("predictions.json", false, builder);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
@@ -509,11 +509,9 @@ public class NetworkingManager {
             if (paramBuilder == null)
                 paramBuilder = ParamBuilder.create();
             String authToken = getAuthToken();
-            if (authToken == null) {
-                throw new RuntimeException("No auth token found");
+            if (authToken != null) {
+                paramBuilder.add("auth_token", authToken);
             }
-
-            paramBuilder.add("auth_token", authToken);
         }
 
         String url = baseUrl + path;

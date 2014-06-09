@@ -3,21 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="views.login.LoginFragment"
-    android:background="@color/knodaLightGreen">
+    android:background="@color/knodaLightGreenTransparent">
 
-    <ImageView
-        android:id="@+id/login_logo_small"
+    <Button
+        android:id="@+id/login_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/login_logo_small"
-        android:layout_centerHorizontal="true"/>
+        android:text="X"
+        android:textColor="@color/knodaDarkGreen"
+        android:textSize="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:background="@android:color/transparent"/>
+
+    <TextView
+        android:id="@+id/login_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Welcome back!"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:layout_below="@id/login_close"/>
+
+    <TextView
+        android:id="@+id/login_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_welcome"
+        android:text="Some rando milkshake copy goes here"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="15dp"/>
     <RelativeLayout
         android:id="@+id/login_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="15dp"
-        android:layout_below="@id/login_logo_small" >
+        android:layout_below="@id/login_copy" >
 
     <EditText style="@style/edittext_main"
         android:id="@+id/login_username_edittext"
@@ -25,7 +51,8 @@
         android:hint="@string/login_hint"
         android:inputType="textEmailAddress|textNoSuggestions"
         android:imeOptions="actionNext"
-        android:textColorHint="@color/defaultHintColor"/>
+        android:textColorHint="@color/knodaDarkGreen"
+        android:textColor="@color/knodaDarkGreen"/>
 
     <View
         android:id="@+id/login_divider"
@@ -46,17 +73,42 @@
         android:hint="password"
         android:inputType="textPassword"
         android:imeOptions="actionDone"
-        android:textColorHint="@color/defaultHintColor"/>
+        android:textColorHint="@color/knodaDarkGreen"
+        android:textColor="@color/knodaDarkGreen"/>
     </RelativeLayout>
 
-    <Button style="@style/smallWhiteText"
+    <Button style="@style/button_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_container"
+        android:id="@+id/login_button"
+        android:text="Log In"
+        android:textColor="@color/white"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"/>
+
+    <Button
         android:id="@+id/login_forgot_button"
         android:layout_width="wrap_content"
         android:background="@android:color/transparent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_container"
-        android:layout_marginLeft="10dp"
-        android:text="@string/forgot_password"/>
+        android:layout_below="@id/login_button"
+        android:layout_margin="10dp"
+        android:text="@string/forgot_password"
+        android:textSize="15dp"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/login_signup_button"
+        android:layout_width="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_button"
+        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
+        android:text="@string/sign_up_prompt"
+        android:textSize="15dp"
+        android:textColor="@color/white"/>
 
 
 

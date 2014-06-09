@@ -83,6 +83,6 @@ task verifyRelease << {
     def testOccurrences = networkingText.indexOf("captaincold.knoda.com");
     def prodOccurrences = networkingText.indexOf("api.knoda.com");
     if (testOccurrences >= 0 || prodOccurrences < 0) {
-        //throw new GradleException("Build is not pointed at production.  Failing.")
+        throw new GradleException("Build is not pointed at production.  Failing.")
     }
 }

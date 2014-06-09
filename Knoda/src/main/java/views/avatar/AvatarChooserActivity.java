@@ -62,13 +62,6 @@ public abstract class AvatarChooserActivity extends BaseActivity {
         cameraOutputFile = new File(getExternalFilesDir(null), FROM_CAMERA_FILENAME);
         cropResultFile = new File(getExternalFilesDir(null), CROP_RESULT_FILENAME);
 
-        progressView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

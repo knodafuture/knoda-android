@@ -74,4 +74,3 @@ public class UserAvatarChooserActivity extends AvatarChooserActivity {
     }
 }
 
-

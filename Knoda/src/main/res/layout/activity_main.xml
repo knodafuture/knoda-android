@@ -24,13 +24,7 @@
         android:layout_height="fill_parent"
         android:visibility="invisible"
         android:background="@color/transparentBlack">
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:background="@android:color/transparent"/>
+
     </FrameLayout>
 
     <fragment android:id="@+id/navigation_drawer"
