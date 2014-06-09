@@ -48,7 +48,7 @@ public class FacebookManager {
 
         callbacks.add(callback);
 
-        openActiveSession(activity, true, getCallback(), Arrays.asList("email", "public_profile"));
+        openActiveSession(activity, true, getCallback(), Arrays.asList("email"));
     }
 
     public void share(final Prediction prediction, final Activity activity, final NetworkCallback<BaseModel> callback) {
