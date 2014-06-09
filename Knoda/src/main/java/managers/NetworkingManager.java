@@ -52,7 +52,6 @@ import networking.GsonArrayRequest;
 import networking.GsonRequest;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import pubsub.AppOutdatedEvent;
 import unsorted.Logger;
 
 @Singleton
@@ -68,8 +67,7 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
 
-    public static String baseUrl = "http://captaincold.knoda.com/api/";
-    //public static String baseUrl = "http://192.168.1.217:3000/api/";
+    public static String baseUrl = "http://api.knoda.com/api/";
 
     private ImageLoader imageLoader;
 
@@ -594,10 +592,12 @@ public class NetworkingManager {
     }
 
     private boolean checkAndHandleOutdated(VolleyError error) {
-        if (error.networkResponse.statusCode == 410) {
-            bus.post(new AppOutdatedEvent());
-            return true;
-        }
+//        if (error.networkResponse.statusCode == 410) {
+//            bus.post(new AppOutdatedEvent());
+//            return true;
+//        }
+//
+//        return false;
 
         return false;
     }
