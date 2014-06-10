@@ -1,9 +1,17 @@
 package views.predictionlists;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -35,7 +43,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override
@@ -59,24 +66,22 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 onItemClicked(i);
             }
         });
-
     }
 
     public void onItemClicked(int position) {
-        Prediction prediction = (Prediction)adapter.getItem(position-1);
+        Prediction prediction = (Prediction) adapter.getItem(position - 1);
         if (prediction != null) {
             DetailsFragment fragment = DetailsFragment.newInstance(prediction);
             pushFragment(fragment);
         }
     }
 
-
     @Override
     public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {
         int lastId = object == null ? 0 : object.id;
 
         boolean firstLaunch = sharedPrefManager.getFirstLaunch();
-        if(false || firstLaunch){
+        if (false || firstLaunch) {
             NetworkListCallback<Prediction> callback2 = new NetworkListCallback<Prediction>() {
                 @Override
                 public void completionHandler(ArrayList<Prediction> object, ServerError error) {
@@ -86,19 +91,34 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 }
             };
             networkingManager.getPredictionsAfter(lastId, callback2);
-        }else{
+        } else {
             networkingManager.getPredictionsAfter(lastId, callback);
         }
-
-
-
-
     }
 
+    private void hideTour() {
+        if (listView.getTag() != null) {
+            RelativeLayout walkthrough=((RelativeLayout) listView.getTag());
+            walkthrough.setVisibility(View.INVISIBLE);
+            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+            walkthrough.startAnimation(fadeOutAnimation);
+
+//            ViewGroup.LayoutParams lp =walkthrough.getLayoutParams();
+//            lp.height=0;
+//            walkthrough.setLayoutParams(lp);
+//            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService
+//                    (Context.LAYOUT_INFLATER_SERVICE);
+//            View v = inflater.inflate(R.layout.view_predict_walkthrough,null);
+//            listView.addHeaderView(v);
+
+        }
+    }
 
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
+
+        hideTour();
 
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -119,6 +139,8 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
 
+        hideTour();
+
         networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
             public void completionHandler(Prediction object, ServerError error) {
@@ -137,7 +159,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onProfileTapped(final PredictionListCell cell) {
         if (cell.prediction.userId.equals(userManager.getUser().id)) {
-            ((MainActivity)getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
+            ((MainActivity) getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
         } else {
             AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(cell.prediction.userId);
             pushFragment(fragment);

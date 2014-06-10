@@ -3,6 +3,7 @@ package views.predictionlists;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +38,8 @@ public class PredictionListCell extends RelativeLayout {
     public RelativeLayout groupView;
     public TextView groupTextView;
 
+    public RelativeLayout walkthroughView;
+
     private boolean agreed;
     private boolean disagreed;
 
@@ -66,6 +69,7 @@ public class PredictionListCell extends RelativeLayout {
         verifiedCheckmark = (ImageView)findViewById(R.id.prediction_cell_verified_checkmark);
         groupView = (RelativeLayout)findViewById(R.id.prediction_cell_group_container);
         groupTextView = (TextView)findViewById(R.id.prediction_cell_group_textview);
+        walkthroughView = (RelativeLayout)findViewById(R.id.prediction_cell_swipe_walkthrough);
     }
 
     public void setAgree(boolean agree) {

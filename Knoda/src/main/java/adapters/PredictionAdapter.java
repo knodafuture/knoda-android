@@ -59,11 +59,13 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
 
         boolean firstLaunch = sharedPrefManager.getFirstLaunch();
-        if((true || firstLaunch) && position==1) {
+        if(firstLaunch && position==0) {
+            sharedPrefManager.setFirstLaunch(false);
             LayoutInflater inflater = (LayoutInflater)context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.view_swipe_walkthrough,null);
-            listItem.addView(v);
+            parent.setTag(v);
+            listItem.walkthroughView.addView(v);
         }
 
         return listItem;
