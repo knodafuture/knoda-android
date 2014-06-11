@@ -19,6 +19,7 @@ import networking.NetworkListCallback;
 import views.core.BaseListFragment;
 import views.core.MainActivity;
 import views.details.DetailsFragment;
+import views.login.WelcomeFragment;
 
 /**
  * Created by nick on 2/3/14.
@@ -78,6 +79,12 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
 
+        if (userManager.getUser() == null) {
+            WelcomeFragment f = WelcomeFragment.newInstance();
+            f.show(getActivity().getFragmentManager(), "welcome");
+            return;
+        }
+
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
             public void completionHandler(Prediction object, ServerError error) {
@@ -96,6 +103,12 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
+
+        if (userManager.getUser() == null) {
+            WelcomeFragment f = WelcomeFragment.newInstance();
+            f.show(getActivity().getFragmentManager(), "welcome");
+            return;
+        }
 
         networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
