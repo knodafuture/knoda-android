@@ -104,19 +104,24 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
             Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
             walkthrough.startAnimation(fadeOutAnimation);
 
-            Handler animHandler = new Handler();
+            final Handler animHandler = new Handler();
             animHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     ViewGroup.LayoutParams lp =walkthrough.getLayoutParams();
                     lp.height=0;
                     walkthrough.setLayoutParams(lp);
-                    LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService
-                            (Context.LAYOUT_INFLATER_SERVICE);
-                    View v = inflater.inflate(R.layout.view_predict_walkthrough,null);
-                    Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
-                    listView.addHeaderView(v);
-                    v.startAnimation(fadeInAnimation);
+                    animHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService
+                                    (Context.LAYOUT_INFLATER_SERVICE);
+                            View v = inflater.inflate(R.layout.view_predict_walkthrough,null);
+                            Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
+                            listView.addHeaderView(v);
+                            v.startAnimation(fadeInAnimation);
+                        }
+                    },750);
                 }
             },250);
 
