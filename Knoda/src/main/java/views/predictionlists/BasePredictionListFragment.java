@@ -1,15 +1,29 @@
 package views.predictionlists;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
+import com.knoda.knoda.R;
+
+import java.util.ArrayList;
 
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
+import butterknife.InjectView;
 import listeners.PredictionSwipeListener;
 import models.KnodaScreen;
 import models.Prediction;
@@ -26,13 +40,11 @@ import views.login.WelcomeFragment;
  */
 public class BasePredictionListFragment extends BaseListFragment implements PredictionSwipeListener.PredictionCellCallbacks, PagingAdapter.PagingAdapterDatasource<Prediction> {
 
-
     PredictionSwipeListener swipeListener;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override
@@ -59,31 +71,75 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     }
 
     public void onItemClicked(int position) {
-        Prediction prediction = (Prediction)adapter.getItem(position-1);
+        Prediction prediction = (Prediction) adapter.getItem(position - 1);
         if (prediction != null) {
             DetailsFragment fragment = DetailsFragment.newInstance(prediction);
             pushFragment(fragment);
         }
     }
 
-
     @Override
-    public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
+    public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {
         int lastId = object == null ? 0 : object.id;
 
-        networkingManager.getPredictionsAfter(lastId, callback);
+        boolean firstLaunch = sharedPrefManager.getFirstLaunch();
+        if (false || firstLaunch) {
+            NetworkListCallback<Prediction> callback2 = new NetworkListCallback<Prediction>() {
+                @Override
+                public void completionHandler(ArrayList<Prediction> object, ServerError error) {
+                    FlurryAgent.logEvent("First_Screen_Overlay");
+                    //overlay.setVisibility(View.VISIBLE);
+                    sharedPrefManager.setFirstLaunch(false);
+                }
+            };
+            networkingManager.getPredictionsAfter(lastId, callback2);
+        } else {
+            networkingManager.getPredictionsAfter(lastId, callback);
+        }
     }
 
+    private void hideTour() {
+        if (listView.getTag() != null) {
+            final RelativeLayout walkthrough=((RelativeLayout) listView.getTag());
+            walkthrough.setVisibility(View.INVISIBLE);
+            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+            walkthrough.startAnimation(fadeOutAnimation);
+
+            final Handler animHandler = new Handler();
+            animHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ViewGroup.LayoutParams lp =walkthrough.getLayoutParams();
+                    lp.height=0;
+                    walkthrough.setLayoutParams(lp);
+                    animHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService
+                                    (Context.LAYOUT_INFLATER_SERVICE);
+                            View v = inflater.inflate(R.layout.view_predict_walkthrough,null);
+                            Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
+                            listView.addHeaderView(v);
+                            v.startAnimation(fadeInAnimation);
+                        }
+                    },750);
+                }
+            },250);
+
+
+        }
+    }
 
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
-
+        hideTour();
         if (userManager.getUser() == null) {
             WelcomeFragment f = WelcomeFragment.newInstance();
             f.show(getActivity().getFragmentManager(), "welcome");
             return;
         }
+        
 
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -103,7 +159,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
-
+        hideTour();
         if (userManager.getUser() == null) {
             WelcomeFragment f = WelcomeFragment.newInstance();
             f.show(getActivity().getFragmentManager(), "welcome");
@@ -128,7 +184,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onProfileTapped(final PredictionListCell cell) {
         if (cell.prediction.userId.equals(userManager.getUser().id)) {
-            ((MainActivity)getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
+            ((MainActivity) getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
         } else {
             AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(cell.prediction.userId);
             pushFragment(fragment);

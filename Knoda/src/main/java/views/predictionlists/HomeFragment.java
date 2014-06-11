@@ -68,8 +68,10 @@ public class HomeFragment extends BasePredictionListFragment {
 
         setTitle("HOME");
         FlurryAgent.logEvent("Home_Screen");
-        handleOverlay();
-    }
+
+        sharedPrefManager.setFirstLaunch(true);
+        //handleOverlay();
+}
 
 
     private void handleOverlay() {
@@ -77,20 +79,20 @@ public class HomeFragment extends BasePredictionListFragment {
 
         if (firstLaunch) {
             FlurryAgent.logEvent("First_Screen_Overlay");
-            overlay.setVisibility(View.VISIBLE);
-            ((MainActivity)getActivity()).setActionBarEnabled(false);
-            sharedPrefManager.setFirstLaunch(false);
-            overlayButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((MainActivity)getActivity()).setActionBarEnabled(true);
-                    overlay.setVisibility(view.GONE);
-                    overlayButton.setOnClickListener(null);
-                }
-            });
+        overlay.setVisibility(View.VISIBLE);
+        ((MainActivity)getActivity()).setActionBarEnabled(false);
+        sharedPrefManager.setFirstLaunch(false);
+        overlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).setActionBarEnabled(true);
+                overlay.setVisibility(view.GONE);
+                overlayButton.setOnClickListener(null);
+            }
+        });
 
-        }
-        else
+    }
+    else
             overlay.setVisibility(View.GONE);
     }
 }
