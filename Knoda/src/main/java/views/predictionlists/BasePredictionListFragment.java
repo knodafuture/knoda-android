@@ -82,20 +82,8 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {
         int lastId = object == null ? 0 : object.id;
 
-        boolean firstLaunch = sharedPrefManager.getFirstLaunch();
-        if (false || firstLaunch) {
-            NetworkListCallback<Prediction> callback2 = new NetworkListCallback<Prediction>() {
-                @Override
-                public void completionHandler(ArrayList<Prediction> object, ServerError error) {
-                    FlurryAgent.logEvent("First_Screen_Overlay");
-                    //overlay.setVisibility(View.VISIBLE);
-                    sharedPrefManager.setFirstLaunch(false);
-                }
-            };
-            networkingManager.getPredictionsAfter(lastId, callback2);
-        } else {
-            networkingManager.getPredictionsAfter(lastId, callback);
-        }
+        networkingManager.getPredictionsAfter(lastId, callback);
+
     }
 
     private void hideTour() {
