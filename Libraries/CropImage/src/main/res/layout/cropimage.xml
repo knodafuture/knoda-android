@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,42 +14,27 @@
 -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <view class="com.android.camera.CropImageView" android:id="@+id/image"
-                android:background="#77BC1F"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_x="0dip"
-                android:layout_y="0dip"
-        />
-        <RelativeLayout android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="10dip"
-                android:paddingRight="10dip"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true">
-            <Button
-                    android:id="@+id/discard"
-                    android:layout_width="100dip"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/crop_discard_text"
-            />
-            <Button
-                android:id="@+id/save"
-                android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/crop_save_text"
-                />
+        <view android:id="@+id/image" class="com.android.camera.CropImageView"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:layout_x="0dip" android:layout_y="0dip" android:background="#77BC1F" />
+        <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+            android:orientation="horizontal" android:paddingLeft="10dip"
+            android:paddingRight="10dip">
+            <Button android:id="@+id/discard" android:layout_width="100dip"
+                android:layout_height="wrap_content" android:layout_alignParentLeft="true"
+                android:text="@string/crop_discard_text" />
+            <Button android:id="@+id/rotate" android:layout_width="100dip"
+                android:layout_height="wrap_content"  android:layout_centerHorizontal="true"
+                android:text="Rotate" android:onClick="rotateImage"/>
+            <Button android:id="@+id/save" android:layout_width="100dip"
+                android:layout_height="wrap_content" android:layout_alignParentRight="true"
+                android:text="@string/crop_save_text" />
         </RelativeLayout>
     </RelativeLayout>
 

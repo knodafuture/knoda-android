@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true"
+            android:id="@+id/photo_progress"
             android:background="@android:color/transparent"/>
     </FrameLayout>
-
 </RelativeLayout>
