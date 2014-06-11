@@ -53,11 +53,11 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.2.1'
     compile 'org.twitter4j:twitter4j-core:4.0.1'
-    compile project(':libraries:CropImage')
-    compile project(':libraries:PullToRefresh')
+    compile project(':Libraries:CropImage')
+    compile project(':Libraries:PullToRefresh')
     compile files('lib/FlurryAnalytics_3.3.4.jar')
     compile files('lib/tapjoyconnectlibrary.jar')
-    compile project(':libraries:facebook')
+    compile project(':Libraries:facebook')
 }
 
 task incrementVersionCode << {
