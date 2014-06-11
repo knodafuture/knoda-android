@@ -4,4 +4,12 @@
         android:interpolator="@android:anim/accelerate_interpolator"
         android:duration="250"
         android:repeatCount="1"/>
+    <scale
+        android:duration="250"
+        android:fillAfter="false"
+        android:fromXScale="1.0"
+        android:fromYScale="0.0"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
 </set>
