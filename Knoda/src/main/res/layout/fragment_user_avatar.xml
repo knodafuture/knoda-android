@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/knodaLightGreenTransparent">
 
-
     <Button
         android:id="@+id/avatar_done"
         android:layout_width="wrap_content"
@@ -43,12 +42,13 @@
 
     <ImageView
         android:id="@+id/avatar_imageview"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_below="@id/avatar_copy"
         android:background="@color/white"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        android:src="@drawable/add_avatar"/>
 
     <Button style="@style/button_main"
         android:layout_width="match_parent"

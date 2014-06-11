@@ -69,12 +69,10 @@
         android:id="@+id/wall_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="X"
         android:textColor="@color/knodaDarkGreen"
-        android:textSize="25dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="20dp"
-        android:background="@android:color/transparent"/>
+        android:layout_margin="10dp"
+        android:background="@drawable/close_btn"/>
 
 </RelativeLayout>

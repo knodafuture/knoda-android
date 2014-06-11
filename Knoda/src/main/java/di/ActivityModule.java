@@ -35,6 +35,7 @@ import views.group.InvitationsFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
 import views.login.SignUpFragment;
+import views.login.SignupConfirmFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
@@ -84,7 +85,8 @@ import views.search.SearchFragment;
                 GroupSettingsFragment.class,
                 InvitationsFragment.class,
                 EditGroupFragment.class,
-                UserAvatarChooserFragment.class
+                UserAvatarChooserFragment.class,
+                SignupConfirmFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

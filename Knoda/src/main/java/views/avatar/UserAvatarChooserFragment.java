@@ -33,6 +33,7 @@ import networking.NetworkCallback;
 import unsorted.Logger;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
+import views.login.SignupConfirmFragment;
 
 /**
  * Created by nick on 6/11/14.
@@ -187,6 +188,9 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     public void finish() {
         ((MainActivity)getActivity()).doLogin();
         dismiss();
+
+        SignupConfirmFragment f = SignupConfirmFragment.newInstance();
+        f.show(getActivity().getFragmentManager(), "confirm");
     }
 
     private String getRandomOctopus() {

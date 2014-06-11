@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="views.login.SignupConfirmFragment"
+    android:background="@color/knodaLightGreenTransparent">
+
+    <TextView
+        android:id="@+id/confirm_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:text="TESt"
+        android:textStyle="bold"
+        android:layout_marginTop="25dp"/>
+
+    <TextView
+        android:id="@+id/confirm_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="nice selfie!"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/confirm_username"/>
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/confirm_imageview"
+        android:src="@drawable/add_avatar"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@id/confirm_copy"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"/>
+
+    <Button style="@style/button_main"
+        android:id="@+id/confirm_start_predicting_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Predicting"
+        android:layout_margin="20dp"
+        android:layout_below="@id/confirm_imageview"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
+
+</RelativeLayout>

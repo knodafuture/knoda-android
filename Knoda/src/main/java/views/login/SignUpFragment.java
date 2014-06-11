@@ -113,6 +113,13 @@ public class SignUpFragment extends BaseDialogFragment {
         });
     }
 
+    public void finish() {
+        dismiss();
+        ((MainActivity)getActivity()).doLogin();
+        SignupConfirmFragment f = SignupConfirmFragment.newInstance();
+        f.show(getActivity().getFragmentManager(), "confirm");
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -206,8 +213,7 @@ public class SignUpFragment extends BaseDialogFragment {
                         if (error != null) {
                             errorReporter.showError(error);
                         } else {
-                            ((MainActivity)getActivity()).doLogin();
-                            dismiss();
+                            finish();
                             DateTime curTime = new DateTime();
                             DateTime newTime = curTime.minusMinutes(1);
                             int i = (int) (newTime.getMillis()/1000);
@@ -256,8 +262,7 @@ public class SignUpFragment extends BaseDialogFragment {
                             errorReporter.showError(error);
                             return;
                         }
-                        ((MainActivity)getActivity()).doLogin();
-                        dismiss();
+                        finish();
 
                         DateTime curTime = new DateTime();
                         DateTime newTime = curTime.minusMinutes(1);
