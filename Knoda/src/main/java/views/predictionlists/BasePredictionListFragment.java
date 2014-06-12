@@ -89,6 +89,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     private void hideTour() {
         if (listView.getTag() != null) {
             final RelativeLayout walkthrough=((RelativeLayout) listView.getTag());
+            listView.setTag(null);
             walkthrough.setVisibility(View.INVISIBLE);
             Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
             walkthrough.startAnimation(fadeOutAnimation);

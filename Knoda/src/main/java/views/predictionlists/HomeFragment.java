@@ -25,7 +25,8 @@ public class HomeFragment extends BasePredictionListFragment {
     @InjectView(R.id.over_button)
     Button overlayButton;
 
-    @OnClick(R.id.home_overlay) void onClick() {
+    @OnClick(R.id.home_overlay)
+    void onClick() {
 
     }
 
@@ -33,9 +34,12 @@ public class HomeFragment extends BasePredictionListFragment {
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
-    public HomeFragment() {}
 
-    @Override public void onCreate (Bundle savedInstanceState) {
+    public HomeFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -70,29 +74,5 @@ public class HomeFragment extends BasePredictionListFragment {
         FlurryAgent.logEvent("Home_Screen");
 
         sharedPrefManager.setFirstLaunch(true);//temp
-        //handleOverlay();
-}
-
-
-    private void handleOverlay() {
-        boolean firstLaunch = sharedPrefManager.getFirstLaunch();
-
-        if (firstLaunch) {
-            FlurryAgent.logEvent("First_Screen_Overlay");
-        overlay.setVisibility(View.VISIBLE);
-        ((MainActivity)getActivity()).setActionBarEnabled(false);
-        sharedPrefManager.setFirstLaunch(false);
-        overlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity)getActivity()).setActionBarEnabled(true);
-                overlay.setVisibility(view.GONE);
-                overlayButton.setOnClickListener(null);
-            }
-        });
-
-    }
-    else
-            overlay.setVisibility(View.GONE);
     }
 }
