@@ -256,7 +256,7 @@ public class MainActivity extends BaseActivity
             return true;
 
         showLogin();
-
+        navigationDrawerFragment.resetDrawerUISelection();
         return false;
     }
 
