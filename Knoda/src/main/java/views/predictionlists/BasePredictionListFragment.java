@@ -9,21 +9,15 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
-import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
-import java.util.ArrayList;
-
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
-import butterknife.InjectView;
 import listeners.PredictionSwipeListener;
 import models.KnodaScreen;
 import models.Prediction;

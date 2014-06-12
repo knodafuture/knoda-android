@@ -18,7 +18,6 @@ import models.LoginRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
-import views.core.MainActivity;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
@@ -41,6 +40,14 @@ public class LoginFragment extends BaseDialogFragment {
 
     @OnClick(R.id.login_close) void onLoginClose() {
         dismiss();
+    }
+
+    @OnClick(R.id.login_signup_button) void onSignup() {
+        dismiss();
+
+        SignUpFragment f = SignUpFragment.newInstance();
+
+        f.show(getActivity().getFragmentManager(), "signup");
     }
 
 
