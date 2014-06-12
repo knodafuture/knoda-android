@@ -55,6 +55,12 @@ public class SignUpFragment extends BaseDialogFragment {
 
     @OnClick(R.id.signup_close) void onSignupClose() {dismiss();}
 
+    @OnClick(R.id.welcome_already_user) void onSignIn() {
+        dismiss();
+        LoginFragment f = LoginFragment.newInstance();
+        f.show(getFragmentManager(), "login");
+    }
+
     static boolean requestingTwitterLogin;
 
     private static final int avatarResultCode = 123988123;

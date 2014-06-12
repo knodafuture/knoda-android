@@ -180,6 +180,26 @@
             android:textSize="20dp"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/welcome_login_twitter">
+
+        <TextView
+            android:id="@+id/welcome_already_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Knoda User? Login"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
