@@ -21,13 +21,12 @@ public class SplashActivity extends BaseActivity {
 
         setContentView(R.layout.activity_splash);
         ButterKnife.inject(this);
-        launchMainActivity();
-//        userManager.loginSavedUser(new NetworkCallback<User>() {
-//            @Override
-//            public void completionHandler(User object, ServerError error) {
-//                launchMainActivity();
-//            }
-//        });
+        userManager.loginSavedUser(new NetworkCallback<User>() {
+            @Override
+            public void completionHandler(User object, ServerError error) {
+                launchMainActivity();
+            }
+        });
     }
 
     @Override
