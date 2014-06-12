@@ -39,6 +39,11 @@ public class LoginFragment extends BaseDialogFragment {
         doLogin();
     }
 
+    @OnClick(R.id.login_close) void onLoginClose() {
+        dismiss();
+    }
+
+
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
         return fragment;
