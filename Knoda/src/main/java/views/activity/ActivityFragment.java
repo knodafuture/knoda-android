@@ -12,12 +12,17 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
+import java.util.Random;
+
 import javax.inject.Inject;
 
+import adapters.LeaderboardPagerAdapter;
 import butterknife.OnClick;
+import models.Group;
 import pubsub.ActivitiesViewedEvent;
 import views.core.BaseFragment;
 import adapters.ActivityPagerAdapter;
+import views.group.GroupLeaderboardFragment;
 
 public class ActivityFragment extends BaseFragment {
 
@@ -88,7 +93,8 @@ public class ActivityFragment extends BaseFragment {
         if (mViewPager != null) {
             ll.removeView(mViewPager);
         }
-        mViewPager = new ViewPager(getActivity());
+        mViewPager = new ViewPager(getActivity().getApplicationContext());
+        mViewPager.setId(2000  + new Random().nextInt(100));
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -107,7 +113,7 @@ public class ActivityFragment extends BaseFragment {
         });
         ll.addView(mViewPager);
         FragmentPagerAdapter adapter = new ActivityPagerAdapter(getFragmentManager());
-        //mViewPager.setAdapter(adapter);
+        mViewPager.setAdapter(adapter);
     }
 
     private void clickTab(int position) {
@@ -139,7 +145,6 @@ public class ActivityFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        //adapter.reset();
     }
 
 

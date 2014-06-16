@@ -12,6 +12,7 @@ import managers.NetworkingManager;
 import managers.TwitterManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
+import views.activity.ActivityBoardFragment;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
@@ -86,7 +87,8 @@ import views.search.SearchFragment;
                 InvitationsFragment.class,
                 EditGroupFragment.class,
                 UserAvatarChooserFragment.class,
-                SignupConfirmFragment.class
+                SignupConfirmFragment.class,
+                ActivityBoardFragment.class
         },
         addsTo = KnodaModule.class,
         library = true
