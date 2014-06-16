@@ -9,6 +9,9 @@ import com.knoda.knoda.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import models.ServerError;
+import models.User;
+import networking.NetworkCallback;
 
 public class SplashActivity extends BaseActivity {
 
