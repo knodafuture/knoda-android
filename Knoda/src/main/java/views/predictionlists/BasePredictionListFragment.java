@@ -146,6 +146,10 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPause(){
         super.onPause();
         if(listView.getTag()!=null){
+            View walkthrough = ((View) listView.getTag());
+            ViewGroup.LayoutParams lp = walkthrough.getLayoutParams();
+            lp.height = 0;
+            walkthrough.setLayoutParams(lp);
             ((View)listView.getTag()).setVisibility(View.INVISIBLE);
             listView.setTag(null);
         }

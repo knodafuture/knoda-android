@@ -5,200 +5,215 @@
     android:layout_height="wrap_content"
     android:background="@color/white">
 
-    <RelativeLayout
-        android:id="@+id/prediction_cell_agreeview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp">
-
-        <ImageView
-            android:id="@+id/prediction_cell_agree_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/swipe_agree_arrow" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/prediction_cell_agree_imageview"
-            android:layout_centerHorizontal="true"
-            android:text="AGREE"
-            android:textColor="@color/white" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/prediction_cell_disagreeview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="20dp">
-
-        <ImageView
-            android:id="@+id/prediction_cell_disagree_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/swipe_agree_arrow" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/prediction_cell_disagree_imageview"
-            android:layout_centerHorizontal="true"
-            android:text="DISAGREE"
-            android:textColor="@color/white" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/prediction_cell_body_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/prediction_cell_top_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lightGray">
+            android:layout_height="wrap_content">
 
-            <com.android.volley.toolbox.NetworkImageView
-                android:id="@+id/prediction_cell_avatar_imageview"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@color/black" />
 
-            <TextView
-                android:id="@+id/prediction_cell_username_textview"
+            <RelativeLayout
+                android:id="@+id/prediction_cell_agreeview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@id/prediction_cell_avatar_imageview"
-                android:text="test layout text" />
+                android:layout_marginLeft="20dp">
 
-            <ImageView
-                android:id="@+id/prediction_cell_verified_checkmark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/prediction_cell_username_textview"
-                android:src="@drawable/verified_badge" />
+                <ImageView
+                    android:id="@+id/prediction_cell_agree_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/swipe_agree_arrow" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/prediction_cell_agree_imageview"
+                    android:layout_centerHorizontal="true"
+                    android:text="AGREE"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/prediction_cell_vote_image"
+            <RelativeLayout
+                android:id="@+id/prediction_cell_disagreeview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp" />
+                android:layout_marginRight="20dp">
 
-            <TextView
-                android:id="@+id/prediction_cell_result_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@id/prediction_cell_vote_image"
-                android:text="L" />
+                <ImageView
+                    android:id="@+id/prediction_cell_disagree_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/swipe_agree_arrow" />
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/prediction_cell_disagree_imageview"
+                    android:layout_centerHorizontal="true"
+                    android:text="DISAGREE"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/prediction_cell_body_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/prediction_cell_top_container">
-
-            <TextView
-                android:id="@+id/prediction_cell_body_textview"
+            <RelativeLayout
+                android:id="@+id/prediction_cell_body_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="TEST TEXT AND STUFF" />
+                android:background="@color/white">
 
-        </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/prediction_cell_top_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGray">
 
-        <RelativeLayout
-            android:id="@+id/prediction_cell_stats_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/prediction_cell_body_container"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:paddingBottom="10dp">
+                    <com.android.volley.toolbox.NetworkImageView
+                        android:id="@+id/prediction_cell_avatar_imageview"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@color/black" />
 
-            <TextView
-                android:id="@+id/prediction_cell_timestamps_textview"
-                style="@style/smallGreenText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                    <TextView
+                        android:id="@+id/prediction_cell_username_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/prediction_cell_avatar_imageview"
+                        android:text="test layout text" />
 
-                android:text="test" />
+                    <ImageView
+                        android:id="@+id/prediction_cell_verified_checkmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/prediction_cell_username_textview"
+                        android:src="@drawable/verified_badge" />
 
-            <ImageView
-                android:id="@+id/prediction_cell_comment_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/prediction_cell_timestamps_textview"
-                android:paddingBottom="8dp"
-                android:src="@drawable/comment_icon" />
 
-            <TextView
-                android:id="@+id/prediction_cell_comment_textview"
-                style="@style/smallGreenText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/prediction_cell_comment_icon"
-                android:text="1000" />
-        </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/prediction_cell_vote_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp" />
 
-        <RelativeLayout
-            android:id="@+id/prediction_cell_group_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/prediction_cell_stats_container"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="0dp"
-            android:paddingBottom="10dp">
+                    <TextView
+                        android:id="@+id/prediction_cell_result_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@id/prediction_cell_vote_image"
+                        android:text="L" />
 
-            <ImageView
-                android:id="@+id/prediction_cell_group_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:paddingBottom="8dp"
-                android:src="@drawable/group_prediction_badge" />
+                </RelativeLayout>
 
-            <TextView
-                android:id="@+id/prediction_cell_group_textview"
-                style="@style/darkGreenText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/prediction_cell_group_icon"
-                android:text="1000" />
+                <RelativeLayout
+                    android:id="@+id/prediction_cell_body_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/prediction_cell_top_container">
+
+                    <TextView
+                        android:id="@+id/prediction_cell_body_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="TEST TEXT AND STUFF" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/prediction_cell_stats_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/prediction_cell_body_container"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/prediction_cell_timestamps_textview"
+                        style="@style/smallGreenText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="test" />
+
+                    <ImageView
+                        android:id="@+id/prediction_cell_comment_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/prediction_cell_timestamps_textview"
+                        android:paddingBottom="8dp"
+                        android:src="@drawable/comment_icon" />
+
+                    <TextView
+                        android:id="@+id/prediction_cell_comment_textview"
+                        style="@style/smallGreenText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/prediction_cell_comment_icon"
+                        android:text="1000" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/prediction_cell_group_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/prediction_cell_stats_container"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="0dp"
+                    android:paddingBottom="10dp">
+
+                    <ImageView
+                        android:id="@+id/prediction_cell_group_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:paddingBottom="8dp"
+                        android:src="@drawable/group_prediction_badge" />
+
+                    <TextView
+                        android:id="@+id/prediction_cell_group_textview"
+                        style="@style/darkGreenText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/prediction_cell_group_icon"
+                        android:text="1000" />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/prediction_cell_swipe_walkthrough"
-            android:layout_below="@id/prediction_cell_group_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/prediction_cell_group_container"
             android:paddingBottom="0dp" />
-    </RelativeLayout>
-
+    </LinearLayout>
 
 </merge>
