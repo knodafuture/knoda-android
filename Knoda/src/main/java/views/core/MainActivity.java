@@ -56,6 +56,7 @@ import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
+import views.settings.SettingsFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -73,6 +74,9 @@ public class MainActivity extends BaseActivity
     private String title;
     private int rootFragmentId;
     private Group currentGroup;
+    private Menu actionbarMenu;
+
+    public String currentFragment="";
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
@@ -116,6 +120,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        actionbarMenu=menu;
         if (navigationDrawerFragment != null && !navigationDrawerFragment.isDrawerOpen()) {
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
@@ -161,6 +166,10 @@ public class MainActivity extends BaseActivity
 
             case R.id.action_search: {
                 onSearch();
+                break;
+            }
+            case R.id.action_settings:{
+                onSettings();
                 break;
             }
         }
@@ -399,6 +408,11 @@ public class MainActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         ((KnodaApplication)getApplication()).setCurrentActivity(null);
+    }
+
+    private void onSettings(){
+        SettingsFragment fragment= new SettingsFragment();
+        pushFragment(fragment);
     }
 
     private void onAddPrediction() {

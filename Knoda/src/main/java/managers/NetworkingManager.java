@@ -43,6 +43,7 @@ import models.Member;
 import models.PasswordChangeRequest;
 import models.Prediction;
 import models.ServerError;
+import models.Setting;
 import models.SignUpRequest;
 import models.SocialAccount;
 import models.Tag;
@@ -71,11 +72,13 @@ public class NetworkingManager {
 
     private ImageLoader imageLoader;
 
-    @Inject SharedPrefManager sharedPrefManager;
-    @Inject Bus bus;
+    @Inject
+    SharedPrefManager sharedPrefManager;
+    @Inject
+    Bus bus;
 
     @Inject
-    public NetworkingManager (Context applicationContext) {
+    public NetworkingManager(Context applicationContext) {
         this.context = applicationContext;
         mRequestQueue = Volley.newRequestQueue(context);
     }
@@ -86,7 +89,7 @@ public class NetworkingManager {
         return imageLoader;
     }
 
-    public void login (final LoginRequest payload, final NetworkCallback<LoginResponse> callback) {
+    public void login(final LoginRequest payload, final NetworkCallback<LoginResponse> callback) {
 
         String url = buildUrl("session.json", false, null);
 
@@ -237,7 +240,7 @@ public class NetworkingManager {
 
     public void getUnseenActivityItems(final NetworkListCallback<ActivityItem> callback) {
 
-        ParamBuilder builder = ParamBuilder.create().add("list","unseen");
+        ParamBuilder builder = ParamBuilder.create().add("list", "unseen");
 
         String url = buildUrl("activityfeed.json", true, builder);
 
@@ -490,6 +493,15 @@ public class NetworkingManager {
         executeRequest(Request.Method.POST, url, null, BaseModel.class, callback);
     }
 
+    public void changeSetting(Setting setting, final NetworkCallback<BaseModel> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        String url = buildUrl("notification_settings/" + setting.id + ".json", true, null);
+
+        //submit setting or whole user?
+        executeRequest(Request.Method.PUT, url, setting, Setting.class, callback);
+
+    }
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
@@ -517,7 +529,6 @@ public class NetworkingManager {
         String url = baseUrl + path;
         if (paramBuilder != null)
             url += paramBuilder.build();
-
         return url;
 
     }
@@ -556,11 +567,11 @@ public class NetworkingManager {
         mRequestQueue.add(request);
     }
 
-    private <T extends BaseModel> void executeRequest (int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback) {
+    private <T extends BaseModel> void executeRequest(int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback) {
         executeRequestWithTimeout(httpMethod, url, payload, responseClass, callback, 15);
     }
 
-    private <T extends BaseModel> void executeListRequest (int httpMethod, final String url, final BaseModel payload, final TypeToken token, final NetworkListCallback<T> callback) {
+    private <T extends BaseModel> void executeListRequest(int httpMethod, final String url, final BaseModel payload, final TypeToken token, final NetworkListCallback<T> callback) {
         Logger.log("Executing request" + url);
 
         Response.Listener<ArrayList<T>> responseListener = new Response.Listener<ArrayList<T>>() {
@@ -581,7 +592,7 @@ public class NetworkingManager {
             }
         };
 
-        GsonArrayRequest<ArrayList<T>> request = new GsonArrayRequest<ArrayList<T>>(httpMethod, url, token , getHeaders(), responseListener, errorListener);
+        GsonArrayRequest<ArrayList<T>> request = new GsonArrayRequest<ArrayList<T>>(httpMethod, url, token, getHeaders(), responseListener, errorListener);
 
         if (payload != null)
             request.setPayload(payload);

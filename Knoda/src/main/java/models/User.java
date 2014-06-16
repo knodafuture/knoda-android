@@ -41,6 +41,9 @@ public class User extends BaseModel {
     @SerializedName("social_accounts")
     public ArrayList<SocialAccount> socialAccounts;
 
+    @SerializedName("notification_settings")
+    public ArrayList<Setting> settings;
+
 
     public SocialAccount getTwitterAccount() {
         for (SocialAccount account : socialAccounts) {
