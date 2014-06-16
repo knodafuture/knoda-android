@@ -3,6 +3,7 @@ package views.predictionlists;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
@@ -82,7 +84,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
 
     private void hideTour() {
         if (listView.getTag() != null) {
-            final RelativeLayout walkthrough=((RelativeLayout) listView.getTag());
+            final RelativeLayout walkthrough = ((RelativeLayout) listView.getTag());
             listView.setTag(null);
             walkthrough.setVisibility(View.INVISIBLE);
             Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
@@ -92,22 +94,23 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
             animHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ViewGroup.LayoutParams lp =walkthrough.getLayoutParams();
-                    lp.height=0;
+                    ViewGroup.LayoutParams lp = walkthrough.getLayoutParams();
+                    lp.height = 0;
                     walkthrough.setLayoutParams(lp);
                     animHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService
+                            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
                                     (Context.LAYOUT_INFLATER_SERVICE);
                             View v = inflater.inflate(R.layout.view_predict_walkthrough,null);
                             Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
-                            listView.addHeaderView(v);
+                            ((ViewGroup) ((MainActivity) getActivity()).findViewById(R.id.drawer_layout)).addView(v);
                             v.startAnimation(fadeInAnimation);
+                            listView.setTag(v);
                         }
-                    },750);
+                    }, 750);
                 }
-            },250);
+            }, 250);
 
 
         }
@@ -122,7 +125,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
             f.show(getActivity().getFragmentManager(), "welcome");
             return;
         }
-        
+
 
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -137,6 +140,15 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
             }
         });
         FlurryAgent.logEvent("Swiped_Agree");
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(listView.getTag()!=null){
+            ((View)listView.getTag()).setVisibility(View.INVISIBLE);
+            listView.setTag(null);
+        }
     }
 
     @Override
