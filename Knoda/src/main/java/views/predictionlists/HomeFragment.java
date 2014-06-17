@@ -73,6 +73,5 @@ public class HomeFragment extends BasePredictionListFragment {
         setTitle("HOME");
         FlurryAgent.logEvent("Home_Screen");
 
-        sharedPrefManager.setFirstLaunch(true);//temp
     }
 }
