@@ -48,7 +48,9 @@ import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserFragment;
 import views.badge.BadgeFragment;
+import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
+import views.group.AddGroupFragment;
 import views.group.GroupFragment;
 import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
@@ -249,15 +251,16 @@ public class MainActivity extends BaseActivity
     }
 
     public boolean checkFragment(Fragment fragment) {
-        if (userManager.getUser() != null)
+        if (!userManager.getUser().guestMode)
             return true;
 
-        if (fragment instanceof HomeFragment || fragment instanceof SearchFragment)
-            return true;
+        if (fragment instanceof AddGroupFragment || fragment instanceof CreateCommentFragment || fragment instanceof AddPredictionFragment) {
+            showLogin();
+            navigationDrawerFragment.resetDrawerUISelection();
+            return false;
+        }
 
-        showLogin();
-        navigationDrawerFragment.resetDrawerUISelection();
-        return false;
+        return true;
     }
 
     public void popFragment() {
@@ -346,13 +349,9 @@ public class MainActivity extends BaseActivity
         if (p != null)
             onAddPrediction();
 
-        if (userManager.getUser() == null) {
+        if (userManager.getUser().guestMode) {
 
-            if (twitterManager.hasData()) {
-                SignUpFragment f = SignUpFragment.newInstance();
-                f.show(getFragmentManager(), "signup");
-            } else
-                showLogin();
+            showLogin();
         } else if (userManager.getUser().avatar == null) {
             UserAvatarChooserFragment f = new UserAvatarChooserFragment();
             f.show(getFragmentManager(), "avatar");

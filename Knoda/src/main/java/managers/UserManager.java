@@ -38,15 +38,21 @@ public class UserManager {
         LoginRequest request = sharedPrefManager.getSavedLoginRequest();
         SocialAccount account = sharedPrefManager.getSavedSocialAccount();
 
-        if (request != null) {
-            login(request, callback);
-        } else if (account != null) {
-            socialSignIn(account, callback);
-        } else {
-            callback.completionHandler(null, new ServerError("No saved account."));
-        }
 
+        if (sharedPrefManager.guestMode() && sharedPrefManager.getSavedAuthtoken() != null) {
+            refreshUser(callback);
+        } else {
+            if (request != null) {
+                login(request, callback);
+            } else if (account != null) {
+                socialSignIn(account, callback);
+            } else {
+                callback.completionHandler(null, new ServerError("No saved account."));
+            }
+        }
     }
+
+
 
     public void refreshUser(final NetworkCallback<User> callback) {
         networkingManager.getCurrentUser(new NetworkCallback<User>() {
@@ -163,6 +169,32 @@ public class UserManager {
                                 return;
                             } else {
                                 sharedPrefManager.saveSignupRequestAndResponse(request, loginResponse);
+                                callback.completionHandler(getUser(), null);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void loginAsGuest(final NetworkCallback<User> callback) {
+        networkingManager.loginAsGuest(new NetworkCallback<LoginResponse>() {
+            @Override
+            public void completionHandler(final LoginResponse loginResponse, ServerError error) {
+                if (error != null) {
+                    callback.completionHandler(null, error);
+                    return;
+                } else {
+                    sharedPrefManager.setSavedAuthtoken(loginResponse.authToken);
+                    refreshUser(new NetworkCallback<User>() {
+                        @Override
+                        public void completionHandler(User object, ServerError error) {
+                            if (error != null) {
+                                callback.completionHandler(null, error);
+                                return;
+                            } else {
+                                sharedPrefManager.saveGuestCredentials(loginResponse);
                                 callback.completionHandler(getUser(), null);
                             }
                         }

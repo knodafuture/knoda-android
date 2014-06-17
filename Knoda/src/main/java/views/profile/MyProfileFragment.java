@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -31,6 +32,7 @@ import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
 import views.core.MainActivity;
+import views.login.WelcomeFragment;
 
 public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.profile_username_edittext)
@@ -51,11 +53,20 @@ public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.profile_twitter_imageview)
     ImageView twitterImageView;
 
+    @InjectView(R.id.profile_signup_prompt)
+    RelativeLayout promptView;
+
     @OnClick(R.id.profile_facebook_button) void onFB() {handleFB();}
     @OnClick(R.id.profile_twitter_button) void onTwitter() {handleTwitter();}
 
     private static final int PHOTO_RESULT_CODE = 123123129;
     private static boolean requestingTwitterInfo;
+
+    @OnClick(R.id.profile_signup_button) void onSignup() {
+        ((MainActivity)getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.HOME);
+        WelcomeFragment f = WelcomeFragment.newInstance();
+        f.show(getActivity().getFragmentManager(), "welcome");
+    }
 
     @OnClick(R.id.user_profile_header_avatar) void onClickAvatar() {
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(false);
@@ -187,11 +198,18 @@ public class MyProfileFragment extends BaseFragment {
         final User user = userManager.getUser();
         updateUser(user);
         FlurryAgent.logEvent("Profile_Screen");
+
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        if (userManager.getUser().guestMode) {
+            promptView.setVisibility(View.VISIBLE);
+        }
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
 
         if (requestingTwitterInfo) {

@@ -9,6 +9,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.flurry.android.FlurryAgent;
@@ -61,8 +62,6 @@ public class SignUpFragment extends BaseDialogFragment {
         f.show(getFragmentManager(), "login");
     }
 
-    static boolean requestingTwitterLogin;
-
     private static final int avatarResultCode = 123988123;
 
     public static SignUpFragment newInstance() {
@@ -91,7 +90,7 @@ public class SignUpFragment extends BaseDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         setupListeners();
         emailField.requestFocus();
-        showKeyboard(emailField);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         InputFilter[] filterArray = new InputFilter[2];
         filterArray[0] = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -128,17 +127,6 @@ public class SignUpFragment extends BaseDialogFragment {
         f.show(getActivity().getFragmentManager(), "confirm");
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (requestingTwitterLogin) {
-            if (twitterManager.hasAuthInfo())
-                finishTwitterLogin();
-            else
-                errorReporter.showError("Error authorizing with Twitter. Please try again later.");
-        }
-        requestingTwitterLogin = false;
-    }
 
     @Override
     public void onPause() {
@@ -151,8 +139,6 @@ public class SignUpFragment extends BaseDialogFragment {
         emailField.clearFocus();
         usernameField.clearFocus();
         passwordField.clearFocus();
-
-
 
         if (!validateFields())
             return;
@@ -242,12 +228,13 @@ public class SignUpFragment extends BaseDialogFragment {
 
         if (twitterManager.hasAuthInfo()) {
             finishTwitterLogin();
-            requestingTwitterLogin = false;
             return;
         }
 
-        requestingTwitterLogin = true;
         spinner.show();
+
+        WelcomeFragment.requestingTwitterLogin = true;
+
         twitterManager.openSession(getActivity());
     }
 

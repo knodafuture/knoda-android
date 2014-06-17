@@ -43,6 +43,7 @@
             android:layout_toRightOf="@id/navigation_list_stats_icon"
             android:textColor="@color/white"
             android:textSize="20dp"
+            android:text="0"
             android:layout_marginLeft="5dp"/>
 
         <TextView style="@style/smallWhiteText"
@@ -59,6 +60,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="20dp"
+            android:text="0-0"
             android:layout_alignTop="@id/navigation_list_stats_icon"
             android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"/>
@@ -76,6 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
+            android:text="0%"
             android:textColor="@color/white"
             android:layout_marginTop="50dp"
             android:layout_alignLeft="@id/navigation_list_points_textview"/>
@@ -93,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
+            android:text="W0"
             android:textColor="@color/white"
             android:layout_alignTop="@id/navigation_list_win_percent_textview"
             android:layout_alignLeft="@id/navigation_list_wl_textview"/>

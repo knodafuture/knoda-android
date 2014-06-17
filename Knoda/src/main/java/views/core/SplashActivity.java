@@ -9,6 +9,9 @@ import com.knoda.knoda.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import models.ServerError;
+import models.User;
+import networking.NetworkCallback;
 
 public class SplashActivity extends BaseActivity {
 
@@ -24,7 +27,18 @@ public class SplashActivity extends BaseActivity {
         userManager.loginSavedUser(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User object, ServerError error) {
-                launchMainActivity();
+
+                if (error == null) {
+                    launchMainActivity();
+                    return;
+                }
+
+                userManager.loginAsGuest(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        launchMainActivity();
+                    }
+                });
             }
         });
     }

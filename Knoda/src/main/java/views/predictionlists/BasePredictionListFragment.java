@@ -3,7 +3,6 @@ package views.predictionlists;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.FrameLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
@@ -26,10 +24,10 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.PredictionChangeEvent;
 import views.core.BaseListFragment;
 import views.core.MainActivity;
 import views.details.DetailsFragment;
-import views.login.WelcomeFragment;
 
 /**
  * Created by nick on 2/3/14.
@@ -120,12 +118,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
         hideTour();
-        if (userManager.getUser() == null) {
-            WelcomeFragment f = WelcomeFragment.newInstance();
-            f.show(getActivity().getFragmentManager(), "welcome");
-            return;
-        }
-
 
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -135,6 +127,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 else {
                     cell.prediction = object;
                     cell.update();
+                    bus.post(new PredictionChangeEvent(object));
                     ((MainActivity) getActivity()).checkBadges();
                 }
             }
@@ -159,11 +152,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
         hideTour();
-        if (userManager.getUser() == null) {
-            WelcomeFragment f = WelcomeFragment.newInstance();
-            f.show(getActivity().getFragmentManager(), "welcome");
-            return;
-        }
 
         networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -173,6 +161,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                 } else {
                     cell.prediction = object;
                     cell.update();
+                    bus.post(new PredictionChangeEvent(object));
                     ((MainActivity) getActivity()).checkBadges();
                 }
             }

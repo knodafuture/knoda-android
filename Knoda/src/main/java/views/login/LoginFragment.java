@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.flurry.android.FlurryAgent;
@@ -30,6 +31,7 @@ public class LoginFragment extends BaseDialogFragment {
 
 
     @OnClick(R.id.login_forgot_button) void onForgotPassword() {
+        dismiss();
         ForgotPasswordFragment fragment = ForgotPasswordFragment.newInstance();
         fragment.show(getActivity().getFragmentManager(), "forgot");
     }
@@ -69,8 +71,8 @@ public class LoginFragment extends BaseDialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureEditTextListeners();
-        usernameField.requestFocus();
-        showKeyboard(usernameField);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
     }
 
     @Override
