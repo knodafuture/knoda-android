@@ -65,7 +65,6 @@ public class SettingsFragment extends PreferenceFragment {
                         }else{
                             Toast.makeText(getActivity(),"Setting failed to change",Toast.LENGTH_SHORT).show();
                         }
-                        System.out.println("Hello");
                     }
                 });
                 return true;
