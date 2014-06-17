@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Bus;
 
 import org.apache.http.entity.ContentType;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import models.PasswordChangeRequest;
 import models.Prediction;
 import models.ServerError;
 import models.Setting;
+import models.SettingsCategory;
 import models.SignUpRequest;
 import models.SocialAccount;
 import models.Tag;
@@ -493,13 +495,15 @@ public class NetworkingManager {
         executeRequest(Request.Method.POST, url, null, BaseModel.class, callback);
     }
 
-    public void changeSetting(Setting setting, final NetworkCallback<BaseModel> callback) {
-        ParamBuilder builder = ParamBuilder.create();
+    public void changeSetting(Setting setting, final NetworkCallback<Setting> callback) {
         String url = buildUrl("notification_settings/" + setting.id + ".json", true, null);
-
-        //submit setting or whole user?
         executeRequest(Request.Method.PUT, url, setting, Setting.class, callback);
+    }
 
+    public void getSettings(final NetworkListCallback<SettingsCategory> callback) {
+        String url = buildUrl("settings.json", true, null);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getSettingsTypeToken(), callback);
     }
 
     private Map<String, String> getHeaders() {

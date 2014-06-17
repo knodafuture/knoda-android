@@ -1,11 +1,14 @@
 package views.settings;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceGroup;
+import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,18 +17,43 @@ import android.widget.Toast;
 import com.knoda.knoda.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import models.BaseModel;
 import models.ServerError;
 import models.Setting;
+import models.SettingsCategory;
 import networking.NetworkCallback;
-import unsorted.Logger;
+import networking.NetworkListCallback;
 import views.core.MainActivity;
 
 public class SettingsFragment extends PreferenceFragment {
 
     private PreferenceScreen preferenceScreen;
-    ArrayList<Setting> settings;
+    HashMap<String,ArrayList<Setting>> settings;
+
+    Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            int key = Integer.parseInt(preference.getKey());
+            Setting s = new Setting();
+            s.id=key;
+            s.active=(Boolean)newValue;
+            s.displayName=preference.getTitle().toString();
+            s.description=preference.getSummary().toString();
+            ((MainActivity)getActivity()).networkingManager.changeSetting(s, new NetworkCallback<Setting>() {
+                @Override
+                public void completionHandler(Setting object, ServerError error) {
+                    if(error==null){
+                        Toast.makeText(getActivity(), "Setting '" + object.displayName
+                                + "' successfully changed", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getActivity(),"Setting failed to change",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            return true;
+        }
+    };
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -41,48 +69,38 @@ public class SettingsFragment extends PreferenceFragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-
+        settings=new HashMap<String,ArrayList<Setting>>();
         preferenceScreen = this.getPreferenceScreen();
-        Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                int key = Integer.parseInt(preference.getKey());
-                Setting s = new Setting();
-                s.id=key;
-                s.active=(Boolean)newValue;
-                s.displayName=preference.getTitle().toString();
-                s.description=preference.getSummary().toString();
-                ((MainActivity)getActivity()).networkingManager.changeSetting(s, new NetworkCallback<BaseModel>() {
-                    @Override
-                    public void completionHandler(BaseModel object, ServerError error) {
-                        if(error==null){
-                            ArrayList<Setting> settings1=((MainActivity) getActivity()).userManager.getUser().settings;
-                            for(Setting s:settings1){
-                                if(s.id==((Setting)object).id){
-                                    s.active=((Setting)object).active;
-                                }
-                            }
-                            Toast.makeText(getActivity(),"Setting '"+ ((Setting)object).displayName +"' successfully changed",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getActivity(),"Setting failed to change",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                return true;
+
+        ((MainActivity)getActivity()).networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
+            @Override
+            public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
+                for(SettingsCategory s:object){
+                    settings.put(s.name,s.settings);
+                }
+                buildPage();
             }
-        };
-        settings = ((MainActivity) getActivity()).userManager.getUser().settings;
+        });
 
-        //Create Preferences
-        for (Setting s : settings) {
-            CheckBoxPreference c = new CheckBoxPreference(getActivity());
-            c.setOnPreferenceChangeListener(changeListener);
-            c.setTitle(s.displayName);
-            c.setSummary(s.description);
-            c.setChecked(s.active);
-            c.setKey(s.id + "");
-            preferenceScreen.addPreference(c);
+    }
+
+    public void buildPage(){
+        Context c=getActivity();
+        for(String key: settings.keySet()){
+            PreferenceCategory category= new PreferenceCategory(c);
+            preferenceScreen.addPreference(category);
+            category.setTitle(key);
+            for(Setting s: settings.get(key)){
+                CheckBoxPreference check = new CheckBoxPreference(c);
+                check.setOnPreferenceChangeListener(changeListener);
+                check.setTitle(s.displayName);
+                check.setSummary(s.description);
+                check.setChecked(s.active);
+                check.setKey(s.id + "");
+                category.addPreference(check);
+            }
+
         }
-
     }
 
 
