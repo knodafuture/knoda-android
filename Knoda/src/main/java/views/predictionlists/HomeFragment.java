@@ -18,17 +18,6 @@ import butterknife.OnClick;
 
 public class HomeFragment extends BasePredictionListFragment {
 
-    @InjectView(R.id.home_overlay)
-    RelativeLayout overlay;
-
-    @InjectView(R.id.over_button)
-    Button overlayButton;
-
-    @OnClick(R.id.home_overlay)
-    void onClick() {
-
-    }
-
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -50,10 +39,6 @@ public class HomeFragment extends BasePredictionListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (overlay.getVisibility() == View.GONE)
-            return super.onOptionsItemSelected(item);
-
         return false;
     }
 
@@ -61,7 +46,7 @@ public class HomeFragment extends BasePredictionListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        //sharedPrefManager.setFirstLaunch(true);
         return view;
     }
 
