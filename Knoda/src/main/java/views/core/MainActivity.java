@@ -65,6 +65,7 @@ import views.details.DetailsFragment;
 import views.group.AddGroupFragment;
 import views.group.GroupFragment;
 import views.login.WelcomeFragment;
+import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
@@ -445,6 +446,18 @@ public class MainActivity extends BaseActivity
             return false;
         }
         return true;
+    }
+
+    public void profileClick(View v){
+        Integer id = (Integer) v.getTag();
+        if(id==null)
+            return;
+        else if (id.equals(userManager.getUser().id)) {
+            showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
+        } else {
+            AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(id);
+            pushFragment(fragment);
+        }
     }
 
     public void showActivities() {

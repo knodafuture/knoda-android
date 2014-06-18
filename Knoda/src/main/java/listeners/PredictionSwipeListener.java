@@ -144,15 +144,15 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                     Rect rect = new Rect();
                     downView.usernameView.getHitRect(rect);
                     if (rect.contains(x, y)) {
-                        callbacks.onProfileTapped(downView);
-                        // Cancel ListView's touch (un-highlighting the item)
-                        MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
-
-                        cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
-                                (motionEvent.getActionIndex()
-                                        << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
-                        listView.onTouchEvent(cancelEvent);
-                        cancelEvent.recycle();
+//                        callbacks.onProfileTapped(downView);
+//                        // Cancel ListView's touch (un-highlighting the item)
+//                        MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
+//
+//                        cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
+//                                (motionEvent.getActionIndex()
+//                                        << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
+//                        listView.onTouchEvent(cancelEvent);
+//                        cancelEvent.recycle();
                     }
                 }
 
