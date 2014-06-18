@@ -198,9 +198,6 @@ public class MyProfileFragment extends BaseFragment {
         final User user = userManager.getUser();
         updateUser(user);
         FlurryAgent.logEvent("Profile_Screen");
-
-
-
     }
 
     @Override
@@ -208,7 +205,8 @@ public class MyProfileFragment extends BaseFragment {
         super.onResume();
 
         if (userManager.getUser().guestMode) {
-            promptView.setVisibility(View.VISIBLE);
+            //promptView.setVisibility(View.VISIBLE);
+            ((MainActivity)getActivity()).showProfileLogin();
         }
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
 

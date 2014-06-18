@@ -311,6 +311,16 @@ public class MainActivity extends BaseActivity
             }
         });
     }
+    public void showProfileLogin() {
+
+        captureScreen();
+        WelcomeFragment f = WelcomeFragment.newInstance();
+        Bundle b= new Bundle();
+        b.putCharSequence("welcometext","Whoa there cowboy");
+        b.putCharSequence("welcomeprompt","You're just a guest.\nSign up with Knoda to unlock your profile");
+        f.setArguments(b);
+        f.show(getFragmentManager().beginTransaction(), "welcome");
+    }
 
     public void showLogin() {
 
