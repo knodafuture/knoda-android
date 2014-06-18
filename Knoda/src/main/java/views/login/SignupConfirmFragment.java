@@ -13,6 +13,8 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import models.User;
 import views.core.BaseDialogFragment;
+import views.core.MainActivity;
+import views.predictionlists.BasePredictionListFragment;
 
 /**
  * Created by nick on 6/11/14.
@@ -26,6 +28,13 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     TextView textView;
 
     @OnClick(R.id.confirm_start_predicting_button) void onClick() {
+        try{
+            sharedPrefManager.setFirstLaunch(true);
+            BasePredictionListFragment fragment = (BasePredictionListFragment) ((MainActivity) getActivity()).currentFragment;
+            fragment.refreshList();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         dismiss();
     }
 

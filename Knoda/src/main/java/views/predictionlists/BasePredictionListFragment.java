@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -38,8 +39,15 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     PredictionSwipeListener swipeListener;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity)getActivity()).currentFragment=this;
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
@@ -50,6 +58,10 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public AbsListView.OnScrollListener getOnScrollListener() {
         return swipeListener.makeScrollListener();
+    }
+
+    public void refreshList(){
+        adapter.loadPage(0);
     }
 
     @Override
@@ -101,9 +113,9 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                         public void run() {
                             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
                                     (Context.LAYOUT_INFLATER_SERVICE);
-                            View v = inflater.inflate(R.layout.view_predict_walkthrough,null);
+                            View v = inflater.inflate(R.layout.view_predict_walkthrough, null);
                             Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
-                            ((ViewGroup)getView()).addView(v);
+                            ((ViewGroup) getView()).addView(v);
                             v.startAnimation(fadeInAnimation);
                             listView.setTag(v);
                             v.setOnTouchListener(new View.OnTouchListener() {
@@ -119,8 +131,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                     }, 750);
                 }
             }, 250);
-
-
         }
     }
 

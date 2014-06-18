@@ -7,7 +7,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 
 import com.facebook.Session;
@@ -85,8 +83,8 @@ public class MainActivity extends BaseActivity
     private ArrayList<KnodaScreen> screens;
     private boolean actionBarEnabled = true;
     private String title;
-    private int rootFragmentId;
     private Group currentGroup;
+    public Fragment currentFragment;
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
