@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -105,6 +106,15 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                             ((ViewGroup)getView()).addView(v);
                             v.startAnimation(fadeInAnimation);
                             listView.setTag(v);
+                            v.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+                                    v.startAnimation(fadeOutAnimation);
+                                    v.setVisibility(View.INVISIBLE);
+                                    return true;
+                                }
+                            });
                         }
                     }, 750);
                 }
