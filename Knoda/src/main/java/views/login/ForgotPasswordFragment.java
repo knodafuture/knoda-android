@@ -1,10 +1,14 @@
 package views.login;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.knoda.knoda.R;
 
@@ -17,17 +21,30 @@ import networking.NetworkCallback;
 import views.core.BaseDialogFragment;
 
 public class ForgotPasswordFragment extends BaseDialogFragment {
-
+    @InjectView(R.id.topview)
+    RelativeLayout topview;
 
     @InjectView(R.id.forgot_username_edittext)
     EditText editText;
 
-    @OnClick(R.id.forgot_close) void onClose() {dismiss();}
+    @OnClick(R.id.forgot_close) void onClose() {dismissFade();}
     public static ForgotPasswordFragment newInstance() {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
         return fragment;
     }
     public ForgotPasswordFragment() {}
+
+    public void dismissFade(){
+        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+        topview.startAnimation(fadeOutAnimation);
+        Handler h=new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismiss();
+            }
+        },300);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +84,7 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
                     errorReporter.showError("We were unable to reset your password. Are you sure your email address has been registered on Knoda?");
                 } else {
                     errorReporter.showError("A link to reset your password was sent to your email");
-                    dismiss();
+                    dismissFade();
                 }
             }
         });

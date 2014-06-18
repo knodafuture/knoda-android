@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="views.login.SignUpFragment"
-    android:background="@color/knodaLightGreenTransparent">
+    android:background="@color/knodaLightGreenTransparent"
+    android:id="@+id/topview">
 
     <Button
         android:id="@+id/signup_close"

@@ -2,11 +2,15 @@ package views.login;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
@@ -23,7 +27,8 @@ import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
 public class LoginFragment extends BaseDialogFragment {
-
+    @InjectView(R.id.topview)
+    RelativeLayout topview;
     @InjectView(R.id.login_username_edittext)
     EditText usernameField;
     @InjectView(R.id.login_password_edittext)
@@ -31,7 +36,7 @@ public class LoginFragment extends BaseDialogFragment {
 
 
     @OnClick(R.id.login_forgot_button) void onForgotPassword() {
-        dismiss();
+        dismissFade();
         ForgotPasswordFragment fragment = ForgotPasswordFragment.newInstance();
         fragment.show(getActivity().getFragmentManager(), "forgot");
     }
@@ -41,11 +46,11 @@ public class LoginFragment extends BaseDialogFragment {
     }
 
     @OnClick(R.id.login_close) void onLoginClose() {
-        dismiss();
+        dismissFade();
     }
 
     @OnClick(R.id.login_signup_button) void onSignup() {
-        dismiss();
+        dismissFade();
 
         SignUpFragment f = SignUpFragment.newInstance();
 
@@ -58,6 +63,18 @@ public class LoginFragment extends BaseDialogFragment {
         return fragment;
     }
     public LoginFragment() {}
+
+    public void dismissFade(){
+        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+        topview.startAnimation(fadeOutAnimation);
+        Handler h=new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismiss();
+            }
+        },300);
+    }
 
 
     @Override

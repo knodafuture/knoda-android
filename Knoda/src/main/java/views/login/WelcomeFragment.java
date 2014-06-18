@@ -1,14 +1,19 @@
 package views.login;
 
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -36,6 +41,9 @@ import views.core.MainActivity;
  */
 public class WelcomeFragment extends BaseDialogFragment {
 
+    @InjectView(R.id.topview)
+    RelativeLayout topview;
+
     @OnClick(R.id.signup_terms_button)
     void onTerms() {
         openUrl(NetworkingManager.termsOfServiceUrl);
@@ -58,31 +66,32 @@ public class WelcomeFragment extends BaseDialogFragment {
 
     @OnClick(R.id.wall_signup_button)
     void onSignUp() {
-        dismiss();
-
         SignUpFragment f = SignUpFragment.newInstance();
         f.show(getFragmentManager(), "signup");
+        dismissFade();
     }
 
     @OnClick(R.id.wall_close)
     void onClose() {
-        dismiss();
+        dismissFade();
     }
 
     @OnClick(R.id.wall_later)
     void onLater() {
-        dismiss();
+        dismissFade();
     }
 
     @OnClick(R.id.wall_login)
     void onLogin() {
-        dismiss();
         LoginFragment f = LoginFragment.newInstance();
         f.show(getActivity().getFragmentManager(), "login");
+        dismissFade();
     }
 
     String wtext = "";
     String wprompt = "";
+
+
 
     public static boolean requestingTwitterLogin;
 
@@ -93,6 +102,18 @@ public class WelcomeFragment extends BaseDialogFragment {
 
     public WelcomeFragment() {
         // Required empty public constructor
+    }
+
+    public void dismissFade(){
+        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+        topview.startAnimation(fadeOutAnimation);
+        Handler h=new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismiss();
+            }
+        },300);
     }
 
 

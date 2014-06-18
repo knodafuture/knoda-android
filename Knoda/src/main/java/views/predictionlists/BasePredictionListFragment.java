@@ -11,7 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -98,7 +97,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
             final RelativeLayout walkthrough = ((RelativeLayout) listView.getTag());
             listView.setTag(null);
             walkthrough.setVisibility(View.INVISIBLE);
-            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
             walkthrough.startAnimation(fadeOutAnimation);
 
             final Handler animHandler = new Handler();
@@ -114,14 +113,14 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
                                     (Context.LAYOUT_INFLATER_SERVICE);
                             View v = inflater.inflate(R.layout.view_predict_walkthrough, null);
-                            Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
+                            Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeingrow);
                             ((ViewGroup) getView()).addView(v);
                             v.startAnimation(fadeInAnimation);
                             listView.setTag(v);
                             v.setOnTouchListener(new View.OnTouchListener() {
                                 @Override
                                 public boolean onTouch(View v, MotionEvent event) {
-                                    Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+                                    Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
                                     v.startAnimation(fadeOutAnimation);
                                     v.setVisibility(View.INVISIBLE);
                                     return true;
