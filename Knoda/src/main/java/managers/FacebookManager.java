@@ -1,6 +1,7 @@
 package managers;
 
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -23,6 +24,7 @@ import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import unsorted.Logger;
+import views.addprediction.AddPredictionFragment;
 
 /**
  * Created by nick on 5/11/14.
@@ -60,7 +62,7 @@ public class FacebookManager {
         });
     }
 
-    public void reauthorizeWithPublishPermissions(final Activity activity, final NetworkCallback<SocialAccount> callback) {
+    public void reauthorizeWithPublishPermissions(final Activity activity,  final NetworkCallback<SocialAccount> callback) {
 
         if (Session.getActiveSession() == null) {
             openSession(activity, new NetworkCallback<SocialAccount>() {
@@ -96,7 +98,13 @@ public class FacebookManager {
 
         Session.NewPermissionsRequest req = new Session.NewPermissionsRequest(activity, Arrays.asList("publish_actions"));
         req.setDefaultAudience(SessionDefaultAudience.FRIENDS);
-        Session.getActiveSession().requestNewPublishPermissions(req);
+        try {
+            Session.getActiveSession().requestNewPublishPermissions(req);
+        } catch (Exception e) {
+            callback.completionHandler(null,null);
+            Toast.makeText(activity, "Facebook connection failed", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private Session.StatusCallback getCallback() {
