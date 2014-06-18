@@ -11,6 +11,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/prediction_cell_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -213,7 +214,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/prediction_cell_group_container"
-            android:paddingBottom="0dp" />
+            android:layout_marginTop="-18dp" />
     </LinearLayout>
 
 </merge>

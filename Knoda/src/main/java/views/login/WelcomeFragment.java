@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
@@ -21,6 +22,7 @@ import models.ServerError;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.ScreenCaptureEvent;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
@@ -70,10 +72,17 @@ public class WelcomeFragment extends BaseDialogFragment {
         // Required empty public constructor
     }
 
+    @Subscribe
+    public void screenCapture(final ScreenCaptureEvent event) {
+        updateBackground();
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FlurryAgent.logEvent("LANDING");
+        bus.register(this);
     }
 
     @Override

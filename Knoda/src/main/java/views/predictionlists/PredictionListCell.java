@@ -3,7 +3,6 @@ package views.predictionlists;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +38,7 @@ public class PredictionListCell extends RelativeLayout {
     public TextView groupTextView;
 
     public RelativeLayout walkthroughView;
+    public RelativeLayout container;
 
     private boolean agreed;
     private boolean disagreed;
@@ -70,6 +70,7 @@ public class PredictionListCell extends RelativeLayout {
         groupView = (RelativeLayout)findViewById(R.id.prediction_cell_group_container);
         groupTextView = (TextView)findViewById(R.id.prediction_cell_group_textview);
         walkthroughView = (RelativeLayout)findViewById(R.id.prediction_cell_swipe_walkthrough);
+        container = (RelativeLayout)findViewById(R.id.prediction_cell_container);
     }
 
     public void setAgree(boolean agree) {

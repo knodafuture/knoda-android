@@ -15,7 +15,6 @@ import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import views.core.MainActivity;
 
 public class HomeFragment extends BasePredictionListFragment {
 

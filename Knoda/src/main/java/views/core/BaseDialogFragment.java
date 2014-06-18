@@ -3,11 +3,18 @@ package views.core;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.squareup.otto.Bus;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -51,6 +58,7 @@ public class BaseDialogFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
+        //updateBackground();
     }
 
 
@@ -94,5 +102,36 @@ public class BaseDialogFragment extends DialogFragment {
         if (activity == null)
             return;
         ((MainActivity) getActivity()).setActionBarTitle(title);
+    }
+
+
+
+    public void updateBackground() {
+
+        if (getView() == null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateBackground();
+                }
+            }, 10);
+        } else {
+            getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    File file = new File(
+                            Environment.getExternalStorageDirectory()
+                                    + "/blur_background.png"
+                    );
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
+
+                    BitmapDrawable d = new BitmapDrawable(getResources(), bitmap);
+
+                    getView().setBackgroundDrawable(d);
+                }
+            });
+        }
     }
 }

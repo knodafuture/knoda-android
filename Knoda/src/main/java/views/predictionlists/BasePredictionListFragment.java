@@ -102,7 +102,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                                     (Context.LAYOUT_INFLATER_SERVICE);
                             View v = inflater.inflate(R.layout.view_predict_walkthrough,null);
                             Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
-                            ((ViewGroup) ((MainActivity) getActivity()).findViewById(R.id.drawer_layout)).addView(v);
+                            ((ViewGroup)getView()).addView(v);
                             v.startAnimation(fadeInAnimation);
                             listView.setTag(v);
                         }
