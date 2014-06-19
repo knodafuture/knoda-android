@@ -123,6 +123,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                                     Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
                                     v.startAnimation(fadeOutAnimation);
                                     v.setVisibility(View.INVISIBLE);
+                                    listView.setTag(null);
                                     return true;
                                 }
                             });
