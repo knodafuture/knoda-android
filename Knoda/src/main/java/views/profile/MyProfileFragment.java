@@ -23,15 +23,19 @@ import android.view.Menu;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import models.KnodaScreen;
 import models.PasswordChangeRequest;
 import models.ServerError;
+import models.SettingsCategory;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import networking.NetworkListCallback;
 import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
@@ -192,6 +196,15 @@ public class MyProfileFragment extends BaseFragment {
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         setHasOptionsMenu(true);
+
+        ((MainActivity)getActivity()).networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
+            @Override
+            public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
+                for(SettingsCategory s:object){
+                    ((MainActivity)getActivity()).settings.put(s.name,s.settings);
+                }
+            }
+        });
     }
 
     @Override

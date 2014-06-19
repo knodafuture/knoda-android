@@ -36,7 +36,7 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     @OnClick(R.id.confirm_start_predicting_button) void onClick() {
         try{
             sharedPrefManager.setFirstLaunch(true);
-            BasePredictionListFragment fragment = (BasePredictionListFragment) ((MainActivity) getActivity()).currentFragment;
+            BasePredictionListFragment fragment = (BasePredictionListFragment) ((MainActivity) getActivity()).currentFragmentObject;
             fragment.refreshList();
         }catch (Exception e){
             System.out.println(e.getMessage());

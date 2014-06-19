@@ -50,6 +50,7 @@ import models.Group;
 import models.KnodaScreen;
 import models.Prediction;
 import models.ServerError;
+import models.Setting;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
 import pubsub.ScreenCaptureEvent;
@@ -88,7 +89,9 @@ public class MainActivity extends BaseActivity
     private Menu actionbarMenu;
 
     public String currentFragment="";
-    public Fragment currentFragment;
+    public Fragment currentFragmentObject;
+
+    public HashMap<String,ArrayList<Setting>> settings;
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
@@ -114,6 +117,7 @@ public class MainActivity extends BaseActivity
         appOutdatedManager.setBus(bus);
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
+        settings=new HashMap<String,ArrayList<Setting>>();
 
         initializeFragmentBackStack();
         setUpNavigation();

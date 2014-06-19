@@ -30,24 +30,24 @@ import views.core.MainActivity;
 public class SettingsFragment extends PreferenceFragment {
 
     private PreferenceScreen preferenceScreen;
-    HashMap<String,ArrayList<Setting>> settings;
+    HashMap<String, ArrayList<Setting>> settings;
 
     Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             int key = Integer.parseInt(preference.getKey());
             Setting s = new Setting();
-            s.id=key;
-            s.active=(Boolean)newValue;
-            s.displayName=preference.getTitle().toString();
-            s.description=preference.getSummary().toString();
-            ((MainActivity)getActivity()).networkingManager.changeSetting(s, new NetworkCallback<Setting>() {
+            s.id = key;
+            s.active = (Boolean) newValue;
+            s.displayName = preference.getTitle().toString();
+            s.description = preference.getSummary().toString();
+            ((MainActivity) getActivity()).networkingManager.changeSetting(s, new NetworkCallback<Setting>() {
                 @Override
                 public void completionHandler(Setting object, ServerError error) {
-                    if(error==null){
+                    if (error == null) {
                         Toast.makeText(getActivity(), "Setting '" + object.displayName
                                 + "' successfully changed", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getActivity(),"Setting failed to change",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Setting failed to change", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -69,28 +69,20 @@ public class SettingsFragment extends PreferenceFragment {
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-        settings=new HashMap<String,ArrayList<Setting>>();
+        settings = ((MainActivity) getActivity()).settings;
         preferenceScreen = this.getPreferenceScreen();
 
-        ((MainActivity)getActivity()).networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
-            @Override
-            public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
-                for(SettingsCategory s:object){
-                    settings.put(s.name,s.settings);
-                }
-                buildPage();
-            }
-        });
+        buildPage();
 
     }
 
-    public void buildPage(){
-        Context c=getActivity();
-        for(String key: settings.keySet()){
-            PreferenceCategory category= new PreferenceCategory(c);
+    public void buildPage() {
+        Context c = getActivity();
+        for (String key : settings.keySet()) {
+            PreferenceCategory category = new PreferenceCategory(c);
             preferenceScreen.addPreference(category);
             category.setTitle(key);
-            for(Setting s: settings.get(key)){
+            for (Setting s : settings.get(key)) {
                 CheckBoxPreference check = new CheckBoxPreference(c);
                 check.setOnPreferenceChangeListener(changeListener);
                 check.setTitle(s.displayName);
