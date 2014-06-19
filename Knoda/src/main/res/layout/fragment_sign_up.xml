@@ -3,7 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="views.login.SignUpFragment"
-    android:background="@color/knodaLightGreenTransparent">
+    android:id="@+id/topview">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/knodaLightGreenTransparent"/>
 
     <Button
         android:id="@+id/signup_close"
@@ -41,6 +46,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_below="@id/signup_copy"
         android:orientation="vertical">
 
@@ -90,7 +97,8 @@
             android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:textColorHint="@color/knodaDarkGreen"
-            android:textColor="@color/knodaDarkGreen"/>
+            android:textColor="@color/knodaDarkGreen"
+            />
 
         <Button style="@style/button_main"
             android:layout_width="match_parent"

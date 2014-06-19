@@ -6,6 +6,8 @@
     android:layout_height="fill_parent"
     android:id="@+id/profile">
 
+
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -156,6 +158,56 @@
             android:text="@string/sign_out"
             />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/profile_signup_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/knodaLightGreenTransparent"
+        android:visibility="invisible">
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:id="@+id/welcome_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_logo"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:id="@+id/profile_welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/welcome_logo"
+                android:text="Woah there cowboy!"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/profile_prompt"
+                android:lines="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_signup_message"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:layout_below="@id/profile_welcome"
+                android:layout_marginTop="5dp"
+                android:gravity="center"/>
+
+            <Button style="@style/button_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_prompt"
+                android:id="@+id/profile_signup_button"
+                android:text="Sign Up"
+                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"/>
+            </RelativeLayout>
 </RelativeLayout>
 
 

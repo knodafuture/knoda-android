@@ -1,9 +1,6 @@
 package adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +63,8 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
             View v = inflater.inflate(R.layout.view_swipe_walkthrough,null);
             parent.setTag(v);
             listItem.walkthroughView.addView(v);
+        } else {
+            listItem.walkthroughView.removeAllViews();
         }
 
         return listItem;

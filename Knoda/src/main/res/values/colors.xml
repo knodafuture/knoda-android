@@ -2,7 +2,7 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="knodaLightGreen">#77BC1F</color>
-    <color name="knodaLightGreenTransparent">#D977BC1F</color>
+    <color name="knodaLightGreenTransparent">#BF77BC1F</color>
     <color name="knodaDarkGreen">#235C37</color>
     <color name="knodaLighterGreen">#99cd57</color>
     <color name="black">#000000</color>
@@ -17,4 +17,5 @@
     <color name="facebookBorder">#1F396F</color>
     <color name="twitterColor">#2BA9E1</color>
     <color name="twitterBorder">#2892C0</color>
+    <color name="knodaborder">#134524</color>
 </resources>

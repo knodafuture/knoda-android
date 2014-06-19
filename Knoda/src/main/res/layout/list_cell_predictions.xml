@@ -11,6 +11,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/prediction_cell_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -78,18 +79,25 @@
                         android:id="@+id/prediction_cell_avatar_imageview"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@color/black" />
+                        android:background="@color/black"
+                        android:onClick="profileClick" />
 
-                    <TextView
-                        android:id="@+id/prediction_cell_username_textview"
+                    <LinearLayout
+                        android:id="@+id/prediction_cell_username_textview_container"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="10dp"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
                         android:layout_toRightOf="@id/prediction_cell_avatar_imageview"
-                        android:text="test layout text" />
+                        android:onClick="profileClick">
+
+                        <TextView
+                            android:id="@+id/prediction_cell_username_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:text="test layout text" />
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/prediction_cell_verified_checkmark"
@@ -97,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/prediction_cell_username_textview"
+                        android:layout_toRightOf="@id/prediction_cell_username_textview_container"
                         android:src="@drawable/verified_badge" />
 
 
@@ -213,7 +221,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/prediction_cell_group_container"
-            android:paddingBottom="0dp" />
+            android:layout_marginTop="-18dp" />
     </LinearLayout>
 
 </merge>

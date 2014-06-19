@@ -27,7 +27,18 @@ public class SplashActivity extends BaseActivity {
         userManager.loginSavedUser(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User object, ServerError error) {
-                launchMainActivity();
+
+                if (error == null) {
+                    launchMainActivity();
+                    return;
+                }
+
+                userManager.loginAsGuest(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        launchMainActivity();
+                    }
+                });
             }
         });
     }

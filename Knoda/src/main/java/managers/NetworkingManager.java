@@ -100,7 +100,7 @@ public class NetworkingManager {
     }
 
     public void socialSignIn(final SocialAccount payload, final NetworkCallback<LoginResponse> callback) {
-        String url = buildUrl("session.json", false, null);
+        String url = buildUrl("session.json", true, null);
         executeRequestWithTimeout(Request.Method.POST, url, payload, LoginResponse.class, callback, 30);
     }
 
@@ -121,7 +121,7 @@ public class NetworkingManager {
 
     public void signup(final SignUpRequest payload, final NetworkCallback<LoginResponse> callback) {
 
-        String url = buildUrl("registration.json", false, null);
+        String url = buildUrl("registration.json", true, null);
 
         executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
 
@@ -504,6 +504,12 @@ public class NetworkingManager {
         String url = buildUrl("settings.json", true, null);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getSettingsTypeToken(), callback);
+    }
+
+    public void loginAsGuest(final NetworkCallback<LoginResponse> callback) {
+        String url = buildUrl("users.json", false, null);
+
+        executeRequest(Request.Method.POST, url, null, LoginResponse.class, callback);
     }
 
     private Map<String, String> getHeaders() {
