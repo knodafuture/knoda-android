@@ -182,15 +182,15 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onNavigationDrawerItemSelected(KnodaScreen screen) {
-
-
-
-        Fragment fragment;
-
-        fragment = getFragment(screen);
-
+        Fragment fragment = getFragment(screen);
         if (!checkFragment(fragment))
             return;
+        if (screen.displayName.equals("Profile")){
+            if (userManager.getUser().guestMode) {
+                showProfileLogin();
+                return;
+            }
+        }
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

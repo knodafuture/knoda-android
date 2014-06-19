@@ -204,10 +204,10 @@ public class MyProfileFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        if (userManager.getUser().guestMode) {
-            //promptView.setVisibility(View.VISIBLE);
-            ((MainActivity)getActivity()).showProfileLogin();
-        }
+//        if (userManager.getUser().guestMode) {
+//            //promptView.setVisibility(View.VISIBLE);
+//            ((MainActivity)getActivity()).showProfileLogin();
+//        }
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
 
         if (requestingTwitterInfo) {
