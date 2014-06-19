@@ -54,7 +54,7 @@ public class HomeFragment extends BasePredictionListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        sharedPrefManager.setFirstLaunch(true);
+        //sharedPrefManager.setFirstLaunch(true);
         return view;
     }
 
