@@ -12,11 +12,18 @@ import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import pubsub.UserChangedEvent;
 
 public class HomeFragment extends BasePredictionListFragment {
+
+    @Subscribe
+    public void userChanged(final UserChangedEvent event) {
+        adapter.loadPage(0);
+    }
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -30,6 +37,7 @@ public class HomeFragment extends BasePredictionListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        bus.register(this);
     }
 
     @Override

@@ -53,6 +53,7 @@ import models.ServerError;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
 import pubsub.ScreenCaptureEvent;
+import pubsub.UserChangedEvent;
 import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
@@ -509,6 +510,7 @@ public class MainActivity extends BaseActivity
 
     public void doLogin() {
         navigationDrawerFragment.refreshUser();
+        bus.post(new UserChangedEvent());
     }
 
     private void captureScreen() {
