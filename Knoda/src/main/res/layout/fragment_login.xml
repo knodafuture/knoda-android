@@ -46,8 +46,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_below="@id/login_copy" >
 
     <EditText style="@style/edittext_main"
@@ -89,8 +89,8 @@
         android:id="@+id/login_button"
         android:text="Log In"
         android:textColor="@color/white"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"/>
 
@@ -100,7 +100,8 @@
         android:background="@android:color/transparent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_button"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
         android:text="@string/forgot_password"
         android:textSize="15dp"
         android:textColor="@color/white"/>
@@ -111,7 +112,8 @@
         android:background="@android:color/transparent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_button"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
         android:layout_alignParentRight="true"
         android:text="@string/sign_up_prompt"
         android:textSize="15dp"

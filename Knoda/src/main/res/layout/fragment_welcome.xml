@@ -41,7 +41,10 @@
 
     <LinearLayout
         android:background="@drawable/knoda_button_background"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:id="@+id/wall_signup_button"
         android:clickable="true"
         android:orientation="horizontal"
@@ -76,7 +79,10 @@
 
     <LinearLayout
         android:background="@drawable/facebook_button_background"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:id="@+id/welcome_login_facebook"
         android:clickable="true"
         android:orientation="horizontal"
@@ -110,7 +116,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:id="@+id/welcome_login_twitter"
         android:clickable="true"
         android:orientation="horizontal"
@@ -153,7 +162,7 @@
         android:background="@android:color/transparent"
         android:layout_below="@id/welcome_login_twitter"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="30dp"/>
 
     <Button
         android:id="@+id/wall_login"
@@ -165,7 +174,7 @@
         android:background="@android:color/transparent"
         android:layout_below="@id/welcome_login_twitter"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="30dp"/>
 
     <Button
         android:id="@+id/wall_close"

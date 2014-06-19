@@ -46,8 +46,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_below="@id/signup_copy"
         android:orientation="vertical">
 
@@ -121,7 +121,10 @@
         android:layout_margin="5dp"/>
     <LinearLayout
         android:background="@drawable/facebook_button_background"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:id="@+id/welcome_login_facebook"
         android:clickable="true"
         android:orientation="horizontal"
@@ -155,7 +158,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:id="@+id/welcome_login_twitter"
         android:clickable="true"
         android:orientation="horizontal"
