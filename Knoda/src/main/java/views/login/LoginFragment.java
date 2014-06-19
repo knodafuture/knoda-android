@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -23,6 +24,7 @@ import models.LoginRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.ScreenCaptureEvent;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
@@ -81,6 +83,7 @@ public class LoginFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        updateBackground();
         return view;
     }
 
@@ -109,7 +112,6 @@ public class LoginFragment extends BaseDialogFragment {
             }
         });
     }
-
 
     private void doLogin () {
         hideKeyboard();

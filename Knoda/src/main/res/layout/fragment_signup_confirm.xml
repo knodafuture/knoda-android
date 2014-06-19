@@ -3,8 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="views.login.SignupConfirmFragment"
-    android:background="@color/knodaLightGreenTransparent"
     android:id="@+id/topview">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/knodaLightGreenTransparent"/>
 
     <TextView
         android:id="@+id/confirm_username"

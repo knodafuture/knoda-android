@@ -72,7 +72,7 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup_confirm, container, false);
-
+        updateBackground();
         return view;
     }
 

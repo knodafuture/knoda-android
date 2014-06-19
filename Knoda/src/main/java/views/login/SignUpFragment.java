@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 import com.tapjoy.TapjoyConnect;
 
 import org.joda.time.DateTime;
@@ -34,6 +35,7 @@ import models.SignUpRequest;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.ScreenCaptureEvent;
 import views.avatar.UserAvatarChooserFragment;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
@@ -101,6 +103,7 @@ public class SignUpFragment extends BaseDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        updateBackground();
         return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
