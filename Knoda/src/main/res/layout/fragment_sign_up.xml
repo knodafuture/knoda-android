@@ -42,6 +42,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_below="@id/signup_copy"
         android:orientation="vertical">
 
@@ -91,7 +93,8 @@
             android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:textColorHint="@color/knodaDarkGreen"
-            android:textColor="@color/knodaDarkGreen"/>
+            android:textColor="@color/knodaDarkGreen"
+            />
 
         <Button style="@style/button_main"
             android:layout_width="match_parent"
