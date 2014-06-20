@@ -12,7 +12,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="login_hint">username or email</string>
-    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_password"><b>Forgot Password?</b></string>
     <string name="sign_up_prompt">New to Knoda? <b>Sign Up</b></string>
     <string name="login_promp">Knoda User? <b>Login</b></string>
     <string name="back_to_login">Back to <b>Login</b></string>
