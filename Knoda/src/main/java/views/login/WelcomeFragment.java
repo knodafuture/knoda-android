@@ -25,6 +25,7 @@ import models.ServerError;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.LoginFlowDoneEvent;
 import pubsub.ScreenCaptureEvent;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
@@ -259,5 +260,9 @@ public class WelcomeFragment extends BaseDialogFragment {
         SignupConfirmFragment f = SignupConfirmFragment.newInstance();
         if (shouldConfirm)
             f.show(getActivity().getFragmentManager(), "confirm");
+        else {
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
+        }
     }
 }

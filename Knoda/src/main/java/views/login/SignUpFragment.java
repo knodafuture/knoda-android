@@ -29,6 +29,7 @@ import models.SignUpRequest;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.LoginFlowDoneEvent;
 import views.avatar.UserAvatarChooserFragment;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
@@ -123,6 +124,10 @@ public class SignUpFragment extends BaseDialogFragment {
 
         if (shouldConfirm)
             f.show(getActivity().getFragmentManager(), "confirm");
+        else {
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
+        }
     }
 
     @Override

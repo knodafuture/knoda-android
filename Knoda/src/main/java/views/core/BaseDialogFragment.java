@@ -58,7 +58,6 @@ public class BaseDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         ((MainActivity) getActivity()).inject(this);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar);
-
     }
 
     @Override

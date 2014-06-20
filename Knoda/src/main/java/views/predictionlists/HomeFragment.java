@@ -91,7 +91,6 @@ public class HomeFragment extends BasePredictionListFragment {
         super.onPredictionAgreed(cell);
     }
 
-
     private void showPredictionWalkthrough() {
         sharedPrefManager.setHaveShownPredictionWalkthrough(true);
         final Handler animHandler = new Handler();
