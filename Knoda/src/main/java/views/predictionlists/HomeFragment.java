@@ -76,7 +76,7 @@ public class HomeFragment extends BasePredictionListFragment {
 
     @Override
     protected void onLoadFinished(){
-        if (adapter.currentPage == 0 && !sharedPrefManager.getFirstLaunch() && !sharedPrefManager.haveShownPredictionWalkthrough())
+        if (adapter.currentPage == 0 && !sharedPrefManager.getFirstLaunch() && !sharedPrefManager.haveShownPredictionWalkthrough() && !userManager.getUser().guestMode)
             showPredictionWalkthrough();
     }
 
@@ -90,7 +90,6 @@ public class HomeFragment extends BasePredictionListFragment {
         hideTour();
         super.onPredictionAgreed(cell);
     }
-
 
     private void showPredictionWalkthrough() {
         sharedPrefManager.setHaveShownPredictionWalkthrough(true);

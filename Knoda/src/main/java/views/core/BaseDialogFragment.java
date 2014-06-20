@@ -58,14 +58,12 @@ public class BaseDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         ((MainActivity) getActivity()).inject(this);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar);
-
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
-        //updateBackground();
     }
 
     @Override
