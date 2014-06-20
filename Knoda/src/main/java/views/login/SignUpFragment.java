@@ -94,19 +94,12 @@ public class SignUpFragment extends BaseDialogFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().getActionBar().show();
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        updateBackground();
         View inflate =inflater.inflate(R.layout.fragment_sign_up, container, false);
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        emailField=(EditText) inflate.findViewById(R.id.signup_email_edittext);
-        imm.hideSoftInputFromWindow(emailField.getWindowToken(), 0);
         return inflate;
     }
 
@@ -114,8 +107,6 @@ public class SignUpFragment extends BaseDialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupListeners();
-        emailField.requestFocus();
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         InputFilter[] filterArray = new InputFilter[2];
         filterArray[0] = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -129,6 +120,7 @@ public class SignUpFragment extends BaseDialogFragment {
         };
         filterArray[1] = new InputFilter.LengthFilter(15);
         usernameField.setFilters(filterArray);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
 
