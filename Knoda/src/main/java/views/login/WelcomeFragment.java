@@ -184,15 +184,16 @@ public class WelcomeFragment extends BaseDialogFragment {
                         if (error != null) {
                             errorReporter.showError(error);
                         } else {
-                            finish();
                             DateTime curTime = new DateTime();
                             DateTime newTime = curTime.minusMinutes(1);
                             int i = (int) (newTime.getMillis() / 1000);
                             int j = (int) (userManager.user.created_at.getMillis() / 1000);
                             if (i <= j) {
                                 FlurryAgent.logEvent("SIGNUP_FACEBOOK");
+                                finish();
                             } else {
                                 FlurryAgent.logEvent("LOGIN_FACEBOOK");
+                                dismiss();
                             }
                         }
                     }
@@ -233,7 +234,6 @@ public class WelcomeFragment extends BaseDialogFragment {
                             errorReporter.showError(error);
                             return;
                         }
-                        finish();
 
                         DateTime curTime = new DateTime();
                         DateTime newTime = curTime.minusMinutes(1);
@@ -241,8 +241,10 @@ public class WelcomeFragment extends BaseDialogFragment {
                         int j = (int) (userManager.user.created_at.getMillis() / 1000);
                         if (j >= i) {
                             FlurryAgent.logEvent("SIGNUP_TWITTER");
+                            finish();
                         } else {
                             FlurryAgent.logEvent("LOGIN_TWITTER");
+                            dismiss();
                         }
                     }
                 });
