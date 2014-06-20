@@ -31,6 +31,7 @@ public class SharedPrefManager {
     private static final String SAVED_GUEST_MODE_KEY = "GUEST_MODE_KEY";
     private static final String SAVED_PREDICTION_WALKTHROUGH_KEY = "SAVED_PREDICTION_WALKTHROUGH";
     private static final String SAVED_VOTING_WALKTHROUGH_KEY = "SAVED_VOTING_WALKTHROUGHT";
+    private static final String SAVED_AGREED_TO_TERMS_KEYS = "SAVED_AGREEED_TO_TERMS_KEY";
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -190,5 +191,12 @@ public class SharedPrefManager {
         sharedPreferences.edit().putBoolean(SAVED_VOTING_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
     }
 
+    public boolean agreedToTerms() {
+        return getSP().getBoolean(SAVED_AGREED_TO_TERMS_KEYS, false);
+    }
+
+    public void setAgreedToTerms(boolean agreedToTerms) {
+        getSP().edit().putBoolean(SAVED_AGREED_TO_TERMS_KEYS, agreedToTerms).commit();
+    }
 }
 
