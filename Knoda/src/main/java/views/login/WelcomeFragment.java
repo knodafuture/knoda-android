@@ -1,18 +1,14 @@
 package views.login;
 
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,10 +36,6 @@ import views.core.MainActivity;
  * create an instance of this fragment.
  */
 public class WelcomeFragment extends BaseDialogFragment {
-
-    @InjectView(R.id.topview)
-    RelativeLayout topview;
-
     @OnClick(R.id.signup_terms_button)
     void onTerms() {
         openUrl(NetworkingManager.termsOfServiceUrl);
@@ -102,18 +94,6 @@ public class WelcomeFragment extends BaseDialogFragment {
 
     public WelcomeFragment() {
         // Required empty public constructor
-    }
-
-    public void dismissFade(){
-        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
-        topview.startAnimation(fadeOutAnimation);
-        Handler h=new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismiss();
-            }
-        },300);
     }
 
 

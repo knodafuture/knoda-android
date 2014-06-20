@@ -2,19 +2,14 @@ package views.login;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
-import com.squareup.otto.Subscribe;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -24,13 +19,11 @@ import models.LoginRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
-import pubsub.ScreenCaptureEvent;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
 public class LoginFragment extends BaseDialogFragment {
-    @InjectView(R.id.topview)
-    RelativeLayout topview;
+
     @InjectView(R.id.login_username_edittext)
     EditText usernameField;
     @InjectView(R.id.login_password_edittext)
@@ -65,18 +58,6 @@ public class LoginFragment extends BaseDialogFragment {
         return fragment;
     }
     public LoginFragment() {}
-
-    public void dismissFade(){
-        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
-        topview.startAnimation(fadeOutAnimation);
-        Handler h=new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismiss();
-            }
-        },300);
-    }
 
 
     @Override

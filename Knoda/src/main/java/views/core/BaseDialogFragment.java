@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 
+import com.knoda.knoda.R;
 import com.squareup.otto.Bus;
 
 import java.io.File;
@@ -61,6 +64,17 @@ public class BaseDialogFragment extends DialogFragment {
         //updateBackground();
     }
 
+    public void dismissFade(){
+        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+        getView().startAnimation(fadeOutAnimation);
+        Handler h=new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismiss();
+            }
+        },300);
+    }
 
     public void hideKeyboard() {
         try {
@@ -104,7 +118,10 @@ public class BaseDialogFragment extends DialogFragment {
         ((MainActivity) getActivity()).setActionBarTitle(title);
     }
 
-
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
 
     public void updateBackground() {
 

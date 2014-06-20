@@ -26,6 +26,8 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sharedPrefManager.setShouldShowVotingWalkthrough(false);
+        sharedPrefManager.setFirstLaunch(true);
         setContentView(R.layout.activity_splash);
         ButterKnife.inject(this);
 
