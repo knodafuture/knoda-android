@@ -25,6 +25,14 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
         return fragment;
     }
+    @OnClick(R.id.submit_button) void onSubmitClick(){
+        submit();
+    }
+    @OnClick(R.id.wall_login) void onLoginClick(){
+        LoginFragment f = LoginFragment.newInstance();
+        f.show(getFragmentManager(), "login");
+        dismissFade();
+    }
     public ForgotPasswordFragment() {}
 
     @Override
@@ -45,6 +53,7 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
 
     public void submit() {
 
