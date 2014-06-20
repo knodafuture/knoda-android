@@ -253,21 +253,21 @@ public class MainActivity extends BaseActivity
         transaction.addToBackStack(null).replace(R.id.container, fragment).commitAllowingStateLoss();
         navigationDrawerFragment.setDrawerToggleEnabled(false);
     }
-    public void loadHomeScreenFragment(){
-        Fragment fragment = getFragment(screens.get(0));
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.container, fragment).commitAllowingStateLoss();
-    }
 
     public boolean checkFragment(Fragment fragment) {
         if (!userManager.getUser().guestMode)
             return true;
 
-        if (fragment instanceof AddGroupFragment || fragment instanceof CreateCommentFragment || fragment instanceof AddPredictionFragment) {
-            showLogin();
-            navigationDrawerFragment.resetDrawerUISelection();
+        if (fragment instanceof AddGroupFragment) {
+            showLogin("Hey now!", "You need to create an account to join and create groups.");
+            return false;
+        } else if (fragment instanceof AddPredictionFragment) {
+            showLogin("Oh Snap!", "You need to create an account to make predictions.");
+            return false;
+        } else if (fragment instanceof CreateCommentFragment) {
+            showLogin("Whoa!", "To comment on predictions, you need to create an account.");
+        } else if (fragment instanceof MyProfileFragment) {
+            showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
             return false;
         }
 
@@ -311,23 +311,14 @@ public class MainActivity extends BaseActivity
             }
         });
     }
-    public void showProfileLogin() {
-        captureScreen();
-        WelcomeFragment f = WelcomeFragment.newInstance();
-        Bundle b= new Bundle();
-        b.putCharSequence("welcometext","Whoa there cowboy");
-        b.putCharSequence("welcomeprompt","You're just a guest.\nSign up with Knoda to unlock your profile");
-        f.setArguments(b);
-        f.show(getFragmentManager().beginTransaction(), "welcome");
-    }
 
-    public void showLogin() {
+    public void showLogin(String titleMessage, String detailMessage) {
         captureScreen();
-        WelcomeFragment f = WelcomeFragment.newInstance();
+        WelcomeFragment f = WelcomeFragment.newInstance(titleMessage, detailMessage);
+
         f.show(getFragmentManager().beginTransaction(), "welcome");
-    }
-    public void captureScreenPublic(){
-        captureScreen();
+        navigationDrawerFragment.resetDrawerUISelection();
+
     }
 
     public void launch() {
@@ -374,8 +365,7 @@ public class MainActivity extends BaseActivity
             onAddPrediction();
 
         if (userManager.getUser().guestMode) {
-
-            showLogin();
+            showLogin(null, null);
         } else if (userManager.getUser().avatar == null) {
             UserAvatarChooserFragment f = new UserAvatarChooserFragment();
             f.show(getFragmentManager(), "avatar");
@@ -517,21 +507,21 @@ public class MainActivity extends BaseActivity
     private void captureScreen() {
         final View v = getWindow().getDecorView();
 
-        v.post(new Runnable() {
+        v.postDelayed(new Runnable() {
             @Override
             public void run() {
                 v.setDrawingCacheEnabled(true);
 
                 Bitmap bmap = v.getDrawingCache();
 
-                int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop(); /* skip status bar in screenshot */
+                int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
                 Bitmap b = Bitmap.createBitmap(bmap, 0, contentViewTop, bmap.getWidth(), bmap.getHeight() - contentViewTop, null, true);
 
                 v.setDrawingCacheEnabled(false);
 
                 saveImage(b);
             }
-        });
+        }, 500);
 
     }
     protected void saveImage(Bitmap b) {

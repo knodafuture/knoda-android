@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -17,6 +18,7 @@ import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
+import butterknife.InjectView;
 import butterknife.OnClick;
 import managers.NetworkingManager;
 import models.ServerError;
@@ -81,18 +83,23 @@ public class WelcomeFragment extends BaseDialogFragment {
     String wtext = "";
     String wprompt = "";
 
+    @InjectView(R.id.terms_container)
+    RelativeLayout termsContainer;
+
     public static boolean requestingTwitterLogin;
 
-    public static WelcomeFragment newInstance() {
+    public static WelcomeFragment newInstance(String titleMessage, String detailMessage) {
         WelcomeFragment fragment = new WelcomeFragment();
+        Bundle b= new Bundle();
+        b.putCharSequence("welcometext",titleMessage);
+        b.putCharSequence("welcomeprompt", detailMessage);
+        fragment.setArguments(b);
         return fragment;
     }
 
     public WelcomeFragment() {
         // Required empty public constructor
     }
-
-
     @Subscribe
     public void screenCapture(final ScreenCaptureEvent event) {
         updateBackground();
@@ -139,12 +146,18 @@ public class WelcomeFragment extends BaseDialogFragment {
             welcomeText.setText(wtext);
         if(!wprompt.equals(""))
             welcomePrompt.setText(wprompt);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (sharedPrefManager.agreedToTerms()) {
+            termsContainer.setVisibility(View.GONE);
+        } else {
+            sharedPrefManager.setAgreedToTerms(true);
+        }
     }
 
     public void openUrl(String url) {
