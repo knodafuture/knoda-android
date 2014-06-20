@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -52,10 +53,6 @@ public class SignUpFragment extends BaseDialogFragment {
 
     @InjectView(R.id.signup_username_edittext)
     EditText usernameField;
-
-    @OnClick(R.id.signup_terms_button) void onTerms() {openUrl(NetworkingManager.termsOfServiceUrl);}
-
-    @OnClick(R.id.signup_privacy_button) void onPP() {openUrl(NetworkingManager.privacyPolicyUrl);}
 
     @OnClick(R.id.welcome_login_facebook) void onFB() {doFacebookLogin();}
 
@@ -98,13 +95,19 @@ public class SignUpFragment extends BaseDialogFragment {
         setHasOptionsMenu(true);
         getActivity().getActionBar().show();
 
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         updateBackground();
-        return inflater.inflate(R.layout.fragment_sign_up, container, false);
+        View inflate =inflater.inflate(R.layout.fragment_sign_up, container, false);
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        emailField=(EditText) inflate.findViewById(R.id.signup_email_edittext);
+        imm.hideSoftInputFromWindow(emailField.getWindowToken(), 0);
+        return inflate;
     }
 
     @Override
