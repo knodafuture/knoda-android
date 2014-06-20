@@ -65,7 +65,6 @@ public class BaseDialogFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
-        //updateBackground();
     }
 
     @Override

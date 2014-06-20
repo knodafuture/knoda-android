@@ -190,10 +190,10 @@ public class WelcomeFragment extends BaseDialogFragment {
                             int j = (int) (userManager.user.created_at.getMillis() / 1000);
                             if (i <= j) {
                                 FlurryAgent.logEvent("SIGNUP_FACEBOOK");
-                                finish();
+                                finish(true);
                             } else {
                                 FlurryAgent.logEvent("LOGIN_FACEBOOK");
-                                dismiss();
+                                finish(false);
                             }
                         }
                     }
@@ -241,10 +241,10 @@ public class WelcomeFragment extends BaseDialogFragment {
                         int j = (int) (userManager.user.created_at.getMillis() / 1000);
                         if (j >= i) {
                             FlurryAgent.logEvent("SIGNUP_TWITTER");
-                            finish();
+                            finish(true);
                         } else {
                             FlurryAgent.logEvent("LOGIN_TWITTER");
-                            dismiss();
+                            finish(false);
                         }
                     }
                 });
@@ -253,10 +253,11 @@ public class WelcomeFragment extends BaseDialogFragment {
 
     }
 
-    public void finish() {
+    public void finish(boolean shouldConfirm) {
         dismiss();
         ((MainActivity) getActivity()).doLogin();
         SignupConfirmFragment f = SignupConfirmFragment.newInstance();
-        f.show(getActivity().getFragmentManager(), "confirm");
+        if (shouldConfirm)
+            f.show(getActivity().getFragmentManager(), "confirm");
     }
 }
