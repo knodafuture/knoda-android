@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_welcome"
-        android:text="Some rando milkshake copy goes here"
+        android:text="Don't just follow it. Predict it."
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:textSize="15dp"/>
