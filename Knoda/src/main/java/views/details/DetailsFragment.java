@@ -409,14 +409,12 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 networkingManager.updatePrediction(update, new NetworkCallback<Prediction>() {
                     @Override
                     public void completionHandler(Prediction object, ServerError error) {
-                        spinner.show();
-
+                        spinner.hide();
                         if (error != null)
                             errorReporter.showError(error);
                         else {
                             prediction = object;
                             headerview.setPrediction(prediction);
-                            spinner.hide();
                         }
                     }
                 });
