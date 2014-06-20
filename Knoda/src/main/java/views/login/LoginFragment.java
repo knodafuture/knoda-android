@@ -19,6 +19,7 @@ import models.LoginRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.LoginFlowDoneEvent;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
@@ -117,6 +118,8 @@ public class LoginFragment extends BaseDialogFragment {
                 }
                 FlurryAgent.logEvent("LOGIN_EMAIL");
                 ((MainActivity)getActivity()).doLogin();
+                sharedPrefManager.setShouldShowVotingWalkthrough(true);
+                bus.post(new LoginFlowDoneEvent());
                 dismiss();
             }
         });

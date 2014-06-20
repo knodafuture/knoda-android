@@ -12,7 +12,7 @@ import com.knoda.knoda.R;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import models.User;
-import pubsub.ReloadListsEvent;
+import pubsub.LoginFlowDoneEvent;
 import views.core.BaseDialogFragment;
 
 /**
@@ -29,7 +29,8 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     @OnClick(R.id.confirm_start_predicting_button) void onClick() {
         try{
             sharedPrefManager.setFirstLaunch(true);
-            bus.post(new ReloadListsEvent());
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

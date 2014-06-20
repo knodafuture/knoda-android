@@ -547,10 +547,10 @@ public class MainActivity extends BaseActivity
                 if (b == null)
                     return null;
 
-                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
-                b = blur.blur(15, b);
-                if (b == null)
-                    return null;
+//                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
+//                b = blur.blur(15, b);
+//                if (b == null)
+//                    return null;
 
                 File saved_image_file = new File(
                         Environment.getExternalStorageDirectory()
@@ -559,7 +559,7 @@ public class MainActivity extends BaseActivity
                     saved_image_file.delete();
                 try {
                     FileOutputStream out = new FileOutputStream(saved_image_file);
-                    b.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                    b.compress(Bitmap.CompressFormat.JPEG, 10, out);
                     out.flush();
                     out.close();
                     return saved_image_file;

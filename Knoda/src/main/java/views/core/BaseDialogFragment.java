@@ -28,7 +28,7 @@ import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.TwitterManager;
 import managers.UserManager;
-import pubsub.LoginFlowCancelledEvent;
+import pubsub.LoginFlowDoneEvent;
 import unsorted.ErrorReporter;
 import unsorted.Logger;
 
@@ -72,7 +72,7 @@ public class BaseDialogFragment extends DialogFragment {
     public void onCancel(DialogInterface dialogInterface) {
         super.onCancel(dialogInterface);
         sharedPrefManager.setShouldShowVotingWalkthrough(true);
-        bus.post(new LoginFlowCancelledEvent());
+        bus.post(new LoginFlowDoneEvent());
         Logger.log("CANCEL");
     }
 
@@ -152,6 +152,7 @@ public class BaseDialogFragment extends DialogFragment {
                                     + "/blur_background.png"
                     );
                     BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 8;
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
 
