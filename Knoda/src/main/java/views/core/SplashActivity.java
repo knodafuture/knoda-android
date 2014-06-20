@@ -24,9 +24,6 @@ public class SplashActivity extends BaseActivity {
 
         setContentView(R.layout.activity_splash);
         ButterKnife.inject(this);
-        sharedPrefManager.clearSession();
-        sharedPrefManager.setFirstLaunch(true);
-        sharedPrefManager.setHaveShownPredictionWalkthrough(false);
         userManager.loginSavedUser(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User object, ServerError error) {
