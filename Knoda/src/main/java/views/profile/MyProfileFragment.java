@@ -1,16 +1,26 @@
 package views.profile;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +29,11 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+
+import org.joda.time.DateTime;
+
+import java.io.File;
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,6 +48,8 @@ import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
 import views.core.MainActivity;
+import views.login.LoginFragment;
+import views.login.SignUpFragment;
 import views.login.WelcomeFragment;
 
 public class MyProfileFragment extends BaseFragment {
@@ -54,20 +71,14 @@ public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.profile_twitter_imageview)
     ImageView twitterImageView;
 
-    @InjectView(R.id.profile_signup_prompt)
-    RelativeLayout promptView;
-
     @OnClick(R.id.profile_facebook_button) void onFB() {handleFB();}
     @OnClick(R.id.profile_twitter_button) void onTwitter() {handleTwitter();}
 
+    boolean requestingTwitterLogin;
+
     private static final int PHOTO_RESULT_CODE = 123123129;
     private static boolean requestingTwitterInfo;
-
-    @OnClick(R.id.profile_signup_button) void onSignup() {
-        ((MainActivity)getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.HOME);
-        WelcomeFragment f = WelcomeFragment.newInstance();
-        f.show(getActivity().getFragmentManager(), "welcome");
-    }
+    ViewGroup viewGroup=null;
 
     @OnClick(R.id.user_profile_header_avatar) void onClickAvatar() {
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(false);
@@ -185,6 +196,19 @@ public class MyProfileFragment extends BaseFragment {
         return fragment;
     }
 
+    public void dismissFade(){
+        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+        viewGroup.startAnimation(fadeOutAnimation);
+        Handler h=new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().getFragmentManager().beginTransaction().remove(MyProfileFragment.this).commit();
+                ((MainActivity)getActivity()).loadHomeScreenFragment();
+            }
+        },300);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -196,7 +220,7 @@ public class MyProfileFragment extends BaseFragment {
                 ((MainActivity) getActivity()).captureScreenPublic();
             }
         },300);
-
+        viewGroup =(ViewGroup) view.findViewById(R.id.profile);
         ButterKnife.inject(this, view);
         return view;
     }
@@ -213,10 +237,39 @@ public class MyProfileFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-//        if (userManager.getUser().guestMode) {
-//            //promptView.setVisibility(View.VISIBLE);
-//            ((MainActivity)getActivity()).showProfileLogin();
-//        }
+        if (userManager.getUser().guestMode) {
+            //promptView.setVisibility(View.VISIBLE);
+            View inflate = LayoutInflater.from(getActivity()).inflate(R.layout.view_profile_prompt, viewGroup);
+            updateBackground();
+            inflate.findViewById(R.id.welcome_login_facebook).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doFacebookLogin();
+                }
+            });
+            inflate.findViewById(R.id.welcome_login_twitter).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doTwitterLogin();
+                }
+            });
+            inflate.findViewById(R.id.wall_login).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LoginFragment f = LoginFragment.newInstance();
+                    f.show(getActivity().getFragmentManager(), "login");
+                    dismissFade();
+                }
+            });
+            inflate.findViewById(R.id.wall_signup_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SignUpFragment f = SignUpFragment.newInstance();
+                    f.show(getFragmentManager(), "signup");
+                    dismissFade();
+                }
+            });
+        }
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
 
         if (requestingTwitterInfo) {
@@ -506,5 +559,127 @@ public class MyProfileFragment extends BaseFragment {
             }
         });
     }
+
+    public void doFacebookLogin() {
+        spinner.show();
+        facebookManager.openSession(getActivity(), new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    spinner.hide();
+                    errorReporter.showError(error);
+                    return;
+                }
+
+                userManager.socialSignIn(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                        } else {
+                            //finish();
+                            DateTime curTime = new DateTime();
+                            DateTime newTime = curTime.minusMinutes(1);
+                            int i = (int) (newTime.getMillis() / 1000);
+                            int j = (int) (userManager.user.created_at.getMillis() / 1000);
+                            if (i <= j) {
+                                FlurryAgent.logEvent("SIGNUP_FACEBOOK");
+                            } else {
+                                FlurryAgent.logEvent("LOGIN_FACEBOOK");
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void doTwitterLogin() {
+
+        if (twitterManager.hasAuthInfo()) {
+            finishTwitterLogin();
+            requestingTwitterLogin = false;
+            return;
+        }
+
+        requestingTwitterLogin = true;
+        spinner.show();
+        twitterManager.openSession(getActivity());
+    }
+
+    public void finishTwitterLogin() {
+        spinner.show();
+        twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    errorReporter.showError(error);
+                    spinner.hide();
+                    return;
+                }
+
+                userManager.socialSignIn(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+                        //finish();
+
+                        DateTime curTime = new DateTime();
+                        DateTime newTime = curTime.minusMinutes(1);
+                        int i = (int) (newTime.getMillis() / 1000);
+                        int j = (int) (userManager.user.created_at.getMillis() / 1000);
+                        if (j >= i) {
+                            FlurryAgent.logEvent("SIGNUP_TWITTER");
+                        } else {
+                            FlurryAgent.logEvent("LOGIN_TWITTER");
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+    public void updateBackground() {
+        final View rl = viewGroup.findViewById(R.id.topview);
+        if (rl == null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateBackground();
+                }
+            }, 10);
+        } else {
+            getView().post(new Runnable() {
+                @Override
+                public void run() {
+                    File file = new File(
+                            Environment.getExternalStorageDirectory()
+                                    + "/blur_background.png"
+                    );
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
+
+                    //Get actionbar size to take off image
+                    TypedValue tv = new TypedValue();
+                    getActivity().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+                    int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
+                    Display display = getActivity().getWindowManager().getDefaultDisplay();
+                    Point size = new Point();
+                    display.getSize(size);
+
+                    BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, actionBarHeight, bitmap.getWidth(), bitmap.getHeight() - actionBarHeight));
+
+                    rl.setBackgroundDrawable(d);
+                }
+            });
+        }
+    }
+
 
 }

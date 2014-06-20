@@ -185,12 +185,6 @@ public class MainActivity extends BaseActivity
         Fragment fragment = getFragment(screen);
         if (!checkFragment(fragment))
             return;
-        if (screen.displayName.equals("Profile")){
-            if (userManager.getUser().guestMode) {
-                showProfileLogin();
-                return;
-            }
-        }
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -259,6 +253,13 @@ public class MainActivity extends BaseActivity
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null).replace(R.id.container, fragment).commitAllowingStateLoss();
         navigationDrawerFragment.setDrawerToggleEnabled(false);
+    }
+    public void loadHomeScreenFragment(){
+        Fragment fragment = getFragment(screens.get(0));
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.container, fragment).commitAllowingStateLoss();
     }
 
     public boolean checkFragment(Fragment fragment) {
