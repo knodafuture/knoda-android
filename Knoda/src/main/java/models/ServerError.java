@@ -23,9 +23,11 @@ public class ServerError extends BaseModel {
     public ArrayList<FieldError> serverErrors = new ArrayList<FieldError>();
     public Throwable cause;
     public String errorString;
+    public VolleyError underlyingError;
 
     private ServerError(VolleyError error) {
         try {
+            this.underlyingError = error;
             this.statusCode = error.networkResponse.statusCode;
             this.headers = error.networkResponse.headers;
             this.cause = error.getCause();

@@ -81,6 +81,7 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        updateBackground();
         return inflater.inflate(R.layout.fragment_user_avatar, container, false);
     }
 
