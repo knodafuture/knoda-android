@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/signup_welcome"
-        android:text="Don't just follow it. Predict it."
+        android:text="Don't just follow it. Predict it!"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:textSize="15dp"/>
@@ -48,6 +48,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
+        android:layout_marginBottom="5dp"
         android:layout_below="@id/signup_copy"
         android:orientation="vertical">
 
@@ -111,6 +112,7 @@
             android:paddingTop="10dp"/>
     </LinearLayout>
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/signup_or"
         android:layout_below="@id/signup_container"
         android:layout_width="wrap_content"
@@ -136,8 +138,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_login_facebook"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_gravity="center"/>
 
         <View
