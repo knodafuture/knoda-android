@@ -55,9 +55,6 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
 
-        boolean first = sharedPrefManager.getFirstLaunch();
-        boolean second = sharedPrefManager.shouldShowVotingWalkthrough();
-
         if(sharedPrefManager.getFirstLaunch() && sharedPrefManager.shouldShowVotingWalkthrough() && position==0) {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
