@@ -55,14 +55,14 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
 
-        boolean firstLaunch = sharedPrefManager.getFirstLaunch();
-        if(firstLaunch && position==0) {
-            sharedPrefManager.setFirstLaunch(false);
+        if(sharedPrefManager.getFirstLaunch() && sharedPrefManager.shouldShowVotingWalkthrough() && position==0) {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.view_swipe_walkthrough,null);
-            parent.setTag(v);
-            listItem.walkthroughView.addView(v);
+            if (listItem.walkthroughView.getChildCount() == 0) {
+                parent.setTag(v);
+                listItem.walkthroughView.addView(v);
+            }
         } else {
             listItem.walkthroughView.removeAllViews();
         }

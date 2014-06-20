@@ -18,13 +18,20 @@ import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 
-import pubsub.UserChangedEvent;
+import pubsub.LoginFlowDoneEvent;
+import pubsub.ReloadListsEvent;
 
 public class HomeFragment extends BasePredictionListFragment {
 
     @Subscribe
-    public void userChanged(final UserChangedEvent event) {
+    public void refreshList(final ReloadListsEvent event) {
         adapter.loadPage(0);
+    }
+
+
+    @Subscribe
+    public void loginDone(final LoginFlowDoneEvent event) {
+        adapter.notifyDataSetChanged();
     }
 
     public static HomeFragment newInstance() {
@@ -56,7 +63,6 @@ public class HomeFragment extends BasePredictionListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        sharedPrefManager.setFirstLaunch(true);
         return view;
     }
 
@@ -87,6 +93,7 @@ public class HomeFragment extends BasePredictionListFragment {
 
 
     private void showPredictionWalkthrough() {
+        sharedPrefManager.setHaveShownPredictionWalkthrough(true);
         final Handler animHandler = new Handler();
         animHandler.postDelayed(new Runnable() {
             @Override
@@ -116,8 +123,9 @@ public class HomeFragment extends BasePredictionListFragment {
 
     private void hideTour() {
         if (listView.getTag() != null) {
+            sharedPrefManager.setFirstLaunch(false);
+            sharedPrefManager.setShouldShowVotingWalkthrough(false);
             final RelativeLayout walkthrough = ((RelativeLayout) listView.getTag());
-            listView.setTag(null);
             walkthrough.setVisibility(View.INVISIBLE);
             Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
             walkthrough.startAnimation(fadeOutAnimation);
@@ -129,7 +137,7 @@ public class HomeFragment extends BasePredictionListFragment {
                     ViewGroup.LayoutParams lp = walkthrough.getLayoutParams();
                     lp.height = 0;
                     walkthrough.setLayoutParams(lp);
-
+                    listView.setTag(null);
                     if (!userManager.getUser().guestMode)
                         showPredictionWalkthrough();
 
@@ -147,7 +155,6 @@ public class HomeFragment extends BasePredictionListFragment {
             walkthrough.setLayoutParams(lp);
             ((View)listView.getTag()).setVisibility(View.INVISIBLE);
             listView.setTag(null);
-            sharedPrefManager.setHaveShownPredictionWalkthrough(true);
         }
     }
 

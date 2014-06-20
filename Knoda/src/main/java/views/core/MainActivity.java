@@ -52,8 +52,8 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
+import pubsub.ReloadListsEvent;
 import pubsub.ScreenCaptureEvent;
-import pubsub.UserChangedEvent;
 import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
@@ -85,7 +85,6 @@ public class MainActivity extends BaseActivity
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
-    public Fragment currentFragment;
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
@@ -512,7 +511,7 @@ public class MainActivity extends BaseActivity
 
     public void doLogin() {
         navigationDrawerFragment.refreshUser();
-        bus.post(new UserChangedEvent());
+        bus.post(new ReloadListsEvent());
     }
 
     private void captureScreen() {
@@ -548,10 +547,10 @@ public class MainActivity extends BaseActivity
                 if (b == null)
                     return null;
 
-                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
-                b = blur.blur(15, b);
-                if (b == null)
-                    return null;
+//                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
+//                b = blur.blur(15, b);
+//                if (b == null)
+//                    return null;
 
                 File saved_image_file = new File(
                         Environment.getExternalStorageDirectory()
@@ -560,7 +559,7 @@ public class MainActivity extends BaseActivity
                     saved_image_file.delete();
                 try {
                     FileOutputStream out = new FileOutputStream(saved_image_file);
-                    b.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                    b.compress(Bitmap.CompressFormat.JPEG, 10, out);
                     out.flush();
                     out.close();
                     return saved_image_file;

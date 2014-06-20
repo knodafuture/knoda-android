@@ -31,7 +31,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity)getActivity()).currentFragment=this;
     }
 
     @Override

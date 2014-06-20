@@ -30,6 +30,7 @@ public class SharedPrefManager {
     private static final String SAVED_PREDICTION_IN_PROGESS_KEY = "PREDICTION_IN_PROGRESS";
     private static final String SAVED_GUEST_MODE_KEY = "GUEST_MODE_KEY";
     private static final String SAVED_PREDICTION_WALKTHROUGH_KEY = "SAVED_PREDICTION_WALKTHROUGH";
+    private static final String SAVED_VOTING_WALKTHROUGH_KEY = "SAVED_VOTING_WALKTHROUGHT";
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -177,6 +178,16 @@ public class SharedPrefManager {
     public void setHaveShownPredictionWalkthrough(boolean haveShownPredictionWalkthrough) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putBoolean(SAVED_PREDICTION_WALKTHROUGH_KEY, haveShownPredictionWalkthrough).commit();
+    }
+
+    public boolean shouldShowVotingWalkthrough() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getBoolean(SAVED_VOTING_WALKTHROUGH_KEY, false);
+    }
+
+    public void setShouldShowVotingWalkthrough(boolean shouldShowVotingWalkthrough) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putBoolean(SAVED_VOTING_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
     }
 
 }

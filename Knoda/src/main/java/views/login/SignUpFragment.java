@@ -4,22 +4,15 @@ package views.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
-import com.squareup.otto.Subscribe;
 import com.tapjoy.TapjoyConnect;
 
 import org.joda.time.DateTime;
@@ -30,21 +23,16 @@ import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;
 import helpers.TapjoyPPA;
-import managers.NetworkingManager;
 import models.ServerError;
 import models.SignUpRequest;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
-import pubsub.ScreenCaptureEvent;
 import views.avatar.UserAvatarChooserFragment;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
 public class SignUpFragment extends BaseDialogFragment {
-    @InjectView(R.id.topview)
-    RelativeLayout topview;
-
     @InjectView(R.id.signup_email_edittext)
     EditText emailField;
 
@@ -77,17 +65,6 @@ public class SignUpFragment extends BaseDialogFragment {
     public SignUpFragment() {
     }
 
-    public void dismissFade(){
-        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
-        topview.startAnimation(fadeOutAnimation);
-        Handler h=new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismiss();
-            }
-        },300);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +77,7 @@ public class SignUpFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View inflate =inflater.inflate(R.layout.fragment_sign_up, container, false);
+        updateBackground();
         return inflate;
     }
 

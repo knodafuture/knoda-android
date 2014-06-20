@@ -25,7 +25,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        sharedPrefManager.setShouldShowVotingWalkthrough(false);
         setContentView(R.layout.activity_splash);
         ButterKnife.inject(this);
 
@@ -72,6 +72,7 @@ public class SplashActivity extends BaseActivity {
             public void completionHandler(User object, ServerError error) {
 
                 if (error == null) {
+                    sharedPrefManager.setShouldShowVotingWalkthrough(true);
                     launchMainActivity();
                     return;
                 } else if (showNotConnectedToNetworkDialog(error.underlyingError))
