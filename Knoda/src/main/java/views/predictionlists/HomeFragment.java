@@ -63,7 +63,6 @@ public class HomeFragment extends BasePredictionListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        sharedPrefManager.setFirstLaunch(true);
         return view;
     }
 
@@ -127,7 +126,6 @@ public class HomeFragment extends BasePredictionListFragment {
             sharedPrefManager.setFirstLaunch(false);
             sharedPrefManager.setShouldShowVotingWalkthrough(false);
             final RelativeLayout walkthrough = ((RelativeLayout) listView.getTag());
-            //listView.setTag(null);
             walkthrough.setVisibility(View.INVISIBLE);
             Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
             walkthrough.startAnimation(fadeOutAnimation);
