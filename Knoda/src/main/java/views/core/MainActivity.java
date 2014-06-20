@@ -258,13 +258,16 @@ public class MainActivity extends BaseActivity
         if (!userManager.getUser().guestMode)
             return true;
 
-        if (fragment instanceof AddGroupFragment || fragment instanceof CreateCommentFragment || fragment instanceof AddPredictionFragment) {
-            showLogin(null, null);
-            navigationDrawerFragment.resetDrawerUISelection();
+        if (fragment instanceof AddGroupFragment) {
+            showLogin("Hey now!", "You need to create an account to join and create groups.");
             return false;
+        } else if (fragment instanceof AddPredictionFragment) {
+            showLogin("Oh Snap!", "You need to create an account to make predictions.");
+            return false;
+        } else if (fragment instanceof CreateCommentFragment) {
+            showLogin("Whoa!", "To comment on predictions, you need to create an account.");
         } else if (fragment instanceof MyProfileFragment) {
             showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
-            navigationDrawerFragment.resetDrawerUISelection();
             return false;
         }
 
@@ -314,6 +317,8 @@ public class MainActivity extends BaseActivity
         WelcomeFragment f = WelcomeFragment.newInstance(titleMessage, detailMessage);
 
         f.show(getFragmentManager().beginTransaction(), "welcome");
+        navigationDrawerFragment.resetDrawerUISelection();
+
     }
 
     public void launch() {
