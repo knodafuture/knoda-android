@@ -43,8 +43,8 @@
         android:background="@drawable/knoda_button_background"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/wall_signup_button"
         android:clickable="true"
         android:orientation="horizontal"
@@ -72,7 +72,7 @@
             android:text="Sign Up With Email"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textSize="20dp"/>
 
     </LinearLayout>
@@ -81,8 +81,8 @@
         android:background="@drawable/facebook_button_background"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/welcome_login_facebook"
         android:clickable="true"
         android:orientation="horizontal"
@@ -110,16 +110,16 @@
             android:text="Sign In with Facebook"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textSize="20dp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/welcome_login_twitter"
         android:clickable="true"
         android:orientation="horizontal"
@@ -148,7 +148,7 @@
             android:text="Sign In with Twitter"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textSize="20dp"/>
 
     </LinearLayout>
@@ -162,19 +162,18 @@
         android:background="@android:color/transparent"
         android:layout_below="@id/welcome_login_twitter"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="20dp"/>
 
     <Button
         android:id="@+id/wall_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_promp"
-        android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@android:color/transparent"
         android:layout_below="@id/welcome_login_twitter"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"/>
+        android:layout_marginRight="20dp"/>
 
     <Button
         android:id="@+id/wall_close"
@@ -217,7 +216,7 @@
                 android:text="@string/tos"
                 android:textColor="@color/knodaDarkGreen"
                 android:textStyle="bold"
-                android:paddingTop="10dp"
+                android:paddingTop="5dp"
                 android:paddingBottom="10dp"
                 android:clickable="true"/>
 
@@ -226,11 +225,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
-                android:text="&amp;"
+                android:text=" &amp; "
                 android:textColor="@color/knodaDarkGreen"/>
 
             <TextView style="@style/smallWhiteText"
-                android:paddingTop="10dp"
+                android:paddingTop="5dp"
                 android:paddingBottom="10dp"
                 android:id="@+id/signup_privacy_button"
                 android:layout_width="wrap_content"

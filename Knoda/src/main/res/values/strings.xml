@@ -15,6 +15,7 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_up_prompt">New to Knoda? <b>Sign Up</b></string>
     <string name="login_promp">Knoda User? <b>Login</b></string>
+    <string name="back_to_login">Back to <b>Login</b></string>
     <string name="facebook_app_id">455514421245892</string>
     <string name="signup_welcome_message">Sign up to get the most out of Knoda.\n Don\'t just follow it. Predict it!</string>
     <string name="profile_signup_message">You\'re just a guest.\n Sign up with Knoda to unlock your profile.</string>

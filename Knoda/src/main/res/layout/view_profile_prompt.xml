@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/welcome_logo"
-        android:text="Whoa there cowboy"
+        android:text="Whoa there cowboy!"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
@@ -42,8 +42,8 @@
         android:background="@drawable/knoda_button_background"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/wall_signup_button"
         android:clickable="true"
         android:orientation="horizontal"
@@ -71,7 +71,7 @@
             android:text="Sign Up With Email"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textSize="20dp"/>
 
     </LinearLayout>
@@ -80,8 +80,8 @@
         android:background="@drawable/facebook_button_background"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/welcome_login_facebook"
         android:clickable="true"
         android:orientation="horizontal"
@@ -109,16 +109,16 @@
             android:text="Sign In with Facebook"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textSize="20dp"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/welcome_login_twitter"
         android:clickable="true"
         android:orientation="horizontal"
@@ -147,7 +147,7 @@
             android:text="Sign In with Twitter"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textSize="20dp"/>
 
     </LinearLayout>
@@ -161,7 +161,8 @@
         android:textColor="@color/white"
         android:background="@android:color/transparent"
         android:layout_below="@id/welcome_login_twitter"
-       android:gravity="center"/>
+       android:gravity="right|center_vertical"
+        android:layout_marginRight="20dp"/>
 
 
 </RelativeLayout>
