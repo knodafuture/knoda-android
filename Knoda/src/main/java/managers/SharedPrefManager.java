@@ -188,7 +188,6 @@ public class SharedPrefManager {
     public void setShouldShowVotingWalkthrough(boolean shouldShowVotingWalkthrough) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putBoolean(SAVED_VOTING_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
-
     }
 
 }

@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -18,7 +17,6 @@ import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
-import butterknife.InjectView;
 import butterknife.OnClick;
 import managers.NetworkingManager;
 import models.ServerError;
@@ -65,12 +63,12 @@ public class WelcomeFragment extends BaseDialogFragment {
 
     @OnClick(R.id.wall_close)
     void onClose() {
-        dismissFade();
+        cancel();
     }
 
     @OnClick(R.id.wall_later)
     void onLater() {
-        dismissFade();
+        cancel();
     }
 
     @OnClick(R.id.wall_login)
@@ -82,8 +80,6 @@ public class WelcomeFragment extends BaseDialogFragment {
 
     String wtext = "";
     String wprompt = "";
-
-
 
     public static boolean requestingTwitterLogin;
 

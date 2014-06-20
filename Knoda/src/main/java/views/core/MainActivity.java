@@ -52,8 +52,8 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
+import pubsub.ReloadListsEvent;
 import pubsub.ScreenCaptureEvent;
-import pubsub.UserChangedEvent;
 import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
@@ -85,7 +85,6 @@ public class MainActivity extends BaseActivity
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
-    public Fragment currentFragment;
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
@@ -512,7 +511,7 @@ public class MainActivity extends BaseActivity
 
     public void doLogin() {
         navigationDrawerFragment.refreshUser();
-        bus.post(new UserChangedEvent());
+        bus.post(new ReloadListsEvent());
     }
 
     private void captureScreen() {

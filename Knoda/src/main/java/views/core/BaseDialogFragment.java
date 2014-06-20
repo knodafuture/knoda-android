@@ -3,6 +3,7 @@ package views.core;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -27,7 +28,9 @@ import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.TwitterManager;
 import managers.UserManager;
+import pubsub.LoginFlowCancelledEvent;
 import unsorted.ErrorReporter;
+import unsorted.Logger;
 
 /**
  * Created by nick on 6/9/14.
@@ -55,6 +58,7 @@ public class BaseDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         ((MainActivity) getActivity()).inject(this);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar);
+
     }
 
     @Override
@@ -62,6 +66,18 @@ public class BaseDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
         //updateBackground();
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialogInterface) {
+        super.onCancel(dialogInterface);
+        sharedPrefManager.setShouldShowVotingWalkthrough(true);
+        bus.post(new LoginFlowCancelledEvent());
+        Logger.log("CANCEL");
+    }
+
+    public void cancel() {
+        getDialog().cancel();
     }
 
     public void dismissFade(){
@@ -116,11 +132,6 @@ public class BaseDialogFragment extends DialogFragment {
         if (activity == null)
             return;
         ((MainActivity) getActivity()).setActionBarTitle(title);
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
     }
 
     public void updateBackground() {

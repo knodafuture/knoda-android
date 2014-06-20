@@ -18,13 +18,20 @@ import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 
-import pubsub.UserChangedEvent;
+import pubsub.LoginFlowCancelledEvent;
+import pubsub.ReloadListsEvent;
 
 public class HomeFragment extends BasePredictionListFragment {
 
     @Subscribe
-    public void userChanged(final UserChangedEvent event) {
+    public void refreshList(final ReloadListsEvent event) {
         adapter.loadPage(0);
+    }
+
+
+    @Subscribe
+    public void loginCancelled(final LoginFlowCancelledEvent event) {
+        adapter.notifyDataSetChanged();
     }
 
     public static HomeFragment newInstance() {
@@ -87,6 +94,7 @@ public class HomeFragment extends BasePredictionListFragment {
 
 
     private void showPredictionWalkthrough() {
+        sharedPrefManager.setHaveShownPredictionWalkthrough(true);
         final Handler animHandler = new Handler();
         animHandler.postDelayed(new Runnable() {
             @Override
@@ -116,6 +124,7 @@ public class HomeFragment extends BasePredictionListFragment {
 
     private void hideTour() {
         if (listView.getTag() != null) {
+            sharedPrefManager.setFirstLaunch(false);
             final RelativeLayout walkthrough = ((RelativeLayout) listView.getTag());
             listView.setTag(null);
             walkthrough.setVisibility(View.INVISIBLE);
@@ -147,7 +156,6 @@ public class HomeFragment extends BasePredictionListFragment {
             walkthrough.setLayoutParams(lp);
             ((View)listView.getTag()).setVisibility(View.INVISIBLE);
             listView.setTag(null);
-            sharedPrefManager.setHaveShownPredictionWalkthrough(true);
         }
     }
 
