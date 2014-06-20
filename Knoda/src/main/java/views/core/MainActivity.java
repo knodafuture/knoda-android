@@ -312,7 +312,6 @@ public class MainActivity extends BaseActivity
         });
     }
     public void showProfileLogin() {
-
         captureScreen();
         WelcomeFragment f = WelcomeFragment.newInstance();
         Bundle b= new Bundle();
@@ -323,12 +322,14 @@ public class MainActivity extends BaseActivity
     }
 
     public void showLogin() {
-
         captureScreen();
-
         WelcomeFragment f = WelcomeFragment.newInstance();
         f.show(getFragmentManager().beginTransaction(), "welcome");
     }
+    public void captureScreenPublic(){
+        captureScreen();
+    }
+
     public void launch() {
         registerGcm();
         navigationDrawerFragment.setDrawerToggleEnabled(true);
