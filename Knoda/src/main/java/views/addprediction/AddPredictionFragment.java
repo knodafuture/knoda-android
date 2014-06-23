@@ -492,7 +492,7 @@ public class AddPredictionFragment extends BaseFragment {
         final AlertDialog alert = new AlertDialog.Builder(getActivity())
                 .setPositiveButton("Yes", null)
                 .setNegativeButton("No", null)
-                .setMessage("You need to have a Face account in your profile in order to share instantly. Would you like to add one now?")
+                .setMessage("You need to have a Facebook account in your profile in order to share instantly. Would you like to add one now?")
                 .create();
         alert.show();
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
