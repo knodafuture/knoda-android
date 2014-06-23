@@ -1,5 +1,8 @@
 package views.core;
 
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+
 /**
  * Created by nick on 1/16/14.
  */
@@ -19,7 +22,8 @@ public class Spinner {
     }
 
     public void hide() {
-        spinnerFragment.dismiss();
+        if (spinnerFragment != null)
+            spinnerFragment.dismiss();
     }
 
     public boolean isVisible() {
