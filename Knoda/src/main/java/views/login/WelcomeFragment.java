@@ -189,7 +189,7 @@ public class WelcomeFragment extends BaseDialogFragment {
                             DateTime newTime = curTime.minusMinutes(1);
                             int i = (int) (newTime.getMillis() / 1000);
                             int j = (int) (userManager.user.created_at.getMillis() / 1000);
-                            if (i <= j) {
+                            if (j >= i) {
                                 FlurryAgent.logEvent("SIGNUP_FACEBOOK");
                                 finish(true);
                             } else {
