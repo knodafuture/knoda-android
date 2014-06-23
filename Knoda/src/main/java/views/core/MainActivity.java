@@ -49,6 +49,7 @@ import models.KnodaScreen;
 import models.Prediction;
 import models.ServerError;
 import models.User;
+import models.Setting;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
 import pubsub.ReloadListsEvent;
@@ -68,6 +69,7 @@ import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
+import views.settings.SettingsFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -84,6 +86,9 @@ public class MainActivity extends BaseActivity
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
+
+    public String currentFragment="";
+    public HashMap<String,ArrayList<Setting>> settings;
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
@@ -109,6 +114,7 @@ public class MainActivity extends BaseActivity
         appOutdatedManager.setBus(bus);
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
+        settings=new HashMap<String,ArrayList<Setting>>();
 
         initializeFragmentBackStack();
         setUpNavigation();
@@ -172,6 +178,10 @@ public class MainActivity extends BaseActivity
 
             case R.id.action_search: {
                 onSearch();
+                break;
+            }
+            case R.id.action_settings:{
+                onSettings();
                 break;
             }
         }
@@ -412,6 +422,11 @@ public class MainActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         ((KnodaApplication)getApplication()).setCurrentActivity(null);
+    }
+
+    private void onSettings(){
+        SettingsFragment fragment= new SettingsFragment();
+        pushFragment(fragment);
     }
 
     private void onAddPrediction() {

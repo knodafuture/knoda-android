@@ -44,7 +44,6 @@ public class User extends BaseModel {
     @SerializedName("social_accounts")
     public ArrayList<SocialAccount> socialAccounts;
 
-
     public SocialAccount getTwitterAccount() {
         for (SocialAccount account : socialAccounts) {
             if (account.providerName.equals("twitter"))

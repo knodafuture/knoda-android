@@ -1,6 +1,7 @@
 package views.core;
 
 import android.app.Activity;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import com.squareup.otto.Bus;
@@ -43,6 +44,9 @@ public class BaseActivity extends Activity {
 
     @Inject
     public TwitterManager twitterManager;
+
+    @Inject
+    public ConnectivityManager connectivityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
