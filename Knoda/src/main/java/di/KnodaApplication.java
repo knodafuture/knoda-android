@@ -19,7 +19,6 @@ public class KnodaApplication extends Application {
     private static boolean activityVisible;
     private Activity currentActivity = null;
 
-
     @Inject
     UserManager userManager;
 

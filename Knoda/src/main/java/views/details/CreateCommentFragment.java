@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
 import org.joda.time.DateTime;
@@ -127,9 +128,11 @@ public class CreateCommentFragment extends BaseFragment {
                 inProgress = false;
                 if (error != null)
                     errorReporter.showError(error);
-                else
+                else {
                     bus.post(new NewCommentEvent(object));
+                    FlurryAgent.logEvent("CREATE_COMMENT");
                     popFragment();
+                }
             }
         });
     }

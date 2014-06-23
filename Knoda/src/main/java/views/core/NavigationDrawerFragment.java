@@ -214,6 +214,10 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
+    public void resetDrawerUISelection() {
+        mDrawerListView.setItemChecked(0, true);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

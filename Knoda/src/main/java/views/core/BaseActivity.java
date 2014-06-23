@@ -2,9 +2,7 @@ package views.core;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
-import com.knoda.knoda.R;
 import com.squareup.otto.Bus;
 
 import java.util.Arrays;
@@ -12,13 +10,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.InjectView;
-import butterknife.Optional;
 import dagger.ObjectGraph;
 import di.ActivityModule;
 import di.KnodaApplication;
 import managers.NetworkingManager;
 import managers.SharedPrefManager;
+import managers.TwitterManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
 
@@ -38,15 +35,14 @@ public class BaseActivity extends Activity {
     @Inject
     public SharedPrefManager sharedPrefManager;
 
-    @Optional
-    @InjectView(R.id.progress_view)
-    public FrameLayout progressView;
-
     @Inject
     public Spinner spinner;
 
     @Inject
     public ErrorReporter errorReporter;
+
+    @Inject
+    public TwitterManager twitterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

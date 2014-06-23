@@ -3,27 +3,27 @@ package views.login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import networking.NetworkCallback;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import models.LoginRequest;
 import models.ServerError;
 import models.User;
-import views.core.BaseFragment;
+import networking.NetworkCallback;
+import pubsub.LoginFlowDoneEvent;
+import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseDialogFragment {
 
     @InjectView(R.id.login_username_edittext)
     EditText usernameField;
@@ -32,9 +32,27 @@ public class LoginFragment extends BaseFragment {
 
 
     @OnClick(R.id.login_forgot_button) void onForgotPassword() {
+        dismissFade();
         ForgotPasswordFragment fragment = ForgotPasswordFragment.newInstance();
-        pushFragment(fragment);
+        fragment.show(getActivity().getFragmentManager(), "forgot");
     }
+
+    @OnClick(R.id.login_button) void onLogin() {
+        doLogin();
+    }
+
+    @OnClick(R.id.login_close) void onLoginClose() {
+        dismissFade();
+    }
+
+    @OnClick(R.id.login_signup_button) void onSignup() {
+        dismissFade();
+
+        SignUpFragment f = SignUpFragment.newInstance();
+
+        f.show(getActivity().getFragmentManager(), "signup");
+    }
+
 
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -42,45 +60,21 @@ public class LoginFragment extends BaseFragment {
     }
     public LoginFragment() {}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        getActivity().getActionBar().show();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.login, menu);
-        menu.removeGroup(R.id.default_menu_group);
-        setTitle("");
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_signin) {
-            doLogin();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        updateBackground();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
         configureEditTextListeners();
-        usernameField.requestFocus();
-        showKeyboard(usernameField);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
     }
 
     @Override
@@ -99,9 +93,7 @@ public class LoginFragment extends BaseFragment {
                 doLogin();
             }
         });
-
     }
-
 
     private void doLogin () {
         hideKeyboard();
@@ -120,10 +112,15 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void completionHandler(User object, ServerError error) {
                 spinner.hide();
-                if (error != null)
+                if (error != null) {
                     errorReporter.showError("Invalid username or password");
-                else
-                    ((MainActivity)getActivity()).doLogin();
+                    return;
+                }
+                FlurryAgent.logEvent("LOGIN_EMAIL");
+                ((MainActivity)getActivity()).doLogin();
+                sharedPrefManager.setShouldShowVotingWalkthrough(true);
+                bus.post(new LoginFlowDoneEvent());
+                dismiss();
             }
         });
 
@@ -143,6 +140,5 @@ public class LoginFragment extends BaseFragment {
         }
 
         return true;
-
     }
 }

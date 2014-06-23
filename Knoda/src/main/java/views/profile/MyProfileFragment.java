@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -20,13 +21,16 @@ import com.knoda.knoda.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import models.KnodaScreen;
 import models.PasswordChangeRequest;
 import models.ServerError;
+import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import unsorted.Logger;
+import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
 import views.core.MainActivity;
-import views.avatar.UserAvatarChooserActivity;
 
 public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.profile_username_edittext)
@@ -38,7 +42,20 @@ public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.button_sign_out)
     Button signOutButton;
 
+    @InjectView(R.id.profile_facebook_account_name)
+    TextView facebookAccountNameTextView;
+    @InjectView(R.id.profile_facebook_imageview)
+    ImageView facebookImageView;
+    @InjectView(R.id.profile_twitter_account_name)
+    TextView twitterAccountNameTextView;
+    @InjectView(R.id.profile_twitter_imageview)
+    ImageView twitterImageView;
+
+    @OnClick(R.id.profile_facebook_button) void onFB() {handleFB();}
+    @OnClick(R.id.profile_twitter_button) void onTwitter() {handleTwitter();}
+
     private static final int PHOTO_RESULT_CODE = 123123129;
+    private static boolean requestingTwitterInfo;
 
     @OnClick(R.id.user_profile_header_avatar) void onClickAvatar() {
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(false);
@@ -63,6 +80,7 @@ public class MyProfileFragment extends BaseFragment {
                 userManager.signout(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
+                        alert.dismiss();
                         ((MainActivity)getActivity()).restart();
                     }
                 });
@@ -70,6 +88,7 @@ public class MyProfileFragment extends BaseFragment {
         });
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                signOutButton.setEnabled(true);
                 alert.dismiss();
             }
         });
@@ -104,8 +123,10 @@ public class MyProfileFragment extends BaseFragment {
         LayoutInflater li = getActivity().getLayoutInflater();
         final View changeEmailView = li.inflate(R.layout.dialog_change_email, null);
         EditText email = (EditText) changeEmailView.findViewById(R.id.email);
-        email.setText("");
-        email.append(userManager.getUser().email);
+        if (userManager.getUser().email != null)
+            email.setText(userManager.getUser().email);
+        else
+            email.setText("");
         final AlertDialog alert = new AlertDialog.Builder(getActivity())
                 .setPositiveButton("Ok", null)
                 .setNegativeButton("Cancel", null)
@@ -172,6 +193,14 @@ public class MyProfileFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
+
+        if (requestingTwitterInfo) {
+            if (twitterManager.hasAuthInfo())
+                finishAddingTwitterAccount();
+            else
+                errorReporter.showError("Error authorizing with Twitter. Please try again later.");
+        }
+        requestingTwitterInfo = false;
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -184,12 +213,35 @@ public class MyProfileFragment extends BaseFragment {
         header.avatarImageView.setImageBitmap(bitmap);
     }
     private void updateUser(User user) {
+        if (user == null)
+            return;
+
         setTitle(user.username.toUpperCase());
         username.setText(user.username);
-        email.setText(user.email);
+        if (user.email == null) {
+            email.setText("Add your email address");
+        }
+        else
+            email.setText(user.email);
         header.setUser(user);
         if (user.avatar != null)
             header.avatarImageView.setImageUrl(user.avatar.big, networkingManager.getImageLoader());
+
+        if (user.getFacebookAccount() != null) {
+            facebookAccountNameTextView.setText(user.getFacebookAccount().providerAccountName);
+            facebookImageView.setImageResource(R.drawable.facebook_share_active);
+        } else {
+            facebookAccountNameTextView.setText("Connect to Facebook");
+            facebookImageView.setImageResource(R.drawable.facebook_share);
+        }
+
+        if (user.getTwitterAccount() != null) {
+            twitterAccountNameTextView.setText("@" + user.getTwitterAccount().providerAccountName);
+            twitterImageView.setImageResource(R.drawable.twitter_share_active);
+        } else {
+            twitterAccountNameTextView.setText("Connect to Twitter");
+            twitterImageView.setImageResource(R.drawable.twitter_share);
+        }
     }
 
     private View.OnClickListener changePassword(final View changePasswordView, final AlertDialog dialog) {
@@ -277,4 +329,157 @@ public class MyProfileFragment extends BaseFragment {
         }
         return true;
     }
+
+    private void handleFB() {
+        if (userManager.getUser().getFacebookAccount() != null)
+            removeFBAccount();
+        else
+            addFBAccount();
+    }
+
+    private void addFBAccount() {
+        spinner.show();
+        facebookManager.openSession(getActivity(), new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    spinner.hide();
+                    errorReporter.showError(error);
+                    return;
+                }
+
+                userManager.addSocialAccount(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User user, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+                        updateUser(user);
+                    }
+                });
+            }
+        });
+    }
+
+    private void removeFBAccount() {
+        if (userManager.getUser().email == null && userManager.getUser().getTwitterAccount() == null) {
+            errorReporter.showError("You must enter an email address before removing your last social account, or your account will be lost forever.");
+            return;
+        }
+
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .setTitle("Are you sure you wish to remove your Facebook account?")
+                .create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                spinner.show();
+                userManager.deleteSocialAccount(userManager.getUser().getFacebookAccount(), new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+                        updateUser(object);
+                    }
+                });
+            }
+        });
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+    }
+
+    private void handleTwitter() {
+        if (userManager.getUser().getTwitterAccount() != null)
+            removeTwitterAccount();
+        else
+            addTwitterAccount();
+    }
+
+    private void addTwitterAccount() {
+        if (twitterManager.hasAuthInfo()) {
+            finishAddingTwitterAccount();
+        }
+
+        requestingTwitterInfo = true;
+        ((MainActivity)getActivity()).requestStartupScreen(KnodaScreen.KnodaScreenOrder.PROFILE);
+        spinner.show();
+        twitterManager.openSession(getActivity());
+    }
+
+    private void finishAddingTwitterAccount() {
+        Logger.log("FINISHING TWITTER -------");
+        spinner.show();
+        twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    errorReporter.showError(error);
+                    spinner.hide();
+                    return;
+                }
+
+                userManager.addSocialAccount(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User user, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+                        updateUser(user);
+                    }
+                });
+            }
+        });
+    }
+
+    private void removeTwitterAccount() {
+        if (userManager.getUser().email == null && userManager.getUser().getFacebookAccount() == null) {
+            errorReporter.showError("You must enter an email address before removing your last social account, or your account will be lost forever.");
+            return;
+        }
+
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .setTitle("Are you sure you wish to remove your Twitter account?")
+                .create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                spinner.show();
+                userManager.deleteSocialAccount(userManager.getUser().getTwitterAccount(), new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+                        updateUser(object);
+                    }
+                });
+            }
+        });
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+    }
+
 }

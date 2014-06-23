@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
 import java.io.File;
@@ -63,6 +64,8 @@ public class AddGroupFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setTitle("CREATE GROUP");
+
     }
 
     @Override
@@ -104,6 +107,7 @@ public class AddGroupFragment extends BaseFragment {
             return;
 
         Group group = new Group();
+        FlurryAgent.logEvent("CREATE_GROUP_START");
 
         group.name = nameEditText.getText().toString();
         group.description = descriptionEditText.getText().toString();
@@ -122,6 +126,7 @@ public class AddGroupFragment extends BaseFragment {
                                 spinner.hide();
                             } else {
                                 finish(group);
+                                FlurryAgent.logEvent("CREATE_GROUP_SUCCESS");
                             }
                         }
                     });

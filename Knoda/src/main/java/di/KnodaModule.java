@@ -2,6 +2,8 @@ package di;
 
 import android.content.Context;
 
+import com.squareup.otto.Bus;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -23,15 +25,13 @@ public class KnodaModule extends Object {
         this.application = application;
     }
 
-
     @Provides @Singleton Context provideContext() {
         return application;
     }
 
-    @Provides @Singleton
-    SharedPrefManager provideSharedPrefManager() {
-        return new SharedPrefManager(application);
-    }
+    @Provides @Singleton SharedPrefManager provideSharedPrefManager() {return new SharedPrefManager(application);}
+
+    @Provides @Singleton Bus provideBus() {return new Bus();}
 
 }
 

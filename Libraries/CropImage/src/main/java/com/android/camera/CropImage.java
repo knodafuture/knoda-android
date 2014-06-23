@@ -46,12 +46,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+import android.widget.Button;
+import android.graphics.Bitmap;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Logger;
 
 /**
  * The activity can crop specific region of interest from an image.
@@ -87,6 +90,19 @@ public class CropImage extends MonitoredActivity {
     private IImageList mAllImages;
     private IImage mImage;
 
+    public void rotateImage(View v){
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+
+        Bitmap bitmap=mImageView.mBitmapDisplayed.getBitmap();
+
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        mBitmap=rotatedBitmap;
+        mImageView.setImageBitmap(rotatedBitmap);
+
+        //mImageView.setRotation(mImageView.getRotation()+90);
+    }
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -99,6 +115,7 @@ public class CropImage extends MonitoredActivity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+
 
         if (extras != null) {
             if (extras.getString("circleCrop") != null) {
@@ -551,6 +568,7 @@ public class CropImage extends MonitoredActivity {
             });
         }
     };
+
 }
 
 class CropImageView extends ImageViewTouchBase {
@@ -789,4 +807,6 @@ class CropImageView extends ImageViewTouchBase {
         mHighlightViews.add(hv);
         invalidate();
     }
+
+
 }

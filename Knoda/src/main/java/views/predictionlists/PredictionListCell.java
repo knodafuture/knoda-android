@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,10 +32,16 @@ public class PredictionListCell extends RelativeLayout {
     public Prediction prediction;
 
     public RelativeLayout agreeView;
+    public RelativeLayout disagreeView;
     public ImageView verifiedCheckmark;
 
     public RelativeLayout groupView;
     public TextView groupTextView;
+
+    public RelativeLayout walkthroughView;
+    public RelativeLayout container;
+
+    public LinearLayout textContainer;
 
     private boolean agreed;
     private boolean disagreed;
@@ -61,9 +68,13 @@ public class PredictionListCell extends RelativeLayout {
         commentCountTextView = (TextView)findViewById(R.id.prediction_cell_comment_textview);
         resultTextView = (TextView)findViewById(R.id.prediction_cell_result_textview);
         agreeView = (RelativeLayout)findViewById(R.id.prediction_cell_agreeview);
+        disagreeView = (RelativeLayout)findViewById(R.id.prediction_cell_disagreeview);
         verifiedCheckmark = (ImageView)findViewById(R.id.prediction_cell_verified_checkmark);
         groupView = (RelativeLayout)findViewById(R.id.prediction_cell_group_container);
         groupTextView = (TextView)findViewById(R.id.prediction_cell_group_textview);
+        walkthroughView = (RelativeLayout)findViewById(R.id.prediction_cell_swipe_walkthrough);
+        container = (RelativeLayout)findViewById(R.id.prediction_cell_container);
+        textContainer = (LinearLayout)findViewById(R.id.prediction_cell_username_textview_container);
     }
 
     public void setAgree(boolean agree) {
@@ -122,6 +133,8 @@ public class PredictionListCell extends RelativeLayout {
             groupView.setVisibility(VISIBLE);
             groupTextView.setText(prediction.groupName);
         }
+        avatarImageView.setTag(prediction.userId);
+        textContainer.setTag(prediction.userId);
 
     }
 

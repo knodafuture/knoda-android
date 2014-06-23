@@ -4,19 +4,19 @@ package views.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 import com.tapjoy.TapjoyConnect;
+
+import org.joda.time.DateTime;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -24,16 +24,17 @@ import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;
 import helpers.TapjoyPPA;
-import managers.NetworkingManager;
 import models.ServerError;
 import models.SignUpRequest;
+import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
-import views.avatar.UserAvatarChooserActivity;
-import views.core.BaseFragment;
+import pubsub.LoginFlowDoneEvent;
+import views.avatar.UserAvatarChooserFragment;
+import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
-public class SignUpFragment extends BaseFragment {
+public class SignUpFragment extends BaseDialogFragment {
     @InjectView(R.id.signup_email_edittext)
     EditText emailField;
 
@@ -43,9 +44,19 @@ public class SignUpFragment extends BaseFragment {
     @InjectView(R.id.signup_username_edittext)
     EditText usernameField;
 
-    @OnClick(R.id.signup_terms_button) void onTerms() {openUrl(NetworkingManager.termsOfServiceUrl);}
+    @OnClick(R.id.welcome_login_facebook) void onFB() {doFacebookLogin();}
 
-    @OnClick(R.id.signup_privacy_button) void onPP() {openUrl(NetworkingManager.privacyPolicyUrl);}
+    @OnClick(R.id.welcome_login_twitter) void onTwitter() {doTwitterLogin();}
+
+    @OnClick(R.id.signup_button) void onSignup() {doSignup();}
+
+    @OnClick(R.id.signup_close) void onSignupClose() {dismissFade();}
+
+    @OnClick(R.id.welcome_already_user) void onSignIn() {
+        LoginFragment f = LoginFragment.newInstance();
+        f.show(getFragmentManager(), "login");
+        dismissFade();
+    }
 
     private static final int avatarResultCode = 123988123;
 
@@ -56,26 +67,26 @@ public class SignUpFragment extends BaseFragment {
     public SignUpFragment() {
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().getActionBar().show();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_sign_up, container, false);
+        View inflate =inflater.inflate(R.layout.fragment_sign_up, container, false);
+        updateBackground();
+        return inflate;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupListeners();
-        emailField.requestFocus();
-        showKeyboard(emailField);
         InputFilter[] filterArray = new InputFilter[2];
         filterArray[0] = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -89,25 +100,9 @@ public class SignUpFragment extends BaseFragment {
         };
         filterArray[1] = new InputFilter.LengthFilter(15);
         usernameField.setFilters(filterArray);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.signup, menu);
-        menu.removeGroup(R.id.default_menu_group);
-        setTitle("");
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_signup) {
-            doSignup();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
     public void setupListeners() {
@@ -122,6 +117,19 @@ public class SignUpFragment extends BaseFragment {
         });
     }
 
+    public void finish(boolean shouldConfirm) {
+        dismiss();
+        ((MainActivity)getActivity()).doLogin();
+        SignupConfirmFragment f = SignupConfirmFragment.newInstance();
+
+        if (shouldConfirm)
+            f.show(getActivity().getFragmentManager(), "confirm");
+        else {
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
+        }
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -134,11 +142,8 @@ public class SignUpFragment extends BaseFragment {
         usernameField.clearFocus();
         passwordField.clearFocus();
 
-
-
         if (!validateFields())
             return;
-
 
         spinner.show();
 
@@ -153,9 +158,10 @@ public class SignUpFragment extends BaseFragment {
                 else {
                     TapjoyConnect.getTapjoyConnectInstance().actionComplete(TapjoyPPA.TJC_SIGN_UP_FOR_KNODA___ANDROID_PPE);
                     sharedPrefManager.setFirstLaunch(true);
-                    Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
-                    startActivityForResult(intent, avatarResultCode);
-
+                    FlurryAgent.logEvent("SIGNUP_EMAIL");
+                    UserAvatarChooserFragment f = new UserAvatarChooserFragment();
+                    dismiss();
+                    f.show(getActivity().getFragmentManager(), "avatar");
                 }
             }
         });
@@ -184,15 +190,92 @@ public class SignUpFragment extends BaseFragment {
         return true;
 
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
+
+    public void doFacebookLogin() {
+        spinner.show();
+        facebookManager.openSession(getActivity(), new NetworkCallback<SocialAccount>() {
             @Override
-            public void run() {
-                ((MainActivity) getActivity()).doLogin();
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    spinner.hide();
+                    errorReporter.showError(error);
+                    return;
+                }
+
+                userManager.socialSignIn(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                        } else {
+                            DateTime curTime = new DateTime();
+                            DateTime newTime = curTime.minusMinutes(1);
+                            int i = (int) (newTime.getMillis()/1000);
+                            int j = (int) (userManager.user.created_at.getMillis()/1000);
+                            if(i <= j) {
+                                FlurryAgent.logEvent("SIGNUP_FACEBOOK");
+                                finish(true);
+                            } else {
+                                FlurryAgent.logEvent("LOGIN_FACEBOOK");
+                                finish(false);
+                            }
+                        }
+                    }
+                });
             }
-        };
-        handler.postDelayed(runnable, 500);
+        });
+    }
+
+    public void doTwitterLogin() {
+
+        if (twitterManager.hasAuthInfo()) {
+            finishTwitterLogin();
+            return;
+        }
+
+        spinner.show();
+
+        WelcomeFragment.requestingTwitterLogin = true;
+
+        twitterManager.openSession(getActivity());
+    }
+
+    public void finishTwitterLogin() {
+        spinner.show();
+        twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    errorReporter.showError(error);
+                    spinner.hide();
+                    return;
+                }
+
+                userManager.socialSignIn(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+
+                        DateTime curTime = new DateTime();
+                        DateTime newTime = curTime.minusMinutes(1);
+                        int i = (int) (newTime.getMillis()/1000);
+                        int j = (int) (userManager.user.created_at.getMillis()/1000);
+                        if(j >= i) {
+                            FlurryAgent.logEvent("SIGNUP_TWITTER");
+                            finish(true);
+                        } else {
+                            FlurryAgent.logEvent("LOGIN_TWITTER");
+                            finish(false);
+                        }
+                    }
+                });
+            }
+        });
+
     }
 }

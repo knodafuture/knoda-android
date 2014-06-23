@@ -7,12 +7,16 @@ import javax.inject.Singleton;
 import adapters.PredictionAdapter;
 import dagger.Module;
 import dagger.Provides;
+import managers.AppOutdatedManager;
 import managers.NetworkingManager;
+import managers.TwitterManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
+import views.avatar.UserAvatarChooserActivity;
+import views.avatar.UserAvatarChooserFragment;
 import views.badge.BadgeFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
@@ -30,8 +34,8 @@ import views.group.GroupSettingsFragment;
 import views.group.InvitationsFragment;
 import views.login.ForgotPasswordFragment;
 import views.login.LoginFragment;
-import views.avatar.UserAvatarChooserActivity;
 import views.login.SignUpFragment;
+import views.login.SignupConfirmFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
@@ -80,7 +84,9 @@ import views.search.SearchFragment;
                 PhotoFragment.class,
                 GroupSettingsFragment.class,
                 InvitationsFragment.class,
-                EditGroupFragment.class
+                EditGroupFragment.class,
+                UserAvatarChooserFragment.class,
+                SignupConfirmFragment.class
         },
         addsTo = KnodaModule.class,
         library = true
@@ -101,7 +107,7 @@ public class ActivityModule {
         return new ErrorReporter(mActivity);
     }
 
-    @Provides @Singleton Bus provideBus() {
-        return new Bus();
-    }
+    @Provides @Singleton TwitterManager provideTwitterManager() {return new TwitterManager();}
+
+    @Provides @Singleton AppOutdatedManager provideAppOutdatedManager() {return new AppOutdatedManager(mActivity);}
 }

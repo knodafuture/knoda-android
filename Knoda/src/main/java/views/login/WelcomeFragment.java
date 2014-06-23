@@ -1,156 +1,268 @@
 package views.login;
 
 
-import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
+
+import org.joda.time.DateTime;
 
 import butterknife.InjectView;
-import views.core.BaseFragment;
+import butterknife.OnClick;
+import managers.NetworkingManager;
+import models.ServerError;
+import models.SocialAccount;
+import models.User;
+import networking.NetworkCallback;
+import pubsub.LoginFlowDoneEvent;
+import pubsub.ScreenCaptureEvent;
+import views.core.BaseDialogFragment;
+import views.core.MainActivity;
 
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
  * Use the {@link WelcomeFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
-public class WelcomeFragment extends BaseFragment {
+public class WelcomeFragment extends BaseDialogFragment {
+    @OnClick(R.id.signup_terms_button)
+    void onTerms() {
+        openUrl(NetworkingManager.termsOfServiceUrl);
+    }
 
-    @InjectView(R.id.button_sign_in)
-    Button signInButton;
+    @OnClick(R.id.signup_privacy_button)
+    void onPP() {
+        openUrl(NetworkingManager.privacyPolicyUrl);
+    }
 
-    @InjectView(R.id.button_sign_up)
-    Button signUpButton;
+    @OnClick(R.id.welcome_login_facebook)
+    void onFB() {
+        doFacebookLogin();
+    }
 
-    public static WelcomeFragment newInstance() {
+    @OnClick(R.id.welcome_login_twitter)
+    void onTwitter() {
+        doTwitterLogin();
+    }
+
+    @OnClick(R.id.wall_signup_button)
+    void onSignUp() {
+        SignUpFragment f = SignUpFragment.newInstance();
+        f.show(getFragmentManager(), "signup");
+        dismissFade();
+    }
+
+    @OnClick(R.id.wall_close)
+    void onClose() {
+        cancel();
+    }
+
+    @OnClick(R.id.wall_later)
+    void onLater() {
+        cancel();
+    }
+
+    @OnClick(R.id.wall_login)
+    void onLogin() {
+        LoginFragment f = LoginFragment.newInstance();
+        f.show(getActivity().getFragmentManager(), "login");
+        dismissFade();
+    }
+
+    String wtext = "";
+    String wprompt = "";
+
+    @InjectView(R.id.terms_container)
+    RelativeLayout termsContainer;
+
+    public static boolean requestingTwitterLogin;
+
+    public static WelcomeFragment newInstance(String titleMessage, String detailMessage) {
         WelcomeFragment fragment = new WelcomeFragment();
+        Bundle b= new Bundle();
+        b.putCharSequence("welcometext",titleMessage);
+        b.putCharSequence("welcomeprompt", detailMessage);
+        fragment.setArguments(b);
         return fragment;
     }
+
     public WelcomeFragment() {
         // Required empty public constructor
     }
+    @Subscribe
+    public void screenCapture(final ScreenCaptureEvent event) {
+        updateBackground();
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        FlurryAgent.logEvent("LANDING");
+        bus.register(this);
+        Bundle b = this.getArguments();
+        if (b == null)
+            return;
+        if (b.getCharSequence("welcometext") != null)
+            wtext = b.getCharSequence("welcometext").toString();
+        if (b.getCharSequence("welcomeprompt") != null)
+            wprompt = b.getCharSequence("welcomeprompt").toString();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.removeGroup(R.id.default_menu_group);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().hide();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().getActionBar().show();
+        if (requestingTwitterLogin) {
+            if (twitterManager.hasAuthInfo())
+                finishTwitterLogin();
+            else
+                errorReporter.showError("Error authorizing with Twitter. Please try again later.");
+        }
+        requestingTwitterLogin = false;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
+        TextView welcomeText=((TextView)view.findViewById(R.id.wall_welcome));
+        TextView welcomePrompt=((TextView)view.findViewById(R.id.wall_prompt));
+        if (!wtext.equals(""))
+            welcomeText.setText(wtext);
+        if(!wprompt.equals(""))
+            welcomePrompt.setText(wprompt);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (sharedPrefManager.agreedToTerms()) {
+            termsContainer.setVisibility(View.GONE);
+        } else {
+            sharedPrefManager.setAgreedToTerms(true);
+        }
+    }
 
-        setUpOnClickListeners();
-        final View swipeMore = (View) view.findViewById(R.id.swipe_more);
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_flipper);
-        final ImagePagerAdapter adapter = new ImagePagerAdapter();
-        viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    public void openUrl(String url) {
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+    public void doFacebookLogin() {
+        spinner.show();
+        facebookManager.openSession(getActivity(), new NetworkCallback<SocialAccount>() {
             @Override
-            public void onPageScrolled(int i, float v, int i2) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                if (i == (adapter.getCount() - 1)) {
-                      swipeMore.setVisibility(View.INVISIBLE);
-                } else {
-                    swipeMore.setVisibility(View.VISIBLE);
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    spinner.hide();
+                    errorReporter.showError(error);
+                    return;
                 }
 
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-    }
-
-    public void setUpOnClickListeners() {
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoginFragment fragment = LoginFragment.newInstance();
-                pushFragment(fragment);
-            }
-        });
-
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SignUpFragment fragment = SignUpFragment.newInstance();
-                pushFragment(fragment);
+                userManager.socialSignIn(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                        } else {
+                            DateTime curTime = new DateTime();
+                            DateTime newTime = curTime.minusMinutes(1);
+                            int i = (int) (newTime.getMillis() / 1000);
+                            int j = (int) (userManager.user.created_at.getMillis() / 1000);
+                            if (j >= i) {
+                                FlurryAgent.logEvent("SIGNUP_FACEBOOK");
+                                finish(true);
+                            } else {
+                                FlurryAgent.logEvent("LOGIN_FACEBOOK");
+                                finish(false);
+                            }
+                        }
+                    }
+                });
             }
         });
     }
 
+    public void doTwitterLogin() {
 
-    private class ImagePagerAdapter extends PagerAdapter {
-        private int[] mImages = new int[] {
-                R.drawable.splash_logo
-        };
-
-        @Override
-        public int getCount() {
-            return mImages.length;
+        if (twitterManager.hasAuthInfo()) {
+            finishTwitterLogin();
+            requestingTwitterLogin = false;
+            return;
         }
 
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == ((ImageView) object);
-        }
+        requestingTwitterLogin = true;
+        spinner.show();
+        twitterManager.openSession(getActivity());
+    }
 
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Context context = getActivity();
-            ImageView imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            imageView.setImageResource(mImages[position]);
-            ((ViewPager) container).addView(imageView, 0);
-            return imageView;
-        }
+    public void finishTwitterLogin() {
+        spinner.show();
+        twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    errorReporter.showError(error);
+                    spinner.hide();
+                    return;
+                }
 
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            ((ViewPager) container).removeView((ImageView) object);
+                userManager.socialSignIn(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+
+                        DateTime curTime = new DateTime();
+                        DateTime newTime = curTime.minusMinutes(1);
+                        int i = (int) (newTime.getMillis() / 1000);
+                        int j = (int) (userManager.user.created_at.getMillis() / 1000);
+                        if (j >= i) {
+                            FlurryAgent.logEvent("SIGNUP_TWITTER");
+                            finish(true);
+                        } else {
+                            FlurryAgent.logEvent("LOGIN_TWITTER");
+                            finish(false);
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+    public void finish(boolean shouldConfirm) {
+        dismiss();
+        ((MainActivity) getActivity()).doLogin();
+        SignupConfirmFragment f = SignupConfirmFragment.newInstance();
+        if (shouldConfirm)
+            f.show(getActivity().getFragmentManager(), "confirm");
+        else {
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
         }
     }
 }

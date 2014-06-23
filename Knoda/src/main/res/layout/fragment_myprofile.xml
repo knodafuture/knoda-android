@@ -6,6 +6,8 @@
     android:layout_height="fill_parent"
     android:id="@+id/profile">
 
+
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,6 +74,74 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="lock it down"/>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#efefef" />
+            <RelativeLayout
+                android:id="@+id/profile_facebook_button"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    style="@style/edittext_main"
+                    android:id="@+id/profile_facebook_account_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="nrellihan@gmail.com"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Facebook"
+                    android:layout_below="@id/profile_facebook_account_name"/>
+
+                <ImageView
+                    android:id="@+id/profile_facebook_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/facebook_share"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"/>
+                </RelativeLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#efefef" />
+            <RelativeLayout
+                android:id="@+id/profile_twitter_button"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    style="@style/edittext_main"
+                    android:id="@+id/profile_twitter_account_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="nrellihan@gmail.com"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Twitter"
+                    android:layout_below="@id/profile_twitter_account_name"/>
+
+                <ImageView
+                    android:id="@+id/profile_twitter_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/twitter_share"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"/>
+            </RelativeLayout>
 
         </LinearLayout>
     </RelativeLayout>

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -20,20 +21,24 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import factories.GsonF;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
+import models.BaseModel;
 import models.Group;
 import models.Prediction;
 import models.ServerError;
+import models.SocialAccount;
 import models.Tag;
+import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.NewPredictionEvent;
 import views.core.BaseFragment;
-import factories.GsonF;
 
 public class AddPredictionFragment extends BaseFragment {
 
@@ -52,6 +57,19 @@ public class AddPredictionFragment extends BaseFragment {
     @InjectView(R.id.add_prediction_vote_time_edittext)
     EditText voteTimeEditText;
 
+    @InjectView(R.id.add_prediction_twitter_share_imageview)
+    ImageView twitterShareImageView;
+
+    @InjectView(R.id.add_prediction_twitter_share_textview)
+    TextView twitterShareTextView;
+
+    @InjectView(R.id.add_prediction_facebook_share_imageview)
+    ImageView facebookShareImageView;
+
+    @InjectView(R.id.add_prediction_facebook_share_textview)
+    TextView facebookShareTextView;
+
+
     @OnClick(R.id.add_prediction_topic_view) void onTopicClicked() {
         hideKeyboard();
         if (topicsDialog != null)
@@ -62,6 +80,14 @@ public class AddPredictionFragment extends BaseFragment {
         hideKeyboard();
         if (groupsDialog != null)
             groupsDialog.show();
+    }
+
+    @OnClick(R.id.add_prediction_facebook_share) void onFBShare() {
+        setShouldShareToFacebook(!shouldShareToFacebook);
+    }
+
+    @OnClick(R.id.add_prediction_twitter_share) void onTwitterShare() {
+        setShouldShareToTwitter(!shouldShareToTwitter);
     }
 
     @InjectView(R.id.add_prediction_topic_textview)
@@ -89,6 +115,11 @@ public class AddPredictionFragment extends BaseFragment {
     private MessageCounter bodyCounter;
     private Group group;
 
+    private boolean shouldShareToFacebook;
+    private boolean shouldShareToTwitter;
+
+    private static boolean requestingTwitterConnect;
+
 
     public static AddPredictionFragment newInstance(Group group) {
         AddPredictionFragment fragment = new AddPredictionFragment();
@@ -96,6 +127,7 @@ public class AddPredictionFragment extends BaseFragment {
         if (group != null) {
             bundle.putString("GROUP", GsonF.actory().toJson(group));
         }
+        FlurryAgent.logEvent("CREATE_PREDICITON_START");
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -179,6 +211,8 @@ public class AddPredictionFragment extends BaseFragment {
     }
 
     private void buildTopicsDialog() {
+        if (getActivity() == null)
+            return;
         String[] items = new String[tags.size()];
 
         for (int i = 0; i < tags.size(); i++) {
@@ -218,6 +252,8 @@ public class AddPredictionFragment extends BaseFragment {
                             } else {
                                 selectedGroup = userManager.groups.get(i - 1);
                                 groupTextView.setText(userManager.groups.get(i - 1).name);
+                                setShouldShareToFacebook(false);
+                                setShouldShareToTwitter(false);
                             }
                         }
                     });
@@ -231,33 +267,129 @@ public class AddPredictionFragment extends BaseFragment {
         hideKeyboard();
     }
 
-    private void submitPrediction() {
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        hideKeyboard();
-        if (!validate())
-            return;
+        Prediction savedPrediction = sharedPrefManager.getPredictionInProgress();
 
+        if (savedPrediction != null) {
+            restoreFromPrediction(savedPrediction);
+            sharedPrefManager.clearPredictionInProgress();
+        }
+
+        if (requestingTwitterConnect) {
+            finishTwitter();
+            requestingTwitterConnect = false;
+        }
+    }
+    private Prediction buildPrediction() {
         Prediction prediction = new Prediction();
 
-        prediction.body = bodyEditText.getText().toString();
-        prediction.tags.add(selectedTag.name);
+        if (bodyEditText.getText() != null)
+            prediction.body = bodyEditText.getText().toString();
+
+        if (selectedTag != null)
+            prediction.tags.add(selectedTag.name);
         if (selectedGroup != null) {
             prediction.groupId = selectedGroup.id;
         }
         prediction.expirationDate = votingDatePicker.getDateTime();
         prediction.resolutionDate = resolutionDatePicker.getDateTime();
 
+        return prediction;
+    }
+
+    private void savePrediction() {
+        Prediction predictionToSave = buildPrediction();
+        sharedPrefManager.setPredictionInProgress(predictionToSave);
+    }
+
+    private void restoreFromPrediction(final Prediction prediction) {
+        bodyEditText.setText(prediction.body);
+        votingDatePicker.setDateTime(prediction.expirationDate);
+        resolutionDatePicker.setDateTime(prediction.resolutionDate);
+        networkingManager.getTags(new NetworkListCallback<Tag>() {
+            @Override
+            public void completionHandler(ArrayList<Tag> object, ServerError error) {
+
+                if (prediction.tags.size() > 0) {
+                    for (Tag tag : object) {
+                        if (tag.name.equals(prediction.tags.get(0))) {
+                            onTopicSelected(tag);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+        if (prediction.groupId != null) {
+            List<Group> groups = userManager.groups;
+            for (Group group : groups) {
+                if (group.id == prediction.groupId) {
+                    selectedGroup = group;
+                    groupTextView.setText(group.name);
+                }
+            }
+        }
+    }
+
+    private void submitPrediction() {
+
+        hideKeyboard();
+        if (!validate())
+            return;
+
+        Prediction prediction = buildPrediction();
+
         spinner.show();
 
         networkingManager.submitPrediction(prediction, new NetworkCallback<Prediction>() {
             @Override
-            public void completionHandler(Prediction object, ServerError error) {
-                spinner.hide();
+            public void completionHandler(final Prediction prediction1, ServerError error) {
                 if (error != null) {
                     errorReporter.showError(error);
                 } else {
-                    bus.post(new NewPredictionEvent(object));
-                    popFragment();
+                    bus.post(new NewPredictionEvent(prediction1));
+
+                    FlurryAgent.logEvent("CREATE_PREDICTION_SUCCESS");
+//                    if (shouldShareToFacebook) {
+//                        if (facebookManager.hasPublishPermissions())
+//                            networkingManager.sharePredictionOnFacebook(prediction1, null);
+//                        else {
+//                            facebookManager.reauthorizeWithPublishPermissions(getActivity(), new NetworkCallback<SocialAccount>() {
+//                                @Override
+//                                public void completionHandler(SocialAccount object, ServerError error) {
+//                                    if (error != null) {
+//                                        errorReporter.showError(error);
+//                                        return;
+//                                    }
+//
+//                                    userManager.updateSocialAccount(object, new NetworkCallback<User>() {
+//                                        @Override
+//                                        public void completionHandler(User object, ServerError error) {
+//                                            networkingManager.sharePredictionOnFacebook(prediction1, null);
+//                                        }
+//                                    });
+//                                }
+//                            });
+//                        }
+//                    }
+                    if (shouldShareToTwitter)
+                        networkingManager.sharePredictionOnTwitter(prediction1, null);
+                    if (shouldShareToFacebook) {
+                        facebookManager.share(prediction1, getActivity(), new NetworkCallback<BaseModel>() {
+                            @Override
+                            public void completionHandler(BaseModel object, ServerError error) {
+                                spinner.hide();
+                                popFragment();
+                            }
+                        });
+                    } else {
+                        spinner.hide();
+                        popFragment();
+                    }
                 }
             }
         });
@@ -286,5 +418,154 @@ public class AddPredictionFragment extends BaseFragment {
         }
 
         return true;
+    }
+
+    private void setShouldShareToFacebook (boolean shouldShare) {
+        if (shouldShare) {
+            if (!checkSharability("facebook"))
+                return;
+            this.shouldShareToFacebook = true;
+            facebookShareImageView.setImageResource(R.drawable.facebook_share_active);
+            facebookShareTextView.setTextColor(getResources().getColor(R.color.facebookColor));
+        } else {
+            this.shouldShareToFacebook = false;
+            facebookShareImageView.setImageResource(R.drawable.facebook_share);
+            facebookShareTextView.setTextColor(getResources().getColor(R.color.black));
+        }
+    }
+
+    private void setShouldShareToTwitter (boolean shouldShare) {
+        if (shouldShare) {
+            if (!checkSharability("twitter"))
+                return;
+            this.shouldShareToTwitter = true;
+            twitterShareImageView.setImageResource(R.drawable.twitter_share_active);
+            twitterShareTextView.setTextColor(getResources().getColor(R.color.twitterColor));
+
+        } else {
+            this.shouldShareToTwitter = false;
+            twitterShareImageView.setImageResource(R.drawable.twitter_share);
+            twitterShareTextView.setTextColor(getResources().getColor(R.color.black));
+
+        }
+    }
+
+    private boolean checkSharability(String provider) {
+        if (selectedGroup != null) {
+            errorReporter.showError("Hold on, this is a private group prediction. You won't be able to share it with the world.");
+            return false;
+        }
+
+        if (provider.equals("twitter") && userManager.getUser().getTwitterAccount() == null) {
+            showTwitterAlert();
+            return false;
+        }
+
+        if (provider.equals("facebook") && userManager.getUser().getFacebookAccount() == null) {
+            showFacebookAlert();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showTwitterAlert() {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .setMessage("You need to have a Twitter account in your profile in order to share instantly. Would you like to add one now?")
+                .create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                addTwitter();
+            }
+        });
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+    }
+
+    private void showFacebookAlert() {
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .setMessage("You need to have a Facebook account in your profile in order to share instantly. Would you like to add one now?")
+                .create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                addFacebook();
+            }
+        });
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+    }
+
+    private void addFacebook() {
+        spinner.show();
+        facebookManager.openSession(getActivity(), new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    spinner.hide();
+                    errorReporter.showError(error);
+                    return;
+                }
+
+                userManager.addSocialAccount(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User user, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+
+                        setShouldShareToFacebook(true);
+                    }
+                });
+            }
+        });
+    }
+    private void addTwitter() {
+        requestingTwitterConnect = true;
+        savePrediction();
+        spinner.show();
+        twitterManager.openSession(getActivity());
+    }
+
+    private void finishTwitter() {
+        spinner.show();
+        twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    errorReporter.showError(error);
+                    spinner.hide();
+                    return;
+                }
+                userManager.addSocialAccount(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User user, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+                        setShouldShareToTwitter(true);
+                    }
+                });
+            }
+        });
     }
 }

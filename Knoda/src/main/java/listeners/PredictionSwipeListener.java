@@ -1,5 +1,6 @@
 package listeners;
 
+import android.animation.Animator;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.MotionEvent;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import unsorted.Logger;
 import views.predictionlists.PredictionListCell;
@@ -45,7 +47,6 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
         void onPredictionAgreed(PredictionListCell cell);
         void onPredictionDisagreed(PredictionListCell cell);
-        void onProfileTapped(PredictionListCell cell);
     }
 
 
@@ -138,20 +139,6 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                     downView.usernameView.getLocationOnScreen(coords);
                     int x = (int) motionEvent.getRawX() - coords[0];
                     int y = (int) motionEvent.getRawY() - coords[1];
-
-                    Rect rect = new Rect();
-                    downView.usernameView.getHitRect(rect);
-                    if (rect.contains(x, y)) {
-                        callbacks.onProfileTapped(downView);
-                        // Cancel ListView's touch (un-highlighting the item)
-                        MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
-
-                        cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
-                                (motionEvent.getActionIndex()
-                                        << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
-                        listView.onTouchEvent(cancelEvent);
-                        cancelEvent.recycle();
-                    }
                 }
 
 
@@ -196,14 +183,28 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                         deltaX = 0;
 
                     double percentage = Math.min(Math.abs(deltaX) / threshold, 1.0);
-
-                    if (deltaX > 0)
-                        downView.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullGreenR, fullGreenG, fullGreenB));
-                    else
-                        downView.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullRedR, fullRedG, fullRedB));
-
                     if (Math.abs(deltaX) < downView.getWidth() / 2)
                         downView.bodyView.setTranslationX(deltaX);
+                    if (deltaX > 0) {
+                        downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullGreenR, fullGreenG, fullGreenB));
+                        int leftMargin = ((RelativeLayout.LayoutParams)downView.agreeView.getLayoutParams()).leftMargin;
+
+                        if (downView.bodyView.getTranslationX() > leftMargin * 2 + downView.agreeView.getWidth())
+                            downView.agreeView.setTranslationX(downView.bodyView.getTranslationX() - leftMargin * 2 - downView.agreeView.getWidth());
+
+                    } else {
+                        downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullRedR, fullRedG, fullRedB));
+
+                        int rightMargin = ((RelativeLayout.LayoutParams)downView.disagreeView.getLayoutParams()).rightMargin;
+
+                        if (Math.abs(downView.bodyView.getTranslationX()) > rightMargin * 2 + downView.disagreeView.getWidth()) {
+                            downView.disagreeView.setX(downView.bodyView.getTranslationX() + downView.bodyView.getWidth() + rightMargin);
+                        }
+
+
+                    }
+
+
                     return true;
                 }
 
@@ -225,12 +226,37 @@ public class PredictionSwipeListener implements View.OnTouchListener {
     }
 
     private void reset() {
-        if (downView != null)
-            downView.bodyView.animate().translationX(0).alpha(1).setDuration(animationTime).setListener(null);
-        downX = 0;
-        downView = null;
-        swiping = false;
-        threshold = 0.0;
+        if (downView != null) {
+            downView.bodyView.animate().translationX(0).alpha(1).setDuration(animationTime).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    if (downView != null) {
+                        downView.agreeView.setTranslationX(0);
+                        downView.disagreeView.setTranslationX(0);
+                        downView = null;
+                    }
+                    downX = 0;
+                    swiping = false;
+                    threshold = 0.0;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+        }
+
     }
 
 

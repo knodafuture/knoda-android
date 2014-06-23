@@ -11,8 +11,10 @@ import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import managers.FacebookManager;
 import managers.NetworkingManager;
 import managers.SharedPrefManager;
+import managers.TwitterManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
 
@@ -32,6 +34,10 @@ public class BaseFragment extends Fragment {
     @Inject public Bus bus;
 
     @Inject public SharedPrefManager sharedPrefManager;
+
+    @Inject public FacebookManager facebookManager;
+
+    @Inject public TwitterManager twitterManager;
 
     @Override public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +84,12 @@ public class BaseFragment extends Fragment {
     }
 
     public void setTitle(String title) {
+        if (title == null)
+            return;
+        MainActivity activity = (MainActivity)getActivity();
+
+        if (activity == null)
+            return;
         ((MainActivity) getActivity()).setActionBarTitle(title);
     }
 

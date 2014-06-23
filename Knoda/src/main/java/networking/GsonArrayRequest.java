@@ -46,7 +46,6 @@ public class GsonArrayRequest<T> extends Request<T> {
         this.token = token;
         this.headers = headers;
         this.listener = listener;
-        this.setRetryPolicy(new DefaultRetryPolicy(15 * 1000, 4, 2.0f));
     }
 
     public void setPayload(Object jsonObject) {

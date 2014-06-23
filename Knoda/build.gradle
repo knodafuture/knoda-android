@@ -5,14 +5,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.11.+'
     }
 }
 apply plugin: 'android'
 
 configurations {
     provided
-
 }
 
 repositories {
@@ -22,11 +21,13 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.0'
+    buildToolsVersion '19.1.0'
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 19
+        renderscriptTargetApi 19
+        renderscriptSupportMode true
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
@@ -53,11 +54,12 @@ dependencies {
     compile 'joda-time:joda-time:2.3'
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.2.1'
-    compile project(':libraries:CropImage')
-    compile project(':libraries:PullToRefresh')
+    compile 'org.twitter4j:twitter4j-core:4.0.1'
+    compile project(':Libraries:CropImage')
+    compile project(':Libraries:PullToRefresh')
     compile files('lib/FlurryAnalytics_3.3.4.jar')
     compile files('lib/tapjoyconnectlibrary.jar')
-    compile project(':libraries:facebook')
+    compile project(':Libraries:facebook')
 }
 
 task incrementVersionCode << {
@@ -80,7 +82,7 @@ task verifyRelease << {
     println(":verifyProd - Ensure that NetworkingManager is pointed at production")
     def networkingManagerFile = file("src/main/java/managers/NetworkingManager.java")
     def networkingText = networkingManagerFile.getText()
-    def testOccurrences = networkingText.indexOf("api-test.knoda.com");
+    def testOccurrences = networkingText.indexOf("captaincold.knoda.com");
     def prodOccurrences = networkingText.indexOf("api.knoda.com");
     if (testOccurrences >= 0 || prodOccurrences < 0) {
         throw new GradleException("Build is not pointed at production.  Failing.")

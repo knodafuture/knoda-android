@@ -8,8 +8,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.otto.Bus;
 
 import org.apache.http.entity.ContentType;
 
@@ -23,8 +23,30 @@ import javax.inject.Singleton;
 
 import builders.MultipartRequestBuilder;
 import builders.ParamBuilder;
+import factories.GsonF;
 import factories.TypeTokenFactory;
-import models.*;
+import models.ActivityItem;
+import models.AndroidDeviceToken;
+import models.Badge;
+import models.BaseModel;
+import models.Challenge;
+import models.Comment;
+import models.ForgotPasswordRequest;
+import models.Group;
+import models.GroupInvitation;
+import models.Invitation;
+import models.JoinGroupRequest;
+import models.Leader;
+import models.LoginRequest;
+import models.LoginResponse;
+import models.Member;
+import models.PasswordChangeRequest;
+import models.Prediction;
+import models.ServerError;
+import models.SignUpRequest;
+import models.SocialAccount;
+import models.Tag;
+import models.User;
 import networking.BitmapLruCache;
 import networking.GsonArrayRequest;
 import networking.GsonRequest;
@@ -44,11 +66,13 @@ public class NetworkingManager {
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
-    public static String baseUrl = "http://knoda-api-test.herokuapp.com/api/";
+
+    public static String baseUrl = "http://api.knoda.com/api/";
 
     private ImageLoader imageLoader;
 
     @Inject SharedPrefManager sharedPrefManager;
+    @Inject Bus bus;
 
     @Inject
     public NetworkingManager (Context applicationContext) {
@@ -70,9 +94,29 @@ public class NetworkingManager {
 
     }
 
+    public void socialSignIn(final SocialAccount payload, final NetworkCallback<LoginResponse> callback) {
+        String url = buildUrl("session.json", true, null);
+        executeRequestWithTimeout(Request.Method.POST, url, payload, LoginResponse.class, callback, 30);
+    }
+
+    public void deleteSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
+        String url = buildUrl("social_accounts/" + socialAccount.id + ".json", true, null);
+        executeRequest(Request.Method.DELETE, url, null, SocialAccount.class, callback);
+    }
+
+    public void createSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
+        String url = buildUrl("social_accounts.json", true, null);
+        executeRequest(Request.Method.POST, url, socialAccount, SocialAccount.class, callback);
+    }
+
+    public void updateSocialAccount(final SocialAccount socialAccount, final NetworkCallback<SocialAccount> callback) {
+        String url = buildUrl("social_accounts/" + socialAccount.id + ".json", true, null);
+        executeRequest(Request.Method.PUT, url, socialAccount, SocialAccount.class, callback);
+    }
+
     public void signup(final SignUpRequest payload, final NetworkCallback<LoginResponse> callback) {
 
-        String url = buildUrl("registration.json", false, null);
+        String url = buildUrl("registration.json", true, null);
 
         executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
 
@@ -98,7 +142,7 @@ public class NetworkingManager {
         if (tag != null)
             builder.add("tag", tag);
 
-        String url = buildUrl("predictions.json", true, builder);
+        String url = buildUrl("predictions.json", false, builder);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
@@ -114,7 +158,7 @@ public class NetworkingManager {
         executeRequest(Request.Method.GET, url, null, Challenge.class, callback);
     }
 
-    public void agreeWithPrediction(final Integer predictionId, final NetworkCallback<Challenge> callback) {
+    public void agreeWithPrediction(final Integer predictionId, final NetworkCallback<Prediction> callback) {
 
         ParamBuilder builder = new ParamBuilder().create().add("prediction_id", predictionId.toString());
 
@@ -126,12 +170,12 @@ public class NetworkingManager {
                 if (error != null)
                     callback.completionHandler(null, error);
                 else
-                    getChallengeForPrediction(predictionId, callback);
+                    getPrediction(predictionId, callback);
             }
         });
     }
 
-    public void disagreeWithPrediction(final Integer predictionId, final NetworkCallback<Challenge> callback) {
+    public void disagreeWithPrediction(final Integer predictionId, final NetworkCallback<Prediction> callback) {
 
         ParamBuilder builder = new ParamBuilder().create().add("prediction_id", predictionId.toString());
 
@@ -143,7 +187,7 @@ public class NetworkingManager {
                 if (error != null) {
                     callback.completionHandler(null, error);
                 } else
-                    getChallengeForPrediction(predictionId, callback);
+                    getPrediction(predictionId, callback);
             }
         });
     }
@@ -324,7 +368,7 @@ public class NetworkingManager {
         builder.addListener(new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                User u = new Gson().fromJson(s, User.class);
+                User u = GsonF.actory().fromJson(s, User.class);
                 callback.completionHandler(u, null);
             }
         });
@@ -344,7 +388,7 @@ public class NetworkingManager {
         builder.addListener(new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                Group g = new Gson().fromJson(s, Group.class);
+                Group g = GsonF.actory().fromJson(s, Group.class);
                 callback.completionHandler(g, null);
             }
         });
@@ -430,6 +474,29 @@ public class NetworkingManager {
         executeRequest(Request.Method.POST, url, obj, Member.class, callback);
     }
 
+    public void sharePredictionOnFacebook(final Prediction prediction, final NetworkCallback<BaseModel> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        builder.add("prediction_id", prediction.id.toString());
+        String url = buildUrl("facebook.json", true, builder);
+
+        executeRequest(Request.Method.POST, url, null, BaseModel.class, callback);
+    }
+
+    public void sharePredictionOnTwitter(final Prediction prediction, final NetworkCallback<BaseModel> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        builder.add("prediction_id", prediction.id.toString());
+        String url = buildUrl("twitter.json", true, builder);
+
+        executeRequest(Request.Method.POST, url, null, BaseModel.class, callback);
+    }
+
+    public void loginAsGuest(final NetworkCallback<LoginResponse> callback) {
+        String url = buildUrl("users.json", false, null);
+
+        executeRequest(Request.Method.POST, url, null, LoginResponse.class, callback);
+    }
+
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
@@ -449,11 +516,9 @@ public class NetworkingManager {
             if (paramBuilder == null)
                 paramBuilder = ParamBuilder.create();
             String authToken = getAuthToken();
-            if (authToken == null) {
-                throw new RuntimeException("No auth token found");
+            if (authToken != null) {
+                paramBuilder.add("auth_token", authToken);
             }
-
-            paramBuilder.add("auth_token", authToken);
         }
 
         String url = baseUrl + path;
@@ -468,30 +533,38 @@ public class NetworkingManager {
         return sharedPrefManager.getSavedAuthtoken();
     }
 
-
-    private <T extends BaseModel> void executeRequest (int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback) {
-
+    private <T extends BaseModel> void executeRequestWithTimeout(int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback, Integer timeout) {
         Logger.log("Executing request" + url);
         Response.Listener<T> responseListener = new Response.Listener<T>() {
             @Override
             public void onResponse(T t) {
-                callback.completionHandler(t, null);
+                if (callback != null)
+                    callback.completionHandler(t, null);
             }
         };
 
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
+
+                if (checkAndHandleOutdated(volleyError))
+                    return;
+
+                if (callback != null)
+                    callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
         };
 
-        GsonRequest<T> request = new GsonRequest<T>(httpMethod, url, responseClass, getHeaders(), responseListener, errorListener);
+        GsonRequest<T> request = new GsonRequest<T>(httpMethod, url, responseClass, getHeaders(), responseListener, errorListener, timeout);
 
         if (payload != null)
             request.setPayload(payload);
 
         mRequestQueue.add(request);
+    }
+
+    private <T extends BaseModel> void executeRequest (int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback) {
+        executeRequestWithTimeout(httpMethod, url, payload, responseClass, callback, 15);
     }
 
     private <T extends BaseModel> void executeListRequest (int httpMethod, final String url, final BaseModel payload, final TypeToken token, final NetworkListCallback<T> callback) {
@@ -500,14 +573,18 @@ public class NetworkingManager {
         Response.Listener<ArrayList<T>> responseListener = new Response.Listener<ArrayList<T>>() {
             @Override
             public void onResponse(ArrayList<T> response) {
-                callback.completionHandler(response, null);
+                if (callback != null)
+                    callback.completionHandler(response, null);
             }
         };
 
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
+                if (checkAndHandleOutdated(volleyError))
+                    return;
+                if (callback != null)
+                    callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
             }
         };
 
@@ -517,5 +594,16 @@ public class NetworkingManager {
             request.setPayload(payload);
 
         mRequestQueue.add(request);
+    }
+
+    private boolean checkAndHandleOutdated(VolleyError error) {
+//        if (error.networkResponse.statusCode == 410) {
+//            bus.post(new AppOutdatedEvent());
+//            return true;
+//        }
+//
+//        return false;
+
+        return false;
     }
 }

@@ -22,9 +22,12 @@ public class ServerError extends BaseModel {
     public Map<String, String> headers;
     public ArrayList<FieldError> serverErrors = new ArrayList<FieldError>();
     public Throwable cause;
+    public String errorString;
+    public VolleyError underlyingError;
 
     private ServerError(VolleyError error) {
         try {
+            this.underlyingError = error;
             this.statusCode = error.networkResponse.statusCode;
             this.headers = error.networkResponse.headers;
             this.cause = error.getCause();
@@ -43,12 +46,21 @@ public class ServerError extends BaseModel {
             Logger.log(error.toString());
             return new ServerError(error);
         }
+    }
 
+    public ServerError() {
+
+    }
+    public ServerError(String errorString) {
+        this.errorString = errorString;
     }
 
     public String getDescription() {
+        if (errorString != null)
+            return errorString;
+
         if (serverErrors == null || serverErrors.size() == 0)
-            return "Unkown error. Please try again later.";
+            return "Unknown error. Please try again later.";
 
         FieldError firstError = serverErrors.get(0);
         return WordUtils.capitalizeFully(firstError.field) + " " + firstError.reasons.get(0);
@@ -68,6 +80,19 @@ public class ServerError extends BaseModel {
             return;
 
         JSONObject errors = obj.getJSONObject("errors");
+
+        if (errors == null)
+            return;
+
+        if (errors.has("user_facing")) {
+            JSONArray reasons = errors.getJSONArray("user_facing");
+            if (reasons.length() > 0) {
+                errorString = reasons.getString(0);
+            } else {
+                errorString = "An unknown error occurred, please try again later.";
+            }
+            return;
+        }
 
         Iterator<?> keys = errors.keys();
         while( keys.hasNext() ){

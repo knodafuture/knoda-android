@@ -2,6 +2,7 @@ package views.details;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,25 +14,31 @@ import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import adapters.CommentAdapter;
 import adapters.PagingAdapter;
 import adapters.TallyAdapter;
 import butterknife.OnClick;
 import factories.GsonF;
-import models.Challenge;
+import models.BaseModel;
 import models.Comment;
 import models.Prediction;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.NewCommentEvent;
+import pubsub.PredictionChangeEvent;
 import views.core.BaseListFragment;
+import views.core.MainActivity;
+import views.core.Spinner;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
@@ -46,6 +53,12 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     private DetailsActionbar actionbar;
 
     private Prediction prediction;
+
+    @Subscribe
+    public void newComment(NewCommentEvent event) {
+        prediction.commentCount++;
+        headerview.setPrediction(prediction);
+    }
 
     public static DetailsFragment newInstance(Prediction prediction) {
         DetailsFragment fragment = new DetailsFragment();
@@ -68,6 +81,14 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.prediction = GsonF.actory().fromJson(getArguments().getString("PREDICTION"), Prediction.class);
+        bus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        bus.post(new PredictionChangeEvent(prediction));
     }
 
     @Override
@@ -190,34 +211,94 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onShare() {
         if (prediction.hasGroup()) {
             errorReporter.showError("Hold on, this is a private group prediction. You won't be able to share it with the world.");
-        } else {
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
-            String suffix = " #knoda " + prediction.shortUrl;
-            int predictionLength = 139 - suffix.length();
-            String text = "";
-            if (prediction.body.length() > predictionLength) {
-                text = prediction.body.substring(0, predictionLength - 3) + "..." + suffix;
-            } else {
-                text = prediction.body + suffix;
-            }
-            share.putExtra(Intent.EXTRA_TEXT, text);
-            startActivity(Intent.createChooser(share, "How would you like to share?"));
+            return;
         }
+
+        if (userManager.getUser().getTwitterAccount() == null && userManager.getUser().getFacebookAccount() == null) {
+            showDefaultShare();
+            return;
+        }
+
+        List<String> listItems = new ArrayList<String>();
+
+
+        if (userManager.getUser().getTwitterAccount() != null) {
+            listItems.add("Twitter");
+        }
+        if (userManager.getUser().getFacebookAccount() != null) {
+            listItems.add("Facebook");
+        }
+
+        listItems.add("Other");
+
+        final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("How would you like to share?");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == items.length - 1) {
+                    showDefaultShare();
+                } else if (items[i].equals("Twitter")) {
+                    twitterShare();
+                } else if (items[i].equals("Facebook")) {
+                    facebookShare();
+                }
+            }
+        });
+        builder.create().show();
+
+
+    }
+
+    public void twitterShare() {
+        spinner.show();
+        networkingManager.sharePredictionOnTwitter(prediction, new NetworkCallback<BaseModel>() {
+            @Override
+            public void completionHandler(BaseModel object, ServerError error) {
+                spinner.hide();
+            }
+        });
+    }
+
+    public void facebookShare() {
+        spinner.show();
+        networkingManager.sharePredictionOnFacebook(prediction, new NetworkCallback<BaseModel>() {
+            @Override
+            public void completionHandler(BaseModel object, ServerError error) {
+                spinner.hide();
+            }
+        });
+    }
+
+    public void showDefaultShare() {
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        String suffix = " via @KNODAfuture " + prediction.shortUrl;
+        int predictionLength = 139 - suffix.length();
+        String text = "";
+        if (prediction.body.length() > predictionLength) {
+            text = prediction.body.substring(0, predictionLength - 3) + "..." + suffix;
+        } else {
+            text = prediction.body + suffix;
+        }
+        share.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(Intent.createChooser(share, "How would you like to share?"));
     }
 
     @Override
     public void onAgree() {
         spinner.show();
 
-        networkingManager.agreeWithPrediction(prediction.id, new NetworkCallback<Challenge>() {
+        networkingManager.agreeWithPrediction(prediction.id, new NetworkCallback<Prediction>() {
             @Override
-            public void completionHandler(Challenge object, ServerError error) {
+            public void completionHandler(Prediction object, ServerError error) {
                 spinner.hide();
                 if (error != null)
                     return;
 
-                prediction.challenge = object;
+                prediction = object;
                 headerview.setPrediction(prediction);
             }
         });
@@ -228,15 +309,15 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     public void onDisagree() {
         spinner.show();
 
-        networkingManager.disagreeWithPrediction(prediction.id, new NetworkCallback<Challenge>() {
+        networkingManager.disagreeWithPrediction(prediction.id, new NetworkCallback<Prediction>() {
             @Override
-            public void completionHandler(Challenge object, ServerError error) {
+            public void completionHandler(Prediction object, ServerError error) {
                 spinner.hide();
 
                 if (error != null)
                     return;
 
-                prediction.challenge = object;
+                prediction = object;
                 headerview.setPrediction(prediction);
             }
         });
@@ -306,37 +387,41 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), updateResolutionDate(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         DateTime dt = new DateTime();
+        dialog.getDatePicker().setTag(false);
         dialog.getDatePicker().setMinDate(dt.plusDays(1).getMillis());
         dialog.setTitle("When will you know?");
         dialog.show();
+        FlurryAgent.logEvent("UNFINISHED_BUTTON_TAPPED");
 
     }
 
-    private DatePickerDialog.OnDateSetListener updateResolutionDate() {
-
+    private final DatePickerDialog.OnDateSetListener updateResolutionDate() {
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                //prevent from being called twice
+                if(datePicker.getTag()!=null && (Boolean)datePicker.getTag()==true){
+                    return;
+                }
+                System.out.println("date changed");
                 Prediction update = new Prediction();
                 update.id = prediction.id;
+                datePicker.setTag(true);
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day, 12, 0);
                 update.resolutionDate = new DateTime(calendar.getTime());
-
                 spinner.show();
 
                 networkingManager.updatePrediction(update, new NetworkCallback<Prediction>() {
                     @Override
                     public void completionHandler(Prediction object, ServerError error) {
-                        spinner.show();
-
+                        spinner.hide();
                         if (error != null)
                             errorReporter.showError(error);
                         else {
                             prediction = object;
                             headerview.setPrediction(prediction);
-                            spinner.hide();
                         }
                     }
                 });
