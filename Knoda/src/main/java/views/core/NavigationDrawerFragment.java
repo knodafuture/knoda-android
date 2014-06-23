@@ -2,9 +2,13 @@ package views.core;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -319,20 +323,24 @@ public class NavigationDrawerFragment extends Fragment {
     };
 
     public void refreshActivity() {
-        try {
-            networkingManager.getUnseenActivityItems(new NetworkListCallback<ActivityItem>() {
-                @Override
-                public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
-                    if (error != null || object == null)
-                        adapter.setAlertsCount(0);
-                    else
-                        adapter.setAlertsCount(object.size());
-                    handler.postDelayed(activityRefreshRunnable, activityRefreshInterval);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
+        NetworkInfo activeNetwork = ((MainActivity) getActivity()).connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            try {
+                networkingManager.getUnseenActivityItems(new NetworkListCallback<ActivityItem>() {
+                    @Override
+                    public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
+                        if (error != null || object == null)
+                            adapter.setAlertsCount(0);
+                        else
+                            adapter.setAlertsCount(object.size());
+                        handler.postDelayed(activityRefreshRunnable, activityRefreshInterval);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     private Runnable userRefreshRunnable = new Runnable() {
@@ -341,16 +349,44 @@ public class NavigationDrawerFragment extends Fragment {
             refreshUser();
         }
     };
+    private boolean userDialogShown = false;
 
     public void refreshUser() {
-        adapter.setUser(userManager.getUser());
-        refreshStats(userManager.getUser());
-        userManager.refreshUser(new NetworkCallback<User>() {
-            @Override
-            public void completionHandler(User object, ServerError error) {
-                handler.postDelayed(userRefreshRunnable, userRefreshInterval);
+        NetworkInfo activeNetwork = ((MainActivity) getActivity()).connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            adapter.setUser(userManager.getUser());
+            refreshStats(userManager.getUser());
+            userManager.refreshUser(new NetworkCallback<User>() {
+                @Override
+                public void completionHandler(User object, ServerError error) {
+                    handler.postDelayed(userRefreshRunnable, userRefreshInterval);
+                }
+            });
+        } else {
+            if (!userDialogShown) {
+                userDialogShown = true;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Network Connectivity")
+                        .setMessage("You have lost internet connectivity. Retry connecting?")
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                userDialogShown = false;
+                            }
+                        })
+                        .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                userDialogShown = false;
+                                refreshActivity();
+                                refreshUser();
+                            }
+                        })
+                        .create().show();
             }
-        });
+
+        }
+
     }
 
     private void refreshStats(User user) {
