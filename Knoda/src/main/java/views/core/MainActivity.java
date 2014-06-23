@@ -287,7 +287,7 @@ public class MainActivity extends BaseActivity
         if (screen == null)
             return;
 
-        onNavigationDrawerItemSelected(screen);
+        navigationDrawerFragment.selectItem(position.ordinal());
     }
 
     private KnodaScreen findScreen(KnodaScreen.KnodaScreenOrder position) {

@@ -11,7 +11,6 @@ import com.flurry.android.FlurryAgent;
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
 import listeners.PredictionSwipeListener;
-import models.KnodaScreen;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
@@ -122,16 +121,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
             }
         });
         FlurryAgent.logEvent("Swiped_Disagree");
-    }
-
-    @Override
-    public void onProfileTapped(final PredictionListCell cell) {
-        if (cell.prediction.userId.equals(userManager.getUser().id)) {
-            ((MainActivity) getActivity()).showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
-        } else {
-            AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(cell.prediction.userId);
-            pushFragment(fragment);
-        }
     }
 
     @Override

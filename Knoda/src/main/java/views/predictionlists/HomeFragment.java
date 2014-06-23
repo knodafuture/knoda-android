@@ -96,7 +96,7 @@ public class HomeFragment extends BasePredictionListFragment {
         animHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (getActivity() == null)
+                if (getActivity() == null || getView() == null)
                     return;
                 sharedPrefManager.setHaveShownPredictionWalkthrough(true);
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService

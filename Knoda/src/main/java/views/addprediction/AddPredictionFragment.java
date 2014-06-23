@@ -211,6 +211,8 @@ public class AddPredictionFragment extends BaseFragment {
     }
 
     private void buildTopicsDialog() {
+        if (getActivity() == null)
+            return;
         String[] items = new String[tags.size()];
 
         for (int i = 0; i < tags.size(); i++) {
