@@ -1,18 +1,14 @@
 package views.login;
 
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,6 +25,7 @@ import models.ServerError;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.LoginFlowDoneEvent;
 import pubsub.ScreenCaptureEvent;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
@@ -40,10 +37,6 @@ import views.core.MainActivity;
  * create an instance of this fragment.
  */
 public class WelcomeFragment extends BaseDialogFragment {
-
-    @InjectView(R.id.topview)
-    RelativeLayout topview;
-
     @OnClick(R.id.signup_terms_button)
     void onTerms() {
         openUrl(NetworkingManager.termsOfServiceUrl);
@@ -73,12 +66,12 @@ public class WelcomeFragment extends BaseDialogFragment {
 
     @OnClick(R.id.wall_close)
     void onClose() {
-        dismissFade();
+        cancel();
     }
 
     @OnClick(R.id.wall_later)
     void onLater() {
-        dismissFade();
+        cancel();
     }
 
     @OnClick(R.id.wall_login)
@@ -91,32 +84,23 @@ public class WelcomeFragment extends BaseDialogFragment {
     String wtext = "";
     String wprompt = "";
 
-
+    @InjectView(R.id.terms_container)
+    RelativeLayout termsContainer;
 
     public static boolean requestingTwitterLogin;
 
-    public static WelcomeFragment newInstance() {
+    public static WelcomeFragment newInstance(String titleMessage, String detailMessage) {
         WelcomeFragment fragment = new WelcomeFragment();
+        Bundle b= new Bundle();
+        b.putCharSequence("welcometext",titleMessage);
+        b.putCharSequence("welcomeprompt", detailMessage);
+        fragment.setArguments(b);
         return fragment;
     }
 
     public WelcomeFragment() {
         // Required empty public constructor
     }
-
-    public void dismissFade(){
-        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
-        topview.startAnimation(fadeOutAnimation);
-        Handler h=new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismiss();
-            }
-        },300);
-    }
-
-
     @Subscribe
     public void screenCapture(final ScreenCaptureEvent event) {
         updateBackground();
@@ -163,12 +147,18 @@ public class WelcomeFragment extends BaseDialogFragment {
             welcomeText.setText(wtext);
         if(!wprompt.equals(""))
             welcomePrompt.setText(wprompt);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (sharedPrefManager.agreedToTerms()) {
+            termsContainer.setVisibility(View.GONE);
+        } else {
+            sharedPrefManager.setAgreedToTerms(true);
+        }
     }
 
     public void openUrl(String url) {
@@ -195,15 +185,16 @@ public class WelcomeFragment extends BaseDialogFragment {
                         if (error != null) {
                             errorReporter.showError(error);
                         } else {
-                            finish();
                             DateTime curTime = new DateTime();
                             DateTime newTime = curTime.minusMinutes(1);
                             int i = (int) (newTime.getMillis() / 1000);
                             int j = (int) (userManager.user.created_at.getMillis() / 1000);
                             if (i <= j) {
                                 FlurryAgent.logEvent("SIGNUP_FACEBOOK");
+                                finish(true);
                             } else {
                                 FlurryAgent.logEvent("LOGIN_FACEBOOK");
+                                finish(false);
                             }
                         }
                     }
@@ -244,7 +235,6 @@ public class WelcomeFragment extends BaseDialogFragment {
                             errorReporter.showError(error);
                             return;
                         }
-                        finish();
 
                         DateTime curTime = new DateTime();
                         DateTime newTime = curTime.minusMinutes(1);
@@ -252,8 +242,10 @@ public class WelcomeFragment extends BaseDialogFragment {
                         int j = (int) (userManager.user.created_at.getMillis() / 1000);
                         if (j >= i) {
                             FlurryAgent.logEvent("SIGNUP_TWITTER");
+                            finish(true);
                         } else {
                             FlurryAgent.logEvent("LOGIN_TWITTER");
+                            finish(false);
                         }
                     }
                 });
@@ -262,10 +254,15 @@ public class WelcomeFragment extends BaseDialogFragment {
 
     }
 
-    public void finish() {
+    public void finish(boolean shouldConfirm) {
         dismiss();
         ((MainActivity) getActivity()).doLogin();
         SignupConfirmFragment f = SignupConfirmFragment.newInstance();
-        f.show(getActivity().getFragmentManager(), "confirm");
+        if (shouldConfirm)
+            f.show(getActivity().getFragmentManager(), "confirm");
+        else {
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
+        }
     }
 }

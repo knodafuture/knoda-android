@@ -1,6 +1,7 @@
 package views.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -90,10 +91,17 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                         spinner.show();
                         networkingManager.getPrediction(Integer.parseInt(activityItem.target), new NetworkCallback<Prediction>() {
                             @Override
-                            public void completionHandler(Prediction prediction, ServerError error) {
+                            public void completionHandler(final Prediction prediction, ServerError error) {
                                 spinner.hide();
-                                DetailsFragment fragment = DetailsFragment.newInstance(prediction);
-                                pushFragment(fragment);
+                                final Handler h = new Handler();
+                                h.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        DetailsFragment fragment = DetailsFragment.newInstance(prediction);
+                                        pushFragment(fragment);
+                                    }
+                                }, 50);
+
                             }
                         });
                     }

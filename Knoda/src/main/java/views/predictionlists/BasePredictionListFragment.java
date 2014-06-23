@@ -1,21 +1,12 @@
 package views.predictionlists;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
-import com.knoda.knoda.R;
 
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
@@ -40,7 +31,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity)getActivity()).currentFragmentObject=this;
     }
 
     @Override
@@ -92,52 +82,11 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
 
     }
 
-    private void hideTour() {
-        if (listView.getTag() != null) {
-            final RelativeLayout walkthrough = ((RelativeLayout) listView.getTag());
-            listView.setTag(null);
-            walkthrough.setVisibility(View.INVISIBLE);
-            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
-            walkthrough.startAnimation(fadeOutAnimation);
 
-            final Handler animHandler = new Handler();
-            animHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ViewGroup.LayoutParams lp = walkthrough.getLayoutParams();
-                    lp.height = 0;
-                    walkthrough.setLayoutParams(lp);
-                    animHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
-                                    (Context.LAYOUT_INFLATER_SERVICE);
-                            View v = inflater.inflate(R.layout.view_predict_walkthrough, null);
-                            Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeingrow);
-                            ((ViewGroup) getView()).addView(v);
-                            v.startAnimation(fadeInAnimation);
-                            listView.setTag(v);
-                            v.setOnTouchListener(new View.OnTouchListener() {
-                                @Override
-                                public boolean onTouch(View v, MotionEvent event) {
-                                    Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
-                                    v.startAnimation(fadeOutAnimation);
-                                    v.setVisibility(View.INVISIBLE);
-                                    listView.setTag(null);
-                                    return true;
-                                }
-                            });
-                        }
-                    }, 750);
-                }
-            }, 250);
-        }
-    }
 
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
-        hideTour();
 
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -156,22 +105,8 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
-        if(listView.getTag()!=null){
-            View walkthrough = ((View) listView.getTag());
-            ViewGroup.LayoutParams lp = walkthrough.getLayoutParams();
-            lp.height = 0;
-            walkthrough.setLayoutParams(lp);
-            ((View)listView.getTag()).setVisibility(View.INVISIBLE);
-            listView.setTag(null);
-        }
-    }
-
-    @Override
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
-        hideTour();
 
         networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override

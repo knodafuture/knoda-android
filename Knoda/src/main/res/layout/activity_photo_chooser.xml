@@ -4,8 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="views.avatar.UserAvatarChooserActivity"
-    tools:ignore="MergeRootFrame"
-    android:background="@color/knodaLightGreen">
+    tools:ignore="MergeRootFrame">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/knodaLightGreenTransparent"/>
 
     <ImageView
         android:id="@+id/photo_chooser_imageview"

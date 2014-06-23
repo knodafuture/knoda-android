@@ -1,14 +1,10 @@
 package views.login;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
 import com.knoda.knoda.R;
 
@@ -21,9 +17,6 @@ import networking.NetworkCallback;
 import views.core.BaseDialogFragment;
 
 public class ForgotPasswordFragment extends BaseDialogFragment {
-    @InjectView(R.id.topview)
-    RelativeLayout topview;
-
     @InjectView(R.id.forgot_username_edittext)
     EditText editText;
 
@@ -32,19 +25,15 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
         return fragment;
     }
-    public ForgotPasswordFragment() {}
-
-    public void dismissFade(){
-        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
-        topview.startAnimation(fadeOutAnimation);
-        Handler h=new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismiss();
-            }
-        },300);
+    @OnClick(R.id.submit_button) void onSubmitClick(){
+        submit();
     }
+    @OnClick(R.id.wall_login) void onLoginClick(){
+        LoginFragment f = LoginFragment.newInstance();
+        f.show(getFragmentManager(), "login");
+        dismissFade();
+    }
+    public ForgotPasswordFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +53,7 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
 
     public void submit() {
 

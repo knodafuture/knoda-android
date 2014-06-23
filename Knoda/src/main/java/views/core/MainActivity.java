@@ -53,6 +53,7 @@ import models.ServerError;
 import models.Setting;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
+import pubsub.ReloadListsEvent;
 import pubsub.ScreenCaptureEvent;
 import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
@@ -86,11 +87,8 @@ public class MainActivity extends BaseActivity
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
-    private Menu actionbarMenu;
 
     public String currentFragment="";
-    public Fragment currentFragmentObject;
-
     public HashMap<String,ArrayList<Setting>> settings;
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
@@ -136,7 +134,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        actionbarMenu=menu;
         if (navigationDrawerFragment != null && !navigationDrawerFragment.isDrawerOpen()) {
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
@@ -194,13 +191,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onNavigationDrawerItemSelected(KnodaScreen screen) {
-
-
-
-        Fragment fragment;
-
-        fragment = getFragment(screen);
-
+        Fragment fragment = getFragment(screen);
         if (!checkFragment(fragment))
             return;
 
@@ -277,9 +268,17 @@ public class MainActivity extends BaseActivity
         if (!userManager.getUser().guestMode)
             return true;
 
-        if (fragment instanceof AddGroupFragment || fragment instanceof CreateCommentFragment || fragment instanceof AddPredictionFragment) {
-            showLogin();
-            navigationDrawerFragment.resetDrawerUISelection();
+        if (fragment instanceof AddGroupFragment) {
+            showLogin("Hey now!", "You need to create an account to join and create groups.");
+            return false;
+        } else if (fragment instanceof AddPredictionFragment) {
+            showLogin("Oh Snap!", "You need to create an account to make predictions.");
+            return false;
+        } else if (fragment instanceof CreateCommentFragment) {
+            showLogin("Whoa!", "To comment on predictions, you need to create an account.");
+            return false;
+        } else if (fragment instanceof MyProfileFragment) {
+            showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
             return false;
         }
 
@@ -323,24 +322,16 @@ public class MainActivity extends BaseActivity
             }
         });
     }
-    public void showProfileLogin() {
 
+    public void showLogin(String titleMessage, String detailMessage) {
         captureScreen();
-        WelcomeFragment f = WelcomeFragment.newInstance();
-        Bundle b= new Bundle();
-        b.putCharSequence("welcometext","Whoa there cowboy");
-        b.putCharSequence("welcomeprompt","You're just a guest.\nSign up with Knoda to unlock your profile");
-        f.setArguments(b);
+        WelcomeFragment f = WelcomeFragment.newInstance(titleMessage, detailMessage);
+
         f.show(getFragmentManager().beginTransaction(), "welcome");
+        navigationDrawerFragment.resetDrawerUISelection();
+
     }
 
-    public void showLogin() {
-
-        captureScreen();
-
-        WelcomeFragment f = WelcomeFragment.newInstance();
-        f.show(getFragmentManager().beginTransaction(), "welcome");
-    }
     public void launch() {
         registerGcm();
         navigationDrawerFragment.setDrawerToggleEnabled(true);
@@ -385,8 +376,7 @@ public class MainActivity extends BaseActivity
             onAddPrediction();
 
         if (userManager.getUser().guestMode) {
-
-            showLogin();
+            showLogin(null, null);
         } else if (userManager.getUser().avatar == null) {
             UserAvatarChooserFragment f = new UserAvatarChooserFragment();
             f.show(getFragmentManager(), "avatar");
@@ -527,26 +517,27 @@ public class MainActivity extends BaseActivity
 
     public void doLogin() {
         navigationDrawerFragment.refreshUser();
+        bus.post(new ReloadListsEvent());
     }
 
     private void captureScreen() {
         final View v = getWindow().getDecorView();
 
-        v.post(new Runnable() {
+        v.postDelayed(new Runnable() {
             @Override
             public void run() {
                 v.setDrawingCacheEnabled(true);
 
                 Bitmap bmap = v.getDrawingCache();
 
-                int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop(); /* skip status bar in screenshot */
+                int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
                 Bitmap b = Bitmap.createBitmap(bmap, 0, contentViewTop, bmap.getWidth(), bmap.getHeight() - contentViewTop, null, true);
 
                 v.setDrawingCacheEnabled(false);
 
                 saveImage(b);
             }
-        });
+        }, 500);
 
     }
     protected void saveImage(Bitmap b) {
@@ -562,10 +553,10 @@ public class MainActivity extends BaseActivity
                 if (b == null)
                     return null;
 
-                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
-                b = blur.blur(15, b);
-                if (b == null)
-                    return null;
+//                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
+//                b = blur.blur(15, b);
+//                if (b == null)
+//                    return null;
 
                 File saved_image_file = new File(
                         Environment.getExternalStorageDirectory()
@@ -574,7 +565,7 @@ public class MainActivity extends BaseActivity
                     saved_image_file.delete();
                 try {
                     FileOutputStream out = new FileOutputStream(saved_image_file);
-                    b.compress(Bitmap.CompressFormat.JPEG, 50, out);
+                    b.compress(Bitmap.CompressFormat.JPEG, 10, out);
                     out.flush();
                     out.close();
                     return saved_image_file;

@@ -3,6 +3,7 @@ package views.core;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,8 +11,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 
+import com.knoda.knoda.R;
 import com.squareup.otto.Bus;
 
 import java.io.File;
@@ -24,7 +28,9 @@ import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.TwitterManager;
 import managers.UserManager;
+import pubsub.LoginFlowDoneEvent;
 import unsorted.ErrorReporter;
+import unsorted.Logger;
 
 /**
  * Created by nick on 6/9/14.
@@ -58,9 +64,31 @@ public class BaseDialogFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
-        //updateBackground();
     }
 
+    @Override
+    public void onCancel(DialogInterface dialogInterface) {
+        super.onCancel(dialogInterface);
+        sharedPrefManager.setShouldShowVotingWalkthrough(true);
+        bus.post(new LoginFlowDoneEvent());
+        Logger.log("CANCEL");
+    }
+
+    public void cancel() {
+        getDialog().cancel();
+    }
+
+    public void dismissFade(){
+        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
+        getView().startAnimation(fadeOutAnimation);
+        Handler h=new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismiss();
+            }
+        },300);
+    }
 
     public void hideKeyboard() {
         try {
@@ -104,8 +132,6 @@ public class BaseDialogFragment extends DialogFragment {
         ((MainActivity) getActivity()).setActionBarTitle(title);
     }
 
-
-
     public void updateBackground() {
 
         if (getView() == null) {
@@ -124,6 +150,7 @@ public class BaseDialogFragment extends DialogFragment {
                                     + "/blur_background.png"
                     );
                     BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 8;
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
 

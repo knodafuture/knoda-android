@@ -29,6 +29,9 @@ public class SharedPrefManager {
     private static final String SAVED_SOCIAL_ACCOUNT_KEY = "SOCIAL_ACCOUNT_SAVED";
     private static final String SAVED_PREDICTION_IN_PROGESS_KEY = "PREDICTION_IN_PROGRESS";
     private static final String SAVED_GUEST_MODE_KEY = "GUEST_MODE_KEY";
+    private static final String SAVED_PREDICTION_WALKTHROUGH_KEY = "SAVED_PREDICTION_WALKTHROUGH";
+    private static final String SAVED_VOTING_WALKTHROUGH_KEY = "SAVED_VOTING_WALKTHROUGHT";
+    private static final String SAVED_AGREED_TO_TERMS_KEYS = "SAVED_AGREEED_TO_TERMS_KEY";
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -168,5 +171,32 @@ public class SharedPrefManager {
         return GsonF.actory().fromJson(predictionJson, Prediction.class);
     }
 
+    public boolean haveShownPredictionWalkthrough() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getBoolean(SAVED_PREDICTION_WALKTHROUGH_KEY, false);
+    }
+
+    public void setHaveShownPredictionWalkthrough(boolean haveShownPredictionWalkthrough) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putBoolean(SAVED_PREDICTION_WALKTHROUGH_KEY, haveShownPredictionWalkthrough).commit();
+    }
+
+    public boolean shouldShowVotingWalkthrough() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getBoolean(SAVED_VOTING_WALKTHROUGH_KEY, false);
+    }
+
+    public void setShouldShowVotingWalkthrough(boolean shouldShowVotingWalkthrough) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putBoolean(SAVED_VOTING_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
+    }
+
+    public boolean agreedToTerms() {
+        return getSP().getBoolean(SAVED_AGREED_TO_TERMS_KEYS, false);
+    }
+
+    public void setAgreedToTerms(boolean agreedToTerms) {
+        getSP().edit().putBoolean(SAVED_AGREED_TO_TERMS_KEYS, agreedToTerms).commit();
+    }
 }
 

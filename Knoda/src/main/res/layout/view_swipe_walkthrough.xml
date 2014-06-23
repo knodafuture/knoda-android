@@ -50,7 +50,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:gravity="center"
-                    android:text="Swipe right to agree or swipe left to disagree with a prediction.\nGive it a try!"
+                    android:text="Swipe right to agree or swipe left\n to disagree with a prediction.\nGive it a try!"
                     android:textColor="#FFF" />
             </LinearLayout>
             </LinearLayout>

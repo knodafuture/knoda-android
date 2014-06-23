@@ -4,21 +4,16 @@ package views.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
-import com.squareup.otto.Subscribe;
 import com.tapjoy.TapjoyConnect;
 
 import org.joda.time.DateTime;
@@ -29,21 +24,17 @@ import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;
 import helpers.TapjoyPPA;
-import managers.NetworkingManager;
 import models.ServerError;
 import models.SignUpRequest;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
-import pubsub.ScreenCaptureEvent;
+import pubsub.LoginFlowDoneEvent;
 import views.avatar.UserAvatarChooserFragment;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
 public class SignUpFragment extends BaseDialogFragment {
-    @InjectView(R.id.topview)
-    RelativeLayout topview;
-
     @InjectView(R.id.signup_email_edittext)
     EditText emailField;
 
@@ -52,10 +43,6 @@ public class SignUpFragment extends BaseDialogFragment {
 
     @InjectView(R.id.signup_username_edittext)
     EditText usernameField;
-
-    @OnClick(R.id.signup_terms_button) void onTerms() {openUrl(NetworkingManager.termsOfServiceUrl);}
-
-    @OnClick(R.id.signup_privacy_button) void onPP() {openUrl(NetworkingManager.privacyPolicyUrl);}
 
     @OnClick(R.id.welcome_login_facebook) void onFB() {doFacebookLogin();}
 
@@ -80,39 +67,26 @@ public class SignUpFragment extends BaseDialogFragment {
     public SignUpFragment() {
     }
 
-    public void dismissFade(){
-        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
-        topview.startAnimation(fadeOutAnimation);
-        Handler h=new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dismiss();
-            }
-        },300);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().getActionBar().show();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View inflate =inflater.inflate(R.layout.fragment_sign_up, container, false);
         updateBackground();
-        return inflater.inflate(R.layout.fragment_sign_up, container, false);
+        return inflate;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupListeners();
-        emailField.requestFocus();
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         InputFilter[] filterArray = new InputFilter[2];
         filterArray[0] = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -126,6 +100,7 @@ public class SignUpFragment extends BaseDialogFragment {
         };
         filterArray[1] = new InputFilter.LengthFilter(15);
         usernameField.setFilters(filterArray);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
 
@@ -142,13 +117,18 @@ public class SignUpFragment extends BaseDialogFragment {
         });
     }
 
-    public void finish() {
+    public void finish(boolean shouldConfirm) {
         dismiss();
         ((MainActivity)getActivity()).doLogin();
         SignupConfirmFragment f = SignupConfirmFragment.newInstance();
-        f.show(getActivity().getFragmentManager(), "confirm");
-    }
 
+        if (shouldConfirm)
+            f.show(getActivity().getFragmentManager(), "confirm");
+        else {
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
+        }
+    }
 
     @Override
     public void onPause() {
@@ -229,15 +209,16 @@ public class SignUpFragment extends BaseDialogFragment {
                         if (error != null) {
                             errorReporter.showError(error);
                         } else {
-                            finish();
                             DateTime curTime = new DateTime();
                             DateTime newTime = curTime.minusMinutes(1);
                             int i = (int) (newTime.getMillis()/1000);
                             int j = (int) (userManager.user.created_at.getMillis()/1000);
                             if(i <= j) {
                                 FlurryAgent.logEvent("SIGNUP_FACEBOOK");
+                                finish(true);
                             } else {
                                 FlurryAgent.logEvent("LOGIN_FACEBOOK");
+                                finish(false);
                             }
                         }
                     }
@@ -279,7 +260,6 @@ public class SignUpFragment extends BaseDialogFragment {
                             errorReporter.showError(error);
                             return;
                         }
-                        finish();
 
                         DateTime curTime = new DateTime();
                         DateTime newTime = curTime.minusMinutes(1);
@@ -287,8 +267,10 @@ public class SignUpFragment extends BaseDialogFragment {
                         int j = (int) (userManager.user.created_at.getMillis()/1000);
                         if(j >= i) {
                             FlurryAgent.logEvent("SIGNUP_TWITTER");
+                            finish(true);
                         } else {
                             FlurryAgent.logEvent("LOGIN_TWITTER");
+                            finish(false);
                         }
                     }
                 });
