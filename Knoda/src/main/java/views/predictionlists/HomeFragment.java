@@ -92,11 +92,13 @@ public class HomeFragment extends BasePredictionListFragment {
     }
 
     private void showPredictionWalkthrough() {
-        sharedPrefManager.setHaveShownPredictionWalkthrough(true);
         final Handler animHandler = new Handler();
         animHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (getActivity() == null)
+                    return;
+                sharedPrefManager.setHaveShownPredictionWalkthrough(true);
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
                         (Context.LAYOUT_INFLATER_SERVICE);
                 View v = inflater.inflate(R.layout.view_predict_walkthrough, null);

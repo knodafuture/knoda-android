@@ -28,7 +28,6 @@ public class SplashActivity extends BaseActivity {
         sharedPrefManager.setShouldShowVotingWalkthrough(false);
         setContentView(R.layout.activity_splash);
         ButterKnife.inject(this);
-
     }
 
 

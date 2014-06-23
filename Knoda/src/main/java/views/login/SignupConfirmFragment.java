@@ -28,7 +28,6 @@ public class SignupConfirmFragment extends BaseDialogFragment {
 
     @OnClick(R.id.confirm_start_predicting_button) void onClick() {
         try{
-            sharedPrefManager.setFirstLaunch(true);
             sharedPrefManager.setShouldShowVotingWalkthrough(true);
             bus.post(new LoginFlowDoneEvent());
         }catch (Exception e){
