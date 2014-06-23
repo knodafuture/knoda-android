@@ -368,10 +368,13 @@ public class NavigationDrawerFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Network Connectivity")
                         .setMessage("You have lost internet connectivity. Retry connecting?")
+                        .setCancelable(false)
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 userDialogShown = false;
+                                handler.postDelayed(userRefreshRunnable, userRefreshInterval);
+                                handler.postDelayed(activityRefreshRunnable, activityRefreshInterval);
                             }
                         })
                         .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
