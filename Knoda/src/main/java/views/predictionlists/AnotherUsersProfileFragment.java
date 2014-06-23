@@ -67,9 +67,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         networkingManager.getPredictionsForUserAfter(userId, lastId, callback);
     }
 
-    @Override
-    public void onProfileTapped(final PredictionListCell cell) {
-    }
+    
 
     @Override
     public void onItemClicked(int position) {
