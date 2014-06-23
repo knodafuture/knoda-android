@@ -266,6 +266,7 @@ public class MainActivity extends BaseActivity
             return false;
         } else if (fragment instanceof CreateCommentFragment) {
             showLogin("Whoa!", "To comment on predictions, you need to create an account.");
+            return false;
         } else if (fragment instanceof MyProfileFragment) {
             showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
             return false;
