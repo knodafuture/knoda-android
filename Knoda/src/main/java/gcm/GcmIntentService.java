@@ -60,8 +60,9 @@ public class GcmIntentService extends IntentService {
         Intent showActivitiesIntent = new Intent(this, MainActivity.class);
         showActivitiesIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         showActivitiesIntent.putExtra("showActivity", true);
+        showActivitiesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                showActivitiesIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
+                showActivitiesIntent, 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
