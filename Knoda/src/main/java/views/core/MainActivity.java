@@ -126,17 +126,25 @@ public class MainActivity extends BaseActivity
             twitterManager.checkIntentData(getIntent());
 
         if (getIntent().getBooleanExtra("showActivity", false)) {
-            userManager.refreshUser(new NetworkCallback<User>() {
-                @Override
-                public void completionHandler(User object, ServerError error) {
-                    showActivities();
-                }
-            });
+            if(userManager.isLoggedIn()){
+                userManager.refreshUser(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        showActivities();
+                    }
+                });
+            }else{
+                userManager.loginAsGuest(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        showLogin("Whoa there cowboy!","You're just a guest.\nSign up with Knoda.");
+                    }
+                });
+            }
+
         } else {
             launch();
         }
-
-
         new ImagePreloader(networkingManager).invoke();
         TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
     }
