@@ -50,6 +50,7 @@ public class AppOutdatedManager {
                                     Intent.ACTION_VIEW,
                                     Uri.parse("market://details?id=com.knoda.knoda"
                                             + activity.getPackageName())
+                                    //Uri.parse("http://www.amazon.com/gp/mas/dl/android?p=com.knoda.knoda"))//link for amazon
                             );
                             activity.startActivity(marketIntent);
                         }
