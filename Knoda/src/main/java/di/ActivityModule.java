@@ -1,5 +1,8 @@
 package di;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
@@ -112,4 +115,6 @@ public class ActivityModule {
     @Provides @Singleton TwitterManager provideTwitterManager() {return new TwitterManager();}
 
     @Provides @Singleton AppOutdatedManager provideAppOutdatedManager() {return new AppOutdatedManager(mActivity);}
+
+    @Provides @Singleton ConnectivityManager provideConnectivityManager() {return (ConnectivityManager)mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);}
 }

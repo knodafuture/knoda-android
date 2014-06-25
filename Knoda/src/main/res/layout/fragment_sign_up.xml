@@ -2,8 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="views.login.SignUpFragment"
-    android:background="@color/knodaLightGreenTransparent">
+    tools:context="views.login.SignUpFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/knodaLightGreenTransparent"
+        android:focusable="true"/>
 
     <Button
         android:id="@+id/signup_close"
@@ -31,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/signup_welcome"
-        android:text="Some rando milkshake copy goes here"
+        android:text="Don't just follow it. Predict it!"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:textSize="15dp"/>
@@ -41,6 +46,9 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_marginTop="15dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="5dp"
         android:layout_below="@id/signup_copy"
         android:orientation="vertical">
 
@@ -90,7 +98,8 @@
             android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:textColorHint="@color/knodaDarkGreen"
-            android:textColor="@color/knodaDarkGreen"/>
+            android:textColor="@color/knodaDarkGreen"
+            />
 
         <Button style="@style/button_main"
             android:layout_width="match_parent"
@@ -103,17 +112,21 @@
             android:paddingTop="10dp"/>
     </LinearLayout>
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/signup_or"
         android:layout_below="@id/signup_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="- or -"
+        android:text="\u2014 or \u2014"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_margin="5dp"/>
     <LinearLayout
         android:background="@drawable/facebook_button_background"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/welcome_login_facebook"
         android:clickable="true"
         android:orientation="horizontal"
@@ -125,8 +138,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_login_facebook"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_gravity="center"/>
 
         <View
@@ -141,13 +154,16 @@
             android:text="Sign In with Facebook"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textSize="20dp"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/welcome_login_twitter"
         android:clickable="true"
         android:orientation="horizontal"
@@ -176,12 +192,11 @@
             android:text="Sign In with Twitter"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textSize="20dp"/>
 
     </LinearLayout>
     <LinearLayout
-        android:layout_margin="10dp"
         android:clickable="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -192,71 +207,11 @@
             android:id="@+id/welcome_already_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Knoda User? Login"
+            android:text="@string/login_promp"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:gravity="center_horizontal"/>
+            android:layout_marginRight="20dp"
+            android:gravity="right|center_vertical"/>
 
     </LinearLayout>
-
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
-        <TextView style="@style/smallWhiteText"
-            android:id="@+id/signup_textview_termsstart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="By signing up, I agree to the"
-            android:textColor="@color/knodaDarkGreen"/>
-
-        <LinearLayout
-            android:layout_margin="0dp"
-            android:padding="0dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@id/signup_textview_termsstart">
-            <TextView style="@style/smallWhiteText"
-                android:id="@+id/signup_terms_button"
-                android:layout_width="wrap_content"
-                android:background="@android:color/transparent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:text="@string/tos"
-                android:textColor="@color/knodaDarkGreen"
-                android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:clickable="true"/>
-
-            <TextView style="@style/smallWhiteText"
-                android:id="@+id/signup_terms_and"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:text="&amp;"
-                android:textColor="@color/knodaDarkGreen"/>
-
-            <TextView style="@style/smallWhiteText"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:id="@+id/signup_privacy_button"
-                android:layout_width="wrap_content"
-                android:background="@android:color/transparent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:text="@string/privacypolicy"
-                android:textColor="@color/knodaDarkGreen"
-                android:textStyle="bold"
-                android:clickable="true"/>
-            </LinearLayout>
-        </RelativeLayout>
-
-
-
 </RelativeLayout>

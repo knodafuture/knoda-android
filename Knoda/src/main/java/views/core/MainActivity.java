@@ -4,16 +4,22 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.os.Handler;
 
 import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
@@ -24,6 +30,8 @@ import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 import com.tapjoy.TapjoyConnect;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,29 +41,42 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import di.KnodaApplication;
+import gcm.GcmIntentService;
 import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
 import managers.AppOutdatedManager;
 import managers.GcmManager;
+import managers.UserManager;
 import models.Group;
+import models.Invitation;
 import models.KnodaScreen;
+import models.Notification;
 import models.Prediction;
 import models.ServerError;
+import models.User;
+import models.Setting;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
+import pubsub.ReloadListsEvent;
+import pubsub.ScreenCaptureEvent;
 import unsorted.BadgesUnseenMonitor;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserFragment;
 import views.badge.BadgeFragment;
+import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
+import views.group.AddGroupFragment;
 import views.group.GroupFragment;
-import views.login.SignUpFragment;
+import views.group.GroupSettingsFragment;
+import views.group.InvitationsFragment;
 import views.login.WelcomeFragment;
+import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
+import views.settings.SettingsFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -71,8 +92,12 @@ public class MainActivity extends BaseActivity
     private ArrayList<KnodaScreen> screens;
     private boolean actionBarEnabled = true;
     private String title;
-    private int rootFragmentId;
     private Group currentGroup;
+
+    public String currentFragment = "";
+    public HashMap<String, ArrayList<Setting>> settings;
+    private Notification pushNotification;
+
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
@@ -98,6 +123,8 @@ public class MainActivity extends BaseActivity
         appOutdatedManager.setBus(bus);
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
+        settings = new HashMap<String, ArrayList<Setting>>();
+        pushNotification = new Notification();
 
         initializeFragmentBackStack();
         setUpNavigation();
@@ -105,12 +132,72 @@ public class MainActivity extends BaseActivity
         if (getIntent().getData() != null)
             twitterManager.checkIntentData(getIntent());
 
-        launch();
-        new ImagePreloader(networkingManager).invoke();
-        if (getIntent().getBooleanExtra("showActivity", false)) {
-            showActivities();
+
+        if (getIntent().getStringExtra("type") != null) {
+            pushNotification.type = getIntent().getStringExtra("type");
+        }
+        if (getIntent().getStringExtra("id") != null) {
+            pushNotification.id = getIntent().getStringExtra("id");
         }
 
+        if (getIntent().getStringExtra("type") != null) {
+            if (userManager.isLoggedIn()) {
+                spinner.show();
+                userManager.refreshUser(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        if (error != null) {
+                            spinner.hide();
+                            return;
+                        } else {
+                            if (pushNotification.type.equals("p")) {
+                                networkingManager.getPrediction(Integer.parseInt(pushNotification.id), new NetworkCallback<Prediction>() {
+                                    @Override
+                                    public void completionHandler(Prediction object, ServerError error) {
+                                        spinner.hide();
+                                        if (error != null)
+                                            showActivities();
+                                        else {
+                                            DetailsFragment fragment = DetailsFragment.newInstance(object);
+                                            pushFragment(fragment);
+                                        }
+                                    }
+                                });
+                            } else if (pushNotification.type.equals("gic")) {
+                                networkingManager.getInvitationByCode(pushNotification.id, new NetworkCallback<Invitation>() {
+                                    @Override
+                                    public void completionHandler(Invitation object, ServerError error) {
+                                        spinner.hide();
+                                        if (error != null)
+                                            showActivities();
+                                        else {
+                                            GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
+                                            pushFragment(fragment);
+                                        }
+                                    }
+                                });
+                            } else {
+                                showActivities();
+                                spinner.hide();
+                            }
+
+                        }
+
+                    }
+                });
+            } else {
+                userManager.loginAsGuest(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        showLogin("Whoa there cowboy!", "You're just a guest.\nSign up with Knoda.");
+                    }
+                });
+            }
+
+        } else {
+            launch();
+        }
+        new ImagePreloader(networkingManager).invoke();
         TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
     }
 
@@ -140,6 +227,7 @@ public class MainActivity extends BaseActivity
         else
             super.onBackPressed();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -163,19 +251,17 @@ public class MainActivity extends BaseActivity
                 onSearch();
                 break;
             }
+            case R.id.action_settings: {
+                onSettings();
+                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(KnodaScreen screen) {
-
-
-
-        Fragment fragment;
-
-        fragment = getFragment(screen);
-
+        Fragment fragment = getFragment(screen);
         if (!checkFragment(fragment))
             return;
 
@@ -192,11 +278,9 @@ public class MainActivity extends BaseActivity
             Class<? extends Fragment> fragmentClass = classMap.get(screen);
             try {
                 fragment = fragmentClass.newInstance();
-            }
-            catch (InstantiationException ex) {
+            } catch (InstantiationException ex) {
                 throw new RuntimeException(ex);
-            }
-            catch (IllegalAccessException ex) {
+            } catch (IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
             instanceMap.put(screen, fragment);
@@ -217,7 +301,7 @@ public class MainActivity extends BaseActivity
         return map;
     }
 
-    private void setUpNavigation (){
+    private void setUpNavigation() {
         navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -249,15 +333,24 @@ public class MainActivity extends BaseActivity
     }
 
     public boolean checkFragment(Fragment fragment) {
-        if (userManager.getUser() != null)
+        if (!userManager.getUser().guestMode)
             return true;
 
-        if (fragment instanceof HomeFragment || fragment instanceof SearchFragment)
-            return true;
+        if (fragment instanceof AddGroupFragment) {
+            showLogin("Hey now!", "You need to create an account to join and create groups.");
+            return false;
+        } else if (fragment instanceof AddPredictionFragment) {
+            showLogin("Oh Snap!", "You need to create an account to make predictions.");
+            return false;
+        } else if (fragment instanceof CreateCommentFragment) {
+            showLogin("Whoa!", "To comment on predictions, you need to create an account.");
+            return false;
+        } else if (fragment instanceof MyProfileFragment) {
+            showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
+            return false;
+        }
 
-        showLogin();
-        navigationDrawerFragment.resetDrawerUISelection();
-        return false;
+        return true;
     }
 
     public void popFragment() {
@@ -267,13 +360,14 @@ public class MainActivity extends BaseActivity
     public void popToRootFragment() {
         getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
+
     public void showFrament(KnodaScreen.KnodaScreenOrder position) {
         KnodaScreen screen = findScreen(position);
 
         if (screen == null)
             return;
 
-        onNavigationDrawerItemSelected(screen);
+        navigationDrawerFragment.selectItem(position.ordinal());
     }
 
     private KnodaScreen findScreen(KnodaScreen.KnodaScreenOrder position) {
@@ -285,7 +379,7 @@ public class MainActivity extends BaseActivity
         return null;
     }
 
-    private void initializeFragmentBackStack () {
+    private void initializeFragmentBackStack() {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -298,11 +392,15 @@ public class MainActivity extends BaseActivity
         });
     }
 
-    public void showLogin() {
+    public void showLogin(String titleMessage, String detailMessage) {
+        captureScreen();
+        WelcomeFragment f = WelcomeFragment.newInstance(titleMessage, detailMessage);
 
-        WelcomeFragment f = WelcomeFragment.newInstance();
-        f.show(getFragmentManager().beginTransaction(), "dialog");
+        f.show(getFragmentManager().beginTransaction(), "welcome");
+        navigationDrawerFragment.resetDrawerUISelection();
+
     }
+
     public void launch() {
         registerGcm();
         navigationDrawerFragment.setDrawerToggleEnabled(true);
@@ -346,13 +444,8 @@ public class MainActivity extends BaseActivity
         if (p != null)
             onAddPrediction();
 
-        if (userManager.getUser() == null) {
-
-            if (twitterManager.hasData()) {
-                SignUpFragment f = SignUpFragment.newInstance();
-                f.show(getFragmentManager(), "signup");
-            } else
-                showLogin();
+        if (userManager.getUser().guestMode) {
+            showLogin(null, null);
         } else if (userManager.getUser().avatar == null) {
             UserAvatarChooserFragment f = new UserAvatarChooserFragment();
             f.show(getFragmentManager(), "avatar");
@@ -363,6 +456,7 @@ public class MainActivity extends BaseActivity
         if (checkPlayServices()) {
             gcmManager = new GcmManager(networkingManager, sharedPrefManager, GoogleCloudMessaging.getInstance(this));
             gcmManager.registerInBackground();
+            System.out.println("GCM ID: " + gcmManager.getRegistrationId());
         } else {
             Log.i("MainActivity", "No valid Google Play Services APK found.");
         }
@@ -371,7 +465,7 @@ public class MainActivity extends BaseActivity
     public void restart() {
         finish();
         Intent i = getBaseContext().getPackageManager()
-                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                .getLaunchIntentForPackage(getBaseContext().getPackageName());
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
     }
@@ -384,21 +478,34 @@ public class MainActivity extends BaseActivity
     protected void onPause() {
         super.onPause();
         KnodaApplication.activityPaused();
-        ((KnodaApplication)getApplication()).setCurrentActivity(null);
+        ((KnodaApplication) getApplication()).setCurrentActivity(null);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         KnodaApplication.activityResumed();
-        ((KnodaApplication)getApplication()).setCurrentActivity(this);
+        ((KnodaApplication) getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
+    }
+
+    @Override
+    public void onNewIntent(Intent newIntent) {
+        this.setIntent(newIntent);
+        if (getIntent().getBooleanExtra("showActivity", false)) {
+            showActivities();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((KnodaApplication)getApplication()).setCurrentActivity(null);
+        ((KnodaApplication) getApplication()).setCurrentActivity(null);
+    }
+
+    private void onSettings() {
+        SettingsFragment fragment = new SettingsFragment();
+        pushFragment(fragment);
     }
 
     private void onAddPrediction() {
@@ -415,8 +522,8 @@ public class MainActivity extends BaseActivity
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        9000).show();
+//                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+//                        9000).show();
             } else {
                 finish();
             }
@@ -425,22 +532,32 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    public void profileClick(View v) {
+        Integer id = (Integer) v.getTag();
+        if (id == null)
+            return;
+        else if (id.equals(userManager.getUser().id)) {
+            showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
+        } else {
+            AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(id);
+            pushFragment(fragment);
+        }
+    }
+
     public void showActivities() {
         navigationDrawerFragment.selectItem(1);
     }
 
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
         FlurryAgent.onStartSession(this, "56TTPBKSC2BJZGSW2W76");
         FlurryAgent.setCaptureUncaughtExceptions(true);
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
         FlurryAgent.onEndSession(this);
     }
@@ -476,5 +593,78 @@ public class MainActivity extends BaseActivity
 
     public void doLogin() {
         navigationDrawerFragment.refreshUser();
+        bus.post(new ReloadListsEvent());
     }
+
+    private void captureScreen() {
+        final View v = getWindow().getDecorView();
+
+        v.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                v.setDrawingCacheEnabled(true);
+
+                Bitmap bmap = v.getDrawingCache();
+
+                int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
+                Bitmap b = Bitmap.createBitmap(bmap, 0, contentViewTop, bmap.getWidth(), bmap.getHeight() - contentViewTop, null, true);
+
+                v.setDrawingCacheEnabled(false);
+
+                saveImage(b);
+            }
+        }, 500);
+
+    }
+
+    protected void saveImage(Bitmap b) {
+
+        final Context context = this;
+
+        AsyncTask<Bitmap, Void, File> t = new AsyncTask<Bitmap, Void, File>() {
+            @Override
+            protected File doInBackground(Bitmap... bitmaps) {
+
+                Bitmap b = bitmaps[0];
+
+                if (b == null)
+                    return null;
+
+//                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
+//                b = blur.blur(15, b);
+//                if (b == null)
+//                    return null;
+
+                File saved_image_file = new File(
+                        Environment.getExternalStorageDirectory()
+                                + "/blur_background.png"
+                );
+                if (saved_image_file.exists())
+                    saved_image_file.delete();
+                try {
+                    FileOutputStream out = new FileOutputStream(saved_image_file);
+                    b.compress(Bitmap.CompressFormat.JPEG, 10, out);
+                    out.flush();
+                    out.close();
+                    return saved_image_file;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(File file) {
+                bus.post(new ScreenCaptureEvent(file));
+            }
+        };
+
+        t.execute(b);
+    }
+
+    public void invalidateBackgroundImage() {
+        if (getFragmentManager().findFragmentByTag("welcome") != null)
+            captureScreen();
+    }
+
 }

@@ -73,6 +73,9 @@ public class BaseListFragment extends BaseFragment {
             @Override
             public void adapterFinishedLoadingPage(int page) {
                 pListView.onRefreshComplete();
+                onLoadFinished();
+                if (getActivity() != null)
+                    ((MainActivity)getActivity()).invalidateBackgroundImage();
             }
         });
 
@@ -91,6 +94,7 @@ public class BaseListFragment extends BaseFragment {
     }
 
     private void addScrollListener() {
+
         AbsListView.OnScrollListener listener = getOnScrollListener();
 
         if (listener == null)
@@ -107,9 +111,9 @@ public class BaseListFragment extends BaseFragment {
         return null;
     }
 
-    public void onListViewCreated(ListView listView) {
+    public void onListViewCreated(ListView listView) {}
 
-    }
+    protected void onLoadFinished(){}
 
 
 }

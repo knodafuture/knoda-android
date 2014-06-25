@@ -17,15 +17,21 @@ import networking.NetworkCallback;
 import views.core.BaseDialogFragment;
 
 public class ForgotPasswordFragment extends BaseDialogFragment {
-
-
     @InjectView(R.id.forgot_username_edittext)
     EditText editText;
 
-    @OnClick(R.id.forgot_close) void onClose() {dismiss();}
+    @OnClick(R.id.forgot_close) void onClose() {dismissFade();}
     public static ForgotPasswordFragment newInstance() {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
         return fragment;
+    }
+    @OnClick(R.id.submit_button) void onSubmitClick(){
+        submit();
+    }
+    @OnClick(R.id.wall_login) void onLoginClick(){
+        LoginFragment f = LoginFragment.newInstance();
+        f.show(getFragmentManager(), "login");
+        dismissFade();
     }
     public ForgotPasswordFragment() {}
 
@@ -39,7 +45,7 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forgot_password, container, false);
-
+        updateBackground();
         return view;
     }
 
@@ -47,6 +53,7 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
 
     public void submit() {
 
@@ -67,7 +74,7 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
                     errorReporter.showError("We were unable to reset your password. Are you sure your email address has been registered on Knoda?");
                 } else {
                     errorReporter.showError("A link to reset your password was sent to your email");
-                    dismiss();
+                    dismissFade();
                 }
             }
         });

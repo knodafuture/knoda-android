@@ -47,7 +47,6 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
         void onPredictionAgreed(PredictionListCell cell);
         void onPredictionDisagreed(PredictionListCell cell);
-        void onProfileTapped(PredictionListCell cell);
     }
 
 
@@ -140,20 +139,6 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                     downView.usernameView.getLocationOnScreen(coords);
                     int x = (int) motionEvent.getRawX() - coords[0];
                     int y = (int) motionEvent.getRawY() - coords[1];
-
-                    Rect rect = new Rect();
-                    downView.usernameView.getHitRect(rect);
-                    if (rect.contains(x, y)) {
-                        callbacks.onProfileTapped(downView);
-                        // Cancel ListView's touch (un-highlighting the item)
-                        MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
-
-                        cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
-                                (motionEvent.getActionIndex()
-                                        << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
-                        listView.onTouchEvent(cancelEvent);
-                        cancelEvent.recycle();
-                    }
                 }
 
 
@@ -201,14 +186,14 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                     if (Math.abs(deltaX) < downView.getWidth() / 2)
                         downView.bodyView.setTranslationX(deltaX);
                     if (deltaX > 0) {
-                        downView.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullGreenR, fullGreenG, fullGreenB));
+                        downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullGreenR, fullGreenG, fullGreenB));
                         int leftMargin = ((RelativeLayout.LayoutParams)downView.agreeView.getLayoutParams()).leftMargin;
 
                         if (downView.bodyView.getTranslationX() > leftMargin * 2 + downView.agreeView.getWidth())
                             downView.agreeView.setTranslationX(downView.bodyView.getTranslationX() - leftMargin * 2 - downView.agreeView.getWidth());
 
                     } else {
-                        downView.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullRedR, fullRedG, fullRedB));
+                        downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullRedR, fullRedG, fullRedB));
 
                         int rightMargin = ((RelativeLayout.LayoutParams)downView.disagreeView.getLayoutParams()).rightMargin;
 

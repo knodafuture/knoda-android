@@ -12,6 +12,7 @@ import com.knoda.knoda.R;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import models.User;
+import pubsub.LoginFlowDoneEvent;
 import views.core.BaseDialogFragment;
 
 /**
@@ -26,7 +27,13 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     TextView textView;
 
     @OnClick(R.id.confirm_start_predicting_button) void onClick() {
-        dismiss();
+        try{
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        dismissFade();
     }
 
     public static SignupConfirmFragment newInstance() {
@@ -34,6 +41,7 @@ public class SignupConfirmFragment extends BaseDialogFragment {
         return fragment;
     }
     public SignupConfirmFragment() {}
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +53,7 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup_confirm, container, false);
-
+        updateBackground();
         return view;
     }
 

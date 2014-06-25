@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.flurry.android.FlurryAgent;
@@ -18,6 +19,7 @@ import models.LoginRequest;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.LoginFlowDoneEvent;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
@@ -30,6 +32,7 @@ public class LoginFragment extends BaseDialogFragment {
 
 
     @OnClick(R.id.login_forgot_button) void onForgotPassword() {
+        dismissFade();
         ForgotPasswordFragment fragment = ForgotPasswordFragment.newInstance();
         fragment.show(getActivity().getFragmentManager(), "forgot");
     }
@@ -39,11 +42,11 @@ public class LoginFragment extends BaseDialogFragment {
     }
 
     @OnClick(R.id.login_close) void onLoginClose() {
-        dismiss();
+        dismissFade();
     }
 
     @OnClick(R.id.login_signup_button) void onSignup() {
-        dismiss();
+        dismissFade();
 
         SignUpFragment f = SignUpFragment.newInstance();
 
@@ -62,6 +65,7 @@ public class LoginFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        updateBackground();
         return view;
     }
 
@@ -69,8 +73,8 @@ public class LoginFragment extends BaseDialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureEditTextListeners();
-        usernameField.requestFocus();
-        showKeyboard(usernameField);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
     }
 
     @Override
@@ -90,7 +94,6 @@ public class LoginFragment extends BaseDialogFragment {
             }
         });
     }
-
 
     private void doLogin () {
         hideKeyboard();
@@ -115,6 +118,8 @@ public class LoginFragment extends BaseDialogFragment {
                 }
                 FlurryAgent.logEvent("LOGIN_EMAIL");
                 ((MainActivity)getActivity()).doLogin();
+                sharedPrefManager.setShouldShowVotingWalkthrough(true);
+                bus.post(new LoginFlowDoneEvent());
                 dismiss();
             }
         });

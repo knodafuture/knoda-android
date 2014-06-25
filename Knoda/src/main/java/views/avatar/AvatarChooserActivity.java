@@ -1,17 +1,25 @@
 package views.avatar;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.TypedValue;
 import android.view.ContextMenu;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.android.camera.CropImageIntentBuilder;
 import com.android.volley.RequestQueue;
@@ -53,6 +61,8 @@ public abstract class AvatarChooserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_chooser);
         requestQueue = Volley.newRequestQueue(this);
+
+        updateBackground();
 
         ButterKnife.inject(this);
         restoreActionBar();
@@ -105,6 +115,7 @@ public abstract class AvatarChooserActivity extends BaseActivity {
         submit();
         return true;
     }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -215,7 +226,49 @@ public abstract class AvatarChooserActivity extends BaseActivity {
         imageView.setImageBitmap(bitmap);
     }
 
+    public void updateBackground() {
+        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.container);
+
+        if (relativeLayout == null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateBackground();
+                }
+            }, 10);
+        } else {
+            relativeLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    File file = new File(
+                            Environment.getExternalStorageDirectory()
+                                    + "/blur_background.png"
+                    );
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
+
+                    //Get actionbar size to take off image
+                    TypedValue tv = new TypedValue();
+                    getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+                    int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
+                    Display display = getWindowManager().getDefaultDisplay();
+                    Point size = new Point();
+                    display.getSize(size);
+
+                    BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, actionBarHeight, bitmap.getWidth(), bitmap.getHeight() - actionBarHeight));
+
+                    relativeLayout.setBackgroundDrawable(d);
+                }
+            });
+        }
+    }
+
     protected abstract void useDefault();
 
-    protected boolean showFinalCropped() { return true; };
+    protected boolean showFinalCropped() {
+        return true;
+    }
+
+
 }

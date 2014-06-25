@@ -22,6 +22,9 @@ public class User extends BaseModel {
     @SerializedName("verified_account")
     public boolean verified;
 
+    @SerializedName("guest_mode")
+    public boolean guestMode;
+
     public Integer points;
     public Integer won;
     public Integer lost;
@@ -40,7 +43,6 @@ public class User extends BaseModel {
 
     @SerializedName("social_accounts")
     public ArrayList<SocialAccount> socialAccounts;
-
 
     public SocialAccount getTwitterAccount() {
         for (SocialAccount account : socialAccounts) {

@@ -1,5 +1,6 @@
 package views.profile;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -14,9 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.Menu;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,9 +30,11 @@ import butterknife.OnClick;
 import models.KnodaScreen;
 import models.PasswordChangeRequest;
 import models.ServerError;
+import models.SettingsCategory;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import networking.NetworkListCallback;
 import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
@@ -174,10 +182,31 @@ public class MyProfileFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle bundle){
+        super.onCreate(bundle);
+        setHasOptionsMenu(true);
+
+        ((MainActivity)getActivity()).networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
+            @Override
+            public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
+                for(SettingsCategory s:object){
+                    ((MainActivity)getActivity()).settings.put(s.name,s.settings);
+                }
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_myprofile, container, false);
         ButterKnife.inject(this, view);
+        getActivity().invalidateOptionsMenu();
+
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+
         return view;
     }
 
@@ -212,6 +241,38 @@ public class MyProfileFragment extends BaseFragment {
         Bitmap bitmap = BitmapFactory.decodeFile(avatarPath);
         header.avatarImageView.setImageBitmap(bitmap);
     }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        inflater.inflate(R.menu.profile, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.removeItem(R.id.action_search);
+        menu.removeItem(R.id.action_add_prediction);
+        if(((MainActivity)getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings)!=null)
+            menu.findItem(R.id.action_settings).setVisible(true);
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        //if (itemId == R.id.action_settings)
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
     private void updateUser(User user) {
         if (user == null)
             return;

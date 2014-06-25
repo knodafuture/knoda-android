@@ -1,9 +1,6 @@
 package adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +21,20 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
 
     public Bus bus;
     public SharedPrefManager sharedPrefManager;
+    boolean disableTour=false;
 
     public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus) {
         super(context, datasource, imageLoader);
         this.bus = bus;
         this.sharedPrefManager=new SharedPrefManager(context);
         this.bus.register(this);
+    }
+    public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus, boolean disableTour) {
+        super(context, datasource, imageLoader);
+        this.bus = bus;
+        this.sharedPrefManager=new SharedPrefManager(context);
+        this.bus.register(this);
+        this.disableTour=disableTour;
     }
 
     @Subscribe
@@ -58,14 +63,16 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
 
-        boolean firstLaunch = sharedPrefManager.getFirstLaunch();
-        if(firstLaunch && position==0) {
-            sharedPrefManager.setFirstLaunch(false);
+        if(sharedPrefManager.getFirstLaunch() && sharedPrefManager.shouldShowVotingWalkthrough() && position==0 && !disableTour) {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.view_swipe_walkthrough,null);
-            parent.setTag(v);
-            listItem.walkthroughView.addView(v);
+            if (listItem.walkthroughView.getChildCount() == 0) {
+                parent.setTag(v);
+                listItem.walkthroughView.addView(v);
+            }
+        } else {
+            listItem.walkthroughView.removeAllViews();
         }
 
         return listItem;

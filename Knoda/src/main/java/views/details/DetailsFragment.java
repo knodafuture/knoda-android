@@ -37,6 +37,8 @@ import networking.NetworkListCallback;
 import pubsub.NewCommentEvent;
 import pubsub.PredictionChangeEvent;
 import views.core.BaseListFragment;
+import views.core.MainActivity;
+import views.core.Spinner;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
@@ -385,6 +387,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), updateResolutionDate(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         DateTime dt = new DateTime();
+        dialog.getDatePicker().setTag(false);
         dialog.getDatePicker().setMinDate(dt.plusDays(1).getMillis());
         dialog.setTitle("When will you know?");
         dialog.show();
@@ -392,31 +395,33 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     }
 
-    private DatePickerDialog.OnDateSetListener updateResolutionDate() {
-
+    private final DatePickerDialog.OnDateSetListener updateResolutionDate() {
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                //prevent from being called twice
+                if(datePicker.getTag()!=null && (Boolean)datePicker.getTag()==true){
+                    return;
+                }
+                System.out.println("date changed");
                 Prediction update = new Prediction();
                 update.id = prediction.id;
+                datePicker.setTag(true);
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day, 12, 0);
                 update.resolutionDate = new DateTime(calendar.getTime());
-
                 spinner.show();
 
                 networkingManager.updatePrediction(update, new NetworkCallback<Prediction>() {
                     @Override
                     public void completionHandler(Prediction object, ServerError error) {
-                        spinner.show();
-
+                        spinner.hide();
                         if (error != null)
                             errorReporter.showError(error);
                         else {
                             prediction = object;
                             headerview.setPrediction(prediction);
-                            spinner.hide();
                         }
                     }
                 });
