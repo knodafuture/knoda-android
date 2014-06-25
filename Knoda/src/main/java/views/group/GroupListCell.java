@@ -47,7 +47,8 @@ public class GroupListCell extends RelativeLayout {
     public void update() {
         nameView.setText(group.name);
         leaderView.setText(group.leader.username);
-        myRankView.setText(group.rank.rank.toString());
+        if(group.rank!=null && group.rank.rank!=null)
+            myRankView.setText(group.rank.rank.toString());
         memberCountView.setText("rank (" + group.memberCount.toString() + ")");
     }
 }
