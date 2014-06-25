@@ -16,6 +16,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import di.KnodaApplication;
 import views.core.MainActivity;
+import views.core.SplashActivity;
 
 public class GcmIntentService extends IntentService {
     public static final String TAG = "gcm.GcmIntentService";
@@ -46,23 +47,28 @@ public class GcmIntentService extends IntentService {
                 if (KnodaApplication.isActivityVisible()) {
                     showAlert(extras.getString("alert", ""));
                 } else {
-                    sendNotification(extras.getString("alert", ""));
+                    sendNotification(extras.getString("alert", ""), extras.getString("type"), extras.getString("id"));
                 }
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    private void sendNotification(String msg) {
+    public void sendNotification(String msg) {
+        sendNotification(msg, "", "");
+    }
+
+    private void sendNotification(String msg, String type, String id) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent showActivitiesIntent = new Intent(this, MainActivity.class);
+        Intent showActivitiesIntent = new Intent(this, SplashActivity.class);
         showActivitiesIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        showActivitiesIntent.putExtra("showActivity", true);
+        showActivitiesIntent.putExtra("type", type);
+        showActivitiesIntent.putExtra("id", id);
         showActivitiesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                showActivitiesIntent, 0);
+                showActivitiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -78,15 +84,14 @@ public class GcmIntentService extends IntentService {
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
-    private void showAlert(final String msg)
-    {
+    private void showAlert(final String msg) {
         Handler h = new Handler(Looper.getMainLooper());
         h.post(new Runnable() {
             @Override
             public void run() {
                 if (!KnodaApplication.alertShowing) {
                     KnodaApplication.alertShowing = true;
-                    AlertDialog.Builder builder = new AlertDialog.Builder(((KnodaApplication)getApplication()).getCurrentActivity());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(((KnodaApplication) getApplication()).getCurrentActivity());
                     builder.setMessage(msg)
                             .setCancelable(false)
                             .setPositiveButton("Show", new DialogInterface.OnClickListener() {
@@ -102,11 +107,11 @@ public class GcmIntentService extends IntentService {
                                     dialog.cancel();
                                 }
                             });
-    
+
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
-        }
+            }
         });
     }
 }

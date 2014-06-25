@@ -70,7 +70,7 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
 
-    public static String baseUrl = "http://api.knoda.com/api/";
+    public static String baseUrl = "http://captaincold.knoda.com/api/";
 
     private ImageLoader imageLoader;
 
@@ -426,6 +426,11 @@ public class NetworkingManager {
     public void getGroups(NetworkListCallback<Group> callback) {
         String url = buildUrl("groups.json", true, null);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getGroupListTypeToken(), callback);
+    }
+
+    public void getGroup(int groupId, NetworkCallback<Group> callback) {
+        String url = buildUrl("groups/" + groupId + ".json", true, null);
+        executeRequest(Request.Method.GET, url, null, Group.class, callback);
     }
 
     public void submitGroup(final Group group, final NetworkCallback<Group> callback) {

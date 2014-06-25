@@ -48,7 +48,9 @@ import managers.AppOutdatedManager;
 import managers.GcmManager;
 import managers.UserManager;
 import models.Group;
+import models.Invitation;
 import models.KnodaScreen;
+import models.Notification;
 import models.Prediction;
 import models.ServerError;
 import models.User;
@@ -66,6 +68,8 @@ import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
 import views.group.AddGroupFragment;
 import views.group.GroupFragment;
+import views.group.GroupSettingsFragment;
+import views.group.InvitationsFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HistoryFragment;
@@ -92,6 +96,8 @@ public class MainActivity extends BaseActivity
 
     public String currentFragment = "";
     public HashMap<String, ArrayList<Setting>> settings;
+    private Notification pushNotification;
+
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
@@ -118,6 +124,7 @@ public class MainActivity extends BaseActivity
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
         settings = new HashMap<String, ArrayList<Setting>>();
+        pushNotification = new Notification();
 
         initializeFragmentBackStack();
         setUpNavigation();
@@ -125,19 +132,64 @@ public class MainActivity extends BaseActivity
         if (getIntent().getData() != null)
             twitterManager.checkIntentData(getIntent());
 
-        if (getIntent().getBooleanExtra("showActivity", false)) {
-            if(userManager.isLoggedIn()){
+
+        if (getIntent().getStringExtra("type") != null) {
+            pushNotification.type = getIntent().getStringExtra("type");
+        }
+        if (getIntent().getStringExtra("id") != null) {
+            pushNotification.id = getIntent().getStringExtra("id");
+        }
+
+        if (getIntent().getStringExtra("type") != null) {
+            if (userManager.isLoggedIn()) {
+                spinner.show();
                 userManager.refreshUser(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User object, ServerError error) {
-                        showActivities();
+                        if (error != null) {
+                            spinner.hide();
+                            return;
+                        } else {
+                            if (pushNotification.type.equals("p")) {
+                                networkingManager.getPrediction(Integer.parseInt(pushNotification.id), new NetworkCallback<Prediction>() {
+                                    @Override
+                                    public void completionHandler(Prediction object, ServerError error) {
+                                        spinner.hide();
+                                        if (error != null)
+                                            showActivities();
+                                        else {
+                                            DetailsFragment fragment = DetailsFragment.newInstance(object);
+                                            pushFragment(fragment);
+                                        }
+                                    }
+                                });
+                            } else if (pushNotification.type.equals("gic")) {
+                                networkingManager.getInvitationByCode(pushNotification.id, new NetworkCallback<Invitation>() {
+                                    @Override
+                                    public void completionHandler(Invitation object, ServerError error) {
+                                        spinner.hide();
+                                        if (error != null)
+                                            showActivities();
+                                        else {
+                                            GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
+                                            pushFragment(fragment);
+                                        }
+                                    }
+                                });
+                            } else {
+                                showActivities();
+                                spinner.hide();
+                            }
+
+                        }
+
                     }
                 });
-            }else{
+            } else {
                 userManager.loginAsGuest(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User object, ServerError error) {
-                        showLogin("Whoa there cowboy!","You're just a guest.\nSign up with Knoda.");
+                        showLogin("Whoa there cowboy!", "You're just a guest.\nSign up with Knoda.");
                     }
                 });
             }

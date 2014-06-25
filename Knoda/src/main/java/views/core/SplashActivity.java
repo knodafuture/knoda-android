@@ -22,12 +22,15 @@ public class SplashActivity extends BaseActivity {
     @InjectView(R.id.splash_screen)
     RelativeLayout splashScreen;
 
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPrefManager.setShouldShowVotingWalkthrough(false);
         setContentView(R.layout.activity_splash);
         ButterKnife.inject(this);
+        intent = new Intent(this, MainActivity.class);
     }
 
 
@@ -94,10 +97,18 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
-    private void launchMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("showActivity", getIntent().getBooleanArrayExtra("showActivity"));
+    @Override
+    public void onNewIntent(Intent newIntent) {
+        this.setIntent(newIntent);
+    }
 
+    private void launchMainActivity() {
+        if (getIntent().getStringExtra("type") != null) {
+            intent.putExtra("type", getIntent().getStringExtra("type"));
+        }
+        if (getIntent().getStringExtra("id") != null) {
+            intent.putExtra("id", getIntent().getStringExtra("id"));
+        }
         Uri targetUri = getIntent().getData();
         if (targetUri != null)
             intent.putExtra("launchInfo", targetUri.toString());
