@@ -15,8 +15,19 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import di.KnodaApplication;
+import managers.NetworkingManager;
+import managers.UserManager;
+import models.Invitation;
+import models.Notification;
+import models.Prediction;
+import models.ServerError;
+import models.User;
+import networking.NetworkCallback;
 import views.core.MainActivity;
+import views.core.Spinner;
 import views.core.SplashActivity;
+import views.details.DetailsFragment;
+import views.group.GroupSettingsFragment;
 
 public class GcmIntentService extends IntentService {
     public static final String TAG = "gcm.GcmIntentService";
@@ -45,7 +56,7 @@ public class GcmIntentService extends IntentService {
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 if (KnodaApplication.isActivityVisible()) {
-                    showAlert(extras.getString("alert", ""));
+                    showAlert(extras.getString("alert", ""), extras.getString("type"), extras.getString("id"));
                 } else {
                     sendNotification(extras.getString("alert", ""), extras.getString("type"), extras.getString("id"));
                 }
@@ -85,6 +96,10 @@ public class GcmIntentService extends IntentService {
     }
 
     private void showAlert(final String msg) {
+        showAlert(msg, "", "");
+    }
+
+    private void showAlert(final String msg,final String type,final String notificationId) {
         Handler h = new Handler(Looper.getMainLooper());
         h.post(new Runnable() {
             @Override
@@ -96,7 +111,64 @@ public class GcmIntentService extends IntentService {
                             .setCancelable(false)
                             .setPositiveButton("Show", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    ((MainActivity) ((KnodaApplication) getApplication()).getCurrentActivity()).showActivities();
+                                    final MainActivity mainActivity=((MainActivity) ((KnodaApplication) getApplication()).getCurrentActivity());
+                                    final NetworkingManager networkingManager= mainActivity.networkingManager;
+                                    UserManager userManager= mainActivity.userManager;
+                                    final Spinner spinner= mainActivity.spinner;
+
+                                    final Notification pushNotification = new Notification(notificationId,type);
+
+                                    if (userManager.isLoggedIn()) {
+                                        spinner.show();
+                                        userManager.refreshUser(new NetworkCallback<User>() {
+                                            @Override
+                                            public void completionHandler(User object, ServerError error) {
+                                                if (error != null) {
+                                                    spinner.hide();
+                                                    return;
+                                                } else {
+                                                    if (pushNotification.type.equals("p")) {
+                                                        networkingManager.getPrediction(Integer.parseInt(pushNotification.id), new NetworkCallback<Prediction>() {
+                                                            @Override
+                                                            public void completionHandler(Prediction object, ServerError error) {
+                                                                spinner.hide();
+                                                                if (error != null)
+                                                                    mainActivity.showActivities();
+                                                                else {
+                                                                    DetailsFragment fragment = DetailsFragment.newInstance(object);
+                                                                    mainActivity.pushFragment(fragment);
+                                                                }
+                                                            }
+                                                        });
+                                                    } else if (pushNotification.type.equals("gic")) {
+                                                        networkingManager.getInvitationByCode(pushNotification.id, new NetworkCallback<Invitation>() {
+                                                            @Override
+                                                            public void completionHandler(Invitation object, ServerError error) {
+                                                                spinner.hide();
+                                                                if (error != null)
+                                                                    mainActivity.showActivities();
+                                                                else {
+                                                                    GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
+                                                                    mainActivity.pushFragment(fragment);
+                                                                }
+                                                            }
+                                                        });
+                                                    } else {
+                                                        mainActivity.showActivities();
+                                                        spinner.hide();
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        userManager.loginAsGuest(new NetworkCallback<User>() {
+                                            @Override
+                                            public void completionHandler(User object, ServerError error) {
+                                                mainActivity.showLogin("Whoa there cowboy!", "You're just a guest.\nSign up with Knoda.");
+                                            }
+                                        });
+                                    }
+
                                     KnodaApplication.alertShowing = false;
                                     dialog.cancel();
                                 }

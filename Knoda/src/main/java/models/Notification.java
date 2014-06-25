@@ -9,4 +9,8 @@ public class Notification {
     public String message=null;
 
     public Notification(){}
+    public Notification(String id, String type){
+        this.id=id;
+        this.type=type;
+    }
 }
