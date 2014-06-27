@@ -11,6 +11,8 @@ import models.Group;
 import models.Leader;
 import models.Member;
 import models.Prediction;
+import models.Setting;
+import models.SettingsCategory;
 import models.Tag;
 import models.User;
 
@@ -48,4 +50,6 @@ public class TypeTokenFactory {
     public static TypeToken getLeaderListTypeToken() { return new TypeToken<ArrayList<Leader>>(){}; }
 
     public static TypeToken getMemberListTypeToken() { return new TypeToken<ArrayList<Member>>(){}; }
+
+    public static TypeToken getSettingsTypeToken() { return new TypeToken<ArrayList<SettingsCategory>>(){}; }
 }

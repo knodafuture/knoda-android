@@ -21,7 +21,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
     public User user;
 
     public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
-        super(context, datasource, imageLoader, new Bus());
+        super(context, datasource, imageLoader, new Bus(),true);
     }
 
     @Override

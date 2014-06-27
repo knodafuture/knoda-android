@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.os.Handler;
 
 import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
@@ -40,15 +41,20 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import di.KnodaApplication;
+import gcm.GcmIntentService;
 import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
 import managers.AppOutdatedManager;
 import managers.GcmManager;
+import managers.UserManager;
 import models.Group;
+import models.Invitation;
 import models.KnodaScreen;
+import models.Notification;
 import models.Prediction;
 import models.ServerError;
 import models.User;
+import models.Setting;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
 import pubsub.ReloadListsEvent;
@@ -62,12 +68,15 @@ import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
 import views.group.AddGroupFragment;
 import views.group.GroupFragment;
+import views.group.GroupSettingsFragment;
+import views.group.InvitationsFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
+import views.settings.SettingsFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -84,6 +93,11 @@ public class MainActivity extends BaseActivity
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
+
+    public String currentFragment = "";
+    public HashMap<String, ArrayList<Setting>> settings;
+    private Notification pushNotification;
+
 
     private static KnodaScreen.KnodaScreenOrder startupScreen;
 
@@ -109,6 +123,8 @@ public class MainActivity extends BaseActivity
         appOutdatedManager.setBus(bus);
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         classMap = getClassMap();
+        settings = new HashMap<String, ArrayList<Setting>>();
+        pushNotification = new Notification();
 
         initializeFragmentBackStack();
         setUpNavigation();
@@ -116,12 +132,72 @@ public class MainActivity extends BaseActivity
         if (getIntent().getData() != null)
             twitterManager.checkIntentData(getIntent());
 
-        launch();
-        new ImagePreloader(networkingManager).invoke();
-        if (getIntent().getBooleanExtra("showActivity", false)) {
-            showActivities();
+
+        if (getIntent().getStringExtra("type") != null) {
+            pushNotification.type = getIntent().getStringExtra("type");
+        }
+        if (getIntent().getStringExtra("id") != null) {
+            pushNotification.id = getIntent().getStringExtra("id");
         }
 
+        if (getIntent().getStringExtra("type") != null) {
+            if (userManager.isLoggedIn()) {
+                spinner.show();
+                userManager.refreshUser(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        if (error != null) {
+                            spinner.hide();
+                            return;
+                        } else {
+                            if (pushNotification.type.equals("p")) {
+                                networkingManager.getPrediction(Integer.parseInt(pushNotification.id), new NetworkCallback<Prediction>() {
+                                    @Override
+                                    public void completionHandler(Prediction object, ServerError error) {
+                                        spinner.hide();
+                                        if (error != null)
+                                            showActivities();
+                                        else {
+                                            DetailsFragment fragment = DetailsFragment.newInstance(object);
+                                            pushFragment(fragment);
+                                        }
+                                    }
+                                });
+                            } else if (pushNotification.type.equals("gic")) {
+                                networkingManager.getInvitationByCode(pushNotification.id, new NetworkCallback<Invitation>() {
+                                    @Override
+                                    public void completionHandler(Invitation object, ServerError error) {
+                                        spinner.hide();
+                                        if (error != null)
+                                            showActivities();
+                                        else {
+                                            GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
+                                            pushFragment(fragment);
+                                        }
+                                    }
+                                });
+                            } else {
+                                showActivities();
+                                spinner.hide();
+                            }
+
+                        }
+
+                    }
+                });
+            } else {
+                userManager.loginAsGuest(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        showLogin("Whoa there cowboy!", "You're just a guest.\nSign up with Knoda.");
+                    }
+                });
+            }
+
+        } else {
+            launch();
+        }
+        new ImagePreloader(networkingManager).invoke();
         TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
     }
 
@@ -151,6 +227,7 @@ public class MainActivity extends BaseActivity
         else
             super.onBackPressed();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -172,6 +249,10 @@ public class MainActivity extends BaseActivity
 
             case R.id.action_search: {
                 onSearch();
+                break;
+            }
+            case R.id.action_settings: {
+                onSettings();
                 break;
             }
         }
@@ -197,11 +278,9 @@ public class MainActivity extends BaseActivity
             Class<? extends Fragment> fragmentClass = classMap.get(screen);
             try {
                 fragment = fragmentClass.newInstance();
-            }
-            catch (InstantiationException ex) {
+            } catch (InstantiationException ex) {
                 throw new RuntimeException(ex);
-            }
-            catch (IllegalAccessException ex) {
+            } catch (IllegalAccessException ex) {
                 throw new RuntimeException(ex);
             }
             instanceMap.put(screen, fragment);
@@ -222,7 +301,7 @@ public class MainActivity extends BaseActivity
         return map;
     }
 
-    private void setUpNavigation (){
+    private void setUpNavigation() {
         navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -281,6 +360,7 @@ public class MainActivity extends BaseActivity
     public void popToRootFragment() {
         getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
+
     public void showFrament(KnodaScreen.KnodaScreenOrder position) {
         KnodaScreen screen = findScreen(position);
 
@@ -299,7 +379,7 @@ public class MainActivity extends BaseActivity
         return null;
     }
 
-    private void initializeFragmentBackStack () {
+    private void initializeFragmentBackStack() {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -376,6 +456,7 @@ public class MainActivity extends BaseActivity
         if (checkPlayServices()) {
             gcmManager = new GcmManager(networkingManager, sharedPrefManager, GoogleCloudMessaging.getInstance(this));
             gcmManager.registerInBackground();
+            System.out.println("GCM ID: " + gcmManager.getRegistrationId());
         } else {
             Log.i("MainActivity", "No valid Google Play Services APK found.");
         }
@@ -384,7 +465,7 @@ public class MainActivity extends BaseActivity
     public void restart() {
         finish();
         Intent i = getBaseContext().getPackageManager()
-                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                .getLaunchIntentForPackage(getBaseContext().getPackageName());
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
     }
@@ -397,21 +478,34 @@ public class MainActivity extends BaseActivity
     protected void onPause() {
         super.onPause();
         KnodaApplication.activityPaused();
-        ((KnodaApplication)getApplication()).setCurrentActivity(null);
+        ((KnodaApplication) getApplication()).setCurrentActivity(null);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         KnodaApplication.activityResumed();
-        ((KnodaApplication)getApplication()).setCurrentActivity(this);
+        ((KnodaApplication) getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
+    }
+
+    @Override
+    public void onNewIntent(Intent newIntent) {
+        this.setIntent(newIntent);
+        if (getIntent().getBooleanExtra("showActivity", false)) {
+            showActivities();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((KnodaApplication)getApplication()).setCurrentActivity(null);
+        ((KnodaApplication) getApplication()).setCurrentActivity(null);
+    }
+
+    private void onSettings() {
+        SettingsFragment fragment = new SettingsFragment();
+        pushFragment(fragment);
     }
 
     private void onAddPrediction() {
@@ -438,9 +532,9 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    public void profileClick(View v){
+    public void profileClick(View v) {
         Integer id = (Integer) v.getTag();
-        if(id==null)
+        if (id == null)
             return;
         else if (id.equals(userManager.getUser().id)) {
             showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
@@ -456,16 +550,14 @@ public class MainActivity extends BaseActivity
 
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
         FlurryAgent.onStartSession(this, "56TTPBKSC2BJZGSW2W76");
         FlurryAgent.setCaptureUncaughtExceptions(true);
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
         FlurryAgent.onEndSession(this);
     }
@@ -524,6 +616,7 @@ public class MainActivity extends BaseActivity
         }, 500);
 
     }
+
     protected void saveImage(Bitmap b) {
 
         final Context context = this;
@@ -544,7 +637,8 @@ public class MainActivity extends BaseActivity
 
                 File saved_image_file = new File(
                         Environment.getExternalStorageDirectory()
-                                + "/blur_background.png");
+                                + "/blur_background.png"
+                );
                 if (saved_image_file.exists())
                     saved_image_file.delete();
                 try {
