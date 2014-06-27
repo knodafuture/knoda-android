@@ -72,6 +72,12 @@ public class Prediction extends BaseModel {
     @SerializedName("group_name")
     public String groupName;
 
+    @SerializedName("expired_text")
+    public String expiredText;
+
+    @SerializedName("predicted_text")
+    public String predictedText;
+
     public String getCreationString() {
         return "made " + DateUtil.getPeriodString(creationDate) + " ago";
     }
@@ -89,7 +95,7 @@ public class Prediction extends BaseModel {
     }
 
     public String getMetdataString() {
-        return getExpirationString() + " | " + getCreationString() + " | " + getAgreePercentString() + " | ";
+        return expiredText + " | " + predictedText + " | " + getAgreePercentString() + " | ";
     }
 
     public boolean canSetOutcome() {
