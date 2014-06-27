@@ -18,7 +18,7 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"/>
 
-        <EditText
+        <EditText style="@style/knoda_edittext"
             android:id="@+id/add_prediction_body_edittext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,7 +30,8 @@
             android:hint="Make a prediction..."
             android:gravity="top"
             android:background="@null"
-            android:capitalize="sentences"/>
+            android:capitalize="sentences"
+            />
 
         <TextView
             android:id="@+id/add_prediction_counter_textview"

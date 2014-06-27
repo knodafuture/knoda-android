@@ -11,7 +11,7 @@
         android:background="@color/white"
         android:id="@+id/add_prediction_body_container">
 
-        <EditText
+        <EditText style="@style/knoda_edittext"
             android:id="@+id/add_comment_body_edittext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
