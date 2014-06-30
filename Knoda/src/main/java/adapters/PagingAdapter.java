@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,8 +85,11 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (objects.size() == 0 && noObjectsRetrieved)
+        if (objects.size() == 0 && noObjectsRetrieved) {
+            parent.setBackgroundColor(Color.WHITE);
             return getNoContentView();
+        }else
+            parent.setBackgroundColor(Color.TRANSPARENT);
 
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_loading, null);
         return view;
@@ -99,6 +103,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         if (page != 0)
             object = objects.size() == 0 ? null : objects.get(objects.size() - 1);
         loading = true;
+
 
         datasource.getObjectsAfterObject(object, new NetworkListCallback<T>() {
             @Override
