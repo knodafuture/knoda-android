@@ -85,11 +85,9 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (objects.size() == 0 && noObjectsRetrieved) {
-            parent.setBackgroundColor(Color.WHITE);
+        parent.setBackgroundColor(Color.TRANSPARENT);
+        if (objects.size() == 0 && noObjectsRetrieved)
             return getNoContentView();
-        }else
-            parent.setBackgroundColor(Color.TRANSPARENT);
 
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_loading, null);
         return view;
