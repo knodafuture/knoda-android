@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.knoda.knoda.R;
 
@@ -68,7 +69,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
 
     @Override
     public PagingAdapter getAdapter() {
-        return new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader());
+        return new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader(), getActivity());
     }
 
 
@@ -110,11 +111,14 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                                     h.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if (prediction == null) {
+                                                Toast.makeText(getActivity(), "Error loading prediction", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
                                             DetailsFragment fragment = DetailsFragment.newInstance(prediction);
                                             pushFragment(fragment);
                                         }
                                     }, 50);
-
                                 }
                             });
                         }

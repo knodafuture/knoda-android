@@ -1,7 +1,9 @@
 package adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -18,17 +21,23 @@ import com.knoda.knoda.R;
 import helpers.AdapterHelper;
 import models.ActivityItem;
 import models.ActivityItemType;
+import models.Prediction;
+import models.ServerError;
+import networking.NetworkCallback;
 import views.activity.ActivityListWinLossCell;
+import views.core.MainActivity;
 
 /**
  * Created by nick on 2/1/14.
  */
 public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
-    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader) {
+    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, Activity activity) {
         super(context, datasource, imageLoader);
+        this.activity = activity;
     }
 
+    final Activity activity;
     static final String bragborder = "#77BC1F";
     static final String settleborder = "#FE3232";
     static final String groupborder = "#235C37";
@@ -74,13 +83,44 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             //activityItem.title = "<font color='#77BC1F'>You Won</font>" + activityItem.title;
             winlossbutton.setTextColor(Color.parseColor(bragborder));
             winlossbutton.setBackgroundResource(R.drawable.brag_button);
+            winlossbutton.setTag(activityItem.target);
             winlossbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder b = new AlertDialog.Builder(v.getContext());
-                    b.setTitle("test")
-                            .setMessage("test")
-                            .show();
+                    ((MainActivity) activity).spinner.show();
+                    ((MainActivity) activity).networkingManager.getPrediction(Integer.parseInt((String) v.getTag()), new NetworkCallback<Prediction>() {
+                        @Override
+                        public void completionHandler(Prediction prediction, ServerError error) {
+                            if (activity == null)
+                                return;
+                            ((MainActivity) activity).spinner.hide();
+                            if (error == null) {
+                                String prefix = "";
+                                if (prediction.userId == ((MainActivity) activity).userManager.getUser().id) {
+                                    prefix = "I won my prediction: ";
+                                } else if (prediction.outcome)
+                                    prefix = "I agreed and won: ";
+                                else
+                                    prefix = "I disagreed and won: ";
+
+                                Intent share = new Intent(Intent.ACTION_SEND);
+                                share.setType("text/plain");
+                                String suffix = " via @KNODAfuture " + prediction.shortUrl;
+                                int predictionLength = 139 - suffix.length();
+                                String text = "";
+                                if (prediction.body.length() > predictionLength) {
+                                    text = prefix + prediction.body.substring(0, predictionLength - 3) + "..." + suffix;
+                                } else {
+                                    text = prefix + prediction.body + suffix;
+                                }
+                                share.putExtra(Intent.EXTRA_TEXT, text);
+                                activity.startActivity(Intent.createChooser(share, "How would you like to share?"));
+                            } else
+                                Toast.makeText(activity.getApplicationContext(), "There was an error trying to share", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
                 }
             });
 
