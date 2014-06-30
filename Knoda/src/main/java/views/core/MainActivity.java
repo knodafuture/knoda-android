@@ -140,6 +140,8 @@ public class MainActivity extends BaseActivity
             pushNotification.id = getIntent().getStringExtra("id");
         }
 
+        launch();
+
         if (getIntent().getStringExtra("type") != null) {
             if (userManager.isLoggedIn()) {
                 spinner.show();
@@ -182,7 +184,6 @@ public class MainActivity extends BaseActivity
                             }
 
                         }
-
                     }
                 });
             } else {
@@ -195,7 +196,7 @@ public class MainActivity extends BaseActivity
             }
 
         } else {
-            launch();
+            //launch();
         }
         new ImagePreloader(networkingManager).invoke();
         TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);

@@ -9,13 +9,17 @@
     <style name="edittext_main">
         <item name="android:background">@color/white</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/knodaDarkGreen</item>
         <item name="android:textSize">18sp</item>
         <item name="android:paddingTop">1dp</item>
         <item name="android:paddingBottom">1dp</item>
         <item name="android:paddingLeft">20dp</item>
-        <item name="android:textColorHint">@color/defaultHintColor</item>
+        <item name="android:textColorHint">@color/knodaHintText</item>
         <item name="android:singleLine">true</item>
+    </style>
+    <style name="knoda_edittext">
+        <item name="android:textColor">@color/knodaDarkGreen</item>
+        <item name="android:textColorHint">@color/knodaHintText</item>
     </style>
 
     <style name="smallWhiteText">

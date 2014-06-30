@@ -22,8 +22,7 @@
         android:layout_height="match_parent"
         android:dividerHeight="0dp"
         android:divider="@null"
-        android:layout_above="@id/details_action_add_comment"/>
-
-
+        android:layout_above="@id/details_action_add_comment"
+        android:background="@drawable/list_background"/>
 
 </RelativeLayout>

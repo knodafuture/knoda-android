@@ -323,6 +323,8 @@ public class NavigationDrawerFragment extends Fragment {
     };
 
     public void refreshActivity() {
+        if (getActivity() == null || ((MainActivity) getActivity()).connectivityManager == null)
+            return;
         NetworkInfo activeNetwork = ((MainActivity) getActivity()).connectivityManager.getActiveNetworkInfo();
         if (activeNetwork != null && activeNetwork.isConnected()) {
             try {
@@ -352,6 +354,8 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean userDialogShown = false;
 
     public void refreshUser() {
+        if (getActivity() == null || ((MainActivity) getActivity()).connectivityManager == null)
+            return;
         NetworkInfo activeNetwork = ((MainActivity) getActivity()).connectivityManager.getActiveNetworkInfo();
         if (activeNetwork != null && activeNetwork.isConnected()) {
             adapter.setUser(userManager.getUser());
