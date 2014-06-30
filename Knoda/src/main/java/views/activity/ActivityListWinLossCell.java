@@ -1,5 +1,6 @@
 package views.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -10,15 +11,19 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
 import models.ActivityItem;
+import models.ActivityItemType;
 
 /**
  * Created by nick on 2/1/14.
@@ -26,19 +31,21 @@ import models.ActivityItem;
 public class ActivityListWinLossCell extends RelativeLayout {
 
 
-    public ImageView iconImageView;
-    public TextView winlosswinlosstext;
+    public NetworkImageView iconImageView;
+    public TextView winlosstitle;
     public TextView winlosscomment;
-    public Button winlossbutton;
+    public TextView winlossbutton;
+    public RelativeLayout buttonContainer;
+    public View divider;
 
-    final static String bragbg="#EBF5DE";
-    final static String bragborder="#77BC1F";
+    final static String bragbg = "#EBF5DE";
+    final static String bragborder = "#77BC1F";
 
-    final static String settlebg="#FFE1E1";
-    final static String settleborder="#FE3232";
+    final static String settlebg = "#FFE1E1";
+    final static String settleborder = "#FE3232";
 
-    final static String groupbg="#DEE7E1";
-    final static String groupborder="#235C37 ";
+    final static String groupbg = "#DEE7E1";
+    final static String groupborder = "#235C37";
 
     public ActivityItem activityItem;
 
@@ -49,49 +56,56 @@ public class ActivityListWinLossCell extends RelativeLayout {
 
     @Override
     public void onFinishInflate() {
-        iconImageView = (ImageView)findViewById(R.id.winloss_imageview);
-        winlosswinlosstext= (TextView)findViewById(R.id.winloss_winloss_text);
-        winlosscomment = (TextView)findViewById(R.id.winloss_comment);
-        winlossbutton = (Button) findViewById(R.id.winloss_button);
+        iconImageView = (NetworkImageView) findViewById(R.id.winloss_imageview);
+        winlosstitle = (TextView) findViewById(R.id.winloss_title);
+        winlosscomment = (TextView) findViewById(R.id.winloss_comment);
+        winlossbutton = (TextView) findViewById(R.id.winloss_button);
+        buttonContainer = (RelativeLayout) findViewById(R.id.winloss_button_container);
+        divider = findViewById(R.id.divider);
     }
 
-    public void setActivityItem(ActivityItem activityItem) {
+    public void setActivityItem(ActivityItem activityItem, ImageLoader imageLoader) {
         this.activityItem = activityItem;
-        update();
+        update(imageLoader);
     }
 
-    public void update() {
-        if(activityItem.type.equals("COMMENT")){
-            hideButton();
-            winlosswinlosstext.setText(Html.fromHtml(activityItem.text));
+    public void update(ImageLoader imageLoader) {
 
-        }else if(activityItem.type.equals("WON")){
-            activityItem.text="<font color='#77BC1F'>You Won</font>"+activityItem.text;
+        if (activityItem.type.equals(ActivityItemType.COMMENT)) {
+            hideButton();
+        } else if (activityItem.type == ActivityItemType.WON) {
+            winlossbutton.setText("Brag");
+            //activityItem.title = "<font color='#77BC1F'>You Won</font>" + activityItem.title;
             winlossbutton.setTextColor(Color.parseColor(bragborder));
             winlossbutton.setBackgroundResource(R.drawable.brag_button);
-            winlosswinlosstext.setText(Html.fromHtml(activityItem.text));
-
-        }else if(activityItem.type.equals("LOST")){
-            activityItem.text="<font color='#FE3232'>You Lost</font>"+activityItem.text;
+        } else if (activityItem.type == ActivityItemType.LOST) {
+            //activityItem.title = "<font color='#FE3232'>You Lost</font>" + activityItem.title;
             hideButton();
-            winlosswinlosstext.setText(Html.fromHtml(activityItem.text));
-
-        }else if(activityItem.type.equals("INVITATION")){
+        } else if (activityItem.type == ActivityItemType.INVITATION) {
+            iconImageView.setBackgroundResource(R.drawable.ic_notification_group);
+            winlossbutton.setText("Join");
             winlossbutton.setTextColor(Color.parseColor(groupborder));
             winlossbutton.setBackgroundResource(R.drawable.group_button);
-            winlosswinlosstext.setText(Html.fromHtml(activityItem.text));
-
-        }else if(activityItem.type.equals("EXPIRED")){
+        } else if (activityItem.type == ActivityItemType.EXPIRED) {
+            iconImageView.setBackgroundResource(R.drawable.ic_notification_settle);
+            winlossbutton.setText("Let's Settle it!");
             winlossbutton.setTextColor(Color.parseColor(settleborder));
             winlossbutton.setBackgroundResource(R.drawable.settle_button);
-            winlosswinlosstext.setText(Html.fromHtml(activityItem.text));
-
         }
+
+        if (activityItem.image_url != null)
+            iconImageView.setImageUrl(activityItem.image_url, imageLoader);
+        if (activityItem.title != null)
+            winlosstitle.setText(Html.fromHtml(activityItem.title));
+        if (activityItem.body != null)
+            winlosscomment.setText("\""+ activityItem.body+"\"");
     }
-    public void hideButton(){
+
+    public void hideButton() {
         winlossbutton.setVisibility(INVISIBLE);
         ViewGroup.LayoutParams lp = winlossbutton.getLayoutParams();
-        lp.height=0;
+        lp.height = 0;
         winlossbutton.setLayoutParams(lp);
+        buttonContainer.setLayoutParams(lp);
     }
 }

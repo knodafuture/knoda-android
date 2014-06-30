@@ -72,6 +72,8 @@ public class NetworkingManager {
 
     public static String baseUrl = "http://captaincold.knoda.com/api/";
 
+    String api_version = "4";
+
     private ImageLoader imageLoader;
 
     @Inject
@@ -522,7 +524,7 @@ public class NetworkingManager {
         if (headers == null) {
             headers = new HashMap<String, String>();
             headers.put("Content-Type", "application/json; charset=utf-8;");
-            headers.put("Accept", "application/json; api_version=3;");
+            headers.put("Accept", "application/json; api_version=" + api_version + ";");
         }
 
         Logger.log("using headers" + headers.toString());

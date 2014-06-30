@@ -1,10 +1,18 @@
 package views.activity;
 
+import android.app.AlertDialog;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.knoda.knoda.R;
 
 import com.flurry.android.FlurryAgent;
 
@@ -28,7 +36,9 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         ActivityFragment fragment = new ActivityFragment();
         return fragment;
     }
-    public ActivityFragment() {}
+
+    public ActivityFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,10 +80,12 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
 
     @Override
     public void onListViewCreated(ListView listView) {
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final ActivityItem activityItem = (ActivityItem)adapter.getItem(i-1);
+                //final ActivityItem activityItem = (ActivityItem) adapter.getItem(i - 1);
+                final ActivityItem activityItem = (ActivityItem) view.getTag();
                 if (activityItem != null) {
                     if (activityItem.type == ActivityItemType.INVITATION) {
                         spinner.show();
@@ -85,25 +97,27 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                                 pushFragment(fragment);
                             }
                         });
-
-
                     } else {
-                        spinner.show();
-                        networkingManager.getPrediction(Integer.parseInt(activityItem.target), new NetworkCallback<Prediction>() {
-                            @Override
-                            public void completionHandler(final Prediction prediction, ServerError error) {
-                                spinner.hide();
-                                final Handler h = new Handler();
-                                h.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        DetailsFragment fragment = DetailsFragment.newInstance(prediction);
-                                        pushFragment(fragment);
-                                    }
-                                }, 50);
+                        if (activityItem.type == ActivityItemType.WON && view.getId() == R.id.winloss_button) {
 
-                            }
-                        });
+                        } else {
+                            spinner.show();
+                            networkingManager.getPrediction(Integer.parseInt(activityItem.target), new NetworkCallback<Prediction>() {
+                                @Override
+                                public void completionHandler(final Prediction prediction, ServerError error) {
+                                    spinner.hide();
+                                    final Handler h = new Handler();
+                                    h.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            DetailsFragment fragment = DetailsFragment.newInstance(prediction);
+                                            pushFragment(fragment);
+                                        }
+                                    }, 50);
+
+                                }
+                            });
+                        }
                     }
                 }
             }

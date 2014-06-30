@@ -25,9 +25,20 @@ public class ActivityItem extends BaseModel {
     @SerializedName("created_at")
     public DateTime creationDate;
 
-    public String text;
+    @SerializedName("title")
+    public String title;
+
+    @SerializedName("body")
+    public String body;
+
+    @SerializedName("target")
     public String target;
+
+    @SerializedName("seen")
     public boolean seen;
+
+    @SerializedName("image_url")
+    public String image_url;
 
 
     public String getCreationString() {
