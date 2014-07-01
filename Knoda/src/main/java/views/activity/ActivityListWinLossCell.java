@@ -63,49 +63,4 @@ public class ActivityListWinLossCell extends RelativeLayout {
         buttonContainer = (RelativeLayout) findViewById(R.id.winloss_button_container);
         divider = findViewById(R.id.divider);
     }
-
-    public void setActivityItem(ActivityItem activityItem, ImageLoader imageLoader) {
-        this.activityItem = activityItem;
-        update(imageLoader);
-    }
-
-    public void update(ImageLoader imageLoader) {
-
-        if (activityItem.type.equals(ActivityItemType.COMMENT)) {
-            hideButton();
-        } else if (activityItem.type == ActivityItemType.WON) {
-            winlossbutton.setText("Brag");
-            //activityItem.title = "<font color='#77BC1F'>You Won</font>" + activityItem.title;
-            winlossbutton.setTextColor(Color.parseColor(bragborder));
-            winlossbutton.setBackgroundResource(R.drawable.brag_button);
-        } else if (activityItem.type == ActivityItemType.LOST) {
-            //activityItem.title = "<font color='#FE3232'>You Lost</font>" + activityItem.title;
-            hideButton();
-        } else if (activityItem.type == ActivityItemType.INVITATION) {
-            iconImageView.setBackgroundResource(R.drawable.ic_notification_group);
-            winlossbutton.setText("Join");
-            winlossbutton.setTextColor(Color.parseColor(groupborder));
-            winlossbutton.setBackgroundResource(R.drawable.group_button);
-        } else if (activityItem.type == ActivityItemType.EXPIRED) {
-            iconImageView.setBackgroundResource(R.drawable.ic_notification_settle);
-            winlossbutton.setText("Let's Settle it!");
-            winlossbutton.setTextColor(Color.parseColor(settleborder));
-            winlossbutton.setBackgroundResource(R.drawable.settle_button);
-        }
-
-        if (activityItem.image_url != null)
-            iconImageView.setImageUrl(activityItem.image_url, imageLoader);
-        if (activityItem.title != null)
-            winlosstitle.setText(Html.fromHtml(activityItem.title));
-        if (activityItem.body != null)
-            winlosscomment.setText("\""+ activityItem.body+"\"");
-    }
-
-    public void hideButton() {
-        winlossbutton.setVisibility(INVISIBLE);
-        ViewGroup.LayoutParams lp = winlossbutton.getLayoutParams();
-        lp.height = 0;
-        winlossbutton.setLayoutParams(lp);
-        buttonContainer.setLayoutParams(lp);
-    }
 }
