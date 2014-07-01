@@ -3,6 +3,8 @@ package managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.knoda.knoda.R;
+
 import javax.inject.Singleton;
 
 import factories.GsonF;
@@ -32,6 +34,7 @@ public class SharedPrefManager {
     private static final String SAVED_PREDICTION_WALKTHROUGH_KEY = "SAVED_PREDICTION_WALKTHROUGH";
     private static final String SAVED_VOTING_WALKTHROUGH_KEY = "SAVED_VOTING_WALKTHROUGHT";
     private static final String SAVED_AGREED_TO_TERMS_KEYS = "SAVED_AGREEED_TO_TERMS_KEY";
+    private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -41,6 +44,7 @@ public class SharedPrefManager {
         return context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
 
     }
+
     public void saveLoginRequestAndResponse(LoginRequest request, LoginResponse response) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putString(SAVED_USERNAME_KEY, response.email).commit();
@@ -123,7 +127,7 @@ public class SharedPrefManager {
         sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, authtoken).commit();
     }
 
-    public String getSavedAuthtoken () {
+    public String getSavedAuthtoken() {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getString(SAVED_AUTHTOKEN_KEY, null);
     }
@@ -131,13 +135,13 @@ public class SharedPrefManager {
     public void clearSession() {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences
-            .edit()
-            .remove(SAVED_PASSWORD_KEY)
-            .remove(SAVED_USERNAME_KEY)
-            .remove(SAVED_AUTHTOKEN_KEY)
-            .remove(SAVED_SOCIAL_ACCOUNT_KEY)
-            .remove(SAVED_GUEST_MODE_KEY)
-            .commit();
+                .edit()
+                .remove(SAVED_PASSWORD_KEY)
+                .remove(SAVED_USERNAME_KEY)
+                .remove(SAVED_AUTHTOKEN_KEY)
+                .remove(SAVED_SOCIAL_ACCOUNT_KEY)
+                .remove(SAVED_GUEST_MODE_KEY)
+                .commit();
     }
 
     public void setFirstLaunch(boolean firstLaunch) {
@@ -197,6 +201,17 @@ public class SharedPrefManager {
 
     public void setAgreedToTerms(boolean agreedToTerms) {
         getSP().edit().putBoolean(SAVED_AGREED_TO_TERMS_KEYS, agreedToTerms).commit();
+    }
+
+    public void setSavedActivityFilter(int filter) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putInt(SAVED_ACTIVITY_FILTER, filter).commit();
+    }
+
+    public int getSavedActivityFilter() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getInt(SAVED_ACTIVITY_FILTER, R.id.activity_1);
+
     }
 }
 

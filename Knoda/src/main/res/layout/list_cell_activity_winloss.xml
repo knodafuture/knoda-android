@@ -13,19 +13,22 @@
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/winloss_imageview"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_margin="4dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+
             android:src="@drawable/ic_notification_avatar" />
 
         <LinearLayout
             android:id="@+id/winlosstext_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="48dp"
+            android:layout_marginLeft="62dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="4dp"
-            android:orientation="vertical">
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            >
 
             <TextView
                 android:id="@+id/winloss_title"
@@ -33,7 +36,8 @@
                 android:layout_height="wrap_content"
                 android:text="You Won-Booya! You Beat ZachG &amp; 37 Others"
                 android:textColor="@color/knodaDarkGreen"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/winloss_comment"
@@ -41,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="I will beat Carlos in Fantasy Football this week by at least 30 points"
-                android:textColor="#888"
-                android:textSize="18sp" />
+                android:textColor="#666666"
+                android:textSize="24sp" />
         </LinearLayout>
 
 
@@ -51,10 +55,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/winlosstext_container"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/winloss_button"
@@ -65,7 +69,7 @@
                 android:gravity="center"
                 android:text="Brag"
                 android:textColor="#77BC1F"
-                android:textSize="18sp" />
+                android:textSize="24sp" />
         </RelativeLayout>
     </RelativeLayout>
 
