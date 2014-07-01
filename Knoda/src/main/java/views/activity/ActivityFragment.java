@@ -1,12 +1,8 @@
 package views.activity;
 
-import android.app.AlertDialog;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +18,6 @@ import com.flurry.android.FlurryAgent;
 import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
 import butterknife.OnClick;
-import managers.SharedPrefManager;
 import models.ActivityItem;
 import models.ActivityItemType;
 import models.Invitation;
@@ -105,6 +100,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         View view = inflater.inflate(R.layout.fragment_activity, container, false);
         topview = view;
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
+        sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
         return view;
     }
 
