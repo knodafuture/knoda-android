@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
@@ -39,13 +42,27 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         super(context, datasource, imageLoader);
         this.activity = activity;
         this.filter = filter;
+        userPic = (BitmapDrawable) activity.getResources().getDrawable(R.drawable.ic_notification_avatar);
+        imageLoader.get(((MainActivity) activity).userManager.getUser().avatar.thumb, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                userPic = new BitmapDrawable(response.getBitmap());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
     }
 
+    BitmapDrawable userPic;
     String filter = "all";
     final Activity activity;
     static final String bragborder = "#77BC1F";
     static final String settleborder = "#FE3232";
     static final String groupborder = "#235C37";
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -96,12 +113,14 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         RelativeLayout buttonContainer = (RelativeLayout) v.findViewById(R.id.winloss_button_container);
 
         if (activityItem.type == ActivityItemType.COMMENT && (filter.equals("all") || filter.equals("comments"))) {
-            iconImageView.setBackgroundResource(R.drawable.ic_notification_avatar);
+            setImage(iconImageView, R.drawable.ic_notification_avatar);
             setUpButton(winlossbutton, buttonContainer, "", false);
+            setUpBody(winlosscomment, true);
 
         } else if (activityItem.type == ActivityItemType.WON && filter.equals("all")) {
-            iconImageView.setBackgroundResource(R.drawable.ic_notification_avatar);
+            setImage(iconImageView, R.drawable.ic_notification_avatar);
             setUpButton(winlossbutton, buttonContainer, "Brag", true);
+            setUpBody(winlosscomment, true);
             //activityItem.title = "<font color='#77BC1F'>You Won</font>" + activityItem.title;
             winlossbutton.setTextColor(Color.parseColor(bragborder));
             winlossbutton.setBackgroundResource(R.drawable.brag_button);
@@ -147,26 +166,27 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             });
 
         } else if (activityItem.type == ActivityItemType.LOST && filter.equals("all")) {
-            iconImageView.setBackgroundResource(R.drawable.ic_notification_avatar);
             //activityItem.title = "<font color='#FE3232'>You Lost</font>" + activityItem.title;
             setUpButton(winlossbutton, buttonContainer, "", false);
+            setUpBody(winlosscomment, true);
 
         } else if (activityItem.type == ActivityItemType.INVITATION && (filter.equals("all") || filter.equals("invites"))) {
-            iconImageView.setBackgroundResource(R.drawable.ic_notification_group);
+            setImage(iconImageView, R.drawable.ic_notification_group);
             setUpButton(winlossbutton, buttonContainer, activityItem.body, true);
             winlossbutton.setTextColor(Color.parseColor(groupborder));
             winlossbutton.setBackgroundResource(R.drawable.group_button);
-            hideBody(winlosscomment);
+            setUpBody(winlosscomment, false);
 
         } else if (activityItem.type == ActivityItemType.EXPIRED && (filter.equals("all") || filter.equals("expired"))) {
-            iconImageView.setBackgroundResource(R.drawable.ic_notification_settle);
+            setImage(iconImageView, R.drawable.ic_notification_settle);
             setUpButton(winlossbutton, buttonContainer, "Let's Settle it!", true);
             winlossbutton.setTextColor(Color.parseColor(settleborder));
             winlossbutton.setBackgroundResource(R.drawable.settle_button);
+            setUpBody(winlosscomment, true);
         }
 
         if (activityItem.image_url != null)
-            iconImageView.setImageUrl(activityItem.image_url, imageLoader);
+            setImage(iconImageView, activityItem.image_url);
 
         if (activityItem.title != null)
             winlosstitle.setText(Html.fromHtml(activityItem.title));
@@ -193,11 +213,33 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
     }
 
-    public void hideBody(TextView bodytext) {
-        bodytext.setVisibility(View.INVISIBLE);
-        ViewGroup.LayoutParams lp = bodytext.getLayoutParams();
-        lp.height = 0;
-        bodytext.setLayoutParams(lp);
+    private void setUpBody(TextView bodytext, boolean show) {
+        if (!show) {
+            bodytext.setVisibility(View.INVISIBLE);
+            ViewGroup.LayoutParams lp = bodytext.getLayoutParams();
+            lp.height = 0;
+            bodytext.setLayoutParams(lp);
+        } else {
+            bodytext.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams lp = bodytext.getLayoutParams();
+            lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            bodytext.setLayoutParams(lp);
+        }
+
+    }
+
+    private void setImage(NetworkImageView imageView, int id) {
+        imageView.setImageDrawable(null);
+        if (id == R.drawable.ic_notification_avatar) {
+            imageView.setBackground(userPic);
+        } else
+            imageView.setBackgroundResource(id);
+    }
+
+    private void setImage(NetworkImageView imageView, String url) {
+        //imageView.setImageDrawable(null);
+        imageView.setBackgroundResource(R.drawable.ic_notification_avatar);
+        imageView.setImageUrl(url, imageLoader);
     }
 
 

@@ -15,15 +15,15 @@
             android:id="@+id/winloss_imageview"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_notification_avatar" />
+            android:layout_marginTop="8dp" />
+
         <ImageView
-            android:src="@drawable/avatar_mask"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"/>
+            android:src="@drawable/avatar_mask" />
 
         <LinearLayout
             android:id="@+id/winlosstext_container"
@@ -31,9 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="62dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            >
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/winloss_title"
@@ -41,8 +40,8 @@
                 android:layout_height="wrap_content"
                 android:text="You Won-Booya! You Beat ZachG &amp; 37 Others"
                 android:textColor="@color/knodaDarkGreen"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/winloss_comment"
@@ -51,7 +50,7 @@
                 android:layout_marginTop="5dp"
                 android:text="I will beat Carlos in Fantasy Football this week by at least 30 points"
                 android:textColor="#666666"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
 
@@ -74,7 +73,7 @@
                 android:gravity="center"
                 android:text="Brag"
                 android:textColor="#77BC1F"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
         </RelativeLayout>
     </RelativeLayout>
 
