@@ -34,7 +34,7 @@ public class ActivityListWinLossCell extends RelativeLayout {
     public NetworkImageView iconImageView;
     public TextView winlosstitle;
     public TextView winlosscomment;
-    public TextView winlossbutton;
+    public Button winlossbutton;
     public RelativeLayout buttonContainer;
     public View divider;
 
@@ -59,7 +59,7 @@ public class ActivityListWinLossCell extends RelativeLayout {
         iconImageView = (NetworkImageView) findViewById(R.id.winloss_imageview);
         winlosstitle = (TextView) findViewById(R.id.winloss_title);
         winlosscomment = (TextView) findViewById(R.id.winloss_comment);
-        winlossbutton = (TextView) findViewById(R.id.winloss_button);
+        winlossbutton = (Button) findViewById(R.id.winloss_button);
         buttonContainer = (RelativeLayout) findViewById(R.id.winloss_button_container);
         divider = findViewById(R.id.divider);
     }

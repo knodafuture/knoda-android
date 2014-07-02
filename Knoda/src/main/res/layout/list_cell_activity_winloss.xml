@@ -44,10 +44,10 @@
                 android:textSize="14sp" />
 
             <RelativeLayout
-                android:layout_marginTop="5dp"
                 android:id="@+id/comment_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/notification_comment_bg">
 
                 <TextView
@@ -59,10 +59,7 @@
                     android:textColor="#666666"
                     android:textSize="18sp" />
             </RelativeLayout>
-
-
         </LinearLayout>
-
 
         <RelativeLayout
             android:id="@+id/winloss_button_container"
@@ -74,7 +71,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="16dp">
 
-            <TextView
+            <Button
                 android:id="@+id/winloss_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

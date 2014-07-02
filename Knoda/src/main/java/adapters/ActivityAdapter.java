@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,22 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         this.activity = activity;
         this.filter = filter;
         userPic = (BitmapDrawable) activity.getResources().getDrawable(R.drawable.ic_notification_avatar);
+
+        showButton = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        showButton.setMargins(pixelToDP * 20, pixelToDP * 16, pixelToDP * 20, pixelToDP * 16);
+        showButton.addRule(RelativeLayout.BELOW, R.id.winlosstext_container);
+
+        hideButton = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+        hideButton.setMargins(pixelToDP * 20, pixelToDP * 10, pixelToDP * 20, 0);
+
+        bragcolor = activity.getResources().getColorStateList(R.color.brag_selector_text);
+        settlecolor = activity.getResources().getColorStateList(R.color.settle_selector_text);
+        groupcolor = activity.getResources().getColorStateList(R.color.group_selector_text);
+
+        this.pixelToDP = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                1,
+                activity.getResources().getDisplayMetrics());
         imageLoader.get(((MainActivity) activity).userManager.getUser().avatar.thumb, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -59,9 +77,12 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     BitmapDrawable userPic;
     String filter = "all";
     final Activity activity;
-    static final String bragborder = "#77BC1F";
-    static final String settleborder = "#FE3232";
-    static final String groupborder = "#235C37";
+    static ColorStateList bragcolor;
+    static ColorStateList settlecolor;
+    static ColorStateList groupcolor;
+    int pixelToDP = 1;
+    RelativeLayout.LayoutParams showButton;
+    RelativeLayout.LayoutParams hideButton;
 
 
     @Override
@@ -78,15 +99,12 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             if (listItem == null)
                 listItem = (ActivityListWinLossCell) LayoutInflater.from(context).inflate(R.layout.list_cell_activity_winloss, null);
 
-
             listItem.setTag(item);
-
             if (position == objects.size() - 1)
                 listItem.divider.setVisibility(View.INVISIBLE);
 
             //listItem.setActivityItem(item, imageLoader);
             update(listItem, item);
-
             return listItem;
         }
     }
@@ -109,7 +127,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         NetworkImageView iconImageView = (NetworkImageView) v.findViewById(R.id.winloss_imageview);
         TextView winlosstitle = (TextView) v.findViewById(R.id.winloss_title);
         TextView winlosscomment = (TextView) v.findViewById(R.id.winloss_comment);
-        TextView winlossbutton = (TextView) v.findViewById(R.id.winloss_button);
+        Button winlossbutton = (Button) v.findViewById(R.id.winloss_button);
         RelativeLayout buttonContainer = (RelativeLayout) v.findViewById(R.id.winloss_button_container);
         RelativeLayout commentBackground = (RelativeLayout) v.findViewById(R.id.comment_background);
 
@@ -127,8 +145,9 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             setUpBody(winlosscomment, true);
             if (!activityItem.title.substring(0, 5).equals("<font"))
                 activityItem.title = "<font color='#77BC1F'>You Won</font>" + "—" + activityItem.title;
-            winlossbutton.setTextColor(Color.parseColor(bragborder));
-            winlossbutton.setBackgroundResource(R.drawable.brag_button);
+            //winlossbutton.setTextColor(bragcolor);
+            winlossbutton.setTextColor(activity.getResources().getColorStateList(R.color.brag_selector_text));
+            winlossbutton.setBackgroundResource(R.drawable.brag_selector);
             winlossbutton.setTag(activityItem.target);
             winlossbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -179,15 +198,15 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         } else if (activityItem.type == ActivityItemType.INVITATION && (filter.equals("all") || filter.equals("invites"))) {
             setImage(iconImageView, R.drawable.ic_notification_group);
             setUpButton(winlossbutton, buttonContainer, activityItem.body, true);
-            winlossbutton.setTextColor(Color.parseColor(groupborder));
-            winlossbutton.setBackgroundResource(R.drawable.group_button);
+            winlossbutton.setTextColor(groupcolor);
+            winlossbutton.setBackgroundResource(R.drawable.group_selector);
             setUpBody(winlosscomment, false);
 
         } else if (activityItem.type == ActivityItemType.EXPIRED && (filter.equals("all") || filter.equals("expired"))) {
             setImage(iconImageView, R.drawable.ic_notification_settle);
             setUpButton(winlossbutton, buttonContainer, "Let's Settle it!", true);
-            winlossbutton.setTextColor(Color.parseColor(settleborder));
-            winlossbutton.setBackgroundResource(R.drawable.settle_button);
+            winlossbutton.setTextColor(settlecolor);
+            winlossbutton.setBackgroundResource(R.drawable.settle_selector);
             setUpBody(winlosscomment, true);
         }
 
@@ -205,14 +224,10 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     public void setUpButton(TextView winlossbutton, RelativeLayout buttonContainer, String buttontext, boolean show) {
         if (!show) {
             winlossbutton.setVisibility(View.INVISIBLE);
-            ViewGroup.LayoutParams lp = buttonContainer.getLayoutParams();
-            lp.height = 0;
-            buttonContainer.setLayoutParams(lp);
+            buttonContainer.setLayoutParams(hideButton);
         } else {
             winlossbutton.setVisibility(View.VISIBLE);
-            ViewGroup.LayoutParams lp2 = buttonContainer.getLayoutParams();
-            lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            buttonContainer.setLayoutParams(lp2);
+            buttonContainer.setLayoutParams(showButton);
             if (buttontext != null)
                 winlossbutton.setText(Html.fromHtml(buttontext));
         }
