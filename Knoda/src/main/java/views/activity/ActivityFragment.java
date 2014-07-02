@@ -60,24 +60,30 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
     }
 
     private void changeFilter(int id) {
+        selectedUnderline.setVisibility(View.INVISIBLE);
         switch (id) {
             case R.id.activity_1:
                 filter = "all";
+                selectedUnderline = topview.findViewById(R.id.underline_1);
                 break;
             case R.id.activity_2:
                 filter = "expired";
+                selectedUnderline = topview.findViewById(R.id.underline_2);
                 break;
             case R.id.activity_3:
                 filter = "comments";
+                selectedUnderline = topview.findViewById(R.id.underline_3);
                 break;
             case R.id.activity_4:
                 filter = "invites";
+                selectedUnderline = topview.findViewById(R.id.underline_4);
                 break;
         }
         sharedPrefManager.setSavedActivityFilter(id);
         selectedFilter.setTextColor(getResources().getColor(R.color.knodaLighterGreen));
         selectedFilter = ((TextView) topview.findViewById(id));
         selectedFilter.setTextColor(Color.WHITE);
+        selectedUnderline.setVisibility(View.VISIBLE);
         adapter = getAdapter();
         pListView.setAdapter(adapter);
         adapter.loadPage(0);
@@ -85,6 +91,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
 
     String filter = "all";
     TextView selectedFilter;
+    View selectedUnderline;
     View topview;
 
     public static ActivityFragment newInstance() {
@@ -107,6 +114,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         View view = inflater.inflate(R.layout.fragment_activity, container, false);
         topview = view;
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
+        selectedUnderline = view.findViewById(R.id.underline_1);
         sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
         return view;
     }
@@ -141,6 +149,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
                     }
                 });
             }
+
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
 

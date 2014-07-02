@@ -121,7 +121,8 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             setImage(iconImageView, R.drawable.ic_notification_avatar);
             setUpButton(winlossbutton, buttonContainer, "Brag", true);
             setUpBody(winlosscomment, true);
-            //activityItem.title = "<font color='#77BC1F'>You Won</font>" + activityItem.title;
+            if (!activityItem.title.substring(0, 5).equals("<font"))
+                activityItem.title = "<font color='#77BC1F'>You Won</font>" + "—" + activityItem.title;
             winlossbutton.setTextColor(Color.parseColor(bragborder));
             winlossbutton.setBackgroundResource(R.drawable.brag_button);
             winlossbutton.setTag(activityItem.target);
@@ -166,7 +167,8 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             });
 
         } else if (activityItem.type == ActivityItemType.LOST && filter.equals("all")) {
-            //activityItem.title = "<font color='#FE3232'>You Lost</font>" + activityItem.title;
+            if (!activityItem.title.substring(0, 5).equals("<font"))
+                activityItem.title = "<font color='#FE3232'>You Lost</font>" + "—" + activityItem.title;
             setUpButton(winlossbutton, buttonContainer, "", false);
             setUpBody(winlosscomment, true);
 

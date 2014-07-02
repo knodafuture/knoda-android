@@ -40,8 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="You Won-Booya! You Beat ZachG &amp; 37 Others"
                 android:textColor="@color/knodaDarkGreen"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/winloss_comment"
@@ -50,7 +49,7 @@
                 android:layout_marginTop="5dp"
                 android:text="I will beat Carlos in Fantasy Football this week by at least 30 points"
                 android:textColor="#666666"
-                android:textSize="20sp" />
+                android:textSize="18sp"/>
         </LinearLayout>
 
 
@@ -73,7 +72,7 @@
                 android:gravity="center"
                 android:text="Brag"
                 android:textColor="#77BC1F"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </RelativeLayout>
     </RelativeLayout>
 
