@@ -111,8 +111,12 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         TextView winlosscomment = (TextView) v.findViewById(R.id.winloss_comment);
         TextView winlossbutton = (TextView) v.findViewById(R.id.winloss_button);
         RelativeLayout buttonContainer = (RelativeLayout) v.findViewById(R.id.winloss_button_container);
+        RelativeLayout commentBackground = (RelativeLayout) v.findViewById(R.id.comment_background);
+
+        commentBackground.setBackgroundDrawable(null);
 
         if (activityItem.type == ActivityItemType.COMMENT && (filter.equals("all") || filter.equals("comments"))) {
+            commentBackground.setBackgroundResource(R.drawable.notification_comment_bg);
             setImage(iconImageView, R.drawable.ic_notification_avatar);
             setUpButton(winlossbutton, buttonContainer, "", false);
             setUpBody(winlosscomment, true);

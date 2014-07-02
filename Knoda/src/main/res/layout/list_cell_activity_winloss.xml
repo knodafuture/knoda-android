@@ -29,7 +29,7 @@
             android:id="@+id/winlosstext_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="62dp"
+            android:layout_marginLeft="57dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
@@ -38,18 +38,29 @@
                 android:id="@+id/winloss_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:text="You Won-Booya! You Beat ZachG &amp; 37 Others"
                 android:textColor="@color/knodaDarkGreen"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/winloss_comment"
+            <RelativeLayout
+                android:layout_marginTop="5dp"
+                android:id="@+id/comment_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="I will beat Carlos in Fantasy Football this week by at least 30 points"
-                android:textColor="#666666"
-                android:textSize="18sp"/>
+                android:background="@drawable/notification_comment_bg">
+
+                <TextView
+                    android:id="@+id/winloss_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:text="I will beat Carlos in Fantasy Football this week by at least 30 points"
+                    android:textColor="#666666"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+
         </LinearLayout>
 
 
