@@ -30,15 +30,16 @@ import views.core.BaseFragment;
 
 public class CreateCommentFragment extends BaseFragment {
 
+    @InjectView(R.id.add_comment_body_edittext)
+    EditText bodyEditText;
+    @InjectView(R.id.add_comment_counter_textview)
+    TextView messageCounterTextView;
     private Prediction prediction;
     private MessageCounter messageCounter;
     private boolean inProgress;
 
-    @InjectView(R.id.add_comment_body_edittext)
-    EditText bodyEditText;
-
-    @InjectView(R.id.add_comment_counter_textview)
-    TextView messageCounterTextView;
+    public CreateCommentFragment() {
+    }
 
     public static CreateCommentFragment newInstance(Prediction prediction) {
         CreateCommentFragment fragment = new CreateCommentFragment();
@@ -47,8 +48,6 @@ public class CreateCommentFragment extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    public CreateCommentFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +68,7 @@ public class CreateCommentFragment extends BaseFragment {
         super.onPause();
         hideKeyboard();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

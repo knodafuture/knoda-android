@@ -11,29 +11,30 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:src="@drawable/activity_comment_icon"/>
+        android:src="@drawable/activity_comment_icon" />
 
 
     <TextView
         android:id="@+id/activity_cell_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/activity_cell_imageview"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/activity_cell_imageview" />
 
-    <TextView style="@style/smallGreenText"
+    <TextView
         android:id="@+id/activity_cell_metadata_textview"
-        android:layout_below="@id/activity_cell_textview"
+        style="@style/smallGreenText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/activity_cell_textview"
-        android:layout_marginBottom="10dp"/>
+        android:layout_below="@id/activity_cell_textview"
+        android:layout_marginBottom="10dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lightGray"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="2dp"
-        android:layout_alignParentBottom="true"/>
+        android:background="@color/lightGray" />
 
 </views.activity.ActivityListCell>

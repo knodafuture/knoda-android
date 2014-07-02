@@ -54,21 +54,21 @@ public class UserAvatarChooserActivity extends AvatarChooserActivity {
             out.flush();
             out.close();
             out = null;
-        } catch(IOException e) {
+        } catch (IOException e) {
             Log.e("tag", "Failed to copy asset file: " + CROP_RESULT_FILENAME, e);
         }
         showCroppedImage();
     }
 
     private String getRandomOctopus() {
-        int random = 1 + (int)(Math.random() * ((4) + 1));
+        int random = 1 + (int) (Math.random() * ((4) + 1));
         return "avatar_" + random + ".png";
     }
 
     private void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
-        while((read = in.read(buffer)) != -1){
+        while ((read = in.read(buffer)) != -1) {
             out.write(buffer, 0, read);
         }
     }

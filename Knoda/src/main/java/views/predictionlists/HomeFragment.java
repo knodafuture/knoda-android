@@ -23,15 +23,7 @@ import pubsub.ReloadListsEvent;
 
 public class HomeFragment extends BasePredictionListFragment {
 
-    @Subscribe
-    public void refreshList(final ReloadListsEvent event) {
-        adapter.loadPage(0);
-    }
-
-
-    @Subscribe
-    public void loginDone(final LoginFlowDoneEvent event) {
-        adapter.notifyDataSetChanged();
+    public HomeFragment() {
     }
 
     public static HomeFragment newInstance() {
@@ -39,7 +31,14 @@ public class HomeFragment extends BasePredictionListFragment {
         return fragment;
     }
 
-    public HomeFragment() {
+    @Subscribe
+    public void refreshList(final ReloadListsEvent event) {
+        adapter.loadPage(0);
+    }
+
+    @Subscribe
+    public void loginDone(final LoginFlowDoneEvent event) {
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -75,7 +74,7 @@ public class HomeFragment extends BasePredictionListFragment {
     }
 
     @Override
-    protected void onLoadFinished(){
+    protected void onLoadFinished() {
         if (adapter.currentPage == 0 && !sharedPrefManager.getFirstLaunch() && !sharedPrefManager.haveShownPredictionWalkthrough() && !userManager.getUser().guestMode)
             showPredictionWalkthrough();
     }
@@ -85,6 +84,7 @@ public class HomeFragment extends BasePredictionListFragment {
         hideTour();
         super.onPredictionDisagreed(cell);
     }
+
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
         hideTour();
@@ -146,15 +146,16 @@ public class HomeFragment extends BasePredictionListFragment {
             }, 500);
         }
     }
+
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
-        if(listView.getTag()!=null){
+        if (listView.getTag() != null) {
             View walkthrough = ((View) listView.getTag());
             ViewGroup.LayoutParams lp = walkthrough.getLayoutParams();
             lp.height = 0;
             walkthrough.setLayoutParams(lp);
-            ((View)listView.getTag()).setVisibility(View.INVISIBLE);
+            ((View) listView.getTag()).setVisibility(View.INVISIBLE);
             listView.setTag(null);
         }
     }

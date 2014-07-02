@@ -18,7 +18,7 @@ public class MessageCounter {
         this.charactersRemaining = maxCharacters;
 
         textView.setText(charactersRemaining.toString());
-        editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxCharacters)});
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxCharacters)});
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override

@@ -13,103 +13,111 @@
             android:id="@+id/group_settings_avatar"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:background="@color/black"/>
+            android:background="@color/black" />
 
         <TextView
+            android:id="@+id/group_settings_name_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/group_settings_avatar"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:text="KU Crew"
-            android:id="@+id/group_settings_name_textview"/>
+            android:text="KU Crew" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="12dp"
             android:id="@+id/group_settings_description_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/group_settings_name_textview"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/group_settings_avatar"
-            android:text="The rootin tootinest group of KU bros ever assembled"/>
+            android:text="The rootin tootinest group of KU bros ever assembled"
+            android:textSize="12dp" />
 
         <LinearLayout
+            android:id="@+id/group_settings_invite_view"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/group_settings_avatar"
-            android:id="@+id/group_settings_invite_view"
-            android:weightSum="1.0"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:weightSum="1.0">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_weight=".5"
-                android:layout_height="match_parent"
-                android:clickable="true"
                 android:id="@+id/group_settings_invite_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:layout_weight=".5"
                 android:background="@color/knodaDarkGreen"
-                android:layout_marginRight="1dp">
+                android:clickable="true">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
+
                     <ImageView
                         android:id="@+id/group_settings_invite_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/invite_icon"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/invite_icon" />
+
                     <TextView
                         android:id="@+id/group_settings_invite_textview"
-                        android:layout_toRightOf="@id/group_settings_invite_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Send Invite"
-                        android:textColor="@color/white"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/group_settings_invite_image"
                         android:paddingRight="10dp"
-                        android:layout_centerVertical="true"/>
-
-                    </RelativeLayout>
+                        android:text="Send Invite"
+                        android:textColor="@color/white" />
 
                 </RelativeLayout>
+
+            </RelativeLayout>
+
             <RelativeLayout
-                android:layout_marginLeft="1dp"
-                android:layout_weight=".5"
+                android:id="@+id/group_settings_share_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
-                android:id="@+id/group_settings_share_button"
-                android:background="@color/knodaDarkGreen">
+                android:layout_marginLeft="1dp"
+                android:layout_weight=".5"
+                android:background="@color/knodaDarkGreen"
+                android:clickable="true">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
+
                     <ImageView
                         android:id="@+id/group_settings_share_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/share_link_icon"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/share_link_icon" />
+
                     <TextView
                         android:id="@+id/group_settings_share_textview"
-                        android:layout_toRightOf="@id/group_settings_share_image"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Share Link"
-                        android:textColor="@color/white"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_toRightOf="@id/group_settings_share_image"
                         android:paddingRight="10dp"
                         android:paddingTop="2dp"
-                        android:layout_centerVertical="true"/>
+                        android:text="Share Link"
+                        android:textColor="@color/white" />
 
-                    </RelativeLayout>
+                </RelativeLayout>
 
             </RelativeLayout>
-            </LinearLayout>
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/group_settings_join_group_button"
             android:layout_width="match_parent"
@@ -118,13 +126,15 @@
             android:background="@color/knodaDarkGreen"
             android:clickable="true"
             android:visibility="invisible">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:layout_centerInParent="true"
                 android:text="Join Group"
-                android:layout_centerInParent="true"/>
-            </RelativeLayout>
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/group_settings_leave_group_button"
             android:layout_width="match_parent"
@@ -133,14 +143,16 @@
             android:background="@color/knodaDarkGreen"
             android:clickable="true"
             android:visibility="invisible">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:layout_centerInParent="true"
                 android:text="Leave Group"
-                android:layout_centerInParent="true"/>
+                android:textColor="@color/white" />
         </RelativeLayout>
-        </RelativeLayout>
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/group_settings_edit_group_button"
         android:layout_width="match_parent"
@@ -148,23 +160,24 @@
         android:layout_alignParentBottom="true"
         android:background="@color/knodaDarkGreen"
         android:clickable="true">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:layout_centerInParent="true"
             android:text="Edit Group"
             android:textAlignment="center"
-            android:layout_centerInParent="true"/>
+            android:textColor="@color/white" />
     </RelativeLayout>
+
     <ListView
         android:id="@+id/group_settings_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/group_settings_header"
-        android:layout_above="@id/group_settings_edit_group_button">
+        android:layout_above="@id/group_settings_edit_group_button"
+        android:layout_below="@id/group_settings_header">
 
-        </ListView>
-
+    </ListView>
 
 
 </RelativeLayout>

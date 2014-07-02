@@ -21,20 +21,21 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
 
     public Bus bus;
     public SharedPrefManager sharedPrefManager;
-    boolean disableTour=false;
+    boolean disableTour = false;
 
     public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus) {
         super(context, datasource, imageLoader);
         this.bus = bus;
-        this.sharedPrefManager=new SharedPrefManager(context);
+        this.sharedPrefManager = new SharedPrefManager(context);
         this.bus.register(this);
     }
+
     public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus, boolean disableTour) {
         super(context, datasource, imageLoader);
         this.bus = bus;
-        this.sharedPrefManager=new SharedPrefManager(context);
+        this.sharedPrefManager = new SharedPrefManager(context);
         this.bus.register(this);
-        this.disableTour=disableTour;
+        this.disableTour = disableTour;
     }
 
     @Subscribe
@@ -63,10 +64,10 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
 
-        if(sharedPrefManager.getFirstLaunch() && sharedPrefManager.shouldShowVotingWalkthrough() && position==0 && !disableTour) {
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService
+        if (sharedPrefManager.getFirstLaunch() && sharedPrefManager.shouldShowVotingWalkthrough() && position == 0 && !disableTour) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
-            View v = inflater.inflate(R.layout.view_swipe_walkthrough,null);
+            View v = inflater.inflate(R.layout.view_swipe_walkthrough, null);
             if (listItem.walkthroughView.getChildCount() == 0) {
                 parent.setTag(v);
                 listItem.walkthroughView.addView(v);

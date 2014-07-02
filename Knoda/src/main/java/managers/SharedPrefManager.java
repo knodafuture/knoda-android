@@ -21,8 +21,6 @@ import models.SocialAccount;
 @Singleton
 public class SharedPrefManager {
 
-    private Context context;
-
     private static final String SAVED_USERNAME_KEY = "SAVEDUSERNAME";
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
@@ -35,6 +33,7 @@ public class SharedPrefManager {
     private static final String SAVED_VOTING_WALKTHROUGH_KEY = "SAVED_VOTING_WALKTHROUGHT";
     private static final String SAVED_AGREED_TO_TERMS_KEYS = "SAVED_AGREEED_TO_TERMS_KEY";
     private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
+    private Context context;
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -122,14 +121,14 @@ public class SharedPrefManager {
         return account;
     }
 
-    public void setSavedAuthtoken(String authtoken) {
-        SharedPreferences sharedPreferences = getSP();
-        sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, authtoken).commit();
-    }
-
     public String getSavedAuthtoken() {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getString(SAVED_AUTHTOKEN_KEY, null);
+    }
+
+    public void setSavedAuthtoken(String authtoken) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, authtoken).commit();
     }
 
     public void clearSession() {
@@ -144,20 +143,15 @@ public class SharedPrefManager {
                 .commit();
     }
 
-    public void setFirstLaunch(boolean firstLaunch) {
-        SharedPreferences sharedPreferences = getSP();
-        sharedPreferences.edit().putBoolean(FIRST_LAUNCH_KEY, firstLaunch).commit();
-    }
-
     public boolean getFirstLaunch() {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getBoolean(FIRST_LAUNCH_KEY, true);
 
     }
 
-    public void setPredictionInProgress(Prediction prediction) {
+    public void setFirstLaunch(boolean firstLaunch) {
         SharedPreferences sharedPreferences = getSP();
-        sharedPreferences.edit().putString(SAVED_PREDICTION_IN_PROGESS_KEY, GsonF.actory().toJson(prediction)).commit();
+        sharedPreferences.edit().putBoolean(FIRST_LAUNCH_KEY, firstLaunch).commit();
     }
 
     public void clearPredictionInProgress() {
@@ -173,6 +167,11 @@ public class SharedPrefManager {
             return null;
 
         return GsonF.actory().fromJson(predictionJson, Prediction.class);
+    }
+
+    public void setPredictionInProgress(Prediction prediction) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putString(SAVED_PREDICTION_IN_PROGESS_KEY, GsonF.actory().toJson(prediction)).commit();
     }
 
     public boolean haveShownPredictionWalkthrough() {
@@ -203,15 +202,15 @@ public class SharedPrefManager {
         getSP().edit().putBoolean(SAVED_AGREED_TO_TERMS_KEYS, agreedToTerms).commit();
     }
 
-    public void setSavedActivityFilter(int filter) {
-        SharedPreferences sharedPreferences = getSP();
-        sharedPreferences.edit().putInt(SAVED_ACTIVITY_FILTER, filter).commit();
-    }
-
     public int getSavedActivityFilter() {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getInt(SAVED_ACTIVITY_FILTER, R.id.activity_1);
 
+    }
+
+    public void setSavedActivityFilter(int filter) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putInt(SAVED_ACTIVITY_FILTER, filter).commit();
     }
 }
 

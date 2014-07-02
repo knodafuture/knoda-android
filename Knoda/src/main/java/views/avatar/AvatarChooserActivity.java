@@ -34,26 +34,19 @@ import views.core.BaseActivity;
 
 public abstract class AvatarChooserActivity extends BaseActivity {
 
-    @InjectView(R.id.photo_chooser_imageview)
-    ImageView imageView;
-
-    private boolean madeInitialSelection = false;
-
     public static final int AVATAR_SIZE = 1000;
     public static final int CAMERA_RESULT = 187;
     public static final int CROP_RESULT = 1827323;
     public static final int GALLERY_RESULT = 12312312;
-
     public static final String FROM_CAMERA_FILENAME = "FROMCAMERA";
     public static final String CROP_RESULT_FILENAME = "CROPRESULT";
-
-    private File cameraOutputFile;
     public File cropResultFile;
-
-    private RequestQueue requestQueue;
-
     public boolean uploadInProgress = false;
-
+    @InjectView(R.id.photo_chooser_imageview)
+    ImageView imageView;
+    private boolean madeInitialSelection = false;
+    private File cameraOutputFile;
+    private RequestQueue requestQueue;
     private boolean cancelable;
 
     @Override

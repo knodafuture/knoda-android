@@ -26,22 +26,24 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     @InjectView(R.id.confirm_username)
     TextView textView;
 
-    @OnClick(R.id.confirm_start_predicting_button) void onClick() {
-        try{
-            sharedPrefManager.setShouldShowVotingWalkthrough(true);
-            bus.post(new LoginFlowDoneEvent());
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        dismissFade();
+    public SignupConfirmFragment() {
     }
 
     public static SignupConfirmFragment newInstance() {
         SignupConfirmFragment fragment = new SignupConfirmFragment();
         return fragment;
     }
-    public SignupConfirmFragment() {}
 
+    @OnClick(R.id.confirm_start_predicting_button)
+    void onClick() {
+        try {
+            sharedPrefManager.setShouldShowVotingWalkthrough(true);
+            bus.post(new LoginFlowDoneEvent());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        dismissFade();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

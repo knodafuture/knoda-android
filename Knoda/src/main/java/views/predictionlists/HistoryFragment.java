@@ -18,11 +18,13 @@ import unsorted.Logger;
  */
 public class HistoryFragment extends BasePredictionListFragment {
 
+    public HistoryFragment() {
+    }
+
     public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
         return fragment;
     }
-    public HistoryFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

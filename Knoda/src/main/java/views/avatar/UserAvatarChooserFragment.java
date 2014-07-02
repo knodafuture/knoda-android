@@ -41,42 +41,42 @@ import views.login.SignupConfirmFragment;
 public class UserAvatarChooserFragment extends BaseDialogFragment {
 
 
-    @InjectView(R.id.avatar_imageview)
-    ImageView imageView;
-
-    @InjectView(R.id.avatar_done)
-    Button doneButton;
-
-    @OnClick(R.id.avatar_done) void onDone() {submit();}
-
-    @OnClick(R.id.avatar_gallery_button) void onGallery() {
-        startGallery();
-    }
-
-    @OnClick(R.id.avatar_take_photo_button) void onCamera() {startCamera();}
-
-    @OnClick(R.id.avatar_skip) void onSkip() {
-        useDefault();
-    }
-
-    private boolean madeInitialSelection = false;
-
     public static final int AVATAR_SIZE = 1000;
     public static final int CAMERA_RESULT = 187;
     public static final int CROP_RESULT = 1827323;
     public static final int GALLERY_RESULT = 12312312;
-
     public static final String FROM_CAMERA_FILENAME = "FROMCAMERA";
     public static final String CROP_RESULT_FILENAME = "CROPRESULT";
-
-    private File cameraOutputFile;
     public File cropResultFile;
-
-    private RequestQueue requestQueue;
-
     public boolean uploadInProgress = false;
-
+    @InjectView(R.id.avatar_imageview)
+    ImageView imageView;
+    @InjectView(R.id.avatar_done)
+    Button doneButton;
+    private boolean madeInitialSelection = false;
+    private File cameraOutputFile;
+    private RequestQueue requestQueue;
     private boolean cancelable;
+
+    @OnClick(R.id.avatar_done)
+    void onDone() {
+        submit();
+    }
+
+    @OnClick(R.id.avatar_gallery_button)
+    void onGallery() {
+        startGallery();
+    }
+
+    @OnClick(R.id.avatar_take_photo_button)
+    void onCamera() {
+        startCamera();
+    }
+
+    @OnClick(R.id.avatar_skip)
+    void onSkip() {
+        useDefault();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -154,7 +154,7 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
             out.flush();
             out.close();
             out = null;
-        } catch(IOException e) {
+        } catch (IOException e) {
             Log.e("tag", "Failed to copy asset file: " + CROP_RESULT_FILENAME, e);
         }
         Bitmap bitmap = BitmapFactory.decodeFile(cropResultFile.getPath());
@@ -187,7 +187,7 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     }
 
     public void finish() {
-        ((MainActivity)getActivity()).doLogin();
+        ((MainActivity) getActivity()).doLogin();
         dismiss();
 
         SignupConfirmFragment f = SignupConfirmFragment.newInstance();
@@ -195,14 +195,14 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     }
 
     private String getRandomOctopus() {
-        int random = 1 + (int)(Math.random() * ((4) + 1));
+        int random = 1 + (int) (Math.random() * ((4) + 1));
         return "avatar_" + random + ".png";
     }
 
     private void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
-        while((read = in.read(buffer)) != -1){
+        while ((read = in.read(buffer)) != -1) {
             out.write(buffer, 0, read);
         }
     }

@@ -21,6 +21,9 @@ public class PhotoFragment extends BaseFragment {
 
     private String imageUrl;
 
+    public PhotoFragment() {
+    }
+
     public static PhotoFragment newInstance(String imageUrl) {
         PhotoFragment fragment = new PhotoFragment();
         Bundle bundle = new Bundle();
@@ -28,7 +31,6 @@ public class PhotoFragment extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-    public PhotoFragment(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

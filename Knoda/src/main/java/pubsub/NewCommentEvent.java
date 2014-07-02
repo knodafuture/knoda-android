@@ -7,6 +7,7 @@ import models.Comment;
  */
 public class NewCommentEvent {
     public Comment comment;
+
     public NewCommentEvent(Comment comment) {
         this.comment = comment;
     }

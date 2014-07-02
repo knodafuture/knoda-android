@@ -30,8 +30,8 @@ public class BadgeAdapter extends ArrayAdapter<Badge> {
         if (convertView == null)
             gridView = inflater.inflate(R.layout.grid_cell_badges, null);
 
-            NetworkImageView imageView = (NetworkImageView) gridView.findViewById(R.id.image);
-            imageView.setImageUrl(getItem(position).url, imageLoader);
+        NetworkImageView imageView = (NetworkImageView) gridView.findViewById(R.id.image);
+        imageView.setImageUrl(getItem(position).url, imageLoader);
 
         return gridView;
     }

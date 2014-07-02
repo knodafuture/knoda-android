@@ -14,8 +14,9 @@ public class LeaderboardPagerAdapter extends FragmentPagerAdapter {
     public LeaderboardPagerAdapter(FragmentManager fm, Group group) {
         super(fm);
         this.group = group;
-        Logger.log("LEADERBOARD# created adapter for group " +group.id);
+        Logger.log("LEADERBOARD# created adapter for group " + group.id);
     }
+
     @Override
     public Fragment getItem(int position) {
         Logger.log("LEADERBOARD# for position" + position + " group " + group.id);

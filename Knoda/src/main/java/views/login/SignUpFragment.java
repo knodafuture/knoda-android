@@ -35,38 +35,48 @@ import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
 public class SignUpFragment extends BaseDialogFragment {
+    private static final int avatarResultCode = 123988123;
     @InjectView(R.id.signup_email_edittext)
     EditText emailField;
-
     @InjectView(R.id.signup_password_edittext)
     EditText passwordField;
-
     @InjectView(R.id.signup_username_edittext)
     EditText usernameField;
 
-    @OnClick(R.id.welcome_login_facebook) void onFB() {doFacebookLogin();}
-
-    @OnClick(R.id.welcome_login_twitter) void onTwitter() {doTwitterLogin();}
-
-    @OnClick(R.id.signup_button) void onSignup() {doSignup();}
-
-    @OnClick(R.id.signup_close) void onSignupClose() {dismissFade();}
-
-    @OnClick(R.id.welcome_already_user) void onSignIn() {
-        LoginFragment f = LoginFragment.newInstance();
-        f.show(getFragmentManager(), "login");
-        dismissFade();
+    public SignUpFragment() {
     }
-
-    private static final int avatarResultCode = 123988123;
 
     public static SignUpFragment newInstance() {
         SignUpFragment fragment = new SignUpFragment();
         return fragment;
     }
-    public SignUpFragment() {
+
+    @OnClick(R.id.welcome_login_facebook)
+    void onFB() {
+        doFacebookLogin();
     }
 
+    @OnClick(R.id.welcome_login_twitter)
+    void onTwitter() {
+        doTwitterLogin();
+    }
+
+    @OnClick(R.id.signup_button)
+    void onSignup() {
+        doSignup();
+    }
+
+    @OnClick(R.id.signup_close)
+    void onSignupClose() {
+        dismissFade();
+    }
+
+    @OnClick(R.id.welcome_already_user)
+    void onSignIn() {
+        LoginFragment f = LoginFragment.newInstance();
+        f.show(getFragmentManager(), "login");
+        dismissFade();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +88,7 @@ public class SignUpFragment extends BaseDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inflate =inflater.inflate(R.layout.fragment_sign_up, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_sign_up, container, false);
         updateBackground();
         return inflate;
     }
@@ -104,7 +114,6 @@ public class SignUpFragment extends BaseDialogFragment {
     }
 
 
-
     public void setupListeners() {
 
         EditTextHelper.assignNextEditText(emailField, usernameField);
@@ -119,7 +128,7 @@ public class SignUpFragment extends BaseDialogFragment {
 
     public void finish(boolean shouldConfirm) {
         dismiss();
-        ((MainActivity)getActivity()).doLogin();
+        ((MainActivity) getActivity()).doLogin();
         SignupConfirmFragment f = SignupConfirmFragment.newInstance();
 
         if (shouldConfirm)
@@ -211,9 +220,9 @@ public class SignUpFragment extends BaseDialogFragment {
                         } else {
                             DateTime curTime = new DateTime();
                             DateTime newTime = curTime.minusMinutes(1);
-                            int i = (int) (newTime.getMillis()/1000);
-                            int j = (int) (userManager.user.created_at.getMillis()/1000);
-                            if(i <= j) {
+                            int i = (int) (newTime.getMillis() / 1000);
+                            int j = (int) (userManager.user.created_at.getMillis() / 1000);
+                            if (i <= j) {
                                 FlurryAgent.logEvent("SIGNUP_FACEBOOK");
                                 finish(true);
                             } else {
@@ -263,9 +272,9 @@ public class SignUpFragment extends BaseDialogFragment {
 
                         DateTime curTime = new DateTime();
                         DateTime newTime = curTime.minusMinutes(1);
-                        int i = (int) (newTime.getMillis()/1000);
-                        int j = (int) (userManager.user.created_at.getMillis()/1000);
-                        if(j >= i) {
+                        int i = (int) (newTime.getMillis() / 1000);
+                        int j = (int) (userManager.user.created_at.getMillis() / 1000);
+                        if (j >= i) {
                             FlurryAgent.logEvent("SIGNUP_TWITTER");
                             finish(true);
                         } else {

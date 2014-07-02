@@ -25,7 +25,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
         Bundle bundle = new Bundle();
         bundle.putString("GROUP", GsonF.actory().toJson(group));
         fragment.setArguments(bundle);
-        return fragment ;
+        return fragment;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setTitle(group.name.toUpperCase());
-        final GroupPredictionAdapter a = ((GroupPredictionAdapter)adapter);
+        final GroupPredictionAdapter a = ((GroupPredictionAdapter) adapter);
         a.setGroup(group);
         /*
         headerview = new GroupPredictionListHeader(getActivity(), this);
@@ -71,7 +71,6 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
     public void onListViewCreated(ListView listView) {
         super.onListViewCreated(listView);
     }
-
 
 
     @Override

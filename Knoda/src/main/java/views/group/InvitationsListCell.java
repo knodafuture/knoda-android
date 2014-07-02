@@ -19,22 +19,17 @@ import models.InvitationHolder;
  */
 public class InvitationsListCell extends RelativeLayout {
 
-    public interface InvitationsCellCallbacks {
-        void invitationRemovedAtPosition(int position);
-    }
-
+    private static final int SWIPE_MIN_DISTANCE = 60;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     TextView nameTextView;
     TextView metaDataTextView;
     RelativeLayout removeButton;
     RelativeLayout confirmRemoveButton;
     ImageView knodaImageView;
-
     GestureDetector gestureDetector;
     long animationTime;
     int position;
-
     InvitationsCellCallbacks callbacks;
-
     InvitationHolder holder;
 
     public InvitationsListCell(Context context, InvitationsCellCallbacks callbacks) {
@@ -55,11 +50,11 @@ public class InvitationsListCell extends RelativeLayout {
 
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.list_cell_invitations, this);
-        nameTextView = (TextView)findViewById(R.id.invitations_cell_name_textview);
-        metaDataTextView = (TextView)findViewById(R.id.invitations_cell_metadata_textview);
-        removeButton = (RelativeLayout)findViewById(R.id.invitations_cell_remove);
-        confirmRemoveButton = (RelativeLayout)findViewById(R.id.invitations_cell_confirm_remove);
-        knodaImageView = (ImageView)findViewById(R.id.invitations_cell_knoda_user_icon);
+        nameTextView = (TextView) findViewById(R.id.invitations_cell_name_textview);
+        metaDataTextView = (TextView) findViewById(R.id.invitations_cell_metadata_textview);
+        removeButton = (RelativeLayout) findViewById(R.id.invitations_cell_remove);
+        confirmRemoveButton = (RelativeLayout) findViewById(R.id.invitations_cell_confirm_remove);
+        knodaImageView = (ImageView) findViewById(R.id.invitations_cell_knoda_user_icon);
         animationTime = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         gestureDetector = new GestureDetector(new GestureListener());
@@ -67,11 +62,11 @@ public class InvitationsListCell extends RelativeLayout {
 
         if (callbacks != null)
             removeButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                remove();
-            }
-        });
+                @Override
+                public void onClick(View view) {
+                    remove();
+                }
+            });
         else
             removeButton.setVisibility(INVISIBLE);
 
@@ -90,8 +85,7 @@ public class InvitationsListCell extends RelativeLayout {
         if (holder.isKnodaUser()) {
             knodaImageView.setVisibility(VISIBLE);
             metaDataTextView.setVisibility(GONE);
-        }
-        else {
+        } else {
             knodaImageView.setVisibility(INVISIBLE);
             metaDataTextView.setVisibility(VISIBLE);
         }
@@ -107,7 +101,7 @@ public class InvitationsListCell extends RelativeLayout {
     }
 
     private void remove() {
-        confirmRemoveButton.animate().x(getWidth()-confirmRemoveButton.getWidth()).setDuration(animationTime).setListener(null);
+        confirmRemoveButton.animate().x(getWidth() - confirmRemoveButton.getWidth()).setDuration(animationTime).setListener(null);
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -122,22 +116,21 @@ public class InvitationsListCell extends RelativeLayout {
         callbacks.invitationRemovedAtPosition(position);
     }
 
-
     private void hideConfirmRemove() {
         confirmRemoveButton.animate().x(getWidth()).setDuration(animationTime).setListener(null);
         setOnTouchListener(null);
     }
-
-    private static final int SWIPE_MIN_DISTANCE = 60;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 100;
+    public interface InvitationsCellCallbacks {
+        void invitationRemovedAtPosition(int position);
+    }
 
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 hideConfirmRemove();
                 return true;
-            }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+            } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 hideConfirmRemove();
                 return true;
             }

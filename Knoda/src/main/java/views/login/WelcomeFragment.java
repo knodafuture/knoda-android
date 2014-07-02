@@ -37,6 +37,25 @@ import views.core.MainActivity;
  * create an instance of this fragment.
  */
 public class WelcomeFragment extends BaseDialogFragment {
+    public static boolean requestingTwitterLogin;
+    String wtext = "";
+    String wprompt = "";
+    @InjectView(R.id.terms_container)
+    RelativeLayout termsContainer;
+
+    public WelcomeFragment() {
+        // Required empty public constructor
+    }
+
+    public static WelcomeFragment newInstance(String titleMessage, String detailMessage) {
+        WelcomeFragment fragment = new WelcomeFragment();
+        Bundle b = new Bundle();
+        b.putCharSequence("welcometext", titleMessage);
+        b.putCharSequence("welcomeprompt", detailMessage);
+        fragment.setArguments(b);
+        return fragment;
+    }
+
     @OnClick(R.id.signup_terms_button)
     void onTerms() {
         openUrl(NetworkingManager.termsOfServiceUrl);
@@ -81,26 +100,6 @@ public class WelcomeFragment extends BaseDialogFragment {
         dismissFade();
     }
 
-    String wtext = "";
-    String wprompt = "";
-
-    @InjectView(R.id.terms_container)
-    RelativeLayout termsContainer;
-
-    public static boolean requestingTwitterLogin;
-
-    public static WelcomeFragment newInstance(String titleMessage, String detailMessage) {
-        WelcomeFragment fragment = new WelcomeFragment();
-        Bundle b= new Bundle();
-        b.putCharSequence("welcometext",titleMessage);
-        b.putCharSequence("welcomeprompt", detailMessage);
-        fragment.setArguments(b);
-        return fragment;
-    }
-
-    public WelcomeFragment() {
-        // Required empty public constructor
-    }
     @Subscribe
     public void screenCapture(final ScreenCaptureEvent event) {
         updateBackground();
@@ -141,11 +140,11 @@ public class WelcomeFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
-        TextView welcomeText=((TextView)view.findViewById(R.id.wall_welcome));
-        TextView welcomePrompt=((TextView)view.findViewById(R.id.wall_prompt));
+        TextView welcomeText = ((TextView) view.findViewById(R.id.wall_welcome));
+        TextView welcomePrompt = ((TextView) view.findViewById(R.id.wall_prompt));
         if (!wtext.equals(""))
             welcomeText.setText(wtext);
-        if(!wprompt.equals(""))
+        if (!wprompt.equals(""))
             welcomePrompt.setText(wprompt);
 
         return view;

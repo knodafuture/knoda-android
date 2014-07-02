@@ -6,9 +6,8 @@ package views.core;
 
 public class Spinner {
 
-    private final BaseActivity mActivity;
-
     private static final SpinnerFragment spinnerFragment = new SpinnerFragment();
+    private final BaseActivity mActivity;
 
     public Spinner(BaseActivity activity) {
         this.mActivity = activity;

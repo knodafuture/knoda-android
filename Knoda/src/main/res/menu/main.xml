@@ -1,18 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
     <group
         android:id="@+id/default_menu_group"
         android:visible="true">
-        <item android:id="@+id/action_search"
-            android:title="Search"
+        <item
+            android:id="@+id/action_search"
             android:icon="@drawable/nav_search"
+            android:orderInCategory="0"
             android:showAsAction="ifRoom"
-            android:orderInCategory="0"/>
-        <item android:id="@+id/action_add_prediction"
-            android:title="Add Prediction"
+            android:title="Search" />
+        <item
+            android:id="@+id/action_add_prediction"
             android:icon="@drawable/nav_predict"
             android:orderInCategory="100"
-            android:showAsAction="ifRoom" />
+            android:showAsAction="ifRoom"
+            android:title="Add Prediction" />
     </group>
 </menu>

@@ -9,7 +9,7 @@ import com.knoda.knoda.R;
 
 import models.Leader;
 
-public class LeaderListCell  extends RelativeLayout {
+public class LeaderListCell extends RelativeLayout {
     public TextView nameView;
     public TextView winsView;
     public TextView winpercentView;

@@ -1,11 +1,9 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/lightGray"
+    android:id="@+id/profile"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/profile">
-
+    android:background="@color/lightGray">
 
 
     <RelativeLayout
@@ -13,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@android:color/white">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            tools:context="views.profile.MyProfileFragment"
-            >
-            
+            android:orientation="vertical"
+            tools:context="views.profile.MyProfileFragment">
+
             <views.profile.UserProfileHeaderView
                 android:id="@+id/profile_view_user_header"
                 android:layout_width="wrap_content"
@@ -27,34 +25,35 @@
 
 
             <TextView
-                style="@style/edittext_main"
                 android:id="@+id/profile_username_edittext"
+                style="@style/edittext_main"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
-                android:text="username"/>
+                android:text="username" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dip"
                 android:background="#efefef" />
 
             <TextView
-                style="@style/edittext_main"
                 android:id="@+id/profile_email_edittext"
+                style="@style/edittext_main"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="email"/>
+                android:text="email" />
 
             <View
                 android:layout_width="fill_parent"
@@ -62,101 +61,106 @@
                 android:background="#efefef" />
 
             <TextView
-                style="@style/edittext_main"
                 android:id="@+id/profile_password_edittext"
+                style="@style/edittext_main"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Change Password"/>
+                android:text="Change Password" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="lock it down"/>
+                android:text="lock it down" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dip"
                 android:background="#efefef" />
+
             <RelativeLayout
                 android:id="@+id/profile_facebook_button"
-                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:clickable="true">
 
                 <TextView
-                    style="@style/edittext_main"
                     android:id="@+id/profile_facebook_account_name"
+                    style="@style/edittext_main"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="nrellihan@gmail.com"/>
+                    android:text="nrellihan@gmail.com" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_facebook_account_name"
                     android:layout_marginLeft="10dp"
-                    android:text="Facebook"
-                    android:layout_below="@id/profile_facebook_account_name"/>
+                    android:text="Facebook" />
 
                 <ImageView
                     android:id="@+id/profile_facebook_imageview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/facebook_share"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"/>
-                </RelativeLayout>
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/facebook_share" />
+            </RelativeLayout>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dip"
                 android:background="#efefef" />
+
             <RelativeLayout
                 android:id="@+id/profile_twitter_button"
-                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:clickable="true">
 
                 <TextView
-                    style="@style/edittext_main"
                     android:id="@+id/profile_twitter_account_name"
+                    style="@style/edittext_main"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="nrellihan@gmail.com"/>
+                    android:text="nrellihan@gmail.com" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_twitter_account_name"
                     android:layout_marginLeft="10dp"
-                    android:text="Twitter"
-                    android:layout_below="@id/profile_twitter_account_name"/>
+                    android:text="Twitter" />
 
                 <ImageView
                     android:id="@+id/profile_twitter_imageview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/twitter_share"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/twitter_share" />
             </RelativeLayout>
 
         </LinearLayout>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/InnerRelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true">
 
-        <Button style="@style/button_main"
+        <Button
             android:id="@+id/button_sign_out"
+            style="@style/button_main"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sign_out"
-            />
+            android:text="@string/sign_out" />
     </RelativeLayout>
 </RelativeLayout>
 

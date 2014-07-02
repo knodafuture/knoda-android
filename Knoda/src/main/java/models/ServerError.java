@@ -39,6 +39,14 @@ public class ServerError extends BaseModel {
         }
     }
 
+    public ServerError() {
+
+    }
+
+    public ServerError(String errorString) {
+        this.errorString = errorString;
+    }
+
     public static ServerError newInstanceWithVolleyError(VolleyError error) {
         if (error == null)
             return null;
@@ -46,13 +54,6 @@ public class ServerError extends BaseModel {
             Logger.log(error.toString());
             return new ServerError(error);
         }
-    }
-
-    public ServerError() {
-
-    }
-    public ServerError(String errorString) {
-        this.errorString = errorString;
     }
 
     public String getDescription() {
@@ -95,8 +96,8 @@ public class ServerError extends BaseModel {
         }
 
         Iterator<?> keys = errors.keys();
-        while( keys.hasNext() ){
-            String key = (String)keys.next();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
             JSONArray reasons = errors.getJSONArray(key);
             if (reasons == null)
                 continue;

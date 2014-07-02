@@ -34,6 +34,6 @@ public class Comment extends BaseModel {
     public Integer predictionId;
 
     public String getCreationString() {
-       return "Made " + DateUtil.getPeriodString(creationDate) + " ago";
+        return "Made " + DateUtil.getPeriodString(creationDate) + " ago";
     }
 }

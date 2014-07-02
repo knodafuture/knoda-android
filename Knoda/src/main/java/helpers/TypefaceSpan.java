@@ -6,13 +6,16 @@ import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
 import android.util.LruCache;
+
 /**
  * Style a {@link Spannable} with a custom {@link Typeface}.
  *
  * @author Tristan Waddington
  */
 public class TypefaceSpan extends MetricAffectingSpan {
-    /** An <code>LruCache</code> for previously loaded typefaces. */
+    /**
+     * An <code>LruCache</code> for previously loaded typefaces.
+     */
     private static LruCache<String, Typeface> sTypefaceCache =
             new LruCache<String, Typeface>(12);
 

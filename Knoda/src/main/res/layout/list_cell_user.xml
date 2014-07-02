@@ -8,16 +8,17 @@
         android:id="@+id/user_cell_avatar_imageview"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@color/black"/>
+        android:background="@color/black" />
+
     <TextView
         android:id="@+id/user_cell_username_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_centerVertical="true"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/user_cell_avatar_imageview"
-        android:text="test layout text"/>
+        android:text="test layout text" />
 
 </merge>

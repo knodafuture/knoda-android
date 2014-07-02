@@ -26,10 +26,10 @@ import unsorted.Logger;
  * Volley adapter for JSON requests that will be parsed into Java objects by Gson.
  */
 public class GsonRequest<T> extends Request<T> {
-    private Gson gson = GsonF.actory();
     private final Class clazz;
     private final Map<String, String> headers;
     private final Listener<T> listener;
+    private Gson gson = GsonF.actory();
     private Object payload;
 
     public GsonRequest(int httpMethod, String url, Class clazz, Map<String, String> headers,
@@ -71,7 +71,7 @@ public class GsonRequest<T> extends Request<T> {
                     response.data, HttpHeaderParser.parseCharset(response.headers));
             Logger.log(json);
             return Response.success(
-                    (T)gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
+                    (T) gson.fromJson(json, clazz), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {

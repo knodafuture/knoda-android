@@ -8,7 +8,7 @@
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/user_profile_header_avatar"
         android:layout_width="90dp"
-        android:layout_height="90dp"/>
+        android:layout_height="90dp" />
 
     <RelativeLayout
         android:id="@+id/user_profile_header_top"
@@ -21,89 +21,98 @@
             android:id="@+id/user_profile_header_statsicon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/profile_stats_icon"
-            android:layout_margin="10dp"/>
-        
-        <TextView style="@style/darkGreenText"
-            android:textSize="20dp"
-            android:id="@+id/user_profile_header_points_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/user_profile_header_statsicon"
-            android:text="test"/>
+            android:layout_margin="10dp"
+            android:src="@drawable/profile_stats_icon" />
 
-        <TextView style="@style/smallDarkGreenText"
+        <TextView
+            android:id="@+id/user_profile_header_points_textview"
+            style="@style/darkGreenText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="points"
-            android:paddingLeft="2dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/user_profile_header_statsicon"
+            android:text="test"
+            android:textSize="20dp" />
+
+        <TextView
+            style="@style/smallDarkGreenText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/user_profile_header_points_textview"
             android:layout_toRightOf="@id/user_profile_header_points_textview"
-            />
+            android:paddingLeft="2dp"
+            android:text="points" />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_marginTop="1dp"
-        android:layout_below="@id/user_profile_header_top"
         android:layout_alignLeft="@id/user_profile_header_top"
+        android:layout_below="@id/user_profile_header_top"
+        android:layout_marginTop="1dp"
         android:background="@color/white">
 
-        <TextView style="@style/darkGreenText"
-            android:textSize="20dp"
+        <TextView
             android:id="@+id/user_profile_header_win_textview"
+            style="@style/darkGreenText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:text="40.91%"/>
+            android:text="40.91%"
+            android:textSize="20dp" />
 
-        <TextView style="@style/darkGreenText"
-            android:textSize="20dp"
+        <TextView
             android:id="@+id/user_profile_header_streak_textview"
+            style="@style/darkGreenText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="W2"/>
+            android:layout_centerVertical="true"
+            android:text="W2"
+            android:textSize="20dp" />
 
-        <TextView style="@style/darkGreenText"
-            android:textSize="20dp"
+        <TextView
             android:id="@+id/user_profile_header_wl_textview"
+            style="@style/darkGreenText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="10-13"/>
+            android:text="10-13"
+            android:textSize="20dp" />
 
 
-        <TextView style="@style/smallDarkGreenText"
+        <TextView
+            style="@style/smallDarkGreenText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="win%"
-            android:layout_marginTop="-5dp"
+            android:layout_alignLeft="@id/user_profile_header_win_textview"
             android:layout_below="@id/user_profile_header_win_textview"
-            android:layout_alignLeft="@id/user_profile_header_win_textview"/>
-        <TextView style="@style/smallDarkGreenText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="streak"
             android:layout_marginTop="-5dp"
-            android:layout_below="@id/user_profile_header_streak_textview"
-            android:layout_alignLeft="@id/user_profile_header_streak_textview"/>
-        <TextView style="@style/smallDarkGreenText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="W-L"
-            android:layout_marginTop="-5dp"
-            android:layout_below="@id/user_profile_header_wl_textview"
-            android:layout_alignLeft="@id/user_profile_header_wl_textview"/>
+            android:text="win%" />
 
-        </RelativeLayout>
+        <TextView
+            style="@style/smallDarkGreenText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/user_profile_header_streak_textview"
+            android:layout_below="@id/user_profile_header_streak_textview"
+            android:layout_marginTop="-5dp"
+            android:text="streak" />
+
+        <TextView
+            style="@style/smallDarkGreenText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/user_profile_header_wl_textview"
+            android:layout_below="@id/user_profile_header_wl_textview"
+            android:layout_marginTop="-5dp"
+            android:text="W-L" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

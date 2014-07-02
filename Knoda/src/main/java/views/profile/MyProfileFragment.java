@@ -41,6 +41,8 @@ import views.core.BaseFragment;
 import views.core.MainActivity;
 
 public class MyProfileFragment extends BaseFragment {
+    private static final int PHOTO_RESULT_CODE = 123123129;
+    private static boolean requestingTwitterInfo;
     @InjectView(R.id.profile_username_edittext)
     TextView username;
     @InjectView(R.id.profile_email_edittext)
@@ -49,7 +51,6 @@ public class MyProfileFragment extends BaseFragment {
     UserProfileHeaderView header;
     @InjectView(R.id.button_sign_out)
     Button signOutButton;
-
     @InjectView(R.id.profile_facebook_account_name)
     TextView facebookAccountNameTextView;
     @InjectView(R.id.profile_facebook_imageview)
@@ -59,21 +60,31 @@ public class MyProfileFragment extends BaseFragment {
     @InjectView(R.id.profile_twitter_imageview)
     ImageView twitterImageView;
 
-    @OnClick(R.id.profile_facebook_button) void onFB() {handleFB();}
-    @OnClick(R.id.profile_twitter_button) void onTwitter() {handleTwitter();}
+    public static MyProfileFragment newInstance() {
+        MyProfileFragment fragment = new MyProfileFragment();
+        return fragment;
+    }
 
-    private static final int PHOTO_RESULT_CODE = 123123129;
-    private static boolean requestingTwitterInfo;
+    @OnClick(R.id.profile_facebook_button)
+    void onFB() {
+        handleFB();
+    }
 
-    @OnClick(R.id.user_profile_header_avatar) void onClickAvatar() {
+    @OnClick(R.id.profile_twitter_button)
+    void onTwitter() {
+        handleTwitter();
+    }
+
+    @OnClick(R.id.user_profile_header_avatar)
+    void onClickAvatar() {
         getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(false);
         Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
         intent.putExtra("cancelable", true);
         startActivityForResult(intent, PHOTO_RESULT_CODE);
     }
 
-
-    @OnClick(R.id.button_sign_out) void onClickSignOut() {
+    @OnClick(R.id.button_sign_out)
+    void onClickSignOut() {
         signOutButton.setEnabled(false);
         final AlertDialog alert = new AlertDialog.Builder(getActivity())
                 .setPositiveButton("Yes", null)
@@ -89,7 +100,7 @@ public class MyProfileFragment extends BaseFragment {
                     @Override
                     public void completionHandler(User u, ServerError error) {
                         alert.dismiss();
-                        ((MainActivity)getActivity()).restart();
+                        ((MainActivity) getActivity()).restart();
                     }
                 });
             }
@@ -103,7 +114,8 @@ public class MyProfileFragment extends BaseFragment {
 
     }
 
-    @OnClick(R.id.profile_username_edittext) void onClickUsername() {
+    @OnClick(R.id.profile_username_edittext)
+    void onClickUsername() {
         LayoutInflater li = getActivity().getLayoutInflater();
         final View changeUsernameView = li.inflate(R.layout.dialog_change_username, null);
         EditText username = (EditText) changeUsernameView.findViewById(R.id.username);
@@ -127,7 +139,8 @@ public class MyProfileFragment extends BaseFragment {
         });
     }
 
-    @OnClick(R.id.profile_email_edittext) void onClickEmail() {
+    @OnClick(R.id.profile_email_edittext)
+    void onClickEmail() {
         LayoutInflater li = getActivity().getLayoutInflater();
         final View changeEmailView = li.inflate(R.layout.dialog_change_email, null);
         EditText email = (EditText) changeEmailView.findViewById(R.id.email);
@@ -153,7 +166,8 @@ public class MyProfileFragment extends BaseFragment {
         });
     }
 
-    @OnClick(R.id.profile_password_edittext) void onClickPassword() {
+    @OnClick(R.id.profile_password_edittext)
+    void onClickPassword() {
         LayoutInflater li = getActivity().getLayoutInflater();
         final View changePasswordView = li.inflate(R.layout.dialog_change_password, null);
         final AlertDialog alert = new AlertDialog.Builder(getActivity())
@@ -176,21 +190,16 @@ public class MyProfileFragment extends BaseFragment {
         });
     }
 
-    public static MyProfileFragment newInstance() {
-        MyProfileFragment fragment = new MyProfileFragment();
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle bundle){
+    public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setHasOptionsMenu(true);
 
-        ((MainActivity)getActivity()).networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
+        ((MainActivity) getActivity()).networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
             @Override
             public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
-                for(SettingsCategory s:object){
-                    ((MainActivity)getActivity()).settings.put(s.name,s.settings);
+                for (SettingsCategory s : object) {
+                    ((MainActivity) getActivity()).settings.put(s.name, s.settings);
                 }
             }
         });
@@ -231,6 +240,7 @@ public class MyProfileFragment extends BaseFragment {
         }
         requestingTwitterInfo = false;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null)
@@ -241,6 +251,7 @@ public class MyProfileFragment extends BaseFragment {
         Bitmap bitmap = BitmapFactory.decodeFile(avatarPath);
         header.avatarImageView.setImageBitmap(bitmap);
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -248,7 +259,7 @@ public class MyProfileFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.profile, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -257,7 +268,7 @@ public class MyProfileFragment extends BaseFragment {
     public void onPrepareOptionsMenu(Menu menu) {
         menu.removeItem(R.id.action_search);
         menu.removeItem(R.id.action_add_prediction);
-        if(((MainActivity)getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings)!=null)
+        if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings) != null)
             menu.findItem(R.id.action_settings).setVisible(true);
         super.onPrepareOptionsMenu(menu);
     }
@@ -281,8 +292,7 @@ public class MyProfileFragment extends BaseFragment {
         username.setText(user.username);
         if (user.email == null) {
             email.setText("Add your email address");
-        }
-        else
+        } else
             email.setText(user.email);
         header.setUser(user);
         if (user.avatar != null)
@@ -474,7 +484,7 @@ public class MyProfileFragment extends BaseFragment {
         }
 
         requestingTwitterInfo = true;
-        ((MainActivity)getActivity()).requestStartupScreen(KnodaScreen.KnodaScreenOrder.PROFILE);
+        ((MainActivity) getActivity()).requestStartupScreen(KnodaScreen.KnodaScreenOrder.PROFILE);
         spinner.show();
         twitterManager.openSession(getActivity());
     }

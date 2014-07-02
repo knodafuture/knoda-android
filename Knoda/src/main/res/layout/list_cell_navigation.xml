@@ -6,35 +6,36 @@
     android:background="@color/sideNavBlack">
 
     <ImageView
+        android:id="@+id/navigation_list_selected_background"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/navigation_list_selected_background"
-        android:src="@drawable/drawer_active_bg"/>
+        android:src="@drawable/drawer_active_bg" />
+
     <ImageView
+        android:id="@+id/navigation_list_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/navigation_list_icon"
         android:paddingLeft="10dp"
-        android:src="@drawable/drawer_home"/>
+        android:src="@drawable/drawer_home" />
 
     <TextView
+        android:id="@+id/navigation_list_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/navigation_list_text"
-        android:textColor="@color/white"
-        android:text="Test layout text"
-        android:layout_toRightOf="@id/navigation_list_icon"
         android:layout_centerVertical="true"
-        android:paddingLeft="10dp"/>
+        android:layout_toRightOf="@id/navigation_list_icon"
+        android:paddingLeft="10dp"
+        android:text="Test layout text"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/navigation_list_right_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
         android:text="!"
-        android:layout_marginRight="10dp"/>
+        android:textColor="@color/white" />
 
 </views.core.NavigationListCell>

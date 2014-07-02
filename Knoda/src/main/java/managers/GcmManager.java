@@ -14,10 +14,10 @@ import unsorted.Logger;
 
 public class GcmManager {
 
+    String SENDER_ID = "800770961566";
     private NetworkingManager networkingManager;
     private SharedPrefManager sharedPrefManager;
     private GoogleCloudMessaging gcm;
-    String SENDER_ID = "800770961566";
 
     public GcmManager(NetworkingManager networkingManager, SharedPrefManager sharedPrefManager, GoogleCloudMessaging gcm) {
         this.networkingManager = networkingManager;
@@ -37,6 +37,7 @@ public class GcmManager {
                 }
                 return "";
             }
+
             @Override
             protected void onPostExecute(String msg) {
             }

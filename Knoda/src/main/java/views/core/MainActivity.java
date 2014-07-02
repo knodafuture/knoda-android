@@ -77,33 +77,26 @@ import views.settings.SettingsFragment;
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private static KnodaScreen.KnodaScreenOrder startupScreen;
+    public String currentFragment = "";
+    public HashMap<String, ArrayList<Setting>> settings;
+    GoogleCloudMessaging gcm;
+    @Inject
+    AppOutdatedManager appOutdatedManager;
     private GcmManager gcmManager;
     private NavigationDrawerFragment navigationDrawerFragment;
-
     private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
     private HashMap<KnodaScreen, Fragment> instanceMap;
-
-    GoogleCloudMessaging gcm;
-
     private ArrayList<KnodaScreen> screens;
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
-
-    public String currentFragment = "";
-    public HashMap<String, ArrayList<Setting>> settings;
     private Notification pushNotification;
-
-
-    private static KnodaScreen.KnodaScreenOrder startupScreen;
 
     @Subscribe
     public void changeGroup(ChangeGroupEvent event) {
         currentGroup = event.group;
     }
-
-    @Inject
-    AppOutdatedManager appOutdatedManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

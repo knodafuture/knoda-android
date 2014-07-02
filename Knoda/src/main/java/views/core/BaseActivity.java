@@ -24,29 +24,23 @@ import unsorted.ErrorReporter;
  * Created by adamengland on 2/14/14.
  */
 public class BaseActivity extends Activity {
-    private ObjectGraph activityGraph;
     @Inject
     public Bus bus;
     @Inject
     public NetworkingManager networkingManager;
-
     @Inject
     public UserManager userManager;
-
     @Inject
     public SharedPrefManager sharedPrefManager;
-
     @Inject
     public Spinner spinner;
-
     @Inject
     public ErrorReporter errorReporter;
-
     @Inject
     public TwitterManager twitterManager;
-
     @Inject
     public ConnectivityManager connectivityManager;
+    private ObjectGraph activityGraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +58,8 @@ public class BaseActivity extends Activity {
         activityGraph.inject(object);
     }
 
-    @Override protected void onDestroy() {
+    @Override
+    protected void onDestroy() {
         activityGraph = null;
         System.gc();
         super.onDestroy();

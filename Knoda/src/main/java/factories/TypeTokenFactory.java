@@ -21,34 +21,52 @@ import models.User;
 public class TypeTokenFactory {
 
     public static TypeToken getPredictionListTypeToken() {
-        return new TypeToken<ArrayList<Prediction>>(){};
+        return new TypeToken<ArrayList<Prediction>>() {
+        };
     }
 
     public static TypeToken getActivityItemTypeToken() {
-        return new TypeToken<ArrayList<ActivityItem>>(){};
+        return new TypeToken<ArrayList<ActivityItem>>() {
+        };
     }
 
     public static TypeToken getTopicListTypeToken() {
-        return new TypeToken<ArrayList<Tag>>(){};
+        return new TypeToken<ArrayList<Tag>>() {
+        };
     }
 
     public static TypeToken getUserListTypeToken() {
-        return new TypeToken<ArrayList<User>>(){};
+        return new TypeToken<ArrayList<User>>() {
+        };
     }
 
     public static TypeToken getBadgeListTypeToken() {
-        return new TypeToken<ArrayList<Badge>>(){};
+        return new TypeToken<ArrayList<Badge>>() {
+        };
     }
 
     public static TypeToken getCommentListTypeToken() {
-        return new TypeToken<ArrayList<Comment>>(){};
+        return new TypeToken<ArrayList<Comment>>() {
+        };
     }
 
-    public static TypeToken getGroupListTypeToken() { return new TypeToken<ArrayList<Group>>(){}; }
+    public static TypeToken getGroupListTypeToken() {
+        return new TypeToken<ArrayList<Group>>() {
+        };
+    }
 
-    public static TypeToken getLeaderListTypeToken() { return new TypeToken<ArrayList<Leader>>(){}; }
+    public static TypeToken getLeaderListTypeToken() {
+        return new TypeToken<ArrayList<Leader>>() {
+        };
+    }
 
-    public static TypeToken getMemberListTypeToken() { return new TypeToken<ArrayList<Member>>(){}; }
+    public static TypeToken getMemberListTypeToken() {
+        return new TypeToken<ArrayList<Member>>() {
+        };
+    }
 
-    public static TypeToken getSettingsTypeToken() { return new TypeToken<ArrayList<SettingsCategory>>(){}; }
+    public static TypeToken getSettingsTypeToken() {
+        return new TypeToken<ArrayList<SettingsCategory>>() {
+        };
+    }
 }

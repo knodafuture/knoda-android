@@ -34,6 +34,15 @@ import views.core.MainActivity;
  */
 public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
+    static ColorStateList bragcolor;
+    static ColorStateList settlecolor;
+    static ColorStateList groupcolor;
+    final Activity activity;
+    BitmapDrawable userPic;
+    String filter = "all";
+    int pixelToDP = 1;
+    RelativeLayout.LayoutParams showButton;
+    RelativeLayout.LayoutParams hideButton;
     public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, Activity activity, String filter) {
         super(context, datasource, imageLoader);
         this.activity = activity;
@@ -67,17 +76,6 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             }
         });
     }
-
-    BitmapDrawable userPic;
-    String filter = "all";
-    final Activity activity;
-    static ColorStateList bragcolor;
-    static ColorStateList settlecolor;
-    static ColorStateList groupcolor;
-    int pixelToDP = 1;
-    RelativeLayout.LayoutParams showButton;
-    RelativeLayout.LayoutParams hideButton;
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

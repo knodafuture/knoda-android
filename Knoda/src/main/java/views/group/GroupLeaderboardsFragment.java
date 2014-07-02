@@ -25,6 +25,9 @@ public class GroupLeaderboardsFragment extends BaseFragment {
     private ViewPager mViewPager;
     private View view;
 
+    public GroupLeaderboardsFragment() {
+    }
+
     public static GroupLeaderboardsFragment newInstance(Group group) {
         GroupLeaderboardsFragment fragment = new GroupLeaderboardsFragment();
         Bundle bundle = new Bundle();
@@ -32,8 +35,6 @@ public class GroupLeaderboardsFragment extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    public GroupLeaderboardsFragment() {}
 
     @OnClick(R.id.board_1)
     public void onBoard1Click() {
@@ -74,7 +75,7 @@ public class GroupLeaderboardsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         bus.post(new ChangeGroupEvent(group));
-        LinearLayout ll = (LinearLayout)view.findViewById(R.id.groups_leaderboards_container);
+        LinearLayout ll = (LinearLayout) view.findViewById(R.id.groups_leaderboards_container);
         if (mViewPager != null) {
             ll.removeView(mViewPager);
         }
@@ -91,17 +92,17 @@ public class GroupLeaderboardsFragment extends BaseFragment {
                 int white = getResources().getColor(R.color.white);
                 int green = getResources().getColor(R.color.knodaLighterGreen);
                 if (position == 0) {
-                    ((TextView)view.findViewById(R.id.board_1)).setTextColor(white);
-                    ((TextView)view.findViewById(R.id.board_2)).setTextColor(green);
-                    ((TextView)view.findViewById(R.id.board_3)).setTextColor(green);
+                    ((TextView) view.findViewById(R.id.board_1)).setTextColor(white);
+                    ((TextView) view.findViewById(R.id.board_2)).setTextColor(green);
+                    ((TextView) view.findViewById(R.id.board_3)).setTextColor(green);
                 } else if (position == 1) {
-                    ((TextView)view.findViewById(R.id.board_1)).setTextColor(green);
-                    ((TextView)view.findViewById(R.id.board_2)).setTextColor(white);
-                    ((TextView)view.findViewById(R.id.board_3)).setTextColor(green);
+                    ((TextView) view.findViewById(R.id.board_1)).setTextColor(green);
+                    ((TextView) view.findViewById(R.id.board_2)).setTextColor(white);
+                    ((TextView) view.findViewById(R.id.board_3)).setTextColor(green);
                 } else if (position == 2) {
-                    ((TextView)view.findViewById(R.id.board_1)).setTextColor(green);
-                    ((TextView)view.findViewById(R.id.board_2)).setTextColor(green);
-                    ((TextView)view.findViewById(R.id.board_3)).setTextColor(white);
+                    ((TextView) view.findViewById(R.id.board_1)).setTextColor(green);
+                    ((TextView) view.findViewById(R.id.board_2)).setTextColor(green);
+                    ((TextView) view.findViewById(R.id.board_3)).setTextColor(white);
                 }
             }
 

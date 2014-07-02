@@ -64,6 +64,7 @@ public class InvitationsAdapter extends BaseAdapter {
         objects.remove(position);
         notifyDataSetChanged();
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (objects.size() == 0)
@@ -83,7 +84,7 @@ public class InvitationsAdapter extends BaseAdapter {
 
     private View getNoContentView() {
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content, null);
-        ((TextView)view.findViewById(R.id.no_content_textview)).setText("Find your friends on Knoda using the search bar above. You can also type a name, phone number, or email address to invite them from your contact list.");
+        ((TextView) view.findViewById(R.id.no_content_textview)).setText("Find your friends on Knoda using the search bar above. You can also type a name, phone number, or email address to invite them from your contact list.");
         return view;
     }
 }

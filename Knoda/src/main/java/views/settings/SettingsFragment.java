@@ -25,9 +25,7 @@ import views.core.MainActivity;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    private PreferenceScreen preferenceScreen;
     HashMap<String, ArrayList<Setting>> settings;
-
     Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             int key = Integer.parseInt(preference.getKey());
@@ -50,6 +48,7 @@ public class SettingsFragment extends PreferenceFragment {
             return true;
         }
     };
+    private PreferenceScreen preferenceScreen;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();

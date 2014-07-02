@@ -59,26 +59,19 @@ import unsorted.Logger;
 @Singleton
 public class NetworkingManager {
 
-    Context context;
-
-    private static RequestQueue mRequestQueue;
-
-    private HashMap<String, String> headers;
-
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
-
     public static String baseUrl = "http://captaincold.knoda.com/api/";
-
+    private static RequestQueue mRequestQueue;
+    Context context;
     String api_version = "4";
-
-    private ImageLoader imageLoader;
-
     @Inject
     SharedPrefManager sharedPrefManager;
     @Inject
     Bus bus;
+    private HashMap<String, String> headers;
+    private ImageLoader imageLoader;
 
     @Inject
     public NetworkingManager(Context applicationContext) {

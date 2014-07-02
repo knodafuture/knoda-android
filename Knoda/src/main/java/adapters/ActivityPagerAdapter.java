@@ -13,10 +13,11 @@ public class ActivityPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         Logger.log("Activity Page created");
     }
+
     @Override
     public Fragment getItem(int position) {
-        Logger.log("Activity Page filter "+position);
-        String board="invites";
+        Logger.log("Activity Page filter " + position);
+        String board = "invites";
         switch (position) {
             case 0:
                 board = "all";

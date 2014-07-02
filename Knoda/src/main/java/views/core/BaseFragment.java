@@ -23,23 +23,32 @@ import unsorted.ErrorReporter;
  */
 public class BaseFragment extends Fragment {
 
-    @Inject public NetworkingManager networkingManager;
+    @Inject
+    public NetworkingManager networkingManager;
 
-    @Inject public Spinner spinner;
+    @Inject
+    public Spinner spinner;
 
-    @Inject public ErrorReporter errorReporter;
+    @Inject
+    public ErrorReporter errorReporter;
 
-    @Inject public UserManager userManager;
+    @Inject
+    public UserManager userManager;
 
-    @Inject public Bus bus;
+    @Inject
+    public Bus bus;
 
-    @Inject public SharedPrefManager sharedPrefManager;
+    @Inject
+    public SharedPrefManager sharedPrefManager;
 
-    @Inject public FacebookManager facebookManager;
+    @Inject
+    public FacebookManager facebookManager;
 
-    @Inject public TwitterManager twitterManager;
+    @Inject
+    public TwitterManager twitterManager;
 
-    @Override public void onCreate (Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MainActivity) getActivity()).inject(this);
     }
@@ -86,7 +95,7 @@ public class BaseFragment extends Fragment {
     public void setTitle(String title) {
         if (title == null)
             return;
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
 
         if (activity == null)
             return;

@@ -53,7 +53,6 @@ public class UserManager {
     }
 
 
-
     public void refreshUser(final NetworkCallback<User> callback) {
         networkingManager.getCurrentUser(new NetworkCallback<User>() {
             @Override
@@ -105,8 +104,7 @@ public class UserManager {
                 if (error != null) {
                     callback.completionHandler(null, error);
                     return;
-                }
-                else {
+                } else {
                     sharedPrefManager.setSavedAuthtoken(loginResponse.authToken);
                     refreshUser(new NetworkCallback<User>() {
                         @Override

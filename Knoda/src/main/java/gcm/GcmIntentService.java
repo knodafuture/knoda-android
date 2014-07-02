@@ -32,8 +32,8 @@ import views.group.GroupSettingsFragment;
 public class GcmIntentService extends IntentService {
     public static final String TAG = "gcm.GcmIntentService";
     public static final int NOTIFICATION_ID = 1;
-    private NotificationManager mNotificationManager;
     NotificationCompat.Builder builder;
+    private NotificationManager mNotificationManager;
 
     public GcmIntentService() {
         super("gcm.GcmIntentService");

@@ -40,13 +40,13 @@ public class CommentCell extends RelativeLayout {
     public void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.list_cell_comment, this);
 
-        topContainer = (RelativeLayout)findViewById(R.id.comment_cell_top_container);
-        avatarImage = (NetworkImageView)findViewById(R.id.comment_cell_avatar_imageview);
-        usernameTextView = (TextView)findViewById(R.id.comment_cell_username_textview);
-        bodyTextView = (TextView)findViewById(R.id.comment_cell_body_textview);
-        timestampTextView = (TextView)findViewById(R.id.comment_cell_timestamps_textview);
-        verifiedCheckmark = (ImageView)findViewById(R.id.comment_cell_verified_checkmark);
-        voteImage = (ImageView)findViewById(R.id.comment_cell_vote_image);
+        topContainer = (RelativeLayout) findViewById(R.id.comment_cell_top_container);
+        avatarImage = (NetworkImageView) findViewById(R.id.comment_cell_avatar_imageview);
+        usernameTextView = (TextView) findViewById(R.id.comment_cell_username_textview);
+        bodyTextView = (TextView) findViewById(R.id.comment_cell_body_textview);
+        timestampTextView = (TextView) findViewById(R.id.comment_cell_timestamps_textview);
+        verifiedCheckmark = (ImageView) findViewById(R.id.comment_cell_verified_checkmark);
+        voteImage = (ImageView) findViewById(R.id.comment_cell_vote_image);
     }
 
     public void populate(Comment comment) {

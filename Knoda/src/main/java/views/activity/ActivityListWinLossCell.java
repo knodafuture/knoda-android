@@ -18,22 +18,18 @@ import models.ActivityItem;
 public class ActivityListWinLossCell extends RelativeLayout {
 
 
+    final static String bragbg = "#EBF5DE";
+    final static String bragborder = "#77BC1F";
+    final static String settlebg = "#FFE1E1";
+    final static String settleborder = "#FE3232";
+    final static String groupbg = "#DEE7E1";
+    final static String groupborder = "#235C37";
     public NetworkImageView iconImageView;
     public TextView winlosstitle;
     public TextView winlosscomment;
     public Button winlossbutton;
     public RelativeLayout buttonContainer;
     public View divider;
-
-    final static String bragbg = "#EBF5DE";
-    final static String bragborder = "#77BC1F";
-
-    final static String settlebg = "#FFE1E1";
-    final static String settleborder = "#FE3232";
-
-    final static String groupbg = "#DEE7E1";
-    final static String groupborder = "#235C37";
-
     public ActivityItem activityItem;
 
     public ActivityListWinLossCell(Context context, AttributeSet attrs) {

@@ -30,7 +30,7 @@ public class GroupListCell extends RelativeLayout {
 
     @Override
     public void onFinishInflate() {
-        nameView = (TextView)findViewById(R.id.group_cell_name);
+        nameView = (TextView) findViewById(R.id.group_cell_name);
         leaderView = (TextView) findViewById(R.id.group_leader_username);
         myRankView = (TextView) findViewById(R.id.group_my_rank);
         avatarImageView = (NetworkImageView) findViewById(R.id.group_cell_avatar_imageview);
@@ -47,7 +47,7 @@ public class GroupListCell extends RelativeLayout {
     public void update() {
         nameView.setText(group.name);
         leaderView.setText(group.leader.username);
-        if(group.rank!=null && group.rank.rank!=null)
+        if (group.rank != null && group.rank.rank != null)
             myRankView.setText(group.rank.rank.toString());
         memberCountView.setText("rank (" + group.memberCount.toString() + ")");
     }

@@ -18,22 +18,23 @@ import views.core.BaseActivity;
  */
 @Singleton
 public class AppOutdatedManager {
-    private BaseActivity activity;
-
-    @Subscribe
-    public void appOutdated(AppOutdatedEvent event) { handleAppOutdated();}
-
     Bus bus;
+    private BaseActivity activity;
 
     public AppOutdatedManager(BaseActivity activity) {
         this.activity = activity;
     }
 
+    @Subscribe
+    public void appOutdated(AppOutdatedEvent event) {
+        handleAppOutdated();
+    }
 
     public void setBus(Bus bus) {
         this.bus = bus;
         bus.register(this);
     }
+
     private void alertPopUp() {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -56,7 +57,8 @@ public class AppOutdatedManager {
                         }
                     });
             builder.create().show();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     private void handleAppOutdated() {

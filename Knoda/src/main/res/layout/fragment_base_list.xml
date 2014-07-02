@@ -1,17 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_topview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="views.unsorted.BaseListFragment"
     android:background="@color/white"
-    android:id="@+id/base_topview">
+    tools:context="views.unsorted.BaseListFragment">
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/base_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="0dp"
+        android:background="@drawable/list_background"
         android:divider="@null"
-        android:background="@drawable/list_background"/>
+        android:dividerHeight="0dp" />
 
 </RelativeLayout>

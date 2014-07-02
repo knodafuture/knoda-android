@@ -1,4 +1,5 @@
 package views.activity;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,15 +14,16 @@ import views.core.BaseListFragment;
 public class ActivityBoardFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Leader> {
     public String board;
 
-    public static ActivityBoardFragment newInstance( String board) {
+    public ActivityBoardFragment() {
+    }
+
+    public static ActivityBoardFragment newInstance(String board) {
         ActivityBoardFragment fragment = new ActivityBoardFragment();
         Bundle bundle = new Bundle();
         bundle.putString("BOARD", board.toUpperCase());
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    public ActivityBoardFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -12,8 +12,8 @@ import networking.NetworkListCallback;
 import unsorted.Logger;
 
 /**
-* Created by adamengland on 2/18/14.
-*/
+ * Created by adamengland on 2/18/14.
+ */
 class ImagePreloader {
     private NetworkingManager networkingManager;
 
@@ -26,7 +26,7 @@ class ImagePreloader {
             @Override
             public void completionHandler(ArrayList<Badge> object, ServerError error) {
                 if (error == null) {
-                    for (Badge b: object) {
+                    for (Badge b : object) {
                         preloadUrl("http://api-cdn.knoda.com/badges/212/" + b.name + ".png");
                     }
                 }

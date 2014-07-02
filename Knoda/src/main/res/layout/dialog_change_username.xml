@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/change_username"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:orientation="vertical"
-android:padding="10dp" >
+    android:id="@+id/change_username"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <EditText
-        android:inputType="textNoSuggestions"
         android:id="@+id/username"
+        style="@style/knoda_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="username"
-        style="@style/knoda_edittext">
+        android:inputType="textNoSuggestions">
+
         <requestFocus />
     </EditText>
 

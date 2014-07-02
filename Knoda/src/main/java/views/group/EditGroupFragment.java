@@ -36,11 +36,10 @@ import views.core.BaseFragment;
  * A fragment with a Google +1 button.
  * Use the {@link EditGroupFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class EditGroupFragment extends BaseFragment {
 
-    private Group group;
+    private static final int PHOTO_RESULT_CODE = 123123129;
     @InjectView(R.id.add_group_name_edittext)
     EditText nameEditText;
 
@@ -49,15 +48,10 @@ public class EditGroupFragment extends BaseFragment {
 
     @InjectView(R.id.add_group_avatar_imageview)
     NetworkImageView avatarImageView;
-
+    private Group group;
     private File avatarFile;
-    private static final int PHOTO_RESULT_CODE = 123123129;
 
-    @OnClick(R.id.add_group_avatar_imageview) void onClickAvatar() {
-        avatarImageView.setEnabled(false);
-        Intent intent = new Intent(getActivity(), GroupAvatarChooserActivity.class);
-        intent.putExtra("cancelable", true);
-        startActivityForResult(intent, PHOTO_RESULT_CODE);
+    public EditGroupFragment() {
     }
 
     public static EditGroupFragment newInstance(Group group) {
@@ -67,7 +61,15 @@ public class EditGroupFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
-    public EditGroupFragment() {}
+
+    @OnClick(R.id.add_group_avatar_imageview)
+    void onClickAvatar() {
+        avatarImageView.setEnabled(false);
+        Intent intent = new Intent(getActivity(), GroupAvatarChooserActivity.class);
+        intent.putExtra("cancelable", true);
+        startActivityForResult(intent, PHOTO_RESULT_CODE);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.submit, menu);
@@ -84,6 +86,7 @@ public class EditGroupFragment extends BaseFragment {
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +100,7 @@ public class EditGroupFragment extends BaseFragment {
         super.onPause();
         hideKeyboard();
     }
+
     private boolean validate() {
         String errorMessage = null;
         if (nameEditText.getText().length() == 0)
@@ -109,6 +113,7 @@ public class EditGroupFragment extends BaseFragment {
         }
         return true;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -172,6 +177,7 @@ public class EditGroupFragment extends BaseFragment {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         avatarImageView.setEnabled(true);

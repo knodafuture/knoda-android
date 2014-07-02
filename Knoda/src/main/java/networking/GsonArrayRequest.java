@@ -26,21 +26,21 @@ import unsorted.Logger;
  * Volley adapter for JSON requests that will be parsed into Java objects by Gson.
  */
 public class GsonArrayRequest<T> extends Request<T> {
-    private Gson gson = GsonF.actory();
     private final Map<String, String> headers;
     private final Listener<T> listener;
-    private Object payload;
     private final TypeToken<T> token;
+    private Gson gson = GsonF.actory();
+    private Object payload;
 
     /**
      * Make a GET request and return a parsed object from JSON.
      *
-     * @param url URL of the request to make
-     * @param clazz Relevant class object, for Gson's reflection
+     * @param url     URL of the request to make
+     * @param clazz   Relevant class object, for Gson's reflection
      * @param headers Map of request headers
      */
     public GsonArrayRequest(int httpMethod, String url, TypeToken token, Map<String, String> headers,
-                       Listener<T> listener, ErrorListener errorListener) {
+                            Listener<T> listener, ErrorListener errorListener) {
         super(httpMethod, url, errorListener);
         this.token = token;
         this.headers = headers;
@@ -76,7 +76,7 @@ public class GsonArrayRequest<T> extends Request<T> {
             String json = new String(
                     response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(
-                    (T)gson.fromJson(json, token.getType()), HttpHeaderParser.parseCacheHeaders(response));
+                    (T) gson.fromJson(json, token.getType()), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {

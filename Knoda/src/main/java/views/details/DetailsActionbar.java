@@ -17,26 +17,13 @@ import butterknife.OnClick;
  */
 public class DetailsActionbar extends RelativeLayout {
 
-    public interface DetailsActionBarDelegate {
-        void onComments();
-        void onTally();
-        void onSimilar();
-        void onGroup();
-        void onShare();
-        void onInit(DetailsActionbar actionbar);
-    }
-
-    private DetailsActionBarDelegate delegate;
-
     public ImageView commentImageView;
     public TextView commentTextView;
-
     public ImageView tallyImageView;
     public TextView tallyTextView;
-
     public ImageView similarImageView;
     public ImageView shareImageView;
-
+    private DetailsActionBarDelegate delegate;
     public DetailsActionbar(Context context) {
         super(context);
         initView(context);
@@ -57,21 +44,22 @@ public class DetailsActionbar extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.view_details_actionbar, this);
         ButterKnife.inject(this);
 
-        commentImageView = (ImageView)findViewById(R.id.details_action_comment_imageview);
-        commentTextView = (TextView)findViewById(R.id.details_action_comment_textview);
+        commentImageView = (ImageView) findViewById(R.id.details_action_comment_imageview);
+        commentTextView = (TextView) findViewById(R.id.details_action_comment_textview);
 
-        tallyImageView = (ImageView)findViewById(R.id.details_action_tally_imageview);
-        tallyTextView = (TextView)findViewById(R.id.details_action_tally_textview);
+        tallyImageView = (ImageView) findViewById(R.id.details_action_tally_imageview);
+        tallyTextView = (TextView) findViewById(R.id.details_action_tally_textview);
 
-        similarImageView = (ImageView)findViewById(R.id.details_action_similar_imageview);
-        shareImageView = (ImageView)findViewById(R.id.details_action_share_imageview);
+        similarImageView = (ImageView) findViewById(R.id.details_action_similar_imageview);
+        shareImageView = (ImageView) findViewById(R.id.details_action_share_imageview);
 
 
         setBackgroundColor(getResources().getColor(R.color.lightGray));
         delegate.onInit(this);
     }
 
-    @OnClick(R.id.details_action_comment_clickable) void onComment() {
+    @OnClick(R.id.details_action_comment_clickable)
+    void onComment() {
         commentTextView.setTextColor(getResources().getColor(R.color.knodaDarkGreen));
         commentImageView.setImageResource(R.drawable.action_commenticon_active);
         tallyImageView.setImageResource(R.drawable.action_tallyicon);
@@ -79,11 +67,13 @@ public class DetailsActionbar extends RelativeLayout {
         delegate.onComments();
     }
 
-    @OnClick(R.id.details_action_share_clickable) void onShare() {
+    @OnClick(R.id.details_action_share_clickable)
+    void onShare() {
         delegate.onShare();
     }
 
-    @OnClick(R.id.details_action_tally_clickable) void onTally() {
+    @OnClick(R.id.details_action_tally_clickable)
+    void onTally() {
         commentTextView.setTextColor(getResources().getColor(R.color.darkGray));
         commentImageView.setImageResource(R.drawable.action_commenticon);
         tallyImageView.setImageResource(R.drawable.action_tallyicon_active);
@@ -91,11 +81,27 @@ public class DetailsActionbar extends RelativeLayout {
         delegate.onTally();
     }
 
-    @OnClick(R.id.details_action_similar_clickable) void onSimilar() {
+    @OnClick(R.id.details_action_similar_clickable)
+    void onSimilar() {
         delegate.onSimilar();
     }
 
-    @OnClick(R.id.details_action_group_clickable) void onGroup() {
+    @OnClick(R.id.details_action_group_clickable)
+    void onGroup() {
         delegate.onGroup();
+    }
+
+    public interface DetailsActionBarDelegate {
+        void onComments();
+
+        void onTally();
+
+        void onSimilar();
+
+        void onGroup();
+
+        void onShare();
+
+        void onInit(DetailsActionbar actionbar);
     }
 }

@@ -38,11 +38,13 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     private String searchTerm;
     private boolean keyboardHandled = false;
 
+    public SearchFragment() {
+    }
+
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
         return fragment;
     }
-    public SearchFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         super.onDestroyView();
         hideKeyboard();
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         setTitle("");
@@ -68,7 +71,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         inflater.inflate(R.menu.search, menu);
 
         MenuItem menuItem = menu.findItem(R.id.search);
-        searchView = (SearchView)menuItem.getActionView();
+        searchView = (SearchView) menuItem.getActionView();
         searchView.setCallbacks(this);
         if (searchTerm == null && !keyboardHandled) {
             showKeyboard(searchView.searchField);
@@ -131,7 +134,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     }
 
     @Override
-    public  void onCancel() {
+    public void onCancel() {
         listview.setAdapter(tagAdapter);
 
         tagAdapter.loadPage(0);

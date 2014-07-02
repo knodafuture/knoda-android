@@ -7,6 +7,9 @@ import models.Group;
  */
 public class GroupChangedEvent {
     public Group group;
-    public GroupChangedEvent(Group group) { this.group = group;}
+
+    public GroupChangedEvent(Group group) {
+        this.group = group;
+    }
 
 }

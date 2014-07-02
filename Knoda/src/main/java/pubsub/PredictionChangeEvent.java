@@ -7,5 +7,8 @@ import models.Prediction;
  */
 public class PredictionChangeEvent {
     public Prediction prediction;
-    public PredictionChangeEvent(Prediction prediction) {this.prediction = prediction;}
+
+    public PredictionChangeEvent(Prediction prediction) {
+        this.prediction = prediction;
+    }
 }

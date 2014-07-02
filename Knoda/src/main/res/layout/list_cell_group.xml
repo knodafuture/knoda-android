@@ -4,96 +4,113 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/group_cell_container"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="@color/lightGray">
+
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/group_cell_avatar_imageview"
             android:layout_width="90dp"
-            android:layout_height="90dp"/>
+            android:layout_height="90dp" />
+
         <RelativeLayout
             android:id="@+id/user_profile_header_top"
             android:layout_width="match_parent"
             android:layout_height="44dp"
+            android:layout_marginBottom="1dp"
             android:layout_toRightOf="@id/group_cell_avatar_imageview"
-            android:background="@color/white"
-            android:layout_marginBottom="1dp">
-            <TextView style="@style/darkGreenText"
-                android:textSize="20dp"
+            android:background="@color/white">
+
+            <TextView
                 android:id="@+id/group_cell_name"
+                style="@style/darkGreenText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
-                android:lines="1"
+                android:layout_marginLeft="10dp"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-light"
-                android:text="test"/>
+                android:lines="1"
+                android:text="test"
+                android:textSize="20dp" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:layout_marginTop="0dp"
-            android:layout_below="@id/user_profile_header_top"
             android:layout_alignLeft="@id/user_profile_header_top"
+            android:layout_below="@id/user_profile_header_top"
+            android:layout_marginTop="0dp"
             android:background="@color/white">
+
             <ImageView
                 android:id="@+id/group_rankings_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/rankings_icon"
-                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"/>
+                android:layout_marginRight="10dp"
+                android:src="@drawable/rankings_icon" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/group_rankings_icon">
-                <TextView style="@style/darkGreenText"
-                    android:textSize="16dp"
+
+                <TextView
                     android:id="@+id/group_my_rank"
+                    style="@style/darkGreenText"
                     android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="sans-serif-light"
-                    android:text="1"/>
-                <TextView style="@style/darkGreenText"
-                    android:textSize="16dp"
+                    android:text="1"
+                    android:textSize="16dp" />
+
+                <TextView
                     android:id="@+id/group_leader_username"
+                    style="@style/darkGreenText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/group_my_rank"
+                    android:fontFamily="sans-serif-light"
                     android:text="current leader"
-                    android:fontFamily="sans-serif-light"/>
-                <TextView style="@style/smallDarkGreenText"
+                    android:textSize="16dp" />
+
+                <TextView
                     android:id="@+id/group_member_count"
+                    style="@style/smallDarkGreenText"
                     android:layout_width="65dp"
                     android:layout_height="wrap_content"
-                    android:text="rank (5)"
-                    android:layout_marginTop="-5dp"
-                    android:layout_below="@id/group_my_rank"
                     android:layout_alignLeft="@id/group_my_rank"
-                    android:fontFamily="sans-serif-light"/>
-                <TextView style="@style/smallDarkGreenText"
+                    android:layout_below="@id/group_my_rank"
+                    android:layout_marginTop="-5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="rank (5)" />
+
+                <TextView
+                    style="@style/smallDarkGreenText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="current 7 Day leader"
-                    android:layout_marginTop="-5dp"
-                    android:layout_below="@id/group_leader_username"
                     android:layout_alignLeft="@id/group_leader_username"
-                    android:fontFamily="sans-serif-light"/>
+                    android:layout_below="@id/group_leader_username"
+                    android:layout_marginTop="-5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="current 7 Day leader" />
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@color/lightGray"
         android:layout_below="@+id/group_cell_container"
-        android:layout_marginTop="0dp"/>
+        android:layout_marginTop="0dp"
+        android:background="@color/lightGray" />
 </views.group.GroupListCell>
 
 

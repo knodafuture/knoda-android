@@ -37,6 +37,18 @@ import views.group.GroupSettingsFragment;
 public class ActivityFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<ActivityItem> {
     @InjectView(R.id.base_listview)
     public PullToRefreshListView pListView;
+    String filter = "all";
+    TextView selectedFilter;
+    View selectedUnderline;
+    View topview;
+
+    public ActivityFragment() {
+    }
+
+    public static ActivityFragment newInstance() {
+        ActivityFragment fragment = new ActivityFragment();
+        return fragment;
+    }
 
     @OnClick(R.id.activity_1)
     void onClickAll() {
@@ -86,19 +98,6 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         adapter = getAdapter();
         pListView.setAdapter(adapter);
         adapter.loadPage(0);
-    }
-
-    String filter = "all";
-    TextView selectedFilter;
-    View selectedUnderline;
-    View topview;
-
-    public static ActivityFragment newInstance() {
-        ActivityFragment fragment = new ActivityFragment();
-        return fragment;
-    }
-
-    public ActivityFragment() {
     }
 
     @Override

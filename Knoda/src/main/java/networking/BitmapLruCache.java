@@ -3,25 +3,26 @@ package networking;
 /**
  * Created by nick on 1/27/14.
  */
+
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
 import com.android.volley.toolbox.ImageLoader;
 
 public class BitmapLruCache extends LruCache<String, Bitmap> implements ImageLoader.ImageCache {
-    public static int getDefaultLruCacheSize() {
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-        final int cacheSize = maxMemory / 8;
-
-        return cacheSize;
-    }
-
     public BitmapLruCache() {
         this(getDefaultLruCacheSize());
     }
 
     public BitmapLruCache(int sizeInKiloBytes) {
         super(sizeInKiloBytes);
+    }
+
+    public static int getDefaultLruCacheSize() {
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+
+        return cacheSize;
     }
 
     @Override

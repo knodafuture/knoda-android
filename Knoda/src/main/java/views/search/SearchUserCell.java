@@ -30,8 +30,8 @@ public class SearchUserCell extends RelativeLayout {
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.list_cell_user, this);
         setBackgroundColor(getResources().getColor(R.color.lightGray));
-        imageView = (NetworkImageView)findViewById(R.id.user_cell_avatar_imageview);
-        textView = (TextView)findViewById(R.id.user_cell_username_textview);
+        imageView = (NetworkImageView) findViewById(R.id.user_cell_avatar_imageview);
+        textView = (TextView) findViewById(R.id.user_cell_username_textview);
 
     }
 }

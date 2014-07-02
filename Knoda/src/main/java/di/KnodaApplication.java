@@ -15,12 +15,24 @@ import managers.UserManager;
  * Created by nick on 1/13/14.
  */
 public class KnodaApplication extends Application {
-    private ObjectGraph graph;
+    public static boolean alertShowing = false;
     private static boolean activityVisible;
-    private Activity currentActivity = null;
-
     @Inject
     UserManager userManager;
+    private ObjectGraph graph;
+    private Activity currentActivity = null;
+
+    public static boolean isActivityVisible() {
+        return activityVisible;
+    }
+
+    public static void activityResumed() {
+        activityVisible = true;
+    }
+
+    public static void activityPaused() {
+        activityVisible = false;
+    }
 
     @Override
     public void onCreate() {
@@ -40,24 +52,11 @@ public class KnodaApplication extends Application {
         return graph;
     }
 
-
-    public static boolean isActivityVisible() {
-        return activityVisible;
-    }
-
-    public static void activityResumed() {
-        activityVisible = true;
-    }
-
-    public static void activityPaused() {
-        activityVisible = false;
-    }
-
-    public Activity getCurrentActivity(){
+    public Activity getCurrentActivity() {
         return currentActivity;
     }
-    public void setCurrentActivity(Activity mCurrentActivity){
+
+    public void setCurrentActivity(Activity mCurrentActivity) {
         this.currentActivity = mCurrentActivity;
     }
-    public static boolean alertShowing = false;
 }

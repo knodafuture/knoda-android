@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent">
 
     <TextView
         android:id="@+id/no_content_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/darkGray"
-        android:text="Placeholder no content text"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="Placeholder no content text"
         android:textAlignment="center"
-        android:gravity="center"/>
+        android:textColor="@color/darkGray" />
 
 </RelativeLayout>

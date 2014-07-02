@@ -8,7 +8,7 @@ import views.core.BaseActivity;
 /**
  * Created by nick on 1/17/14.
  */
-public class ErrorReporter{
+public class ErrorReporter {
 
     private final BaseActivity mActivity;
 
