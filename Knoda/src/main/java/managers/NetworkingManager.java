@@ -12,7 +12,6 @@ import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Bus;
 
 import org.apache.http.entity.ContentType;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,13 +1,10 @@
 package adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,8 +20,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
-import java.util.ArrayList;
-
 import helpers.AdapterHelper;
 import models.ActivityItem;
 import models.ActivityItemType;
@@ -33,7 +28,6 @@ import models.ServerError;
 import networking.NetworkCallback;
 import views.activity.ActivityListWinLossCell;
 import views.core.MainActivity;
-import views.group.CreateGroupHeaderView;
 
 /**
  * Created by nick on 2/1/14.
@@ -103,7 +97,6 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             if (position == objects.size() - 1)
                 listItem.divider.setVisibility(View.INVISIBLE);
 
-            //listItem.setActivityItem(item, imageLoader);
             update(listItem, item);
             return listItem;
         }

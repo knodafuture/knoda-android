@@ -11,11 +11,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
-
-import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 

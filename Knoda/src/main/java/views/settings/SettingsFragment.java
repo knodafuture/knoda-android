@@ -7,7 +7,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,12 +18,9 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import models.BaseModel;
 import models.ServerError;
 import models.Setting;
-import models.SettingsCategory;
 import networking.NetworkCallback;
-import networking.NetworkListCallback;
 import views.core.MainActivity;
 
 public class SettingsFragment extends PreferenceFragment {

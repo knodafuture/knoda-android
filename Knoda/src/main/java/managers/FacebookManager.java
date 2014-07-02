@@ -24,7 +24,6 @@ import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import unsorted.Logger;
-import views.addprediction.AddPredictionFragment;
 
 /**
  * Created by nick on 5/11/14.
