@@ -42,7 +42,6 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
             return getHeaderView(convertView);
 
         return super.getView(position - 1, convertView, parent);
-
     }
 
     public void setUser(User user) {
@@ -64,7 +63,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
         header.setStreak(user.streak);
         header.winPercentTextView.setText(user.winningPercentage.toString() + "%");
 
-        if (user.avatar != null && user.avatar.big != null)
+        if (header.avatarImageView != null && user.avatar != null && user.avatar.big != null)
             header.avatarImageView.setImageUrl(user.avatar.big, imageLoader);
 
         return header;

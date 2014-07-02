@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Display;
@@ -240,25 +241,28 @@ public abstract class AvatarChooserActivity extends BaseActivity {
             relativeLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    File file = new File(
-                            Environment.getExternalStorageDirectory()
-                                    + "/blur_background.png"
-                    );
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
+                    try {
+                        File file = new File(
+                                Environment.getExternalStorageDirectory()
+                                        + "/blur_background.png"
+                        );
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
 
-                    //Get actionbar size to take off image
-                    TypedValue tv = new TypedValue();
-                    getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-                    int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
-                    Display display = getWindowManager().getDefaultDisplay();
-                    Point size = new Point();
-                    display.getSize(size);
+                        //Get actionbar size to take off image
+                        TypedValue tv = new TypedValue();
+                        getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+                        int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
+                        Display display = getWindowManager().getDefaultDisplay();
+                        Point size = new Point();
+                        display.getSize(size);
 
-                    BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, actionBarHeight, bitmap.getWidth(), bitmap.getHeight() - actionBarHeight));
-
-                    relativeLayout.setBackgroundDrawable(d);
+                        BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, actionBarHeight, bitmap.getWidth(), bitmap.getHeight() - actionBarHeight));
+                        relativeLayout.setBackgroundDrawable(d);
+                    } catch (Exception e) {
+                        Log.e("Knoda Error", e.getMessage());
+                    }
                 }
             });
         }
