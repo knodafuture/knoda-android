@@ -11,12 +11,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
 
 import com.flurry.android.FlurryAgent;
 
+import java.util.ArrayList;
+
 import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import models.ActivityItem;
 import models.ActivityItemType;
@@ -31,6 +36,8 @@ import views.details.DetailsFragment;
 import views.group.GroupSettingsFragment;
 
 public class ActivityFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<ActivityItem> {
+    @InjectView(R.id.base_listview)
+    public PullToRefreshListView pListView;
 
     @OnClick(R.id.activity_1)
     void onClickAll() {
@@ -116,6 +123,29 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         super.onResume();
         bus.post(new ActivitiesViewedEvent());
         changeFilter(sharedPrefManager.getSavedActivityFilter());
+        pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                pListView.setShowIndicator(false);
+                networkingManager.getActivityItemsAfter(0, new NetworkListCallback<ActivityItem>() {
+                    @Override
+                    public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
+                        pListView.onRefreshComplete();
+                        if (error != null) {
+                            Toast.makeText(getActivity(), "Error getting new activities", Toast.LENGTH_SHORT).show();
+                        } else {
+                            adapter = getAdapter();
+                            pListView.setAdapter(adapter);
+                            adapter.loadPage(0);
+                        }
+                    }
+                });
+            }
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+            }
+        });
     }
 
     @Override
