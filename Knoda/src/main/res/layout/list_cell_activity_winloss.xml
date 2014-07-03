@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="57dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
@@ -67,11 +67,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/winlosstext_container"
             android:layout_marginBottom="16dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp">
 
-            <Button
+            <TextView
                 android:id="@+id/winloss_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2px"
         android:layout_below="@+id/prediction_cell_body_view"
         android:layout_margin="7dp"
         android:background="#DDD" />

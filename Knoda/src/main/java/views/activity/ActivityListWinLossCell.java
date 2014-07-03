@@ -3,7 +3,6 @@ package views.activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,7 +26,7 @@ public class ActivityListWinLossCell extends RelativeLayout {
     public NetworkImageView iconImageView;
     public TextView winlosstitle;
     public TextView winlosscomment;
-    public Button winlossbutton;
+    public TextView winlossbutton;
     public RelativeLayout buttonContainer;
     public View divider;
     public ActivityItem activityItem;
@@ -42,7 +41,7 @@ public class ActivityListWinLossCell extends RelativeLayout {
         iconImageView = (NetworkImageView) findViewById(R.id.winloss_imageview);
         winlosstitle = (TextView) findViewById(R.id.winloss_title);
         winlosscomment = (TextView) findViewById(R.id.winloss_comment);
-        winlossbutton = (Button) findViewById(R.id.winloss_button);
+        winlossbutton = (TextView) findViewById(R.id.winloss_button);
         buttonContainer = (RelativeLayout) findViewById(R.id.winloss_button_container);
         divider = findViewById(R.id.divider);
     }

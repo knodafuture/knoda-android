@@ -104,6 +104,7 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bus.register(this);
+        sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
     }
 
     @Override
@@ -113,7 +114,6 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         topview = view;
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
         selectedUnderline = view.findViewById(R.id.underline_1);
-        sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
         return view;
     }
 

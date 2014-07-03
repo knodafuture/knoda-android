@@ -43,27 +43,30 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     int pixelToDP = 1;
     RelativeLayout.LayoutParams showButton;
     RelativeLayout.LayoutParams hideButton;
+
     public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, Activity activity, String filter) {
         super(context, datasource, imageLoader);
         this.activity = activity;
         this.filter = filter;
         userPic = (BitmapDrawable) activity.getResources().getDrawable(R.drawable.ic_notification_avatar);
 
+        this.pixelToDP = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                1,
+                activity.getResources().getDisplayMetrics());
+
         showButton = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        showButton.setMargins(pixelToDP * 20, pixelToDP * 16, pixelToDP * 20, pixelToDP * 16);
+        showButton.setMargins(pixelToDP * 16, pixelToDP * 16, pixelToDP * 16, pixelToDP * 16);
         showButton.addRule(RelativeLayout.BELOW, R.id.winlosstext_container);
 
         hideButton = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-        hideButton.setMargins(pixelToDP * 20, pixelToDP * 10, pixelToDP * 20, 0);
+        hideButton.setMargins(pixelToDP * 16, pixelToDP * 16, pixelToDP * 16, 0);
 
         bragcolor = activity.getResources().getColorStateList(R.color.brag_selector_text);
         settlecolor = activity.getResources().getColorStateList(R.color.settle_selector_text);
         groupcolor = activity.getResources().getColorStateList(R.color.group_selector_text);
 
-        this.pixelToDP = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                1,
-                activity.getResources().getDisplayMetrics());
+
         imageLoader.get(((MainActivity) activity).userManager.getUser().avatar.thumb, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -118,7 +121,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         NetworkImageView iconImageView = (NetworkImageView) v.findViewById(R.id.winloss_imageview);
         TextView winlosstitle = (TextView) v.findViewById(R.id.winloss_title);
         TextView winlosscomment = (TextView) v.findViewById(R.id.winloss_comment);
-        Button winlossbutton = (Button) v.findViewById(R.id.winloss_button);
+        TextView winlossbutton = (TextView) v.findViewById(R.id.winloss_button);
         RelativeLayout buttonContainer = (RelativeLayout) v.findViewById(R.id.winloss_button_container);
         RelativeLayout commentBackground = (RelativeLayout) v.findViewById(R.id.comment_background);
 
