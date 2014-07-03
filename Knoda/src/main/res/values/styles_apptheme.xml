@@ -33,6 +33,7 @@
         <!-- Light.DarkActionBar specific -->
         <item name="android:actionBarWidgetTheme">@style/Theme.Apptheme.Widget</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textColor">@color/black</item>
 
     </style>
 
