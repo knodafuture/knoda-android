@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -88,6 +89,7 @@ public class TallyAdapter extends DetailsAdapter<User> {
 
         if (position == 0) {
             TallyHeaderCell header = new TallyHeaderCell(context);
+            header.setBackgroundColor(Color.WHITE);
             header.agreedTextView.setText("Agreed " + agreedUsers.size());
             header.disagreedTextView.setText("Disagreed " + disagreedUsers.size());
             return header;
@@ -102,7 +104,7 @@ public class TallyAdapter extends DetailsAdapter<User> {
 
         if (listItem == null)
             listItem = new TallyCell(context);
-
+        listItem.setBackgroundColor(Color.WHITE);
         if (agreeduser != null) {
 
             if (agreeduser.verified)
