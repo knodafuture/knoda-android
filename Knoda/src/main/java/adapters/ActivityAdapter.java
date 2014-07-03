@@ -195,10 +195,6 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
             listItem.setTag(item);
             listItem.winlossbutton.setTag(item);
-            if (position == objects.size() - 1)
-                listItem.divider.setVisibility(View.INVISIBLE);
-            else
-                listItem.divider.setVisibility(View.VISIBLE);
 
             update(listItem, item);
             return listItem;
@@ -332,6 +328,13 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         //imageView.setImageDrawable(null);
         imageView.setBackgroundResource(R.drawable.ic_notification_avatar);
         imageView.setImageUrl(url, imageLoader);
+    }
+
+    public String getEmptyString() {
+        if (filter.equals("invites"))
+            return "Sorry, you don't have any invitations to view.";
+        else
+            return "Sorry, you don't have any activity to view.";
     }
 
 
