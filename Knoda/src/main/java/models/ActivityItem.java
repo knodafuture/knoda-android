@@ -40,6 +40,9 @@ public class ActivityItem extends BaseModel {
     @SerializedName("image_url")
     public String image_url;
 
+    @SerializedName("shareable")
+    public boolean shareable = true;
+
 
     public String getCreationString() {
         return "made " + DateUtil.getPeriodString(creationDate) + " ago";

@@ -238,7 +238,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
         } else if (activityItem.type == ActivityItemType.WON && filter.equals("all")) {
             setImage(iconImageView, R.drawable.ic_notification_avatar);
-            setUpButton(winlossbutton, buttonContainer, "Brag", true);
+            setUpButton(winlossbutton, buttonContainer, "Brag", activityItem.shareable);
             setUpBody(winlosscomment, true);
             if (!activityItem.title.substring(0, 5).equals("<font"))
                 activityItem.title = "<font color='#77BC1F'>You Won</font>" + "—" + activityItem.title;
