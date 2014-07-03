@@ -3,6 +3,8 @@ package managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.knoda.knoda.R;
+
 import javax.inject.Singleton;
 
 import factories.GsonF;
@@ -19,8 +21,6 @@ import models.SocialAccount;
 @Singleton
 public class SharedPrefManager {
 
-    private Context context;
-
     private static final String SAVED_USERNAME_KEY = "SAVEDUSERNAME";
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
@@ -32,6 +32,8 @@ public class SharedPrefManager {
     private static final String SAVED_PREDICTION_WALKTHROUGH_KEY = "SAVED_PREDICTION_WALKTHROUGH";
     private static final String SAVED_VOTING_WALKTHROUGH_KEY = "SAVED_VOTING_WALKTHROUGHT";
     private static final String SAVED_AGREED_TO_TERMS_KEYS = "SAVED_AGREEED_TO_TERMS_KEY";
+    private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
+    private Context context;
 
     public SharedPrefManager(Context context) {
         this.context = context;
@@ -41,6 +43,7 @@ public class SharedPrefManager {
         return context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
 
     }
+
     public void saveLoginRequestAndResponse(LoginRequest request, LoginResponse response) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putString(SAVED_USERNAME_KEY, response.email).commit();
@@ -118,31 +121,26 @@ public class SharedPrefManager {
         return account;
     }
 
+    public String getSavedAuthtoken() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getString(SAVED_AUTHTOKEN_KEY, null);
+    }
+
     public void setSavedAuthtoken(String authtoken) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putString(SAVED_AUTHTOKEN_KEY, authtoken).commit();
     }
 
-    public String getSavedAuthtoken () {
-        SharedPreferences sharedPreferences = getSP();
-        return sharedPreferences.getString(SAVED_AUTHTOKEN_KEY, null);
-    }
-
     public void clearSession() {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences
-            .edit()
-            .remove(SAVED_PASSWORD_KEY)
-            .remove(SAVED_USERNAME_KEY)
-            .remove(SAVED_AUTHTOKEN_KEY)
-            .remove(SAVED_SOCIAL_ACCOUNT_KEY)
-            .remove(SAVED_GUEST_MODE_KEY)
-            .commit();
-    }
-
-    public void setFirstLaunch(boolean firstLaunch) {
-        SharedPreferences sharedPreferences = getSP();
-        sharedPreferences.edit().putBoolean(FIRST_LAUNCH_KEY, firstLaunch).commit();
+                .edit()
+                .remove(SAVED_PASSWORD_KEY)
+                .remove(SAVED_USERNAME_KEY)
+                .remove(SAVED_AUTHTOKEN_KEY)
+                .remove(SAVED_SOCIAL_ACCOUNT_KEY)
+                .remove(SAVED_GUEST_MODE_KEY)
+                .commit();
     }
 
     public boolean getFirstLaunch() {
@@ -151,9 +149,9 @@ public class SharedPrefManager {
 
     }
 
-    public void setPredictionInProgress(Prediction prediction) {
+    public void setFirstLaunch(boolean firstLaunch) {
         SharedPreferences sharedPreferences = getSP();
-        sharedPreferences.edit().putString(SAVED_PREDICTION_IN_PROGESS_KEY, GsonF.actory().toJson(prediction)).commit();
+        sharedPreferences.edit().putBoolean(FIRST_LAUNCH_KEY, firstLaunch).commit();
     }
 
     public void clearPredictionInProgress() {
@@ -169,6 +167,11 @@ public class SharedPrefManager {
             return null;
 
         return GsonF.actory().fromJson(predictionJson, Prediction.class);
+    }
+
+    public void setPredictionInProgress(Prediction prediction) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putString(SAVED_PREDICTION_IN_PROGESS_KEY, GsonF.actory().toJson(prediction)).commit();
     }
 
     public boolean haveShownPredictionWalkthrough() {
@@ -197,6 +200,17 @@ public class SharedPrefManager {
 
     public void setAgreedToTerms(boolean agreedToTerms) {
         getSP().edit().putBoolean(SAVED_AGREED_TO_TERMS_KEYS, agreedToTerms).commit();
+    }
+
+    public int getSavedActivityFilter() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getInt(SAVED_ACTIVITY_FILTER, R.id.activity_1);
+
+    }
+
+    public void setSavedActivityFilter(int filter) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putInt(SAVED_ACTIVITY_FILTER, filter).commit();
     }
 }
 

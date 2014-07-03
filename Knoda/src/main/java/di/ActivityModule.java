@@ -15,6 +15,7 @@ import managers.NetworkingManager;
 import managers.TwitterManager;
 import managers.UserManager;
 import unsorted.ErrorReporter;
+import views.activity.ActivityBoardFragment;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
@@ -89,7 +90,8 @@ import views.search.SearchFragment;
                 InvitationsFragment.class,
                 EditGroupFragment.class,
                 UserAvatarChooserFragment.class,
-                SignupConfirmFragment.class
+                SignupConfirmFragment.class,
+                ActivityBoardFragment.class
         },
         addsTo = KnodaModule.class,
         library = true
@@ -102,17 +104,33 @@ public class ActivityModule {
         this.mActivity = activity;
     }
 
-    @Provides @Singleton Spinner provideSpinner() {
+    @Provides
+    @Singleton
+    Spinner provideSpinner() {
         return new Spinner(mActivity);
     }
 
-    @Provides @Singleton ErrorReporter provideReporter() {
+    @Provides
+    @Singleton
+    ErrorReporter provideReporter() {
         return new ErrorReporter(mActivity);
     }
 
-    @Provides @Singleton TwitterManager provideTwitterManager() {return new TwitterManager();}
+    @Provides
+    @Singleton
+    TwitterManager provideTwitterManager() {
+        return new TwitterManager();
+    }
 
-    @Provides @Singleton AppOutdatedManager provideAppOutdatedManager() {return new AppOutdatedManager(mActivity);}
+    @Provides
+    @Singleton
+    AppOutdatedManager provideAppOutdatedManager() {
+        return new AppOutdatedManager(mActivity);
+    }
 
-    @Provides @Singleton ConnectivityManager provideConnectivityManager() {return (ConnectivityManager)mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);}
+    @Provides
+    @Singleton
+    ConnectivityManager provideConnectivityManager() {
+        return (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    }
 }

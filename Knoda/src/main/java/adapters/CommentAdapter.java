@@ -18,24 +18,20 @@ import views.details.CommentCell;
  */
 public class CommentAdapter extends DetailsAdapter<Comment> {
 
-    private CommentAdapterDelegate delegate;
     public Bus bus;
-
-    @Subscribe
-    public void newComment(NewCommentEvent event) {
-        insertAt(event.comment, objects.size());
-        notifyDataSetChanged();
-    }
-
-    public interface CommentAdapterDelegate {
-        void onUserClicked(Integer userId);
-    }
+    private CommentAdapterDelegate delegate;
 
     public CommentAdapter(Context context, PagingAdapterDatasource<Comment> datasource, CommentAdapterDelegate delegate, ImageLoader imageLoader, Bus bus) {
         super(context, datasource, imageLoader);
         this.delegate = delegate;
         this.bus = bus;
         this.bus.register(this);
+    }
+
+    @Subscribe
+    public void newComment(NewCommentEvent event) {
+        insertAt(event.comment, objects.size());
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,5 +62,9 @@ public class CommentAdapter extends DetailsAdapter<Comment> {
             listItem.avatarImage.setImageUrl(comment.userAvatar.small, imageLoader);
 
         return listItem;
+    }
+
+    public interface CommentAdapterDelegate {
+        void onUserClicked(Integer userId);
     }
 }

@@ -60,18 +60,31 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
     private Group group;
     private String invitationCode;
 
+    public static GroupSettingsFragment newInstance(Group group, String invitationCode) {
+        GroupSettingsFragment fragment = new GroupSettingsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("GROUP", GsonF.actory().toJson(group));
+        if (invitationCode != null) {
+            bundle.putString("INVITATION_CODE", invitationCode);
+        }
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Subscribe
     public void groupChanged(GroupChangedEvent event) {
         group = event.group;
         populate();
     }
 
-    @OnClick(R.id.group_settings_invite_button) void onInvite() {
+    @OnClick(R.id.group_settings_invite_button)
+    void onInvite() {
         InvitationsFragment fragment = InvitationsFragment.newInstance(group);
         pushFragment(fragment);
     }
 
-    @OnClick(R.id.group_settings_share_button) void onShare() {
+    @OnClick(R.id.group_settings_share_button)
+    void onShare() {
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         String text = "Join my group " + group.name + " on @KNODAfuture! " + group.shareUrl;
@@ -81,28 +94,20 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
         startActivity(Intent.createChooser(share, "How would you like to share?"));
     }
 
-    @OnClick(R.id.group_settings_leave_group_button) void onLeave() {
+    @OnClick(R.id.group_settings_leave_group_button)
+    void onLeave() {
         leaveGroup();
     }
 
-    @OnClick(R.id.group_settings_join_group_button) void onJoin() {
+    @OnClick(R.id.group_settings_join_group_button)
+    void onJoin() {
         joinGroup();
     }
 
-    @OnClick(R.id.group_settings_edit_group_button) void onEdit() {
+    @OnClick(R.id.group_settings_edit_group_button)
+    void onEdit() {
         EditGroupFragment fragment = EditGroupFragment.newInstance(group);
         pushFragment(fragment);
-    }
-
-    public static GroupSettingsFragment newInstance(Group group, String invitationCode) {
-        GroupSettingsFragment fragment = new GroupSettingsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("GROUP", GsonF.actory().toJson(group));
-        if (invitationCode != null) {
-            bundle.putString("INVITATION_CODE", invitationCode);
-        }
-        fragment.setArguments(bundle);
-        return fragment ;
     }
 
     @Override
@@ -169,6 +174,7 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
         if (group.myMembership != null || invitationCode == null)
             refresh();
     }
+
     private void refresh() {
         networkingManager.getMembersInGroup(group.id, new NetworkListCallback<Member>() {
             @Override

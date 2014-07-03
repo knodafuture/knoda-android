@@ -5,6 +5,7 @@
     <color name="knodaLightGreenTransparent">#BF77BC1F</color>
     <color name="knodaDarkGreen">#235C37</color>
     <color name="knodaLighterGreen">#99cd57</color>
+    <color name="knodaHintText">#efefef</color>
     <color name="black">#000000</color>
     <color name="darkGray">#666666</color>
     <color name="transparentBlack">#88000000</color>

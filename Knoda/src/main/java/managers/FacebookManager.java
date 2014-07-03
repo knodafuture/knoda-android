@@ -24,7 +24,6 @@ import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import unsorted.Logger;
-import views.addprediction.AddPredictionFragment;
 
 /**
  * Created by nick on 5/11/14.
@@ -46,6 +45,17 @@ public class FacebookManager {
             Logger.log("__________ UH OH SHIT IS NULL ________________");
     }
 
+    private static Session openActiveSession(Activity activity, boolean allowLoginUI, Session.StatusCallback callback, List<String> permissions) {
+        Session.OpenRequest openRequest = new Session.OpenRequest(activity).setPermissions(permissions).setCallback(callback);
+        Session session = new Session.Builder(activity).build();
+        if (SessionState.CREATED_TOKEN_LOADED.equals(session.getState()) || allowLoginUI) {
+            Session.setActiveSession(session);
+            session.openForRead(openRequest);
+            return session;
+        }
+        return null;
+    }
+
     public void openSession(Activity activity, final NetworkCallback<SocialAccount> callback) {
 
         callbacks.add(callback);
@@ -62,7 +72,7 @@ public class FacebookManager {
         });
     }
 
-    public void reauthorizeWithPublishPermissions(final Activity activity,  final NetworkCallback<SocialAccount> callback) {
+    public void reauthorizeWithPublishPermissions(final Activity activity, final NetworkCallback<SocialAccount> callback) {
 
         if (Session.getActiveSession() == null) {
             openSession(activity, new NetworkCallback<SocialAccount>() {
@@ -101,7 +111,7 @@ public class FacebookManager {
         try {
             Session.getActiveSession().requestNewPublishPermissions(req);
         } catch (Exception e) {
-            callback.completionHandler(null,null);
+            callback.completionHandler(null, null);
             Toast.makeText(activity, "Facebook connection failed", Toast.LENGTH_SHORT).show();
         }
 
@@ -137,7 +147,6 @@ public class FacebookManager {
         });
     }
 
-
     private void finish(SocialAccount account, ServerError error) {
         for (NetworkCallback<SocialAccount> callback : callbacks) {
             callback.completionHandler(account, error);
@@ -152,17 +161,6 @@ public class FacebookManager {
         account.accessToken = Session.getActiveSession().getAccessToken();
 
         return account;
-    }
-
-    private static Session openActiveSession(Activity activity, boolean allowLoginUI, Session.StatusCallback callback, List<String> permissions) {
-        Session.OpenRequest openRequest = new Session.OpenRequest(activity).setPermissions(permissions).setCallback(callback);
-        Session session = new Session.Builder(activity).build();
-        if (SessionState.CREATED_TOKEN_LOADED.equals(session.getState()) || allowLoginUI) {
-            Session.setActiveSession(session);
-            session.openForRead(openRequest);
-            return session;
-        }
-        return null;
     }
 
 

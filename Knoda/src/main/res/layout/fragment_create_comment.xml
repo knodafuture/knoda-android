@@ -2,34 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="views.details.CreateCommentFragment"
-    android:background="@color/transparentBlack">
+    android:background="@color/transparentBlack"
+    tools:context="views.details.CreateCommentFragment">
 
     <RelativeLayout
+        android:id="@+id/add_prediction_body_container"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@color/white"
-        android:id="@+id/add_prediction_body_container">
+        android:background="@color/white">
 
         <EditText
             android:id="@+id/add_comment_body_edittext"
+            style="@style/knoda_edittext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:inputType="textMultiLine"
-            android:hint="Add a comment..."
+            android:background="@null"
             android:gravity="top"
+            android:hint="Add a comment..."
             android:imeOptions="actionDone"
-            android:background="@null"/>
+            android:inputType="textMultiLine|textCapSentences" />
 
         <TextView
             android:id="@+id/add_comment_counter_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp" />
 
     </RelativeLayout>
 

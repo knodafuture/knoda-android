@@ -58,27 +58,27 @@ public class PredictionListCell extends RelativeLayout {
 
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.list_cell_predictions, this);
-        usernameTextView = (TextView)findViewById(R.id.prediction_cell_username_textview);
-        bodyTextView = (TextView)findViewById(R.id.prediction_cell_body_textview);
-        avatarImageView = (NetworkImageView)findViewById(R.id.prediction_cell_avatar_imageview);
-        timeStampsTextView = (TextView)findViewById(R.id.prediction_cell_timestamps_textview);
-        bodyView = (RelativeLayout)findViewById(R.id.prediction_cell_body_view);
-        voteImageView = (ImageView)findViewById(R.id.prediction_cell_vote_image);
-        usernameView = (RelativeLayout)findViewById(R.id.prediction_cell_top_container);
-        commentCountTextView = (TextView)findViewById(R.id.prediction_cell_comment_textview);
-        resultTextView = (TextView)findViewById(R.id.prediction_cell_result_textview);
-        agreeView = (RelativeLayout)findViewById(R.id.prediction_cell_agreeview);
-        disagreeView = (RelativeLayout)findViewById(R.id.prediction_cell_disagreeview);
-        verifiedCheckmark = (ImageView)findViewById(R.id.prediction_cell_verified_checkmark);
-        groupView = (RelativeLayout)findViewById(R.id.prediction_cell_group_container);
-        groupTextView = (TextView)findViewById(R.id.prediction_cell_group_textview);
-        walkthroughView = (RelativeLayout)findViewById(R.id.prediction_cell_swipe_walkthrough);
-        container = (RelativeLayout)findViewById(R.id.prediction_cell_container);
-        textContainer = (LinearLayout)findViewById(R.id.prediction_cell_username_textview_container);
+        usernameTextView = (TextView) findViewById(R.id.prediction_cell_username_textview);
+        bodyTextView = (TextView) findViewById(R.id.prediction_cell_body_textview);
+        avatarImageView = (NetworkImageView) findViewById(R.id.prediction_cell_avatar_imageview);
+        timeStampsTextView = (TextView) findViewById(R.id.prediction_cell_timestamps_textview);
+        bodyView = (RelativeLayout) findViewById(R.id.prediction_cell_body_view);
+        voteImageView = (ImageView) findViewById(R.id.prediction_cell_vote_image);
+        usernameView = (RelativeLayout) findViewById(R.id.prediction_cell_top_container);
+        commentCountTextView = (TextView) findViewById(R.id.prediction_cell_comment_textview);
+        resultTextView = (TextView) findViewById(R.id.prediction_cell_result_textview);
+        agreeView = (RelativeLayout) findViewById(R.id.prediction_cell_agreeview);
+        disagreeView = (RelativeLayout) findViewById(R.id.prediction_cell_disagreeview);
+        verifiedCheckmark = (ImageView) findViewById(R.id.prediction_cell_verified_checkmark);
+        groupView = (RelativeLayout) findViewById(R.id.prediction_cell_group_container);
+        groupTextView = (TextView) findViewById(R.id.prediction_cell_group_textview);
+        walkthroughView = (RelativeLayout) findViewById(R.id.prediction_cell_swipe_walkthrough);
+        container = (RelativeLayout) findViewById(R.id.prediction_cell_container);
+        textContainer = (LinearLayout) findViewById(R.id.prediction_cell_username_textview_container);
     }
 
     public void setAgree(boolean agree) {
-        int resId = agree? R.drawable.agree_marker : R.drawable.disagree_marker;
+        int resId = agree ? R.drawable.agree_marker : R.drawable.disagree_marker;
         voteImageView.setImageResource(resId);
         if (agree && agreed)
             return;
@@ -106,6 +106,8 @@ public class PredictionListCell extends RelativeLayout {
 
     public void setPrediction(Prediction prediction) {
         this.prediction = prediction;
+        if (prediction == null)
+            return;
         update();
     }
 

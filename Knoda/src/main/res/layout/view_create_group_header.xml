@@ -2,29 +2,32 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/create_group_container"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/new_group_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/new_group_icon"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"/>
+        android:src="@drawable/new_group_icon" />
+
     <TextView
         android:id="@+id/new_group_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/new_group_icon"
-        android:textSize="18dp"
-        android:layout_marginTop="13dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="13dp"
+        android:layout_toRightOf="@+id/new_group_icon"
         android:text="Create new group"
-        android:textColor="@color/darkGray" />
+        android:textColor="@color/darkGray"
+        android:textSize="18dp" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@color/lightGray"
         android:layout_below="@+id/new_group_icon"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="15dp"
+        android:background="@color/lightGray" />
 </RelativeLayout>

@@ -18,6 +18,9 @@ public class CategoryFragment extends BasePredictionListFragment {
 
     String tag;
 
+    public CategoryFragment() {
+    }
+
     public static CategoryFragment newInstance() {
         CategoryFragment fragment = new CategoryFragment();
         return fragment;
@@ -30,8 +33,6 @@ public class CategoryFragment extends BasePredictionListFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    public CategoryFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

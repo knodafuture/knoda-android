@@ -43,8 +43,7 @@ public class MultipartRequest extends Request<String> {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
             entity.writeTo(bos);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             VolleyLog.e("IOException writing to ByteArrayOutputStream");
         }
         body = bos.toByteArray();
@@ -62,6 +61,7 @@ public class MultipartRequest extends Request<String> {
     public String getBodyContentType() {
         return entity.getContentType().getValue();
     }
+
     @Override
     public byte[] getBody() throws AuthFailureError {
         return body;

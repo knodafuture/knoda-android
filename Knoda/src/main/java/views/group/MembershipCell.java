@@ -20,20 +20,15 @@ import models.MembershipType;
  */
 public class MembershipCell extends RelativeLayout {
 
-    public interface MembershipCellCallbacks {
-        void memberRemovedAtPosition(int position);
-    }
-
+    private static final int SWIPE_MIN_DISTANCE = 60;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     TextView textView;
     RelativeLayout removeButton;
     RelativeLayout confirmRemoveButton;
-
     GestureDetector gestureDetector;
     long animationTime;
-
     Member member;
     int position;
-
     MembershipCellCallbacks callbacks;
 
     public MembershipCell(Context context, MembershipCellCallbacks callbacks) {
@@ -49,9 +44,9 @@ public class MembershipCell extends RelativeLayout {
 
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.list_cell_member, this);
-        textView = (TextView)findViewById(R.id.member_cell_name_textview);
-        removeButton = (RelativeLayout)findViewById(R.id.member_cell_remove);
-        confirmRemoveButton = (RelativeLayout)findViewById(R.id.member_cell_confirm_remove);
+        textView = (TextView) findViewById(R.id.member_cell_name_textview);
+        removeButton = (RelativeLayout) findViewById(R.id.member_cell_remove);
+        confirmRemoveButton = (RelativeLayout) findViewById(R.id.member_cell_confirm_remove);
 
 
         animationTime = context.getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -81,7 +76,7 @@ public class MembershipCell extends RelativeLayout {
     }
 
     private void remove() {
-        confirmRemoveButton.animate().x(getWidth()-confirmRemoveButton.getWidth()).setDuration(animationTime).setListener(null);
+        confirmRemoveButton.animate().x(getWidth() - confirmRemoveButton.getWidth()).setDuration(animationTime).setListener(null);
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -113,17 +108,17 @@ public class MembershipCell extends RelativeLayout {
         confirmRemoveButton.animate().x(getWidth()).setDuration(animationTime).setListener(null);
         setOnTouchListener(null);
     }
-
-    private static final int SWIPE_MIN_DISTANCE = 60;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 100;
+    public interface MembershipCellCallbacks {
+        void memberRemovedAtPosition(int position);
+    }
 
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 hideConfirmRemove();
                 return true;
-            }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+            } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 hideConfirmRemove();
                 return true;
             }

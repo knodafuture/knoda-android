@@ -9,5 +9,7 @@ public class ScreenCaptureEvent {
 
     public File file;
 
-    public ScreenCaptureEvent(File file) {this.file = file;}
+    public ScreenCaptureEvent(File file) {
+        this.file = file;
+    }
 }

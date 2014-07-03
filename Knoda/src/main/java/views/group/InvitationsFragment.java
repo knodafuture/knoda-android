@@ -39,33 +39,78 @@ import views.core.BaseFragment;
 
 public class InvitationsFragment extends BaseFragment implements InvitationsListCell.InvitationsCellCallbacks {
 
+    private static ArrayList<Contact> contacts;
     @InjectView(R.id.invitations_search_edittext)
     EditText editText;
-
     @InjectView(R.id.invitations_listview)
     ListView listView;
-
     @InjectView(R.id.invitations_results_listview)
     ListView resultsListView;
-
     @InjectView(R.id.invitations_search_container)
     RelativeLayout searchContainer;
-
-    private static ArrayList<Contact> contacts;
-
+    long animationTime;
     private InvitationsAdapter invitationsAdapter;
     private InvitationsSearchAdapter searchAdapter;
     private InvitationHolder contextMenuHolder;
     private Group group;
-
-    long animationTime;
 
     public static InvitationsFragment newInstance(Group group) {
         InvitationsFragment fragment = new InvitationsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("GROUP", GsonF.actory().toJson(group));
         fragment.setArguments(bundle);
-        return fragment ;
+        return fragment;
+    }
+
+    public static void expand(final View v) {
+        v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final int targtetHeight = v.getMeasuredHeight();
+
+        v.getLayoutParams().height = 0;
+        v.setVisibility(View.VISIBLE);
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1
+                        ? ViewGroup.LayoutParams.WRAP_CONTENT
+                        : (int) (targtetHeight * interpolatedTime);
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int) (targtetHeight / v.getContext().getResources().getDisplayMetrics().density) / 1000);
+        v.startAnimation(a);
+    }
+
+    public static void collapse(final View v) {
+        final int initialHeight = v.getMeasuredHeight();
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if (interpolatedTime == 1) {
+                    v.setVisibility(View.GONE);
+                } else {
+                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
+                    v.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density) / 1000);
+        v.startAnimation(a);
     }
 
     @Override
@@ -190,6 +235,7 @@ public class InvitationsFragment extends BaseFragment implements InvitationsList
             i++;
         }
     }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -272,59 +318,6 @@ public class InvitationsFragment extends BaseFragment implements InvitationsList
     @Override
     public void invitationRemovedAtPosition(int position) {
         invitationsAdapter.removeAtPosition(position);
-    }
-
-    public static void expand(final View v) {
-        v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        final int targtetHeight = v.getMeasuredHeight();
-
-        v.getLayoutParams().height = 0;
-        v.setVisibility(View.VISIBLE);
-        Animation a = new Animation()
-        {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1
-                        ? ViewGroup.LayoutParams.WRAP_CONTENT
-                        : (int)(targtetHeight * interpolatedTime);
-                v.requestLayout();
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        // 1dp/ms
-        a.setDuration((int)(targtetHeight / v.getContext().getResources().getDisplayMetrics().density) / 1000);
-        v.startAnimation(a);
-    }
-
-    public static void collapse(final View v) {
-        final int initialHeight = v.getMeasuredHeight();
-
-        Animation a = new Animation()
-        {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if(interpolatedTime == 1){
-                    v.setVisibility(View.GONE);
-                }else{
-                    v.getLayoutParams().height = initialHeight - (int)(initialHeight * interpolatedTime);
-                    v.requestLayout();
-                }
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        // 1dp/ms
-        a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density) / 1000);
-        v.startAnimation(a);
     }
 
     private void sendInvitations() {

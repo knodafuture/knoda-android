@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.os.Handler;
 
 import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
@@ -41,20 +40,18 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import di.KnodaApplication;
-import gcm.GcmIntentService;
 import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
 import managers.AppOutdatedManager;
 import managers.GcmManager;
-import managers.UserManager;
 import models.Group;
 import models.Invitation;
 import models.KnodaScreen;
 import models.Notification;
 import models.Prediction;
 import models.ServerError;
-import models.User;
 import models.Setting;
+import models.User;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
 import pubsub.ReloadListsEvent;
@@ -69,7 +66,6 @@ import views.details.DetailsFragment;
 import views.group.AddGroupFragment;
 import views.group.GroupFragment;
 import views.group.GroupSettingsFragment;
-import views.group.InvitationsFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HistoryFragment;
@@ -81,33 +77,26 @@ import views.settings.SettingsFragment;
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private static KnodaScreen.KnodaScreenOrder startupScreen;
+    public String currentFragment = "";
+    public HashMap<String, ArrayList<Setting>> settings;
+    GoogleCloudMessaging gcm;
+    @Inject
+    AppOutdatedManager appOutdatedManager;
     private GcmManager gcmManager;
     private NavigationDrawerFragment navigationDrawerFragment;
-
     private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
     private HashMap<KnodaScreen, Fragment> instanceMap;
-
-    GoogleCloudMessaging gcm;
-
     private ArrayList<KnodaScreen> screens;
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
-
-    public String currentFragment = "";
-    public HashMap<String, ArrayList<Setting>> settings;
     private Notification pushNotification;
-
-
-    private static KnodaScreen.KnodaScreenOrder startupScreen;
 
     @Subscribe
     public void changeGroup(ChangeGroupEvent event) {
         currentGroup = event.group;
     }
-
-    @Inject
-    AppOutdatedManager appOutdatedManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +128,8 @@ public class MainActivity extends BaseActivity
         if (getIntent().getStringExtra("id") != null) {
             pushNotification.id = getIntent().getStringExtra("id");
         }
+
+        launch();
 
         if (getIntent().getStringExtra("type") != null) {
             if (userManager.isLoggedIn()) {
@@ -182,7 +173,6 @@ public class MainActivity extends BaseActivity
                             }
 
                         }
-
                     }
                 });
             } else {
@@ -195,7 +185,7 @@ public class MainActivity extends BaseActivity
             }
 
         } else {
-            launch();
+            //launch();
         }
         new ImagePreloader(networkingManager).invoke();
         TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);

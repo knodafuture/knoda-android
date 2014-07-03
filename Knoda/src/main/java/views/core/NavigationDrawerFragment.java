@@ -4,10 +4,8 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,38 +53,40 @@ public class NavigationDrawerFragment extends Fragment {
 
     private static final int activityRefreshInterval = 30000;
     private static final int userRefreshInterval = 30000;
-
+    @Inject
+    NetworkingManager networkingManager;
+    @Inject
+    UserManager userManager;
+    @Inject
+    Bus bus;
+    NavigationAdapter adapter;
     private NavigationDrawerCallbacks mCallbacks;
-
     private ActionBarDrawerToggle mDrawerToggle;
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private TextView pointsTextView;
     private TextView winLossTextView;
     private TextView winPercentTextView;
     private TextView streakTextView;
-
     private View mFragmentContainerView;
-
     private int mCurrentSelectedPosition = 0;
-
     private ArrayList<KnodaScreen> screens;
-
-    @Inject
-    NetworkingManager networkingManager;
-
-    @Inject
-    UserManager userManager;
-
-    @Inject
-    Bus bus;
-
-    NavigationAdapter adapter;
     private Menu mMenu;
 
     private Handler handler = new Handler();
-
+    private Runnable activityRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshActivity();
+        }
+    };
+    private Runnable userRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshUser();
+        }
+    };
+    private boolean userDialogShown = false;
 
     public NavigationDrawerFragment() {
     }
@@ -287,17 +287,12 @@ public class NavigationDrawerFragment extends Fragment {
         return getActivity().getActionBar();
     }
 
-    public static interface NavigationDrawerCallbacks {
-
-        void onNavigationDrawerItemSelected(KnodaScreen screen);
+    public boolean isDrawerToggleEnabled() {
+        return mDrawerToggle.isDrawerIndicatorEnabled();
     }
 
     public void setDrawerToggleEnabled(boolean enabled) {
         mDrawerToggle.setDrawerIndicatorEnabled(enabled);
-    }
-
-    public boolean isDrawerToggleEnabled() {
-        return mDrawerToggle.isDrawerIndicatorEnabled();
     }
 
     public void setDrawerLockerMode(int lockerMode) {
@@ -315,14 +310,9 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
-    private Runnable activityRefreshRunnable = new Runnable() {
-        @Override
-        public void run() {
-            refreshActivity();
-        }
-    };
-
     public void refreshActivity() {
+        if (getActivity() == null || ((MainActivity) getActivity()).connectivityManager == null)
+            return;
         NetworkInfo activeNetwork = ((MainActivity) getActivity()).connectivityManager.getActiveNetworkInfo();
         if (activeNetwork != null && activeNetwork.isConnected()) {
             try {
@@ -343,15 +333,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     }
 
-    private Runnable userRefreshRunnable = new Runnable() {
-        @Override
-        public void run() {
-            refreshUser();
-        }
-    };
-    private boolean userDialogShown = false;
-
     public void refreshUser() {
+        if (getActivity() == null || ((MainActivity) getActivity()).connectivityManager == null)
+            return;
         NetworkInfo activeNetwork = ((MainActivity) getActivity()).connectivityManager.getActiveNetworkInfo();
         if (activeNetwork != null && activeNetwork.isConnected()) {
             adapter.setUser(userManager.getUser());
@@ -408,5 +392,10 @@ public class NavigationDrawerFragment extends Fragment {
         } else {
             streakTextView.setText(streak.toString());
         }
+    }
+
+    public static interface NavigationDrawerCallbacks {
+
+        void onNavigationDrawerItemSelected(KnodaScreen screen);
     }
 }

@@ -42,84 +42,46 @@ import views.core.BaseFragment;
 
 public class AddPredictionFragment extends BaseFragment {
 
+    private static boolean requestingTwitterConnect;
     @InjectView(R.id.add_prediction_body_edittext)
     EditText bodyEditText;
-
     @InjectView(R.id.add_prediction_resolution_date_edittext)
     EditText resolutionDateEditText;
-
     @InjectView(R.id.add_prediction_resolution_time_edittext)
     EditText resolutionTimeEditText;
-
     @InjectView(R.id.add_prediction_vote_date_edittext)
     EditText voteDateEditText;
-
     @InjectView(R.id.add_prediction_vote_time_edittext)
     EditText voteTimeEditText;
-
     @InjectView(R.id.add_prediction_twitter_share_imageview)
     ImageView twitterShareImageView;
-
     @InjectView(R.id.add_prediction_twitter_share_textview)
     TextView twitterShareTextView;
-
     @InjectView(R.id.add_prediction_facebook_share_imageview)
     ImageView facebookShareImageView;
-
     @InjectView(R.id.add_prediction_facebook_share_textview)
     TextView facebookShareTextView;
-
-
-    @OnClick(R.id.add_prediction_topic_view) void onTopicClicked() {
-        hideKeyboard();
-        if (topicsDialog != null)
-            topicsDialog.show();
-    }
-
-    @OnClick(R.id.add_prediction_group_view) void onGroupClicked() {
-        hideKeyboard();
-        if (groupsDialog != null)
-            groupsDialog.show();
-    }
-
-    @OnClick(R.id.add_prediction_facebook_share) void onFBShare() {
-        setShouldShareToFacebook(!shouldShareToFacebook);
-    }
-
-    @OnClick(R.id.add_prediction_twitter_share) void onTwitterShare() {
-        setShouldShareToTwitter(!shouldShareToTwitter);
-    }
-
     @InjectView(R.id.add_prediction_topic_textview)
     TextView topicTextView;
-
     @InjectView(R.id.add_prediction_group_textview)
     TextView groupTextView;
-
     @InjectView(R.id.add_prediction_counter_textview)
     TextView bodyCounterTextView;
-
     @InjectView(R.id.add_prediction_user_avatar)
     NetworkImageView avatarImageView;
-
-
     private DateTimePicker resolutionDatePicker;
     private DateTimePicker votingDatePicker;
-
     private ArrayList<Tag> tags;
     private Tag selectedTag;
     private AlertDialog topicsDialog;
     private Group selectedGroup;
     private AlertDialog groupsDialog;
-
     private MessageCounter bodyCounter;
     private Group group;
-
     private boolean shouldShareToFacebook;
     private boolean shouldShareToTwitter;
-
-    private static boolean requestingTwitterConnect;
-
+    public AddPredictionFragment() {
+    }
 
     public static AddPredictionFragment newInstance(Group group) {
         AddPredictionFragment fragment = new AddPredictionFragment();
@@ -131,7 +93,30 @@ public class AddPredictionFragment extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-    public AddPredictionFragment() {}
+
+    @OnClick(R.id.add_prediction_topic_view)
+    void onTopicClicked() {
+        hideKeyboard();
+        if (topicsDialog != null)
+            topicsDialog.show();
+    }
+
+    @OnClick(R.id.add_prediction_group_view)
+    void onGroupClicked() {
+        hideKeyboard();
+        if (groupsDialog != null)
+            groupsDialog.show();
+    }
+
+    @OnClick(R.id.add_prediction_facebook_share)
+    void onFBShare() {
+        setShouldShareToFacebook(!shouldShareToFacebook);
+    }
+
+    @OnClick(R.id.add_prediction_twitter_share)
+    void onTwitterShare() {
+        setShouldShareToTwitter(!shouldShareToTwitter);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -173,7 +158,7 @@ public class AddPredictionFragment extends BaseFragment {
 
         setTitle("PREDICT");
 
-        votingDatePicker = new DateTimePicker(voteDateEditText, voteTimeEditText,Calendar.getInstance(), new DateTimePicker.OnCalenderChangedListener() {
+        votingDatePicker = new DateTimePicker(voteDateEditText, voteTimeEditText, Calendar.getInstance(), new DateTimePicker.OnCalenderChangedListener() {
             @Override
             public void onCalenderChanged(Calendar calendar) {
                 resolutionDatePicker.setMinimumCalender(calendar);
@@ -283,6 +268,7 @@ public class AddPredictionFragment extends BaseFragment {
             requestingTwitterConnect = false;
         }
     }
+
     private Prediction buildPrediction() {
         Prediction prediction = new Prediction();
 
@@ -420,7 +406,7 @@ public class AddPredictionFragment extends BaseFragment {
         return true;
     }
 
-    private void setShouldShareToFacebook (boolean shouldShare) {
+    private void setShouldShareToFacebook(boolean shouldShare) {
         if (shouldShare) {
             if (!checkSharability("facebook"))
                 return;
@@ -434,7 +420,7 @@ public class AddPredictionFragment extends BaseFragment {
         }
     }
 
-    private void setShouldShareToTwitter (boolean shouldShare) {
+    private void setShouldShareToTwitter(boolean shouldShare) {
         if (shouldShare) {
             if (!checkSharability("twitter"))
                 return;
@@ -537,6 +523,7 @@ public class AddPredictionFragment extends BaseFragment {
             }
         });
     }
+
     private void addTwitter() {
         requestingTwitterConnect = true;
         savePrediction();

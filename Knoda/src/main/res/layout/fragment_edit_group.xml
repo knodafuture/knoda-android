@@ -9,45 +9,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">
-        <EditText style="@style/edittext_main"
+
+        <EditText
             android:id="@+id/add_group_name_edittext"
+            style="@style/edittext_main"
             android:layout_width="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:hint="Group Name"
-            android:maxLength="30"
             android:background="@null"
-            android:inputType="textCapSentences"/>
+            android:hint="Group Name"
+            android:inputType="textCapSentences"
+            android:maxLength="30" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="@color/lightGray"
             android:layout_below="@+id/add_group_name_edittext"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp"
+            android:background="@color/lightGray" />
     </RelativeLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@color/white">
+
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/add_group_avatar_imageview"
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_margin="10dp"
-            android:src="@drawable/groups_avatar_default"/>
-        <EditText style="@style/edittext_main"
+            android:src="@drawable/groups_avatar_default" />
+
+        <EditText
             android:id="@+id/add_group_description_edittext"
+            style="@style/edittext_main"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:hint="Description"
+            android:layout_toRightOf="@+id/add_group_avatar_imageview"
             android:gravity="top"
-            android:singleLine="false"
+            android:hint="Description"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="140"
             android:minLines="5"
-            android:layout_toRightOf="@+id/add_group_avatar_imageview" />
+            android:singleLine="false" />
     </RelativeLayout>
 </LinearLayout>

@@ -31,35 +31,39 @@ public class LoginFragment extends BaseDialogFragment {
     EditText passwordField;
 
 
-    @OnClick(R.id.login_forgot_button) void onForgotPassword() {
+    public LoginFragment() {
+    }
+
+    public static LoginFragment newInstance() {
+        LoginFragment fragment = new LoginFragment();
+        return fragment;
+    }
+
+    @OnClick(R.id.login_forgot_button)
+    void onForgotPassword() {
         dismissFade();
         ForgotPasswordFragment fragment = ForgotPasswordFragment.newInstance();
         fragment.show(getActivity().getFragmentManager(), "forgot");
     }
 
-    @OnClick(R.id.login_button) void onLogin() {
+    @OnClick(R.id.login_button)
+    void onLogin() {
         doLogin();
     }
 
-    @OnClick(R.id.login_close) void onLoginClose() {
+    @OnClick(R.id.login_close)
+    void onLoginClose() {
         dismissFade();
     }
 
-    @OnClick(R.id.login_signup_button) void onSignup() {
+    @OnClick(R.id.login_signup_button)
+    void onSignup() {
         dismissFade();
 
         SignUpFragment f = SignUpFragment.newInstance();
 
         f.show(getActivity().getFragmentManager(), "signup");
     }
-
-
-    public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
-        return fragment;
-    }
-    public LoginFragment() {}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,7 +99,7 @@ public class LoginFragment extends BaseDialogFragment {
         });
     }
 
-    private void doLogin () {
+    private void doLogin() {
         hideKeyboard();
         passwordField.clearFocus();
         usernameField.clearFocus();
@@ -117,7 +121,7 @@ public class LoginFragment extends BaseDialogFragment {
                     return;
                 }
                 FlurryAgent.logEvent("LOGIN_EMAIL");
-                ((MainActivity)getActivity()).doLogin();
+                ((MainActivity) getActivity()).doLogin();
                 sharedPrefManager.setShouldShowVotingWalkthrough(true);
                 bus.post(new LoginFlowDoneEvent());
                 dismiss();

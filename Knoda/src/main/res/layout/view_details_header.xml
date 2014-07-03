@@ -1,243 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <views.predictionlists.PredictionListCell
         android:id="@+id/details_cell_prediction_cell"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        </views.predictionlists.PredictionListCell>
+    </views.predictionlists.PredictionListCell>
 
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lightGray"
-        android:layout_below="@id/details_cell_prediction_cell"/>
+        android:layout_below="@id/details_cell_prediction_cell"
+        android:background="@color/lightGray" />
 
     <RelativeLayout
         android:id="@+id/details_cell_actions_container"
-        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_below="@id/details_cell_prediction_cell">
+        android:layout_below="@id/details_cell_prediction_cell"
+        android:layout_marginTop="1dp">
 
 
         <RelativeLayout
-            android:visibility="invisible"
             android:id="@+id/details_cell_agree_disagree"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:background="@color/white"
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/details_cell_agree_disagree_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="1dp"
-                android:text="What do you think?"
-                android:layout_centerHorizontal="true"/>
+                android:text="What do you think?" />
 
             <LinearLayout
-                android:layout_below="@id/details_cell_agree_disagree_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/details_cell_agree_disagree_textview"
                 android:layout_margin="5dp">
 
                 <Button
                     android:id="@+id/details_cell_agree_button"
                     android:layout_width="0dp"
-                    android:layout_weight=".5"
                     android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:background="@color/knodaLightGreen"
                     android:text="Agree"
-                    android:textColor="@color/white"
-                    android:background="@color/knodaLightGreen"/>
+                    android:textColor="@color/white" />
+
                 <Button
                     android:id="@+id/details_cell_disagree_button"
-                    android:layout_marginLeft="5dp"
                     android:layout_width="0dp"
-                    android:layout_weight=".5"
                     android:layout_height="wrap_content"
-                    android:text="Disagree"
-                    android:textColor="@color/white"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/details_cell_agree_button"
+                    android:layout_weight=".5"
                     android:background="@color/knodaLightGreen"
-                    android:layout_toRightOf="@id/details_cell_agree_button"/>
+                    android:text="Disagree"
+                    android:textColor="@color/white" />
 
-                </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="invisible"
             android:id="@+id/details_cell_settle"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="80dp"
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/details_cell_settle_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_centerHorizontal="true"
-                android:text="Was your prediction correct?"/>
-
+                android:layout_marginTop="5dp"
+                android:text="Was your prediction correct?" />
 
 
             <LinearLayout
-                android:layout_below="@id/details_cell_settle_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/details_cell_settle_textview"
                 android:layout_margin="5dp">
 
                 <Button
                     android:id="@+id/details_cell_yes_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/knodaLightGreen"
-                    android:textColor="@color/white"
                     android:layout_weight=".33"
-                    android:text="Yes"/>
+                    android:background="@color/knodaLightGreen"
+                    android:text="Yes"
+                    android:textColor="@color/white" />
+
                 <Button
                     android:id="@+id/details_cell_no_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/knodaLightGreen"
-                    android:textColor="@color/white"
+                    android:layout_marginLeft="2dp"
                     android:layout_weight=".33"
+                    android:background="@color/knodaLightGreen"
                     android:text="No"
-                    android:layout_marginLeft="2dp"/>
+                    android:textColor="@color/white" />
+
                 <Button
                     android:id="@+id/details_cell_idk_button"
                     android:layout_width="0dp"
-                    android:layout_weight=".33"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight=".33"
                     android:background="@color/knodaLightGreen"
-                    android:textColor="@color/white"
                     android:text="IDK Yet"
-                    android:layout_marginLeft="2dp"/>
+                    android:textColor="@color/white" />
 
 
-                </LinearLayout>
+            </LinearLayout>
 
 
+        </RelativeLayout>
+
+        <LinearLayout
+
+            android:id="@+id/details_cell_points"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp">
+
+                <ImageView
+                    android:id="@+id/results_outcome_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/result_win_icon" />
+
+                <TextView
+                    android:id="@+id/results_outcome_textview"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/results_outcome_imageview"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:text="You \n Won" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/lightGray" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:id="@+id/results_points_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:text="50"
+                    android:textColor="@color/knodaDarkGreen"
+                    android:textSize="40dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/results_points_textview"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-10dp"
+                    android:text="points"
+                    android:textColor="@color/knodaDarkGreen" />
 
             </RelativeLayout>
 
-            <LinearLayout
+            <View
+                android:layout_width="1dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/lightGray" />
 
-                android:visibility="visible"
-                android:orientation="horizontal"
-                android:id="@+id/details_cell_points"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/details_cell_points_breakdown_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="+20 Underdog\n+20 Win\n+10 Market"
+                android:textSize="10dp" />
 
-                <RelativeLayout
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+            <View
+                android:layout_width="1dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/lightGray" />
 
-                    <ImageView
-                        android:id="@+id/results_outcome_imageview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/result_win_icon"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="20dp"
-                        />
-                    <TextView
-                        android:id="@+id/results_outcome_textview"
-                        android:layout_below="@id/results_outcome_imageview"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:text="You \n Won"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center_horizontal" />
-                    </RelativeLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/lightGray" />
-
-                <RelativeLayout
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/results_points_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="50"
-                        android:textColor="@color/knodaDarkGreen"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="top"
-                        android:layout_marginTop="10dp"
-                        android:textSize="40dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="points"
-                        android:textColor="@color/knodaDarkGreen"
-                        android:layout_below="@id/results_points_textview"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="-10dp"/>
-
-                    </RelativeLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/lightGray" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp">
 
                 <TextView
-                    android:id="@+id/details_cell_points_breakdown_textview"
-                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:textSize="10dp"
-                    android:text="+20 Underdog\n+20 Win\n+10 Market"/>
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="Is this right?" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/lightGray" />
-
-                <RelativeLayout
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/details_cell_bs_button"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="25dp"
+                    android:background="@color/knodaLightGreen"
+                    android:text="BS"
+                    android:textColor="@color/white" />
 
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:text="Is this right?"
-                        />
-
-                    <Button
-                        android:id="@+id/details_cell_bs_button"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:background="@color/knodaLightGreen"
-                        android:text="BS"
-                        android:textColor="@color/white"
-                        android:layout_marginTop="25dp"
-                        android:layout_centerHorizontal="true"/>
-
-                    </RelativeLayout>
-                </LinearLayout>
-        </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </merge>

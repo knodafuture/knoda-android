@@ -1,7 +1,6 @@
 package views.avatar;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -11,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Display;
@@ -34,26 +34,19 @@ import views.core.BaseActivity;
 
 public abstract class AvatarChooserActivity extends BaseActivity {
 
-    @InjectView(R.id.photo_chooser_imageview)
-    ImageView imageView;
-
-    private boolean madeInitialSelection = false;
-
     public static final int AVATAR_SIZE = 1000;
     public static final int CAMERA_RESULT = 187;
     public static final int CROP_RESULT = 1827323;
     public static final int GALLERY_RESULT = 12312312;
-
     public static final String FROM_CAMERA_FILENAME = "FROMCAMERA";
     public static final String CROP_RESULT_FILENAME = "CROPRESULT";
-
-    private File cameraOutputFile;
     public File cropResultFile;
-
-    private RequestQueue requestQueue;
-
     public boolean uploadInProgress = false;
-
+    @InjectView(R.id.photo_chooser_imageview)
+    ImageView imageView;
+    private boolean madeInitialSelection = false;
+    private File cameraOutputFile;
+    private RequestQueue requestQueue;
     private boolean cancelable;
 
     @Override
@@ -240,25 +233,28 @@ public abstract class AvatarChooserActivity extends BaseActivity {
             relativeLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    File file = new File(
-                            Environment.getExternalStorageDirectory()
-                                    + "/blur_background.png"
-                    );
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
+                    try {
+                        File file = new File(
+                                Environment.getExternalStorageDirectory()
+                                        + "/blur_background.png"
+                        );
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
 
-                    //Get actionbar size to take off image
-                    TypedValue tv = new TypedValue();
-                    getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-                    int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
-                    Display display = getWindowManager().getDefaultDisplay();
-                    Point size = new Point();
-                    display.getSize(size);
+                        //Get actionbar size to take off image
+                        TypedValue tv = new TypedValue();
+                        getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+                        int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
+                        Display display = getWindowManager().getDefaultDisplay();
+                        Point size = new Point();
+                        display.getSize(size);
 
-                    BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, actionBarHeight, bitmap.getWidth(), bitmap.getHeight() - actionBarHeight));
-
-                    relativeLayout.setBackgroundDrawable(d);
+                        BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, actionBarHeight, bitmap.getWidth(), bitmap.getHeight() - actionBarHeight));
+                        relativeLayout.setBackgroundDrawable(d);
+                    } catch (Exception e) {
+                        Log.e("Knoda Error", e.getMessage());
+                    }
                 }
             });
         }

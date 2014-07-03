@@ -90,8 +90,7 @@ public class InvitationHolder {
         if (!(obj2 instanceof InvitationHolder))
             return false;
 
-        InvitationHolder obj3 = (InvitationHolder)obj2;
-
+        InvitationHolder obj3 = (InvitationHolder) obj2;
 
 
         if (user != null && obj3.user != null && user.equals(obj3.user))

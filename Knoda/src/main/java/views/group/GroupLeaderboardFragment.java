@@ -17,6 +17,9 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
     public Group group;
     public String board;
 
+    public GroupLeaderboardFragment() {
+    }
+
     public static GroupLeaderboardFragment newInstance(Group group, String board) {
         GroupLeaderboardFragment fragment = new GroupLeaderboardFragment();
         Bundle bundle = new Bundle();
@@ -25,8 +28,6 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    public GroupLeaderboardFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

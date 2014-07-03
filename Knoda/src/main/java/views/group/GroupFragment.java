@@ -45,7 +45,7 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
                 if (view instanceof CreateGroupHeaderView) {
                     fragment = AddGroupFragment.newInstance();
                 } else {
-                    GroupListCell v = ((GroupListCell)view);
+                    GroupListCell v = ((GroupListCell) view);
                     fragment = GroupPredictionListFragment.newInstance(v.group);
                 }
                 pushFragment(fragment);

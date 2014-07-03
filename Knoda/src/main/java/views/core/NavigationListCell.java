@@ -14,12 +14,11 @@ import com.knoda.knoda.R;
  */
 public class NavigationListCell extends RelativeLayout implements Checkable {
 
-    private boolean isChecked;
-
     public ImageView iconImageView;
     public TextView labelTextView;
     public ImageView selectedBackgroundView;
     public TextView rightTextView;
+    private boolean isChecked;
 
     public NavigationListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -30,7 +29,7 @@ public class NavigationListCell extends RelativeLayout implements Checkable {
         iconImageView = (ImageView) findViewById(R.id.navigation_list_icon);
         labelTextView = (TextView) findViewById(R.id.navigation_list_text);
         selectedBackgroundView = (ImageView) findViewById(R.id.navigation_list_selected_background);
-        rightTextView = (TextView)findViewById(R.id.navigation_list_right_textview);
+        rightTextView = (TextView) findViewById(R.id.navigation_list_right_textview);
     }
 
     public boolean isChecked() {
@@ -43,8 +42,7 @@ public class NavigationListCell extends RelativeLayout implements Checkable {
         if (isChecked) {
             setBackgroundColor(getResources().getColor(R.color.knodaLightGreen));
             selectedBackgroundView.setVisibility(VISIBLE);
-        }
-        else {
+        } else {
             setBackgroundColor(getResources().getColor(android.R.color.transparent));
             selectedBackgroundView.setVisibility(INVISIBLE);
         }

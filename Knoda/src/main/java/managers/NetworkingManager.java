@@ -12,7 +12,6 @@ import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Bus;
 
 import org.apache.http.entity.ContentType;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,24 +59,19 @@ import unsorted.Logger;
 @Singleton
 public class NetworkingManager {
 
-    Context context;
-
-    private static RequestQueue mRequestQueue;
-
-    private HashMap<String, String> headers;
-
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static Integer PAGE_LIMIT = 50;
-
     public static String baseUrl = "http://captaincold.knoda.com/api/";
-
-    private ImageLoader imageLoader;
-
+    private static RequestQueue mRequestQueue;
+    Context context;
+    String api_version = "4";
     @Inject
     SharedPrefManager sharedPrefManager;
     @Inject
     Bus bus;
+    private HashMap<String, String> headers;
+    private ImageLoader imageLoader;
 
     @Inject
     public NetworkingManager(Context applicationContext) {
@@ -522,7 +516,7 @@ public class NetworkingManager {
         if (headers == null) {
             headers = new HashMap<String, String>();
             headers.put("Content-Type", "application/json; charset=utf-8;");
-            headers.put("Accept", "application/json; api_version=3;");
+            headers.put("Accept", "application/json; api_version=" + api_version + ";");
         }
 
         Logger.log("using headers" + headers.toString());

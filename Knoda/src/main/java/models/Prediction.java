@@ -72,6 +72,12 @@ public class Prediction extends BaseModel {
     @SerializedName("group_name")
     public String groupName;
 
+    @SerializedName("expired_text")
+    public String expiredText;
+
+    @SerializedName("predicted_text")
+    public String predictedText;
+
     public String getCreationString() {
         return "made " + DateUtil.getPeriodString(creationDate) + " ago";
     }
@@ -84,12 +90,12 @@ public class Prediction extends BaseModel {
     }
 
     public String getAgreePercentString() {
-        float agreePercent = (float)agreedCount / (float)(agreedCount + disagreedCount) * 100;
-        return (int)agreePercent + "% agree";
+        float agreePercent = (float) agreedCount / (float) (agreedCount + disagreedCount) * 100;
+        return (int) agreePercent + "% agree";
     }
 
     public String getMetdataString() {
-        return getExpirationString() + " | " + getCreationString() + " | " + getAgreePercentString() + " | ";
+        return expiredText + " | " + predictedText + " | " + getAgreePercentString() + " | ";
     }
 
     public boolean canSetOutcome() {
@@ -114,7 +120,7 @@ public class Prediction extends BaseModel {
         if (points.outcomePoints > 0)
             string += "+" + points.outcomePoints + " Outcome \n";
         if (points.marketSizePoints > 0)
-            string += "+" + points.marketSizePoints +  "Market \n";
+            string += "+" + points.marketSizePoints + "Market \n";
         if (points.predictionMarketPoints > 0)
             string += "+" + points.predictionMarketPoints + " " + marketSizeNameForPoints(points.predictionMarketPoints) + "\n";
 
@@ -132,13 +138,18 @@ public class Prediction extends BaseModel {
 
     private String marketSizeNameForPoints(Integer points) {
         switch (points) {
-            case 0: return "Too Easy";
+            case 0:
+                return "Too Easy";
             case 10:
-            case 20: return "Favorite";
+            case 20:
+                return "Favorite";
             case 30:
-            case 40: return "Underdog";
-            case 50: return "Longshot";
-            default: return "";
+            case 40:
+                return "Underdog";
+            case 50:
+                return "Longshot";
+            default:
+                return "";
         }
     }
 

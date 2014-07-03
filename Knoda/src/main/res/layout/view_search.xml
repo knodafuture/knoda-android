@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/knodaDarkGreen"
+        android:layout_centerVertical="true"
         android:layout_margin="10dp"
-        android:layout_centerVertical="true">
+        android:background="@color/knodaDarkGreen">
 
         <ImageView
-        android:id="@+id/search_view_searchicon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/search_icon"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"/>
+            android:id="@+id/search_view_searchicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/search_icon" />
 
         <ImageView
             android:id="@+id/search_view_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/search_clear_icon"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:src="@drawable/search_clear_icon" />
 
         <EditText
             android:id="@+id/search_view_searchfield"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search Knoda..."
-            android:textColorHint="@color/knodaLightGreen"
-            android:background="@null"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/search_view_searchicon"
             android:layout_toLeftOf="@id/search_view_clear"
+            android:layout_toRightOf="@id/search_view_searchicon"
+            android:background="@null"
+            android:hint="Search Knoda..."
+            android:imeOptions="actionSearch"
             android:singleLine="true"
-            android:imeOptions="actionSearch"/>
+            android:textColorHint="@color/knodaLightGreen" />
     </RelativeLayout>
-
 
 
 </RelativeLayout>

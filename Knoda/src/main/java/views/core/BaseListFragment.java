@@ -21,15 +21,16 @@ import helpers.ListenerHelper;
 public class BaseListFragment extends BaseFragment {
     @InjectView(R.id.base_listview)
     public PullToRefreshListView pListView;
-
-    protected PagingAdapter adapter;
     public ListView listView;
+    protected PagingAdapter adapter;
+
+    public BaseListFragment() {
+    }
 
     public static BaseListFragment newInstance() {
         BaseListFragment fragment = new BaseListFragment();
         return fragment;
     }
-    public BaseListFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class BaseListFragment extends BaseFragment {
                 pListView.onRefreshComplete();
                 onLoadFinished();
                 if (getActivity() != null)
-                    ((MainActivity)getActivity()).invalidateBackgroundImage();
+                    ((MainActivity) getActivity()).invalidateBackgroundImage();
             }
         });
 
@@ -111,9 +112,11 @@ public class BaseListFragment extends BaseFragment {
         return null;
     }
 
-    public void onListViewCreated(ListView listView) {}
+    public void onListViewCreated(ListView listView) {
+    }
 
-    protected void onLoadFinished(){}
+    protected void onLoadFinished() {
+    }
 
 
 }

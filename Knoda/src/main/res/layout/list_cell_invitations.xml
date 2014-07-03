@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="60dp">
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -11,70 +12,72 @@
             android:id="@+id/invitations_cell_knoda_user_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/knoda_user_icon"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/knoda_user_icon" />
 
         <RelativeLayout
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:id="@+id/invitations_textview_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="50dp"
-            android:layout_centerVertical="true">
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/invitations_cell_name_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkGray"
-                android:text="Nick Rellihan"/>
+                android:text="Nick Rellihan"
+                android:textColor="@color/darkGray" />
 
-            <TextView style="@style/smallGreenText"
+            <TextView
                 android:id="@+id/invitations_cell_metadata_textview"
+                style="@style/smallGreenText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/invitations_cell_name_textview"
                 android:layout_below="@id/invitations_cell_name_textview"
-                android:text="8167198666"/>
-
-            </RelativeLayout>
+                android:text="8167198666" />
 
         </RelativeLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/invitations_cell_remove"
-        android:clickable="true"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true">
-        <ImageView
-            android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/remove_user_icon"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
 
     <RelativeLayout
-        android:clickable="true"
-        android:visibility="invisible"
+        android:id="@+id/invitations_cell_remove"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:clickable="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/remove_user_icon" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:id="@+id/invitations_cell_confirm_remove"
         android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:background="@color/red">
+        android:background="@color/red"
+        android:clickable="true"
+        android:visibility="invisible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="REMOVE?"
+            android:layout_centerInParent="true"
             android:layout_margin="10dp"
-            android:layout_centerInParent="true"/>
+            android:text="REMOVE?"
+            android:textColor="@color/white" />
     </RelativeLayout>
 </RelativeLayout>

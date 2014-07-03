@@ -28,26 +28,17 @@ public class PredictionSwipeListener implements View.OnTouchListener {
     private final static int fullGreenB = 31;
 
     private final static double thresholdPercentange = 0.25;
-
+    int viewWidth = 1;
     private double threshold;
     private int slop;
     private long animationTime;
     private ListView listView;
     private boolean paused;
-    int viewWidth = 1;
-
     private float downX;
     private boolean swiping;
     private PredictionListCell downView;
 
     private PredictionCellCallbacks callbacks;
-
-
-    public interface PredictionCellCallbacks {
-
-        void onPredictionAgreed(PredictionListCell cell);
-        void onPredictionDisagreed(PredictionListCell cell);
-    }
 
 
     public PredictionSwipeListener(ListView listView, PredictionCellCallbacks callbacks) {
@@ -104,7 +95,7 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                     child.getHitRect(rect);
                     if (rect.contains(x, y)) {
                         if (child instanceof PredictionListCell)
-                            downView = (PredictionListCell)child;
+                            downView = (PredictionListCell) child;
                         else
                             downView = null;
                         break;
@@ -113,7 +104,7 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
                 if (downView != null) {
                     downX = motionEvent.getRawX();
-                    threshold = (double)downView.getWidth() * thresholdPercentange;
+                    threshold = (double) downView.getWidth() * thresholdPercentange;
                 }
 
                 view.onTouchEvent(motionEvent);
@@ -187,7 +178,7 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                         downView.bodyView.setTranslationX(deltaX);
                     if (deltaX > 0) {
                         downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullGreenR, fullGreenG, fullGreenB));
-                        int leftMargin = ((RelativeLayout.LayoutParams)downView.agreeView.getLayoutParams()).leftMargin;
+                        int leftMargin = ((RelativeLayout.LayoutParams) downView.agreeView.getLayoutParams()).leftMargin;
 
                         if (downView.bodyView.getTranslationX() > leftMargin * 2 + downView.agreeView.getWidth())
                             downView.agreeView.setTranslationX(downView.bodyView.getTranslationX() - leftMargin * 2 - downView.agreeView.getWidth());
@@ -195,7 +186,7 @@ public class PredictionSwipeListener implements View.OnTouchListener {
                     } else {
                         downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullRedR, fullRedG, fullRedB));
 
-                        int rightMargin = ((RelativeLayout.LayoutParams)downView.disagreeView.getLayoutParams()).rightMargin;
+                        int rightMargin = ((RelativeLayout.LayoutParams) downView.disagreeView.getLayoutParams()).rightMargin;
 
                         if (Math.abs(downView.bodyView.getTranslationX()) > rightMargin * 2 + downView.disagreeView.getWidth()) {
                             downView.disagreeView.setX(downView.bodyView.getTranslationX() + downView.bodyView.getWidth() + rightMargin);
@@ -214,14 +205,13 @@ public class PredictionSwipeListener implements View.OnTouchListener {
         return false;
     }
 
-
     private int rgbColorFromPercentageOfMax(double percentange, int maxR, int maxG, int maxB) {
 
         double R = percentange * maxR;
         double G = percentange * maxG;
         double B = percentange * maxB;
 
-        return Color.rgb((int)R, (int)G, (int)B);
+        return Color.rgb((int) R, (int) G, (int) B);
 
     }
 
@@ -257,6 +247,13 @@ public class PredictionSwipeListener implements View.OnTouchListener {
             });
         }
 
+    }
+
+    public interface PredictionCellCallbacks {
+
+        void onPredictionAgreed(PredictionListCell cell);
+
+        void onPredictionDisagreed(PredictionListCell cell);
     }
 
 

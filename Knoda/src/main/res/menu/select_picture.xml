@@ -2,13 +2,17 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     android:id="@+id/default_menu_group">
-    <item android:id="@+id/action_from_camera"
+    <item
+        android:id="@+id/action_from_camera"
         android:title="From Camera" />
-    <item android:id="@+id/action_from_gallery"
+    <item
+        android:id="@+id/action_from_gallery"
         android:title="Choose existing" />
-    <item android:id="@+id/action_none"
+    <item
+        android:id="@+id/action_none"
         android:title="Use Default" />
-    <item android:id="@+id/action_cancel"
+    <item
+        android:id="@+id/action_cancel"
         android:title="Cancel" />
 
 </menu>

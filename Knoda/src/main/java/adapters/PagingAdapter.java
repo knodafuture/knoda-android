@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,24 +24,14 @@ import networking.NetworkListCallback;
  */
 public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
 
+    public ImageLoader imageLoader;
+    public Integer currentPage;
+    public boolean loading;
+    public boolean noObjectsRetrieved;
     protected ArrayList<T> objects = new ArrayList<T>();
     protected PagingAdapterDatasource datasource;
     protected PagingAdapaterPageLoadFinishListener onLoadFinished;
     protected Context context;
-    public ImageLoader imageLoader;
-
-    public Integer currentPage;
-    public boolean loading;
-    public boolean noObjectsRetrieved;
-
-    public interface PagingAdapterDatasource <T extends BaseModel> {
-        void getObjectsAfterObject(T object, NetworkListCallback<T> callback);
-        String noContentString();
-    }
-
-    public interface  PagingAdapaterPageLoadFinishListener <T extends BaseModel> {
-        void adapterFinishedLoadingPage(int page);
-    }
 
     public PagingAdapter(Context context, PagingAdapterDatasource datasource, ImageLoader imageLoader) {
         this.datasource = datasource;
@@ -84,6 +75,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        parent.setBackgroundColor(Color.TRANSPARENT);
         if (objects.size() == 0 && noObjectsRetrieved)
             return getNoContentView();
 
@@ -100,6 +92,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
             object = objects.size() == 0 ? null : objects.get(objects.size() - 1);
         loading = true;
 
+
         datasource.getObjectsAfterObject(object, new NetworkListCallback<T>() {
             @Override
             public void completionHandler(ArrayList<T> objectsToAdd, ServerError error) {
@@ -111,8 +104,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
                 if (page == 0) {
                     noObjectsRetrieved = objectsToAdd.size() == 0;
                     objects = objectsToAdd;
-                }
-                else
+                } else
                     objects.addAll(objectsToAdd);
 
                 currentPage = page;
@@ -125,7 +117,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
     }
 
     public boolean canLoadNextPage() {
-        double div = (double)objects.size() / (double) NetworkingManager.PAGE_LIMIT;
+        double div = (double) objects.size() / (double) NetworkingManager.PAGE_LIMIT;
 
         if (div >= Math.ceil(div))
             return true;
@@ -157,7 +149,17 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
 
     private View getNoContentView() {
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content, null);
-        ((TextView)view.findViewById(R.id.no_content_textview)).setText(datasource.noContentString());
+        ((TextView) view.findViewById(R.id.no_content_textview)).setText(datasource.noContentString());
         return view;
+    }
+
+    public interface PagingAdapterDatasource<T extends BaseModel> {
+        void getObjectsAfterObject(T object, NetworkListCallback<T> callback);
+
+        String noContentString();
+    }
+
+    public interface PagingAdapaterPageLoadFinishListener<T extends BaseModel> {
+        void adapterFinishedLoadingPage(int page);
     }
 }

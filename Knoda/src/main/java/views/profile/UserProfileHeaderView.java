@@ -36,12 +36,12 @@ public class UserProfileHeaderView extends RelativeLayout {
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_user_header, this);
 
-        pointsTextView = (TextView)findViewById(R.id.user_profile_header_points_textview);
-        winPercentTextView = (TextView)findViewById(R.id.user_profile_header_win_textview);
-        streakTextView = (TextView)findViewById(R.id.user_profile_header_streak_textview);
-        winLossTextView = (TextView)findViewById(R.id.user_profile_header_wl_textview);
+        pointsTextView = (TextView) findViewById(R.id.user_profile_header_points_textview);
+        winPercentTextView = (TextView) findViewById(R.id.user_profile_header_win_textview);
+        streakTextView = (TextView) findViewById(R.id.user_profile_header_streak_textview);
+        winLossTextView = (TextView) findViewById(R.id.user_profile_header_wl_textview);
 
-        avatarImageView = (NetworkImageView)findViewById(R.id.user_profile_header_avatar);
+        avatarImageView = (NetworkImageView) findViewById(R.id.user_profile_header_avatar);
 
     }
 
@@ -56,7 +56,7 @@ public class UserProfileHeaderView extends RelativeLayout {
     public void setStreak(String streak) {
         if (streak == null || streak == "") {
             streakTextView.setText("W0");
-        }else {
+        } else {
             streakTextView.setText(streak.toString());
         }
     }

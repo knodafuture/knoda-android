@@ -48,7 +48,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
         return swipeListener.makeScrollListener();
     }
 
-    public void refreshList(){
+    public void refreshList() {
         adapter.loadPage(0);
     }
 
@@ -80,7 +80,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
         networkingManager.getPredictionsAfter(lastId, callback);
 
     }
-
 
 
     @Override

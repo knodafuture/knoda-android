@@ -40,21 +40,29 @@ public class BaseDialogFragment extends DialogFragment {
     @Inject
     public NetworkingManager networkingManager;
 
-    @Inject public Spinner spinner;
+    @Inject
+    public Spinner spinner;
 
-    @Inject public ErrorReporter errorReporter;
+    @Inject
+    public ErrorReporter errorReporter;
 
-    @Inject public UserManager userManager;
+    @Inject
+    public UserManager userManager;
 
-    @Inject public Bus bus;
+    @Inject
+    public Bus bus;
 
-    @Inject public SharedPrefManager sharedPrefManager;
+    @Inject
+    public SharedPrefManager sharedPrefManager;
 
-    @Inject public FacebookManager facebookManager;
+    @Inject
+    public FacebookManager facebookManager;
 
-    @Inject public TwitterManager twitterManager;
+    @Inject
+    public TwitterManager twitterManager;
 
-    @Override public void onCreate (Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MainActivity) getActivity()).inject(this);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar);
@@ -78,16 +86,16 @@ public class BaseDialogFragment extends DialogFragment {
         getDialog().cancel();
     }
 
-    public void dismissFade(){
+    public void dismissFade() {
         Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeout);
         getView().startAnimation(fadeOutAnimation);
-        Handler h=new Handler();
+        Handler h = new Handler();
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
                 dismiss();
             }
-        },300);
+        }, 300);
     }
 
     public void hideKeyboard() {
@@ -125,7 +133,7 @@ public class BaseDialogFragment extends DialogFragment {
     public void setTitle(String title) {
         if (title == null)
             return;
-        MainActivity activity = (MainActivity)getActivity();
+        MainActivity activity = (MainActivity) getActivity();
 
         if (activity == null)
             return;

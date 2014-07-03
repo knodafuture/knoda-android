@@ -10,16 +10,16 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:text="Nick"/>
+        android:text="Nick" />
 
     <ImageView
         android:id="@+id/tally_cell_left_verified_checkmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/verified_badge"
-        android:layout_toRightOf="@id/tally_cell_left_textview"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/tally_cell_left_textview"
+        android:src="@drawable/verified_badge" />
 
     <TextView
         android:id="@+id/tally_cell_right_textview"
@@ -28,15 +28,15 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:text="Nick"/>
+        android:text="Nick" />
 
     <ImageView
         android:id="@+id/tally_cell_right_verified_checkmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/verified_badge"
-        android:layout_toLeftOf="@id/tally_cell_right_textview"
         android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/tally_cell_right_textview"
+        android:src="@drawable/verified_badge" />
 
 </merge>

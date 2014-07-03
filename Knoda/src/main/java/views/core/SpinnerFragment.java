@@ -20,7 +20,8 @@ public class SpinnerFragment extends DialogFragment {
         return view;
     }
 
-    @Override public void onCreate (Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Translucent_NoTitleBar);
         setCancelable(false);

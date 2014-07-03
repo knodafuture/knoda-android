@@ -12,20 +12,9 @@ import butterknife.OnClick;
 import models.Group;
 
 public class GroupPredictionListHeader extends RelativeLayout {
-    public interface GroupPredictionListHeaderDelegate {
-        void onRankings();
-        void onSettings();
-    }
     public Group group;
-
     private GroupPredictionListHeaderDelegate delegate;
 
-    @OnClick(R.id.group_rankings_container) void onRankings() {
-        delegate.onRankings();
-    }
-    @OnClick(R.id.group_settings_container) void onSettings() {
-        delegate.onSettings();
-    }
     public GroupPredictionListHeader(Context context) {
         super(context);
         initView(context);
@@ -42,8 +31,24 @@ public class GroupPredictionListHeader extends RelativeLayout {
         initView(context);
     }
 
+    @OnClick(R.id.group_rankings_container)
+    void onRankings() {
+        delegate.onRankings();
+    }
+
+    @OnClick(R.id.group_settings_container)
+    void onSettings() {
+        delegate.onSettings();
+    }
+
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_group_prediction_list_header, this);
         ButterKnife.inject(this);
+    }
+
+    public interface GroupPredictionListHeaderDelegate {
+        void onRankings();
+
+        void onSettings();
     }
 }

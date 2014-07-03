@@ -52,9 +52,11 @@ public class TwitterManager {
     public void checkIntentData(Intent data) {
         savedData = data;
     }
+
     public boolean hasData() {
         return savedData != null;
     }
+
     public void getSocialAccount(final NetworkCallback<SocialAccount> callback) {
         if (savedData != null) {
             Uri uri = savedData.getData();
@@ -96,8 +98,7 @@ public class TwitterManager {
                 Activity activity = params[0];
                 activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(token.getAuthenticationURL())));
                 activity.finish();
-            }
-            catch (TwitterException e) {
+            } catch (TwitterException e) {
                 e.printStackTrace();
             }
             return null;
@@ -113,9 +114,10 @@ public class TwitterManager {
         public NetworkCallback<SocialAccount> callback;
         public Uri uri;
     }
+
     private class GetAccessTokenTask extends AsyncTask<AccessTokenContainer, Void, AccessTokenContainer> {
         @Override
-        protected AccessTokenContainer doInBackground(AccessTokenContainer...params) {
+        protected AccessTokenContainer doInBackground(AccessTokenContainer... params) {
             AccessTokenContainer result = params[0];
             String verifier = result.uri.getQueryParameter(IEXTRA_OAUTH_VERIFIER);
             try {

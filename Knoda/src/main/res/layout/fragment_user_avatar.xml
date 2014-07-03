@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/knodaLightGreenTransparent"/>
+        android:background="@color/knodaLightGreenTransparent" />
 
     <Button
         android:id="@+id/avatar_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Done"
-        android:textColor="@color/white"
-        android:textSize="25dp"
-        android:visibility="invisible"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+        android:text="Done"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/avatar_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Profile"
-        android:textStyle="bold"
+        android:layout_below="@id/avatar_done"
         android:layout_centerHorizontal="true"
+        android:text="Profile"
+        android:textColor="@color/white"
         android:textSize="20dp"
-        android:layout_below="@id/avatar_done"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/avatar_copy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/avatar_welcome"
+        android:layout_centerHorizontal="true"
         android:text="Add a totally rad picture to your profile"
         android:textColor="@color/white"
-        android:layout_centerHorizontal="true"
-        android:textSize="15dp"/>
+        android:textSize="15dp" />
 
 
     <ImageView
@@ -49,48 +50,51 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_below="@id/avatar_copy"
-        android:background="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:src="@drawable/add_avatar"/>
+        android:background="@color/white"
+        android:src="@drawable/add_avatar" />
 
-    <Button style="@style/button_main"
+    <Button
+        android:id="@+id/avatar_take_photo_button"
+        style="@style/button_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/avatar_imageview"
-        android:id="@+id/avatar_take_photo_button"
-        android:text="Take Photo"
-        android:textColor="@color/white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:text="Take Photo"
+        android:textColor="@color/white" />
 
-    <Button style="@style/button_main"
+    <Button
+        android:id="@+id/avatar_gallery_button"
+        style="@style/button_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/avatar_take_photo_button"
-        android:id="@+id/avatar_gallery_button"
-        android:text="Choose from Library"
-        android:textColor="@color/white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:text="Choose from Library"
+        android:textColor="@color/white" />
 
-    <Button style="@style/button_main"
+    <Button
+        android:id="@+id/avatar_skip"
+        style="@style/button_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/avatar_gallery_button"
-        android:id="@+id/avatar_skip"
-        android:text="Skip"
-        android:textColor="@color/white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+        android:text="Skip"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

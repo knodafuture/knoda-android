@@ -12,26 +12,29 @@
 
         <EditText
             android:id="@+id/invitations_search_edittext"
+            style="@style/knoda_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="15dp"
-            android:hint="Type a name, phone number, or email address"/>
+            android:hint="Type a name, phone number, or email address"
+            android:textSize="15dp" />
+
         <View
             android:id="@+id/invitations_spacer"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="@color/lightGray"
-            android:layout_below="@id/invitations_search_edittext"/>
+            android:layout_below="@id/invitations_search_edittext"
+            android:background="@color/lightGray" />
+
         <ListView
             android:id="@+id/invitations_results_listview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/invitations_spacer">
 
-            </ListView>
+        </ListView>
 
-        </RelativeLayout>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/invitations_listview"
@@ -40,8 +43,7 @@
         android:layout_below="@id/invitations_search_container">
 
 
-        </ListView>
-
+    </ListView>
 
 
 </RelativeLayout>

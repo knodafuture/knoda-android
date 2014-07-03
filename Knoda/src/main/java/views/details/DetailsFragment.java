@@ -37,8 +37,6 @@ import networking.NetworkListCallback;
 import pubsub.NewCommentEvent;
 import pubsub.PredictionChangeEvent;
 import views.core.BaseListFragment;
-import views.core.MainActivity;
-import views.core.Spinner;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
@@ -54,10 +52,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     private Prediction prediction;
 
-    @Subscribe
-    public void newComment(NewCommentEvent event) {
-        prediction.commentCount++;
-        headerview.setPrediction(prediction);
+    public DetailsFragment() {
     }
 
     public static DetailsFragment newInstance(Prediction prediction) {
@@ -68,10 +63,14 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         return fragment;
     }
 
-    public DetailsFragment() {
+    @Subscribe
+    public void newComment(NewCommentEvent event) {
+        prediction.commentCount++;
+        headerview.setPrediction(prediction);
     }
 
-    @OnClick(R.id.details_action_add_comment) void onComment() {
+    @OnClick(R.id.details_action_add_comment)
+    void onComment() {
         CreateCommentFragment fragment = CreateCommentFragment.newInstance(prediction);
         pushFragment(fragment);
     }
@@ -400,7 +399,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 //prevent from being called twice
-                if(datePicker.getTag()!=null && (Boolean)datePicker.getTag()==true){
+                if (datePicker.getTag() != null && (Boolean) datePicker.getTag() == true) {
                     return;
                 }
                 System.out.println("date changed");

@@ -33,27 +33,25 @@ import views.core.BaseFragment;
 
 public class AddGroupFragment extends BaseFragment {
 
+    private static final int PHOTO_RESULT_CODE = 123123129;
     @InjectView(R.id.add_group_name_edittext)
     EditText nameEditText;
-
     @InjectView(R.id.add_group_description_edittext)
     EditText descriptionEditText;
-
     @InjectView(R.id.add_group_avatar_imageview)
     ImageView avatarImageView;
-
     private File avatarFile;
 
-    private static final int PHOTO_RESULT_CODE = 123123129;
+    public AddGroupFragment() {
+    }
 
     public static AddGroupFragment newInstance() {
         AddGroupFragment fragment = new AddGroupFragment();
         return fragment;
     }
 
-    public AddGroupFragment() {}
-
-    @OnClick(R.id.add_group_avatar_imageview) void onClickAvatar() {
+    @OnClick(R.id.add_group_avatar_imageview)
+    void onClickAvatar() {
         getActivity().findViewById(R.id.add_group_avatar_imageview).setEnabled(false);
         Intent intent = new Intent(getActivity(), GroupAvatarChooserActivity.class);
         intent.putExtra("cancelable", true);

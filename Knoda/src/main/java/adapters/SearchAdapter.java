@@ -26,16 +26,8 @@ import views.search.SearchUserCell;
  */
 public class SearchAdapter extends BaseAdapter {
 
-    public interface SearchAdapterDatasource {
-        void getUsers(String searchTerm, NetworkListCallback<User> callback);
-        void getPredictions(String searchTerm, NetworkListCallback<Prediction> callback);
-    }
-
-    public interface SearchAdapterCallbacks {
-        void onUserSelected(User user);
-        void onPredictionSelected(Prediction prediciton);
-    }
-
+    public ArrayList<ItemEntry> items = new ArrayList<ItemEntry>();
+    boolean loading;
     private Context context;
     private ImageLoader imageLoader;
     private SearchAdapterDatasource datasource;
@@ -43,11 +35,6 @@ public class SearchAdapter extends BaseAdapter {
 
     private ArrayList<Prediction> predictions = new ArrayList<Prediction>();
     private ArrayList<User> users = new ArrayList<User>();
-
-    public ArrayList<ItemEntry> items = new ArrayList<ItemEntry>();
-
-    boolean loading;
-
     private String searchTerm;
 
     public SearchAdapter(Context context, SearchAdapterDatasource datasource, SearchAdapterCallbacks callbacks, ImageLoader imageLoader) {
@@ -69,7 +56,7 @@ public class SearchAdapter extends BaseAdapter {
     @Override
     public ItemEntry getItem(int position) {
 
-        if(loading)
+        if (loading)
             return null;
 
         return items.get(position);
@@ -95,10 +82,10 @@ public class SearchAdapter extends BaseAdapter {
             return getTextCell(entry.title);
 
         if (entry.type == ItemEntryType.ENTRY_TYPE_USER)
-            return getUserView((User)entry.model);
+            return getUserView((User) entry.model);
 
         if (entry.type == ItemEntryType.ENTRY_TYPE_PREDICTION)
-            return getPredictionView((Prediction)entry.model);
+            return getPredictionView((Prediction) entry.model);
 
         return null;
 
@@ -125,12 +112,11 @@ public class SearchAdapter extends BaseAdapter {
 
     private View getTextCell(String text) {
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_search_section, null);
-        TextView textView = (TextView)view.findViewById(R.id.cell_search_header_textview);
+        TextView textView = (TextView) view.findViewById(R.id.cell_search_header_textview);
 
         textView.setText(text);
         return view;
     }
-
 
     public void loadForSearchTerm(final String searchTerm) {
         if (this.searchTerm == searchTerm)
@@ -147,18 +133,18 @@ public class SearchAdapter extends BaseAdapter {
                     return;
 
                 datasource.getPredictions(searchTerm, new NetworkListCallback<Prediction>() {
-                    @Override
-                    public void completionHandler(ArrayList<Prediction> p, ServerError error) {
-                        if (error != null)
-                            return;
+                            @Override
+                            public void completionHandler(ArrayList<Prediction> p, ServerError error) {
+                                if (error != null)
+                                    return;
 
-                        predictions = p;
-                        users = u;
-                        createList();
-                        loading = false;
-                        notifyDataSetChanged();
-                    }
-                }
+                                predictions = p;
+                                users = u;
+                                createList();
+                                loading = false;
+                                notifyDataSetChanged();
+                            }
+                        }
                 );
             }
         });
@@ -186,16 +172,41 @@ public class SearchAdapter extends BaseAdapter {
 
         if (predictions.size() == 0) {
             items.add(new ItemEntry("No predictions found.", ItemEntryType.ENTRY_TYPE_EMPTY));
-        }
-        else {
+        } else {
             for (Prediction prediction : predictions) {
                 items.add(new ItemEntry(prediction, ItemEntryType.ENTRY_TYPE_PREDICTION));
             }
         }
     }
 
+    public AdapterView.OnItemClickListener makeOnItemClickListeners() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ItemEntry entry = items.get(i);
+
+                if (entry.type == ItemEntryType.ENTRY_TYPE_USER)
+                    callbacks.onUserSelected((User) entry.model);
+                else if (entry.type == ItemEntryType.ENTRY_TYPE_PREDICTION)
+                    callbacks.onPredictionSelected((Prediction) entry.model);
+            }
+        };
+    }
+
     private enum ItemEntryType {
         ENTRY_TYPE_USER, ENTRY_TYPE_PREDICTION, ENTRY_TYPE_EMPTY, ENTRY_TYPE_HEADER
+    }
+
+    public interface SearchAdapterDatasource {
+        void getUsers(String searchTerm, NetworkListCallback<User> callback);
+
+        void getPredictions(String searchTerm, NetworkListCallback<Prediction> callback);
+    }
+
+    public interface SearchAdapterCallbacks {
+        void onUserSelected(User user);
+
+        void onPredictionSelected(Prediction prediciton);
     }
 
     private class ItemEntry {
@@ -214,19 +225,5 @@ public class SearchAdapter extends BaseAdapter {
             this.type = type;
         }
 
-    }
-
-    public AdapterView.OnItemClickListener makeOnItemClickListeners() {
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ItemEntry entry = items.get(i);
-
-                if (entry.type == ItemEntryType.ENTRY_TYPE_USER)
-                    callbacks.onUserSelected((User)entry.model);
-                else if (entry.type == ItemEntryType.ENTRY_TYPE_PREDICTION)
-                    callbacks.onPredictionSelected((Prediction)entry.model);
-            }
-        };
     }
 }

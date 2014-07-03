@@ -23,15 +23,6 @@ public class TallyAdapter extends DetailsAdapter<User> {
     private TallyAdapterDatasource tallyDatasource;
     private TallyAdapterDelegate delegate;
 
-    public interface TallyAdapterDatasource {
-        void getAgreedUsers(NetworkListCallback<User> callback);
-        void getDisagreedUsers(NetworkListCallback<User> callback);
-    }
-
-    public interface TallyAdapterDelegate {
-        void onUserClicked(User user);
-    }
-
     public TallyAdapter(Context context, TallyAdapterDatasource datasource, TallyAdapterDelegate delegate) {
         super(context, null, null);
         this.tallyDatasource = datasource;
@@ -107,7 +98,7 @@ public class TallyAdapter extends DetailsAdapter<User> {
         User agreeduser = position >= agreedUsers.size() ? null : agreedUsers.get(position);
         User disagreedUser = position >= disagreedUsers.size() ? null : disagreedUsers.get(position);
 
-        TallyCell listItem = (TallyCell)AdapterHelper.getConvertViewSafely(convertView, TallyCell.class);
+        TallyCell listItem = (TallyCell) AdapterHelper.getConvertViewSafely(convertView, TallyCell.class);
 
         if (listItem == null)
             listItem = new TallyCell(context);
@@ -150,8 +141,15 @@ public class TallyAdapter extends DetailsAdapter<User> {
         };
     }
 
+    public interface TallyAdapterDatasource {
+        void getAgreedUsers(NetworkListCallback<User> callback);
 
+        void getDisagreedUsers(NetworkListCallback<User> callback);
+    }
 
+    public interface TallyAdapterDelegate {
+        void onUserClicked(User user);
+    }
 
 
 }

@@ -32,8 +32,8 @@ import views.group.GroupSettingsFragment;
 public class GcmIntentService extends IntentService {
     public static final String TAG = "gcm.GcmIntentService";
     public static final int NOTIFICATION_ID = 1;
-    private NotificationManager mNotificationManager;
     NotificationCompat.Builder builder;
+    private NotificationManager mNotificationManager;
 
     public GcmIntentService() {
         super("gcm.GcmIntentService");
@@ -74,10 +74,10 @@ public class GcmIntentService extends IntentService {
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent showActivitiesIntent = new Intent(this, SplashActivity.class);
-        showActivitiesIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        showActivitiesIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        showActivitiesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         showActivitiesIntent.putExtra("type", type);
         showActivitiesIntent.putExtra("id", id);
-        showActivitiesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 showActivitiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -99,7 +99,7 @@ public class GcmIntentService extends IntentService {
         showAlert(msg, "", "");
     }
 
-    private void showAlert(final String msg,final String type,final String notificationId) {
+    private void showAlert(final String msg, final String type, final String notificationId) {
         Handler h = new Handler(Looper.getMainLooper());
         h.post(new Runnable() {
             @Override
@@ -111,12 +111,12 @@ public class GcmIntentService extends IntentService {
                             .setCancelable(false)
                             .setPositiveButton("Show", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    final MainActivity mainActivity=((MainActivity) ((KnodaApplication) getApplication()).getCurrentActivity());
-                                    final NetworkingManager networkingManager= mainActivity.networkingManager;
-                                    UserManager userManager= mainActivity.userManager;
-                                    final Spinner spinner= mainActivity.spinner;
+                                    final MainActivity mainActivity = ((MainActivity) ((KnodaApplication) getApplication()).getCurrentActivity());
+                                    final NetworkingManager networkingManager = mainActivity.networkingManager;
+                                    UserManager userManager = mainActivity.userManager;
+                                    final Spinner spinner = mainActivity.spinner;
 
-                                    final Notification pushNotification = new Notification(notificationId,type);
+                                    final Notification pushNotification = new Notification(notificationId, type);
 
                                     if (userManager.isLoggedIn()) {
                                         spinner.show();

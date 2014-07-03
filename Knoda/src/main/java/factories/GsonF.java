@@ -24,21 +24,28 @@ import models.Badge;
  */
 public class GsonF {
 
+    private static GsonBuilder builder;
+    static {
+        builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeDeserializer()).registerTypeAdapter(Badge.class, new BadgeDeserializer());
+    }
+
+    public static Gson actory() {
+        return builder.create();
+    }
+
     private final static class DateTimeDeserializer implements JsonDeserializer<DateTime>, JsonSerializer<DateTime> {
         final org.joda.time.format.DateTimeFormatter DATE_TIME_FORMATTER =
                 ISODateTimeFormat.dateTime().withZone(DateTimeZone.UTC);
 
         @Override
         public DateTime deserialize(final JsonElement je, final Type type,
-                                    final JsonDeserializationContext jdc) throws JsonParseException
-        {
+                                    final JsonDeserializationContext jdc) throws JsonParseException {
             return je.getAsString().length() == 0 ? null : DATE_TIME_FORMATTER.parseDateTime(je.getAsString());
         }
 
         @Override
         public JsonElement serialize(final DateTime src, final Type typeOfSrc,
-                                     final JsonSerializationContext context)
-        {
+                                     final JsonSerializationContext context) {
             return new JsonPrimitive(src == null ? "" : DATE_TIME_FORMATTER.print(src));
         }
     }
@@ -47,23 +54,12 @@ public class GsonF {
         @Override
         public Badge deserialize(final JsonElement je, final Type type, final JsonDeserializationContext jdc) throws JsonParseException {
 
-            JsonObject obj = (JsonObject)je;
+            JsonObject obj = (JsonObject) je;
 
             Badge badge = new Badge();
             badge.name = obj.get("name").getAsString();
             badge.url = "http://api-cdn.knoda.com/badges/212/" + badge.name + ".png";
             return badge;
         }
-    }
-
-    private static GsonBuilder builder;
-
-    static {
-        builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeDeserializer()).registerTypeAdapter(Badge.class, new BadgeDeserializer());
-    }
-
-
-    public static Gson actory() {
-        return builder.create();
     }
 }

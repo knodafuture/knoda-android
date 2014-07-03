@@ -24,7 +24,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         Bundle bundle = new Bundle();
         bundle.putInt("USER_ID", userId);
         fragment.setArguments(bundle);
-        return fragment ;
+        return fragment;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
                 else {
                     user = object;
                     setTitle(object.username.toUpperCase());
-                    ((AnotherUsersProfileAdapter)adapter).setUser(object);
+                    ((AnotherUsersProfileAdapter) adapter).setUser(object);
                 }
             }
         });
@@ -67,7 +67,6 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         networkingManager.getPredictionsForUserAfter(userId, lastId, callback);
     }
 
-    
 
     @Override
     public void onItemClicked(int position) {
@@ -82,7 +81,6 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
 
         super.onItemClicked(position);
     }
-
 
 
 }

@@ -28,7 +28,7 @@ public class TallyHeaderCell extends RelativeLayout {
 
     private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.list_cell_tally_header, this);
-        agreedTextView = (TextView)findViewById(R.id.tally_header_agreed_textview);
-        disagreedTextView = (TextView)findViewById(R.id.tally_header_disagreed_textview);
+        agreedTextView = (TextView) findViewById(R.id.tally_header_agreed_textview);
+        disagreedTextView = (TextView) findViewById(R.id.tally_header_disagreed_textview);
     }
 }

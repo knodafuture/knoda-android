@@ -20,20 +20,30 @@ public class ForgotPasswordFragment extends BaseDialogFragment {
     @InjectView(R.id.forgot_username_edittext)
     EditText editText;
 
-    @OnClick(R.id.forgot_close) void onClose() {dismissFade();}
+    public ForgotPasswordFragment() {
+    }
+
     public static ForgotPasswordFragment newInstance() {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
         return fragment;
     }
-    @OnClick(R.id.submit_button) void onSubmitClick(){
+
+    @OnClick(R.id.forgot_close)
+    void onClose() {
+        dismissFade();
+    }
+
+    @OnClick(R.id.submit_button)
+    void onSubmitClick() {
         submit();
     }
-    @OnClick(R.id.wall_login) void onLoginClick(){
+
+    @OnClick(R.id.wall_login)
+    void onLoginClick() {
         LoginFragment f = LoginFragment.newInstance();
         f.show(getFragmentManager(), "login");
         dismissFade();
     }
-    public ForgotPasswordFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

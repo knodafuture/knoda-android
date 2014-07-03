@@ -18,19 +18,12 @@ import java.util.Date;
  */
 public class DateTimePicker implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    public interface OnCalenderChangedListener {
-        void onCalenderChanged(Calendar calendar);
-    }
-
     private static DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
     private static DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
-
     public Calendar calendar;
     public Calendar minimumCalender;
-
     private EditText dateEditText;
     private EditText timeEditText;
-
     private OnCalenderChangedListener callback;
 
     public DateTimePicker(EditText dateEditText, EditText timeEditText, Calendar minimumCalender, OnCalenderChangedListener listener) {
@@ -44,7 +37,6 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
         this.timeEditText.setOnClickListener(this);
         updateLabels();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -90,6 +82,15 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
         return new DateTime(calendar.getTime());
     }
 
+    public void setDateTime(DateTime dateTime) {
+        if (dateTime.getMillis() < minimumCalender.getTime().getTime()) {
+            calendar.setTime(minimumCalender.getTime());
+        } else {
+            calendar.setTime(new Date(dateTime.getMillis()));
+        }
+        updateLabels();
+    }
+
     private void updateLabels() {
         dateEditText.setText(dateFormat.format(calendar.getTime()));
         timeEditText.setText(timeFormat.format(calendar.getTime()));
@@ -108,13 +109,8 @@ public class DateTimePicker implements View.OnClickListener, DatePickerDialog.On
         return calendar;
     }
 
-    public void setDateTime(DateTime dateTime) {
-        if (dateTime.getMillis() < minimumCalender.getTime().getTime()) {
-            calendar.setTime(minimumCalender.getTime());
-        } else {
-            calendar.setTime(new Date(dateTime.getMillis()));
-        }
-        updateLabels();
+    public interface OnCalenderChangedListener {
+        void onCalenderChanged(Calendar calendar);
     }
 
 }
