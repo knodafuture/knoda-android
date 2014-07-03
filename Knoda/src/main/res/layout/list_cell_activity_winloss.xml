@@ -90,8 +90,8 @@
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:layout_below="@+id/prediction_cell_body_view"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="7dp"
         android:background="#DDD" />
 </views.activity.ActivityListWinLossCell>
