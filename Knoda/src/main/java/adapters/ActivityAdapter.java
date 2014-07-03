@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,11 +24,14 @@ import com.knoda.knoda.R;
 import helpers.AdapterHelper;
 import models.ActivityItem;
 import models.ActivityItemType;
+import models.Invitation;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import views.activity.ActivityListWinLossCell;
 import views.core.MainActivity;
+import views.details.DetailsFragment;
+import views.group.GroupSettingsFragment;
 
 /**
  * Created by nick on 2/1/14.
@@ -47,7 +51,11 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     LinearLayout.LayoutParams showComments;
     LinearLayout.LayoutParams hideComments;
 
-    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, Activity activity, String filter) {
+    View.OnClickListener bragClick;
+    View.OnClickListener settleClick;
+    View.OnClickListener groupClick;
+
+    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, final Activity activity, String filter) {
         super(context, datasource, imageLoader);
         this.activity = activity;
         this.filter = filter;
@@ -59,17 +67,17 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
                 activity.getResources().getDisplayMetrics());
 
         showButton = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        showButton.setMargins(pixelToDP * 16, 0, pixelToDP * 16, pixelToDP * 16);
+        showButton.setMargins(pixelToDP * 16, 0, pixelToDP * 16, pixelToDP * 10);
         showButton.addRule(RelativeLayout.BELOW, R.id.winlosstext_container);
 
         hideButton = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
         hideButton.setMargins(pixelToDP * 16, 0, pixelToDP * 16, 0);
 
         showComments = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        showComments.setMargins(0, pixelToDP * 16, 0, pixelToDP * 16);
+        showComments.setMargins(0, pixelToDP * 10, 0, pixelToDP * 10);
 
         hideComments = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        hideComments.setMargins(0, pixelToDP * 12, 0, pixelToDP * 12);
+        hideComments.setMargins(0, pixelToDP * 8, 0, pixelToDP * 8);
 
         bragcolor = activity.getResources().getColorStateList(R.color.brag_selector_text);
         settlecolor = activity.getResources().getColorStateList(R.color.settle_selector_text);
@@ -87,6 +95,88 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
             }
         });
+
+        bragClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MainActivity activity1 = (MainActivity) activity;
+                activity1.spinner.show();
+                activity1.networkingManager.getPrediction(Integer.parseInt((String) v.getTag()), new NetworkCallback<Prediction>() {
+                    @Override
+                    public void completionHandler(Prediction prediction, ServerError error) {
+                        if (activity == null)
+                            return;
+                        ((MainActivity) activity).spinner.hide();
+                        if (error == null) {
+                            String prefix = "";
+                            if (prediction.userId == ((MainActivity) activity).userManager.getUser().id) {
+                                prefix = "I won my prediction: ";
+                            } else if (prediction.outcome)
+                                prefix = "I agreed and won: ";
+                            else
+                                prefix = "I disagreed and won: ";
+
+                            Intent share = new Intent(Intent.ACTION_SEND);
+                            share.setType("text/plain");
+                            String suffix = " via @KNODAfuture " + prediction.shortUrl;
+                            int predictionLength = 139 - suffix.length();
+                            String text = "";
+                            if (prediction.body.length() > predictionLength) {
+                                text = prefix + prediction.body.substring(0, predictionLength - 3) + "..." + suffix;
+                            } else {
+                                text = prefix + prediction.body + suffix;
+                            }
+                            share.putExtra(Intent.EXTRA_TEXT, text);
+                            activity.startActivity(Intent.createChooser(share, "How would you like to share?"));
+                        } else
+                            Toast.makeText(activity.getApplicationContext(), "There was an error trying to share", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        };
+
+        settleClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MainActivity activity1 = (MainActivity) activity;
+                activity1.spinner.show();
+                final ActivityItem activityItem = ((ActivityItem) v.getTag());
+                activity1.networkingManager.getPrediction(Integer.parseInt(activityItem.target), new NetworkCallback<Prediction>() {
+                    @Override
+                    public void completionHandler(final Prediction prediction, ServerError error) {
+                        activity1.spinner.hide();
+                        final Handler h = new Handler();
+                        h.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (prediction == null) {
+                                    Toast.makeText(activity1, "Error loading prediction", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                DetailsFragment fragment = DetailsFragment.newInstance(prediction);
+                                activity1.pushFragment(fragment);
+                            }
+                        }, 50);
+                    }
+                });
+            }
+        };
+        groupClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MainActivity activity1 = (MainActivity) activity;
+                final ActivityItem activityItem = ((ActivityItem) v.getTag());
+                activity1.spinner.show();
+                activity1.networkingManager.getInvitationByCode(activityItem.target, new NetworkCallback<Invitation>() {
+                    @Override
+                    public void completionHandler(Invitation invitation, ServerError error) {
+                        activity1.spinner.hide();
+                        GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(invitation.group, activityItem.target);
+                        activity1.pushFragment(fragment);
+                    }
+                });
+            }
+        };
     }
 
     @Override
@@ -104,8 +194,11 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
                 listItem = (ActivityListWinLossCell) LayoutInflater.from(context).inflate(R.layout.list_cell_activity_winloss, null);
 
             listItem.setTag(item);
+            listItem.winlossbutton.setTag(item);
             if (position == objects.size() - 1)
                 listItem.divider.setVisibility(View.INVISIBLE);
+            else
+                listItem.divider.setVisibility(View.VISIBLE);
 
             update(listItem, item);
             return listItem;
@@ -135,6 +228,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         RelativeLayout commentBackground = (RelativeLayout) v.findViewById(R.id.comment_background);
 
         setUpCommentBg(commentBackground, false);
+        winlossbutton.setOnClickListener(null);
 
         if (activityItem.type == ActivityItemType.COMMENT && (filter.equals("all") || filter.equals("comments"))) {
             setUpCommentBg(commentBackground, true);
@@ -148,49 +242,10 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             setUpBody(winlosscomment, true);
             if (!activityItem.title.substring(0, 5).equals("<font"))
                 activityItem.title = "<font color='#77BC1F'>You Won</font>" + "—" + activityItem.title;
-            //winlossbutton.setTextColor(bragcolor);
             winlossbutton.setTextColor(activity.getResources().getColorStateList(R.color.brag_selector_text));
             winlossbutton.setBackgroundResource(R.drawable.brag_selector);
             winlossbutton.setTag(activityItem.target);
-            winlossbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainActivity) activity).spinner.show();
-                    ((MainActivity) activity).networkingManager.getPrediction(Integer.parseInt((String) v.getTag()), new NetworkCallback<Prediction>() {
-                        @Override
-                        public void completionHandler(Prediction prediction, ServerError error) {
-                            if (activity == null)
-                                return;
-                            ((MainActivity) activity).spinner.hide();
-                            if (error == null) {
-                                String prefix = "";
-                                if (prediction.userId == ((MainActivity) activity).userManager.getUser().id) {
-                                    prefix = "I won my prediction: ";
-                                } else if (prediction.outcome)
-                                    prefix = "I agreed and won: ";
-                                else
-                                    prefix = "I disagreed and won: ";
-
-                                Intent share = new Intent(Intent.ACTION_SEND);
-                                share.setType("text/plain");
-                                String suffix = " via @KNODAfuture " + prediction.shortUrl;
-                                int predictionLength = 139 - suffix.length();
-                                String text = "";
-                                if (prediction.body.length() > predictionLength) {
-                                    text = prefix + prediction.body.substring(0, predictionLength - 3) + "..." + suffix;
-                                } else {
-                                    text = prefix + prediction.body + suffix;
-                                }
-                                share.putExtra(Intent.EXTRA_TEXT, text);
-                                activity.startActivity(Intent.createChooser(share, "How would you like to share?"));
-                            } else
-                                Toast.makeText(activity.getApplicationContext(), "There was an error trying to share", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-
-                }
-            });
+            winlossbutton.setOnClickListener(bragClick);
 
         } else if (activityItem.type == ActivityItemType.LOST && filter.equals("all")) {
             if (!activityItem.title.substring(0, 5).equals("<font"))
@@ -199,6 +254,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             setUpBody(winlosscomment, true);
 
         } else if (activityItem.type == ActivityItemType.INVITATION && (filter.equals("all") || filter.equals("invites"))) {
+            winlossbutton.setOnClickListener(groupClick);
             setImage(iconImageView, R.drawable.ic_notification_group);
             setUpButton(winlossbutton, buttonContainer, activityItem.body, true);
             winlossbutton.setTextColor(groupcolor);
@@ -206,8 +262,9 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             setUpBody(winlosscomment, false);
 
         } else if (activityItem.type == ActivityItemType.EXPIRED && (filter.equals("all") || filter.equals("expired"))) {
+            winlossbutton.setOnClickListener(settleClick);
             setImage(iconImageView, R.drawable.ic_notification_settle);
-            setUpButton(winlossbutton, buttonContainer, "Let's Settle it!", true);
+            setUpButton(winlossbutton, buttonContainer, "Let's Settle It!", true);
             winlossbutton.setTextColor(settlecolor);
             winlossbutton.setBackgroundResource(R.drawable.settle_selector);
             setUpBody(winlosscomment, true);

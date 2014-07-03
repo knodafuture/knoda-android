@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="52dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
             <TextView
@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical|left"
-                android:lines="2"
                 android:text="You Won-Booya! You Beat ZachG &amp; 37 Others"
                 android:textColor="@color/knodaDarkGreen"
                 android:textSize="14sp" />
@@ -69,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/winlosstext_container"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp">
 
@@ -91,6 +90,8 @@
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:layout_below="@+id/prediction_cell_body_view"
-        android:layout_margin="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="7dp"
         android:background="#DDD" />
 </views.activity.ActivityListWinLossCell>
