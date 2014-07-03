@@ -10,7 +10,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +44,9 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     RelativeLayout.LayoutParams showButton;
     RelativeLayout.LayoutParams hideButton;
 
+    LinearLayout.LayoutParams showComments;
+    LinearLayout.LayoutParams hideComments;
+
     public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, Activity activity, String filter) {
         super(context, datasource, imageLoader);
         this.activity = activity;
@@ -56,11 +59,17 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
                 activity.getResources().getDisplayMetrics());
 
         showButton = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        showButton.setMargins(pixelToDP * 16, pixelToDP * 16, pixelToDP * 16, pixelToDP * 16);
+        showButton.setMargins(pixelToDP * 16, 0, pixelToDP * 16, pixelToDP * 16);
         showButton.addRule(RelativeLayout.BELOW, R.id.winlosstext_container);
 
         hideButton = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-        hideButton.setMargins(pixelToDP * 16, pixelToDP * 16, pixelToDP * 16, 0);
+        hideButton.setMargins(pixelToDP * 16, 0, pixelToDP * 16, 0);
+
+        showComments = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        showComments.setMargins(0, pixelToDP * 16, 0, pixelToDP * 16);
+
+        hideComments = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        hideComments.setMargins(0, pixelToDP * 12, 0, pixelToDP * 12);
 
         bragcolor = activity.getResources().getColorStateList(R.color.brag_selector_text);
         settlecolor = activity.getResources().getColorStateList(R.color.settle_selector_text);
@@ -125,10 +134,10 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         RelativeLayout buttonContainer = (RelativeLayout) v.findViewById(R.id.winloss_button_container);
         RelativeLayout commentBackground = (RelativeLayout) v.findViewById(R.id.comment_background);
 
-        commentBackground.setBackgroundDrawable(null);
+        setUpCommentBg(commentBackground, false);
 
         if (activityItem.type == ActivityItemType.COMMENT && (filter.equals("all") || filter.equals("comments"))) {
-            commentBackground.setBackgroundResource(R.drawable.notification_comment_bg);
+            setUpCommentBg(commentBackground, true);
             setImage(iconImageView, R.drawable.ic_notification_avatar);
             setUpButton(winlossbutton, buttonContainer, "", false);
             setUpBody(winlosscomment, true);
@@ -239,6 +248,17 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             ViewGroup.LayoutParams lp = bodytext.getLayoutParams();
             lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             bodytext.setLayoutParams(lp);
+        }
+
+    }
+
+    private void setUpCommentBg(RelativeLayout relativeLayout, boolean show) {
+        if (!show) {
+            relativeLayout.setBackgroundDrawable(null);
+            relativeLayout.setLayoutParams(hideComments);
+        } else {
+            relativeLayout.setBackgroundResource(R.drawable.notification_comment_bg);
+            relativeLayout.setLayoutParams(showComments);
         }
 
     }

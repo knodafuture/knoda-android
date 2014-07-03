@@ -29,7 +29,7 @@
             android:id="@+id/winlosstext_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="57dp"
+            android:layout_marginLeft="52dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
@@ -38,7 +38,9 @@
                 android:id="@+id/winloss_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center_vertical|left"
+                android:lines="2"
                 android:text="You Won-Booya! You Beat ZachG &amp; 37 Others"
                 android:textColor="@color/knodaDarkGreen"
                 android:textSize="14sp" />
@@ -47,7 +49,8 @@
                 android:id="@+id/comment_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/notification_comment_bg">
 
                 <TextView
@@ -68,8 +71,7 @@
             android:layout_below="@id/winlosstext_container"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginRight="16dp">
 
             <TextView
                 android:id="@+id/winloss_button"
