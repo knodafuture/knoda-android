@@ -72,7 +72,6 @@ public class SplashActivity extends BaseActivity {
         userManager.loginSavedUser(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User object, ServerError error) {
-
                 if (error == null) {
                     sharedPrefManager.setShouldShowVotingWalkthrough(true);
                     launchMainActivity();
@@ -80,6 +79,7 @@ public class SplashActivity extends BaseActivity {
                 } else if (showNotConnectedToNetworkDialog(error.underlyingError))
                     return;
 
+                sharedPrefManager.clearSession();
                 userManager.loginAsGuest(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User object, ServerError error) {

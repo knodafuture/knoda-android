@@ -40,7 +40,7 @@ public class UserManager {
 
 
         if (sharedPrefManager.guestMode() && sharedPrefManager.getSavedAuthtoken() != null) {
-            refreshUser(callback);
+            refreshUser(callback); //does this on switch from test to/from prod
         } else {
             if (request != null) {
                 login(request, callback);
@@ -69,6 +69,7 @@ public class UserManager {
                         }
                     });
                 } else {
+                    callback.completionHandler(user, error);
                     Logger.log("Error getting user" + error.statusCode);
                 }
             }
@@ -193,7 +194,8 @@ public class UserManager {
                                 return;
                             } else {
                                 sharedPrefManager.saveGuestCredentials(loginResponse);
-                                callback.completionHandler(getUser(), null);
+                                if (callback != null)
+                                    callback.completionHandler(getUser(), null);
                             }
                         }
                     });
