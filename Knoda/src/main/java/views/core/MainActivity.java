@@ -323,7 +323,7 @@ public class MainActivity extends BaseActivity
     }
 
     public boolean checkFragment(Fragment fragment) {
-        if (!userManager.getUser().guestMode)
+        if (userManager != null && userManager.getUser() != null && !userManager.getUser().guestMode)
             return true;
 
         if (fragment instanceof AddGroupFragment) {
