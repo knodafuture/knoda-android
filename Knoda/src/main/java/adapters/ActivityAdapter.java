@@ -55,10 +55,9 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     View.OnClickListener settleClick;
     View.OnClickListener groupClick;
 
-    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, final Activity activity, String filter) {
+    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, final Activity activity) {
         super(context, datasource, imageLoader);
         this.activity = activity;
-        this.filter = filter;
         userPic = (BitmapDrawable) activity.getResources().getDrawable(R.drawable.ic_notification_avatar);
 
         this.pixelToDP = (int) TypedValue.applyDimension(
@@ -186,32 +185,16 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             return super.getView(position, convertView, parent);
         ActivityItem item = getItem(position);
 
-        if (!matchFilter(item.type)) {
-            return LayoutInflater.from(context).inflate(R.layout.list_cell_empty, null);
-        } else {
-            ActivityListWinLossCell listItem = (ActivityListWinLossCell) AdapterHelper.getConvertViewSafely(convertView, ActivityListWinLossCell.class);
-            if (listItem == null)
-                listItem = (ActivityListWinLossCell) LayoutInflater.from(context).inflate(R.layout.list_cell_activity_winloss, null);
+        ActivityListWinLossCell listItem = (ActivityListWinLossCell) AdapterHelper.getConvertViewSafely(convertView, ActivityListWinLossCell.class);
+        if (listItem == null)
+            listItem = (ActivityListWinLossCell) LayoutInflater.from(context).inflate(R.layout.list_cell_activity_winloss, null);
 
-            listItem.setTag(item);
-            listItem.winlossbutton.setTag(item);
+        listItem.setTag(item);
+        listItem.winlossbutton.setTag(item);
 
-            update(listItem, item);
-            return listItem;
-        }
-    }
+        update(listItem, item);
+        return listItem;
 
-    private boolean matchFilter(ActivityItemType type) {
-        if (filter.equals("all"))
-            return true;
-        else if (filter.equals("expired") && type == ActivityItemType.EXPIRED)
-            return true;
-        else if (filter.equals("comments") && type == ActivityItemType.COMMENT)
-            return true;
-        else if (filter.equals("invites") && type == ActivityItemType.INVITATION)
-            return true;
-        else
-            return false;
     }
 
     private void update(View v, ActivityItem activityItem) {

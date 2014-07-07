@@ -29,6 +29,7 @@ import views.core.SplashActivity;
 import views.details.DetailsFragment;
 import views.group.GroupSettingsFragment;
 
+
 public class GcmIntentService extends IntentService {
     public static final String TAG = "gcm.GcmIntentService";
     public static final int NOTIFICATION_ID = 1;

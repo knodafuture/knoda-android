@@ -4,8 +4,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
+import com.knoda.knoda.R;
+
 import unsorted.Logger;
 import views.activity.ActivityBoardFragment;
+import views.activity.ActivityTypeFragment;
 
 public class ActivityPagerAdapter extends FragmentPagerAdapter {
 
@@ -15,21 +18,9 @@ public class ActivityPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
-        Logger.log("Activity Page filter " + position);
-        String board = "invites";
-        switch (position) {
-            case 0:
-                board = "all";
-                break;
-            case 1:
-                board = "expired";
-                break;
-            case 2:
-                board = "comments";
-                break;
-        }
-        Fragment fragment = ActivityBoardFragment.newInstance(board);
+    public Fragment getItem(int id) {
+        Logger.log("Activity Page filter " + id);
+        Fragment fragment = ActivityTypeFragment.newInstance(id);
         return fragment;
     }
 

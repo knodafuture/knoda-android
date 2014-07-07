@@ -224,9 +224,11 @@ public class NetworkingManager {
         executeRequest(Request.Method.PUT, url, prediction, Prediction.class, callback);
     }
 
-    public void getActivityItemsAfter(final Integer lastId, NetworkListCallback<ActivityItem> callback) {
+    public void getActivityItemsAfter(final Integer lastId, String filter, NetworkListCallback<ActivityItem> callback) {
 
         ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit();
+        if (filter != null)
+            builder.add("filter", filter);
 
         String url = buildUrl("activityfeed.json", true, builder);
 
@@ -234,9 +236,11 @@ public class NetworkingManager {
 
     }
 
-    public void getUnseenActivityItems(final NetworkListCallback<ActivityItem> callback) {
+    public void getUnseenActivityItems(String filter, final NetworkListCallback<ActivityItem> callback) {
 
         ParamBuilder builder = ParamBuilder.create().add("list", "unseen");
+        if (filter != null)
+            builder.add("filter", filter);
 
         String url = buildUrl("activityfeed.json", true, builder);
 

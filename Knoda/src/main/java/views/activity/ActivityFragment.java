@@ -2,45 +2,31 @@ package views.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
 
-import java.util.ArrayList;
+import java.util.Random;
 
-import adapters.ActivityAdapter;
-import adapters.PagingAdapter;
-import butterknife.InjectView;
+import adapters.ActivityPagerAdapter;
 import butterknife.OnClick;
-import models.ActivityItem;
-import models.ActivityItemType;
-import models.Invitation;
-import models.Prediction;
-import models.ServerError;
-import networking.NetworkCallback;
-import networking.NetworkListCallback;
 import pubsub.ActivitiesViewedEvent;
-import views.core.BaseListFragment;
-import views.details.DetailsFragment;
-import views.group.GroupSettingsFragment;
+import views.core.BaseFragment;
 
-public class ActivityFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<ActivityItem> {
-    @InjectView(R.id.base_listview)
-    public PullToRefreshListView pListView;
+public class ActivityFragment extends BaseFragment {
     String filter = "all";
     TextView selectedFilter;
     View selectedUnderline;
     View topview;
+    private ViewPager mViewPager;
+    ActivityPagerAdapter adapter;
+
 
     public ActivityFragment() {
     }
@@ -52,22 +38,22 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
 
     @OnClick(R.id.activity_1)
     void onClickAll() {
-        changeFilter(R.id.activity_1);
+        mViewPager.setCurrentItem(0, true);
     }
 
     @OnClick(R.id.activity_2)
     void onClickExpired() {
-        changeFilter(R.id.activity_2);
+        mViewPager.setCurrentItem(1, true);
     }
 
     @OnClick(R.id.activity_3)
     void onClickComments() {
-        changeFilter(R.id.activity_3);
+        mViewPager.setCurrentItem(2, true);
     }
 
     @OnClick(R.id.activity_4)
     void onClickInvite() {
-        changeFilter(R.id.activity_4);
+        mViewPager.setCurrentItem(3, true);
     }
 
     private void changeFilter(int id) {
@@ -95,9 +81,6 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         selectedFilter = ((TextView) topview.findViewById(id));
         selectedFilter.setTextColor(Color.WHITE);
         selectedUnderline.setVisibility(View.VISIBLE);
-        adapter = getAdapter();
-        pListView.setAdapter(adapter);
-        adapter.loadPage(0);
     }
 
     @Override
@@ -129,101 +112,52 @@ public class ActivityFragment extends BaseListFragment implements PagingAdapter.
         super.onResume();
         bus.post(new ActivitiesViewedEvent());
         changeFilter(sharedPrefManager.getSavedActivityFilter());
-        pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+        if (mViewPager != null) {
+            ((LinearLayout) topview.findViewById(R.id.activity_container)).removeView(mViewPager);
+        }
+        mViewPager = new ViewPager(getActivity().getApplicationContext());
+        mViewPager.setId(2000 + new Random().nextInt(100));
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                pListView.setShowIndicator(false);
-                networkingManager.getActivityItemsAfter(0, new NetworkListCallback<ActivityItem>() {
-                    @Override
-                    public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
-                        pListView.onRefreshComplete();
-                        if (error != null) {
-                            Toast.makeText(getActivity(), "Error getting new activities", Toast.LENGTH_SHORT).show();
-                        } else {
-                            adapter = getAdapter();
-                            pListView.setAdapter(adapter);
-                            adapter.loadPage(0);
-                        }
-                    }
-                });
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+            public void onPageSelected(int position) {
+                int filterId = 0;
+                switch (position) {
+                    case 0:
+                        filterId = R.id.activity_1;
+                        break;
+                    case 1:
+                        filterId = R.id.activity_2;
+                        break;
+                    case 2:
+                        filterId = R.id.activity_3;
+                        break;
+                    case 3:
+                        filterId = R.id.activity_4;
+                        break;
+                }
+                changeFilter(filterId);
+                adapter.getItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
+        ((LinearLayout) topview.findViewById(R.id.activity_container)).addView(mViewPager);
+        adapter = new ActivityPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(adapter);
+        //adapter.getItem(0);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        adapter.reset();
-    }
-
-    @Override
-    public PagingAdapter getAdapter() {
-        return new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader(), getActivity(), filter);
-    }
-
-
-    @Override
-    public void getObjectsAfterObject(ActivityItem object, NetworkListCallback<ActivityItem> callback) {
-        int lastId = object == null ? 0 : object.id;
-        networkingManager.getActivityItemsAfter(lastId, callback);
-    }
-
-    @Override
-    public void onListViewCreated(ListView listView) {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //final ActivityItem activityItem = (ActivityItem) adapter.getItem(i - 1);
-                final ActivityItem activityItem = (ActivityItem) view.getTag();
-                if (activityItem != null) {
-                    if (activityItem.type == ActivityItemType.INVITATION) {
-                        spinner.show();
-                        networkingManager.getInvitationByCode(activityItem.target, new NetworkCallback<Invitation>() {
-                            @Override
-                            public void completionHandler(Invitation invitation, ServerError error) {
-                                spinner.hide();
-                                GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(invitation.group, activityItem.target);
-                                pushFragment(fragment);
-                            }
-                        });
-                    } else {
-                        if (activityItem.type == ActivityItemType.WON && view.getId() == R.id.winloss_button) {
-
-                        } else {
-                            spinner.show();
-                            networkingManager.getPrediction(Integer.parseInt(activityItem.target), new NetworkCallback<Prediction>() {
-                                @Override
-                                public void completionHandler(final Prediction prediction, ServerError error) {
-                                    spinner.hide();
-                                    final Handler h = new Handler();
-                                    h.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (prediction == null) {
-                                                Toast.makeText(getActivity(), "Error loading prediction", Toast.LENGTH_SHORT).show();
-                                                return;
-                                            }
-                                            DetailsFragment fragment = DetailsFragment.newInstance(prediction);
-                                            pushFragment(fragment);
-                                        }
-                                    }, 50);
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public String noContentString() {
-        return ((ActivityAdapter) adapter).getEmptyString();
     }
 
 }

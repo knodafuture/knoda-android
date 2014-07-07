@@ -94,7 +94,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Subscribe
     public void activitiesViewed(ActivitiesViewedEvent event) {
         handler.removeCallbacks(activityRefreshRunnable);
-        refreshActivity();
+        //refreshActivity();
     }
 
     @Override
@@ -304,7 +304,7 @@ public class NavigationDrawerFragment extends Fragment {
         adapter = new NavigationAdapter(getActivity(), screens);
         mDrawerListView.setAdapter(adapter);
         if (userManager.isLoggedIn()) {
-            refreshActivity();
+            //refreshActivity();
             adapter.setUser(userManager.getUser());
             refreshUser();
         }
@@ -316,7 +316,7 @@ public class NavigationDrawerFragment extends Fragment {
         NetworkInfo activeNetwork = ((MainActivity) getActivity()).connectivityManager.getActiveNetworkInfo();
         if (activeNetwork != null && activeNetwork.isConnected()) {
             try {
-                networkingManager.getUnseenActivityItems(new NetworkListCallback<ActivityItem>() {
+                networkingManager.getUnseenActivityItems(null, new NetworkListCallback<ActivityItem>() {
                     @Override
                     public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
                         if (error != null || object == null)
@@ -365,7 +365,7 @@ public class NavigationDrawerFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 userDialogShown = false;
-                                refreshActivity();
+                                //refreshActivity();
                                 refreshUser();
                             }
                         })

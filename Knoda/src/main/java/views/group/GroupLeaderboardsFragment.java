@@ -104,6 +104,7 @@ public class GroupLeaderboardsFragment extends BaseFragment {
                     ((TextView) view.findViewById(R.id.board_2)).setTextColor(green);
                     ((TextView) view.findViewById(R.id.board_3)).setTextColor(white);
                 }
+
             }
 
             @Override

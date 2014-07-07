@@ -17,6 +17,7 @@ import managers.UserManager;
 import unsorted.ErrorReporter;
 import views.activity.ActivityBoardFragment;
 import views.activity.ActivityFragment;
+import views.activity.ActivityTypeFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
 import views.avatar.UserAvatarChooserActivity;
@@ -67,6 +68,7 @@ import views.search.SearchFragment;
                 ForgotPasswordFragment.class,
                 HomeFragment.class,
                 ActivityFragment.class,
+                ActivityTypeFragment.class,
                 HistoryFragment.class,
                 AnotherUsersProfileFragment.class,
                 MyProfileFragment.class,
