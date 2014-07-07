@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.android.volley.VolleyError;
@@ -65,9 +67,9 @@ public class SettingsProfileFragment extends PreferenceFragment {
                 intent.putExtra("cancelable", true);
                 startActivityForResult(intent, 123123129);
             } else if (preference.getKey().equals("username")) {
-
+                onClickUsername();
             } else if (preference.getKey().equals("email")) {
-
+                onClickEmail();
             } else if (preference.getKey().equals("password")) {
                 changePassword();
             } else if (preference.getKey().equals("facebook")) {
@@ -411,7 +413,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
                         public void completionHandler(User u, ServerError error) {
                             if (error == null) {
                                 dialog.dismiss();
-                                //hideKeyboard();
+                                hideKeyboard();
                             } else {
                                 errorReporter.showError(error);
                             }
@@ -441,10 +443,115 @@ public class SettingsProfileFragment extends PreferenceFragment {
         alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 alert.dismiss();
-                //hideKeyboard();
+                hideKeyboard();
             }
         });
 
+    }
+
+    private View.OnClickListener changeUsername(final View changeUsernameView, final AlertDialog dialog) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                EditText username = (EditText) changeUsernameView.findViewById(R.id.username);
+                final User user = new User();
+                user.username = username.getText().toString();
+                userManager.updateUser(user, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User u, ServerError error) {
+                        if (error == null) {
+                            updateUser(u);
+                            dialog.dismiss();
+                            hideKeyboard();
+                        } else {
+                            errorReporter.showError(error);
+                        }
+                    }
+                });
+            }
+        };
+    }
+
+    void onClickUsername() {
+        LayoutInflater li = getActivity().getLayoutInflater();
+        final View changeUsernameView = li.inflate(R.layout.dialog_change_username, null);
+        EditText username = (EditText) changeUsernameView.findViewById(R.id.username);
+        username.setText("");
+        username.append(userManager.getUser().username);
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Ok", null)
+                .setNegativeButton("Cancel", null)
+                .setView(changeUsernameView)
+                .setTitle("Change Your Username")
+                .create();
+        alert.show();
+        username.requestFocus();
+        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(changeUsername(changeUsernameView, alert));
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+                hideKeyboard();
+            }
+        });
+    }
+
+    public void hideKeyboard() {
+        try {
+            InputMethodManager inputManager = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (NullPointerException ex) {
+
+        }
+    }
+
+    private View.OnClickListener changeEmail(final View changeEmailView, final AlertDialog dialog) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+                EditText email = (EditText) changeEmailView.findViewById(R.id.email);
+                final User user = new User();
+                user.email = email.getText().toString();
+                userManager.updateUser(user, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User u, ServerError error) {
+                        if (error == null) {
+                            updateUser(u);
+                            dialog.dismiss();
+                            hideKeyboard();
+                        } else {
+                            errorReporter.showError(error);
+                        }
+                    }
+                });
+            }
+        };
+    }
+
+    void onClickEmail() {
+        LayoutInflater li = getActivity().getLayoutInflater();
+        final View changeEmailView = li.inflate(R.layout.dialog_change_email, null);
+        EditText email = (EditText) changeEmailView.findViewById(R.id.email);
+        if (userManager.getUser().email != null)
+            email.setText(userManager.getUser().email);
+        else
+            email.setText("");
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Ok", null)
+                .setNegativeButton("Cancel", null)
+                .setView(changeEmailView)
+                .setTitle("Change Your Email")
+                .create();
+        alert.show();
+        email.requestFocus();
+        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(changeEmail(changeEmailView, alert));
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+                hideKeyboard();
+            }
+        });
     }
 
 
