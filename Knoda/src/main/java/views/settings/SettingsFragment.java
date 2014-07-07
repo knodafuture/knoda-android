@@ -23,7 +23,7 @@ public class SettingsFragment extends PreferenceFragment {
             if (preference.getKey().equals("push")) {
                 loadPush();
             } else if (preference.getKey().equals("profile")) {
-                //loadPush();
+                loadProfile();
             } else if (preference.getKey().equals("about")) {
                 loadAbout();
             }
@@ -93,6 +93,11 @@ public class SettingsFragment extends PreferenceFragment {
 
     private void loadPush() {
         SettingsPushFragment fragment = new SettingsPushFragment();
+        ((MainActivity) getActivity()).pushFragment(fragment);
+    }
+
+    private void loadProfile() {
+        SettingsProfileFragment fragment = new SettingsProfileFragment();
         ((MainActivity) getActivity()).pushFragment(fragment);
     }
 
