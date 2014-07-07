@@ -35,8 +35,9 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     @InjectView(R.id.base_listview)
     public PullToRefreshListView pListView;
     View topview;
-    int pageNumber;
+    int screenNumber;
     boolean pageLoaded = false;
+    int pageNumber = 0;
 
     public ActivityTypeFragment() {
     }
@@ -54,7 +55,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
         super.onCreate(savedInstanceState);
         bus.register(this);
         Bundle b = getArguments();
-        this.pageNumber = b.getInt("pageNumber", R.id.activity_1);
+        this.screenNumber = b.getInt("pageNumber", R.id.activity_1);
     }
 
     @Override
@@ -80,29 +81,28 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 pListView.setShowIndicator(false);
-                loadPage();
+                loadPage(0);
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-
             }
         });
-        loadPage();
+        loadPage(0);
     }
 
-    public void loadPage() {
+    public void loadPage(final int page) {
         if (pageLoaded)
             return;
         pageLoaded = true;
         String filter = null;
-        if (pageNumber == 1)
+        if (screenNumber == 1)
             filter = "expired";
-        else if (pageNumber == 2)
+        else if (screenNumber == 2)
             filter = "comments";
-        else if (pageNumber == 3)
+        else if (screenNumber == 3)
             filter = "invites";
-        networkingManager.getActivityItemsAfter(0, filter, new NetworkListCallback<ActivityItem>() {
+        networkingManager.getActivityItemsAfter(page, filter, new NetworkListCallback<ActivityItem>() {
             @Override
             public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
                 pListView.onRefreshComplete();
@@ -111,7 +111,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
                 } else {
                     adapter = getAdapter();
                     pListView.setAdapter(adapter);
-                    adapter.loadPage(0);
+                    adapter.loadPage(page);
                 }
             }
         });
@@ -134,11 +134,11 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     public void getObjectsAfterObject(ActivityItem object, NetworkListCallback<ActivityItem> callback) {
         int lastId = object == null ? 0 : object.id;
         String filter = null;
-        if (pageNumber == 1)
+        if (screenNumber == 1)
             filter = "expired";
-        else if (pageNumber == 2)
+        else if (screenNumber == 2)
             filter = "comments";
-        else if (pageNumber == 3)
+        else if (screenNumber == 3)
             filter = "invites";
         pageLoaded = true;
         networkingManager.getActivityItemsAfter(lastId, filter, callback);
