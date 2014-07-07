@@ -61,6 +61,7 @@ public class NetworkingManager {
 
     public static String termsOfServiceUrl = "http://knoda.com/terms";
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
+    public static String supportUrl = "http://knoda.com/support";
     public static Integer PAGE_LIMIT = 50;
     public static String baseUrl = "http://captaincold.knoda.com/api/";
     private static RequestQueue mRequestQueue;
