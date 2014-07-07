@@ -1,6 +1,7 @@
 package views.settings;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -8,9 +9,14 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 
 import com.knoda.knoda.R;
 
+import managers.UserManager;
+import models.ServerError;
+import models.User;
+import networking.NetworkCallback;
 import views.core.MainActivity;
 
 public class SettingsFragment extends PreferenceFragment {
@@ -26,6 +32,8 @@ public class SettingsFragment extends PreferenceFragment {
                 loadProfile();
             } else if (preference.getKey().equals("about")) {
                 loadAbout();
+            } else if (preference.getKey().equals("logout")) {
+                onClickSignOut();
             }
             return false;
         }
@@ -72,6 +80,15 @@ public class SettingsFragment extends PreferenceFragment {
         p3.setOnPreferenceClickListener(changeListener);
         preferenceScreen.addPreference(p3);
 
+        if (((MainActivity) getActivity()).userManager.getUser() != null) {
+            Preference p4 = new Preference(c);
+            p4.setTitle("Log Out " + ((MainActivity) getActivity()).userManager.getUser().username);
+            p4.setKey("logout");
+            p4.setOnPreferenceClickListener(changeListener);
+            preferenceScreen.addPreference(p4);
+        }
+
+
     }
 
 
@@ -104,6 +121,35 @@ public class SettingsFragment extends PreferenceFragment {
     private void loadAbout() {
         SettingsAboutFragment fragment = new SettingsAboutFragment();
         ((MainActivity) getActivity()).pushFragment(fragment);
+    }
+
+    void onClickSignOut() {
+        final UserManager userManager = ((MainActivity) getActivity()).userManager;
+        final AlertDialog alert = new AlertDialog.Builder(getActivity())
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .setTitle("Are you sure you wish to sign out?")
+                .create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.dismiss();
+                userManager.signout(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User u, ServerError error) {
+                        alert.dismiss();
+                        ((MainActivity) getActivity()).restart();
+                    }
+                });
+            }
+        });
+        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+
     }
 
 
