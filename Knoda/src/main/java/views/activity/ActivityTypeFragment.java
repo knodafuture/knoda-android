@@ -195,6 +195,8 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 
     @Override
     public String noContentString() {
+        if (screenNumber == 3)
+            return "No invitations";
         return "No Activity";
     }
 
