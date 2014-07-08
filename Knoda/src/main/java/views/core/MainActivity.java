@@ -102,11 +102,13 @@ public class MainActivity extends BaseActivity
     @Subscribe
     public void onLoginFlowDone(LoginFlowDoneEvent event) {
         if (userManager.getUser() == null) {
+            spinner.show();
             sharedPrefManager.clearSession();
             userManager.loginAsGuest(new NetworkCallback<User>() {
                 @Override
                 public void completionHandler(User object, ServerError error) {
                     doLogin();
+                    spinner.hide();
                 }
             });
         }
