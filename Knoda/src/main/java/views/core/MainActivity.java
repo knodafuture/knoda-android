@@ -450,7 +450,7 @@ public class MainActivity extends BaseActivity
         if (p != null)
             onAddPrediction();
 
-        if (userManager.getUser().guestMode) {
+        if (userManager.getUser() == null || userManager.getUser().guestMode) {
             showLogin(null, null);
         } else if (userManager.getUser().avatar == null) {
             UserAvatarChooserFragment f = new UserAvatarChooserFragment();
