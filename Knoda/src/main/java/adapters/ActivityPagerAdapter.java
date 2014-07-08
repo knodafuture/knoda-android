@@ -4,10 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
-import com.knoda.knoda.R;
-
 import unsorted.Logger;
-import views.activity.ActivityBoardFragment;
 import views.activity.ActivityTypeFragment;
 
 public class ActivityPagerAdapter extends FragmentPagerAdapter {

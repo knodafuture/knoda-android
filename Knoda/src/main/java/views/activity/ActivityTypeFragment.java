@@ -1,5 +1,6 @@
 package views.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -37,7 +38,6 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     View topview;
     int screenNumber;
     boolean pageLoaded = false;
-    int pageNumber = 0;
 
     public ActivityTypeFragment() {
     }
@@ -80,7 +80,6 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
         pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                pListView.setShowIndicator(false);
                 loadPage(0);
             }
 
@@ -88,12 +87,15 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
             }
         });
+        pListView.setShowViewWhileRefreshing(false);
         loadPage(0);
+
     }
 
     public void loadPage(final int page) {
-        if (pageLoaded)
+        if (pageLoaded) {
             return;
+        }
         pageLoaded = true;
         String filter = null;
         if (screenNumber == 1)
@@ -105,6 +107,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
         networkingManager.getActivityItemsAfter(page, filter, new NetworkListCallback<ActivityItem>() {
             @Override
             public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
+                pListView.setShowIndicator(false);
                 pListView.onRefreshComplete();
                 if (error != null) {
                     Toast.makeText(getActivity(), "Error getting new activities", Toast.LENGTH_SHORT).show();
@@ -193,6 +196,9 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 
     @Override
     public String noContentString() {
+        pListView.setBackgroundColor(Color.WHITE);
+        if (screenNumber == 3)
+            return "No invitations";
         return "No Activity";
     }
 

@@ -162,9 +162,13 @@ public class BaseDialogFragment extends DialogFragment {
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
 
-                    BitmapDrawable d = new BitmapDrawable(getResources(), bitmap);
+                    try {
+                        BitmapDrawable d = new BitmapDrawable(getActivity().getResources(), bitmap);
 
-                    getView().setBackgroundDrawable(d);
+                        getView().setBackgroundDrawable(d);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
