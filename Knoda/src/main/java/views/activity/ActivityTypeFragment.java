@@ -1,5 +1,6 @@
 package views.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -195,6 +196,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 
     @Override
     public String noContentString() {
+        pListView.setBackgroundColor(Color.WHITE);
         if (screenNumber == 3)
             return "No invitations";
         return "No Activity";
