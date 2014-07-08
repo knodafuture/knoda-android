@@ -112,6 +112,8 @@ public class ActivityFragment extends BaseFragment {
         super.onResume();
         bus.post(new ActivitiesViewedEvent());
         changeFilter(sharedPrefManager.getSavedActivityFilter());
+
+
         if (mViewPager != null) {
             ((LinearLayout) topview.findViewById(R.id.activity_container)).removeView(mViewPager);
         }
@@ -152,7 +154,20 @@ public class ActivityFragment extends BaseFragment {
         ((LinearLayout) topview.findViewById(R.id.activity_container)).addView(mViewPager);
         adapter = new ActivityPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(adapter);
-        //adapter.getItem(0);
+        switch (sharedPrefManager.getSavedActivityFilter()) {
+            case R.id.activity_1:
+                mViewPager.setCurrentItem(0, false);
+                break;
+            case R.id.activity_2:
+                mViewPager.setCurrentItem(1, false);
+                break;
+            case R.id.activity_3:
+                mViewPager.setCurrentItem(2, false);
+                break;
+            case R.id.activity_4:
+                mViewPager.setCurrentItem(3, false);
+                break;
+        }
     }
 
     @Override
