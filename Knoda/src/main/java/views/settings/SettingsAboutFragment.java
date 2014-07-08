@@ -99,7 +99,7 @@ public class SettingsAboutFragment extends PreferenceFragment {
         inflater.inflate(R.menu.global, menu);
         menu.removeItem(R.id.action_search);
         menu.removeItem(R.id.action_add_prediction);
-        ((MainActivity) getActivity()).setActionBarTitle("SETTINGS");
+        ((MainActivity) getActivity()).setActionBarTitle("ABOUT");
         super.onCreateOptionsMenu(menu, inflater);
     }
 

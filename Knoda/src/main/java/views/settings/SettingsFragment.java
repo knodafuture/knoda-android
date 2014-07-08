@@ -63,7 +63,7 @@ public class SettingsFragment extends PreferenceFragment {
     public void buildPage() {
         Context c = getActivity();
         Preference p1 = new Preference(c);
-        p1.setTitle("Push Notification");
+        p1.setTitle("Push Notifications");
         p1.setKey("push");
         p1.setOnPreferenceClickListener(changeListener);
         preferenceScreen.addPreference(p1);
