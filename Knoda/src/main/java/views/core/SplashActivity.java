@@ -79,20 +79,7 @@ public class SplashActivity extends BaseActivity {
                 } else if (showNotConnectedToNetworkDialog(error.underlyingError))
                     return;
 
-                sharedPrefManager.clearSession();
-                userManager.loginAsGuest(new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User object, ServerError error) {
-
-                        if (error != null) {
-                            if (showNotConnectedToNetworkDialog(error.underlyingError))
-                                return;
-                            else
-                                errorReporter.showError(error);
-                        } else
-                            launchMainActivity();
-                    }
-                });
+                launchMainActivity();
             }
         });
     }

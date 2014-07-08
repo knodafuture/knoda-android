@@ -54,6 +54,7 @@ import models.Setting;
 import models.User;
 import networking.NetworkCallback;
 import pubsub.ChangeGroupEvent;
+import pubsub.LoginFlowDoneEvent;
 import pubsub.ReloadListsEvent;
 import pubsub.ScreenCaptureEvent;
 import unsorted.BadgesUnseenMonitor;
@@ -96,6 +97,19 @@ public class MainActivity extends BaseActivity
     @Subscribe
     public void changeGroup(ChangeGroupEvent event) {
         currentGroup = event.group;
+    }
+
+    @Subscribe
+    public void onLoginFlowDone(LoginFlowDoneEvent event) {
+        if (userManager.getUser() == null) {
+            sharedPrefManager.clearSession();
+            userManager.loginAsGuest(new NetworkCallback<User>() {
+                @Override
+                public void completionHandler(User object, ServerError error) {
+                    doLogin();
+                }
+            });
+        }
     }
 
     @Override
