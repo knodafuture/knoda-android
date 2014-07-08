@@ -469,6 +469,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void restart() {
+        bus.unregister(this);
         finish();
         Intent i = getBaseContext().getPackageManager()
                 .getLaunchIntentForPackage(getBaseContext().getPackageName());

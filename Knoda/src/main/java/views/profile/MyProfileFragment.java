@@ -42,7 +42,7 @@ import views.core.MainActivity;
 
 public class MyProfileFragment extends BaseFragment {
     private static final int PHOTO_RESULT_CODE = 123123129;
-    private static boolean requestingTwitterInfo;
+    private static boolean requestingTwitterInfo = false;
     @InjectView(R.id.profile_username_edittext)
     TextView username;
     @InjectView(R.id.profile_email_edittext)
@@ -230,7 +230,10 @@ public class MyProfileFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().findViewById(R.id.user_profile_header_avatar).setEnabled(true);
+
+        View v = getActivity().findViewById(R.id.user_profile_header_avatar);
+        if (v != null)
+            v.setEnabled(true);
 
         if (requestingTwitterInfo) {
             if (twitterManager.hasAuthInfo())
