@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/details_action_add_comment"
-        android:background="@drawable/list_background"
         android:divider="@null"
         android:dividerHeight="0dp" />
 
