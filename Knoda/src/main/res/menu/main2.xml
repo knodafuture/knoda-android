@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <group
+        android:id="@+id/default_menu_group"
+        android:visible="true">
+        <item
+            android:id="@+id/action_home"
+            android:icon="@drawable/drawer_home"
+            android:orderInCategory="100"
+            android:showAsAction="ifRoom"
+            android:title="Home"/>
+        <item
+            android:id="@+id/action_activity"
+            android:icon="@drawable/drawer_activity"
+            android:orderInCategory="200"
+            android:showAsAction="ifRoom"
+            android:title="Activity" />
+        <item
+            android:id="@+id/action_predict"
+            android:icon="@drawable/nav_predict"
+            android:orderInCategory="300"
+            android:showAsAction="ifRoom"
+            android:title="Predict" />
+        <item
+            android:id="@+id/action_groups"
+            android:icon="@drawable/drawer_groups"
+            android:orderInCategory="400"
+            android:showAsAction="ifRoom"
+            android:title="Groups" />
+        <item
+            android:id="@+id/action_profile"
+            android:icon="@drawable/drawer_profile"
+            android:orderInCategory="500"
+            android:showAsAction="ifRoom"
+            android:title="Profile" />
+    </group>
+</menu>

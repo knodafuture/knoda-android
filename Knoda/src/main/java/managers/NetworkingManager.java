@@ -62,10 +62,10 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static String supportUrl = "http://knoda.com/support";
     public static Integer PAGE_LIMIT = 50;
-    public static String baseUrl = "http://captaincold.knoda.com/api/";
+    public static String baseUrl = "http://api.knoda.com/api/";
     private static RequestQueue mRequestQueue;
     Context context;
-    String api_version = "5";
+    String api_version = "4";
     @Inject
     SharedPrefManager sharedPrefManager;
     @Inject

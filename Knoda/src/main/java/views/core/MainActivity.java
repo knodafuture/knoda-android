@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
@@ -32,7 +31,6 @@ import com.tapjoy.TapjoyConnect;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -130,7 +128,7 @@ public class MainActivity extends BaseActivity
         pushNotification = new Notification();
 
         initializeFragmentBackStack();
-        setUpNavigation();
+        //setUpNavigation();
 
         if (getIntent().getData() != null)
             twitterManager.checkIntentData(getIntent());
@@ -207,12 +205,16 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (navigationDrawerFragment != null && !navigationDrawerFragment.isDrawerOpen()) {
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            return true;
-        }
-        return super.onCreateOptionsMenu(menu);
+//        if (navigationDrawerFragment != null && !navigationDrawerFragment.isDrawerOpen()) {
+//            getMenuInflater().inflate(R.menu.main2, menu);
+//            restoreActionBar();
+//            return true;
+//        }
+        getMenuInflater().inflate(R.menu.main2, menu);
+        restoreActionBar();
+        return true;
+
+        //return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -239,15 +241,29 @@ public class MainActivity extends BaseActivity
             return true;
 
         switch (item.getItemId()) {
-            case android.R.id.home: {
-                if (navigationDrawerFragment.isDrawerToggleEnabled())
-                    break;
+            case R.id.action_home: {
                 getFragmentManager().popBackStack();
                 return true;
             }
 
-            case R.id.action_add_prediction: {
-                onAddPrediction();
+            case R.id.action_activity: {
+                ActivityFragment fragment = ActivityFragment.newInstance();
+                pushFragment(fragment);
+                break;
+            }
+            case R.id.action_predict: {
+                AddPredictionFragment fragment = AddPredictionFragment.newInstance(null);
+                pushFragment(fragment);
+                break;
+            }
+            case R.id.action_groups: {
+                GroupFragment fragment = GroupFragment.newInstance();
+                pushFragment(fragment);
+                break;
+            }
+            case R.id.action_profile: {
+                MyProfile2Fragment fragment = MyProfile2Fragment.newInstance();
+                pushFragment(fragment);
                 break;
             }
 
@@ -304,22 +320,23 @@ public class MainActivity extends BaseActivity
     }
 
     private void setUpNavigation() {
-        navigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        navigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        screens = new ArrayList<KnodaScreen>(classMap.keySet());
-        Collections.sort(screens);
-
-        navigationDrawerFragment.setScreens(screens);
+//        navigationDrawerFragment = (NavigationDrawerFragment)
+//                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+//
+//        navigationDrawerFragment.setUp(
+//                R.id.navigation_drawer,
+//                (DrawerLayout) findViewById(R.id.drawer_layout));
+//
+//        screens = new ArrayList<KnodaScreen>(classMap.keySet());
+//        Collections.sort(screens);
+//
+//        navigationDrawerFragment.setScreens(screens);
     }
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setDisplayHomeAsUpEnabled(true);
         setActionBarTitle(title);
     }
 
@@ -331,7 +348,7 @@ public class MainActivity extends BaseActivity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null).replace(R.id.container, fragment).commitAllowingStateLoss();
-        navigationDrawerFragment.setDrawerToggleEnabled(false);
+        //navigationDrawerFragment.setDrawerToggleEnabled(false);
     }
 
     public boolean checkFragment(Fragment fragment) {
@@ -369,7 +386,7 @@ public class MainActivity extends BaseActivity
         if (screen == null)
             return;
 
-        navigationDrawerFragment.selectItem(position.ordinal());
+        //navigationDrawerFragment.selectItem(position.ordinal());
     }
 
     private KnodaScreen findScreen(KnodaScreen.KnodaScreenOrder position) {
@@ -388,8 +405,8 @@ public class MainActivity extends BaseActivity
             public void onBackStackChanged() {
                 Integer count = getFragmentManager().getBackStackEntryCount();
 
-                if (count <= 0)
-                    navigationDrawerFragment.setDrawerToggleEnabled(true);
+//                if (count <= 0)
+//                    navigationDrawerFragment.setDrawerToggleEnabled(true);
             }
         });
     }
@@ -399,24 +416,23 @@ public class MainActivity extends BaseActivity
         WelcomeFragment f = WelcomeFragment.newInstance(titleMessage, detailMessage);
 
         f.show(getFragmentManager().beginTransaction(), "welcome");
-        navigationDrawerFragment.resetDrawerUISelection();
+        //navigationDrawerFragment.resetDrawerUISelection();
 
     }
 
     public void launch() {
         registerGcm();
-        navigationDrawerFragment.setDrawerToggleEnabled(true);
-        navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        //navigationDrawerFragment.setDrawerToggleEnabled(true);
+        //navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         invalidateOptionsMenu();
 
-        if (startupScreen == null)
-            navigationDrawerFragment.selectStartingItem();
-        else {
-            navigationDrawerFragment.selectItem(startupScreen.ordinal());
-            startupScreen = null;
-        }
-        navigationDrawerFragment.refreshUser();
-        navigationDrawerFragment.refreshActivity();
+//        if (startupScreen == null)
+//            navigationDrawerFragment.selectStartingItem();
+//        else {
+//            navigationDrawerFragment.selectItem(startupScreen.ordinal());
+//            startupScreen = null;
+//        }
+//        navigationDrawerFragment.refreshUser();
 
         if (getIntent().getExtras() != null) {
             String launchInfo = getIntent().getExtras().getString("launchInfo");
@@ -486,6 +502,9 @@ public class MainActivity extends BaseActivity
         KnodaApplication.activityResumed();
         ((KnodaApplication) getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
+
+        HomeFragment fragment = HomeFragment.newInstance();
+        pushFragment(fragment);
     }
 
     @Override
@@ -544,7 +563,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void showActivities() {
-        navigationDrawerFragment.selectItem(1);
+        //navigationDrawerFragment.selectItem(1);
     }
 
 
@@ -591,7 +610,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void doLogin() {
-        navigationDrawerFragment.refreshUser();
+        //navigationDrawerFragment.refreshUser();
         bus.post(new ReloadListsEvent());
     }
 

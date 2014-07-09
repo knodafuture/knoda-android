@@ -6,39 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <!--<android.support.v4.widget.DrawerLayout-->
+    <!--android:id="@+id/drawer_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginTop="?android:attr/actionBarSize"-->
+    <!--android:background="@color/white"-->
+    <!--tools:context=".MainActivity">-->
+
+    <!--&lt;!&ndash; As the main content view, the view below consumes the entire-->
+    <!--space available using match_parent in both dimensions. &ndash;&gt;-->
+
+
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?android:attr/actionBarSize"
-        android:background="@color/white"
-        tools:context=".MainActivity">
+        android:layout_marginTop="?android:attr/actionBarSize" />
 
-        <!-- As the main content view, the view below consumes the entire
-             space available using match_parent in both dimensions. -->
+    <FrameLayout
+        android:id="@+id/progress_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/transparentBlack"
+        android:visibility="invisible">
+
+    </FrameLayout>
+
+    <!--<fragment-->
+    <!--android:id="@+id/navigation_drawer"-->
+    <!--android:name="views.core.NavigationDrawerFragment"-->
+    <!--android:layout_width="@dimen/navigation_drawer_width"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="start"-->
+    <!--tools:layout="@layout/fragment_navigation_drawer" />-->
+
+    <!--</android.support.v4.widget.DrawerLayout>-->
 
 
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <FrameLayout
-            android:id="@+id/progress_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/transparentBlack"
-            android:visibility="invisible">
-
-        </FrameLayout>
-
-        <fragment
-            android:id="@+id/navigation_drawer"
-            android:name="views.core.NavigationDrawerFragment"
-            android:layout_width="@dimen/navigation_drawer_width"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            tools:layout="@layout/fragment_navigation_drawer" />
-
-    </android.support.v4.widget.DrawerLayout>
 </FrameLayout>
