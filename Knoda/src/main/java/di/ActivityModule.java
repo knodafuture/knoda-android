@@ -46,6 +46,7 @@ import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
 import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
+import views.profile.MyProfile2Fragment;
 import views.profile.MyProfileFragment;
 import views.profile.PhotoFragment;
 import views.search.SearchFragment;
@@ -91,7 +92,8 @@ import views.search.SearchFragment;
                 InvitationsFragment.class,
                 EditGroupFragment.class,
                 UserAvatarChooserFragment.class,
-                SignupConfirmFragment.class
+                SignupConfirmFragment.class,
+                MyProfile2Fragment.class
         },
         addsTo = KnodaModule.class,
         library = true

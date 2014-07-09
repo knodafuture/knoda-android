@@ -25,13 +25,17 @@ public class User extends BaseModel {
     @SerializedName("guest_mode")
     public boolean guestMode;
 
+    @SerializedName("points")
     public Integer points;
+    @SerializedName("won")
     public Integer won;
+    @SerializedName("lost")
     public Integer lost;
 
     @SerializedName("winning_percentage")
     public Float winningPercentage;
 
+    @SerializedName("streak")
     public String streak;
 
     @SerializedName("total_predictions")
