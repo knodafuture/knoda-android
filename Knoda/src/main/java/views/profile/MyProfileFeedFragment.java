@@ -24,6 +24,7 @@ import models.ServerError;
 import networking.NetworkListCallback;
 import pubsub.ActivitiesViewedEvent;
 import views.core.BaseListFragment;
+import views.details.DetailsFragment;
 
 public class MyProfileFeedFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Prediction> {
     @InjectView(R.id.base_listview)
@@ -31,6 +32,7 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
     View topview;
     int screenNumber;
     boolean pageLoaded = false;
+    PredictionAdapter predictionAdapter;
 
     public MyProfileFeedFragment() {
     }
@@ -62,8 +64,7 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FlurryAgent.logEvent("ActivityFeed");
-        setTitle("ACTIVITY");
+        FlurryAgent.logEvent("ProfileFeed");
     }
 
     @Override
@@ -117,7 +118,8 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
 
     @Override
     public PagingAdapter getAdapter() {
-        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true);
+        predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true);
+        return predictionAdapter;
     }
 
 
@@ -133,27 +135,8 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                spinner.show();
-//                networkingManager.getPrediction(Integer.parseInt(activityItem.target), new NetworkCallback<Prediction>() {
-//                    @Override
-//                    public void completionHandler(final Prediction prediction, ServerError error) {
-//                        spinner.hide();
-//                        final Handler h = new Handler();
-//                        h.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (prediction == null) {
-//                                    Toast.makeText(getActivity(), "Error loading prediction", Toast.LENGTH_SHORT).show();
-//                                    return;
-//                                }
-//                                DetailsFragment fragment = DetailsFragment.newInstance(prediction);
-//                                pushFragment(fragment);
-//                            }
-//                        }, 50);
-//                    }
-//                });
-
-
+                DetailsFragment fragment = DetailsFragment.newInstance(predictionAdapter.getItem(i));
+                pushFragment(fragment);
             }
         });
     }

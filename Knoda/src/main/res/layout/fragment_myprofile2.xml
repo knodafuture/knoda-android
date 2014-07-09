@@ -10,7 +10,7 @@
         android:background="@color/knodaLightGreen"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="20dp"
+        android:paddingBottom="10dp"
         android:weightSum="3">
 
         <RelativeLayout
@@ -209,10 +209,10 @@
     <LinearLayout
         android:id="@+id/pagerBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="@color/knodaLightGreen"
         android:orientation="horizontal"
-        android:paddingTop="20dp">
+        android:paddingTop="10dp">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -249,7 +249,6 @@
         </RelativeLayout>
 
     </LinearLayout>
-
 
 
 </LinearLayout>
