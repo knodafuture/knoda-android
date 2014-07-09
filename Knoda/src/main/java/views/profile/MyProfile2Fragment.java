@@ -21,6 +21,7 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 import java.util.Random;
 
+import adapters.ProfilePagerAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -63,6 +64,7 @@ public class MyProfile2Fragment extends BaseFragment {
     private ViewPager mViewPager;
     TextView selectedFilter;
     View selectedUnderline;
+    ProfilePagerAdapter adapter;
 
     public static MyProfile2Fragment newInstance() {
         MyProfile2Fragment fragment = new MyProfile2Fragment();
@@ -144,7 +146,9 @@ public class MyProfile2Fragment extends BaseFragment {
             }
         });
         topview.addView(mViewPager);
-
+        adapter = new ProfilePagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(adapter);
+        mViewPager.setCurrentItem(0);
 
     }
 
