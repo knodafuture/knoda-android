@@ -11,6 +11,7 @@ public class KnodaScreen implements Comparable<KnodaScreen> {
     public KnodaScreenOrder order;
     public String displayName;
     public Drawable drawable;
+
     public KnodaScreen(KnodaScreenOrder order, String displayName, Drawable drawable) {
         this.order = order;
         this.displayName = displayName;
@@ -23,6 +24,6 @@ public class KnodaScreen implements Comparable<KnodaScreen> {
     }
 
     public enum KnodaScreenOrder {
-        HOME, ACTIVITY, GROUP, HISTORY, BADGES, PROFILE
+        HOME, ACTIVITY, GROUP, PROFILE
     }
 }

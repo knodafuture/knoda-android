@@ -91,7 +91,6 @@ public class BaseListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) getActivity()).checkBadges();
     }
 
     private void addScrollListener() {

@@ -17,7 +17,6 @@ import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.PredictionChangeEvent;
 import views.core.BaseListFragment;
-import views.core.MainActivity;
 import views.details.DetailsFragment;
 
 /**
@@ -95,7 +94,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                     cell.prediction = object;
                     cell.update();
                     bus.post(new PredictionChangeEvent(object));
-                    ((MainActivity) getActivity()).checkBadges();
                 }
             }
         });
@@ -115,7 +113,6 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                     cell.prediction = object;
                     cell.update();
                     bus.post(new PredictionChangeEvent(object));
-                    ((MainActivity) getActivity()).checkBadges();
                 }
             }
         });

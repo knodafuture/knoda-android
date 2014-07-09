@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 
 import models.ActivityItem;
-import models.Badge;
 import models.Comment;
 import models.Group;
 import models.Leader;
@@ -37,11 +36,6 @@ public class TypeTokenFactory {
 
     public static TypeToken getUserListTypeToken() {
         return new TypeToken<ArrayList<User>>() {
-        };
-    }
-
-    public static TypeToken getBadgeListTypeToken() {
-        return new TypeToken<ArrayList<Badge>>() {
         };
     }
 

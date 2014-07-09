@@ -27,7 +27,6 @@ import factories.GsonF;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
 import models.AndroidDeviceToken;
-import models.Badge;
 import models.BaseModel;
 import models.Challenge;
 import models.Comment;
@@ -332,21 +331,6 @@ public class NetworkingManager {
     public void changePassword(PasswordChangeRequest passwordChange, final NetworkCallback<User> callback) {
         String url = buildUrl("password.json", true, null);
         executeRequest(Request.Method.PUT, url, passwordChange, User.class, callback);
-    }
-
-    public void getBadges(final NetworkListCallback<Badge> callback) {
-        String url = buildUrl("badges.json", true, null);
-        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getBadgeListTypeToken(), callback);
-    }
-
-    public void getUnseenBadges(final NetworkListCallback<Badge> callback) {
-        String url = buildUrl("badges/recent.json", true, null);
-        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getBadgeListTypeToken(), callback);
-    }
-
-    public void getAvailableBadges(final NetworkListCallback<Badge> callback) {
-        String url = buildUrl("badges/available.json", false, null);
-        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getBadgeListTypeToken(), callback);
     }
 
     public void getCommentsForPredictionWithLastId(Integer predictionId, Integer lastId, NetworkListCallback<Comment> callback) {

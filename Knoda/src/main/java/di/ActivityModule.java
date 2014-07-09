@@ -21,7 +21,6 @@ import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
 import views.avatar.UserAvatarChooserActivity;
 import views.avatar.UserAvatarChooserFragment;
-import views.badge.BadgeFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
 import views.core.NavigationDrawerFragment;
@@ -77,7 +76,6 @@ import views.search.SearchFragment;
                 AddPredictionFragment.class,
                 SearchFragment.class,
                 CategoryFragment.class,
-                BadgeFragment.class,
                 DetailsFragment.class,
                 NavigationDrawerFragment.class,
                 CreateCommentFragment.class,
