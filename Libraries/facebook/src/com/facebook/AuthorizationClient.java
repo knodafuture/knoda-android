@@ -26,6 +26,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.webkit.CookieSyncManager;
+
 import com.facebook.android.R;
 import com.facebook.internal.AnalyticsEvents;
 import com.facebook.internal.NativeProtocol;
@@ -36,24 +37,17 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.WebDialog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class AuthorizationClient implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final String TAG = "Facebook-AuthorizationClient";
-    private static final String WEB_VIEW_AUTH_HANDLER_STORE =
-            "com.facebook.AuthorizationClient.WebViewAuthHandler.TOKEN_STORE_KEY";
-    private static final String WEB_VIEW_AUTH_HANDLER_TOKEN_KEY = "TOKEN";
-
-    // Constants for logging login-related data. Some of these are only used by Session, but grouped here for
-    // maintainability.
-    private static final String EVENT_NAME_LOGIN_METHOD_START = "fb_mobile_login_method_start";
-    private static final String EVENT_NAME_LOGIN_METHOD_COMPLETE = "fb_mobile_login_method_complete";
-    private static final String EVENT_PARAM_METHOD_RESULT_SKIPPED = "skipped";
     static final String EVENT_NAME_LOGIN_START = "fb_mobile_login_start";
     static final String EVENT_NAME_LOGIN_COMPLETE = "fb_mobile_login_complete";
     // Note: to ensure stability of column mappings across the four different event types, we prepend a column
@@ -79,7 +73,16 @@ class AuthorizationClient implements Serializable {
     static final String EVENT_EXTRAS_APP_CALL_ID = "call_id";
     static final String EVENT_EXTRAS_PROTOCOL_VERSION = "protocol_version";
     static final String EVENT_EXTRAS_WRITE_PRIVACY = "write_privacy";
-
+    private static final long serialVersionUID = 1L;
+    private static final String TAG = "Facebook-AuthorizationClient";
+    private static final String WEB_VIEW_AUTH_HANDLER_STORE =
+            "com.facebook.AuthorizationClient.WebViewAuthHandler.TOKEN_STORE_KEY";
+    private static final String WEB_VIEW_AUTH_HANDLER_TOKEN_KEY = "TOKEN";
+    // Constants for logging login-related data. Some of these are only used by Session, but grouped here for
+    // maintainability.
+    private static final String EVENT_NAME_LOGIN_METHOD_START = "fb_mobile_login_method_start";
+    private static final String EVENT_NAME_LOGIN_METHOD_COMPLETE = "fb_mobile_login_method_complete";
+    private static final String EVENT_PARAM_METHOD_RESULT_SKIPPED = "skipped";
     List<AuthHandler> handlersToTry;
     AuthHandler currentHandler;
     transient Context context;
@@ -91,20 +94,26 @@ class AuthorizationClient implements Serializable {
     Map<String, String> loggingExtras;
     private transient AppEventsLogger appEventsLogger;
 
-    interface OnCompletedListener {
-        void onCompleted(Result result);
+    static Bundle newAuthorizationLoggingBundle(String authLoggerId) {
+        // We want to log all parameters for all events, to ensure stability of columns across different event types.
+        Bundle bundle = new Bundle();
+        bundle.putLong(EVENT_PARAM_TIMESTAMP, System.currentTimeMillis());
+        bundle.putString(EVENT_PARAM_AUTH_LOGGER_ID, authLoggerId);
+        bundle.putString(EVENT_PARAM_METHOD, "");
+        bundle.putString(EVENT_PARAM_LOGIN_RESULT, "");
+        bundle.putString(EVENT_PARAM_ERROR_MESSAGE, "");
+        bundle.putString(EVENT_PARAM_ERROR_CODE, "");
+        bundle.putString(EVENT_PARAM_EXTRAS, "");
+        return bundle;
     }
 
-    interface BackgroundProcessingListener {
-        void onBackgroundProcessingStarted();
-
-        void onBackgroundProcessingStopped();
-    }
-
-    interface StartActivityDelegate {
-        public void startActivityForResult(Intent intent, int requestCode);
-
-        public Activity getActivityContext();
+    private static String getE2E() {
+        JSONObject e2e = new JSONObject();
+        try {
+            e2e.put("init", System.currentTimeMillis());
+        } catch (JSONException e) {
+        }
+        return e2e.toString();
     }
 
     void setContext(final Context context) {
@@ -492,7 +501,7 @@ class AuthorizationClient implements Serializable {
     }
 
     private void logAuthorizationMethodComplete(String method, String result, String errorMessage, String errorCode,
-            Map<String, String> loggingExtras) {
+                                                Map<String, String> loggingExtras) {
         Bundle bundle = null;
         if (pendingRequest == null) {
             // We don't expect this to happen, but if it does, log an event for diagnostic purposes.
@@ -522,17 +531,186 @@ class AuthorizationClient implements Serializable {
         getAppEventsLogger().logSdkEvent(EVENT_NAME_LOGIN_METHOD_COMPLETE, null, bundle);
     }
 
-    static Bundle newAuthorizationLoggingBundle(String authLoggerId) {
-        // We want to log all parameters for all events, to ensure stability of columns across different event types.
-        Bundle bundle = new Bundle();
-        bundle.putLong(EVENT_PARAM_TIMESTAMP, System.currentTimeMillis());
-        bundle.putString(EVENT_PARAM_AUTH_LOGGER_ID, authLoggerId);
-        bundle.putString(EVENT_PARAM_METHOD, "");
-        bundle.putString(EVENT_PARAM_LOGIN_RESULT, "");
-        bundle.putString(EVENT_PARAM_ERROR_MESSAGE, "");
-        bundle.putString(EVENT_PARAM_ERROR_CODE, "");
-        bundle.putString(EVENT_PARAM_EXTRAS, "");
-        return bundle;
+    private void logWebLoginCompleted(String applicationId, String e2e) {
+        AppEventsLogger appEventsLogger = AppEventsLogger.newLogger(context, applicationId);
+
+        Bundle parameters = new Bundle();
+        parameters.putString(AnalyticsEvents.PARAMETER_WEB_LOGIN_E2E, e2e);
+        parameters.putLong(AnalyticsEvents.PARAMETER_WEB_LOGIN_SWITCHBACK_TIME, System.currentTimeMillis());
+        parameters.putString(AnalyticsEvents.PARAMETER_APP_ID, applicationId);
+
+        appEventsLogger.logSdkEvent(AnalyticsEvents.EVENT_WEB_LOGIN_COMPLETE, null, parameters);
+    }
+
+    interface OnCompletedListener {
+        void onCompleted(Result result);
+    }
+
+    interface BackgroundProcessingListener {
+        void onBackgroundProcessingStarted();
+
+        void onBackgroundProcessingStopped();
+    }
+
+    interface StartActivityDelegate {
+        public void startActivityForResult(Intent intent, int requestCode);
+
+        public Activity getActivityContext();
+    }
+
+    static class AuthDialogBuilder extends WebDialog.Builder {
+        static final String REDIRECT_URI = "fbconnect://success";
+        private static final String OAUTH_DIALOG = "oauth";
+        private String e2e;
+
+        public AuthDialogBuilder(Context context, String applicationId, Bundle parameters) {
+            super(context, applicationId, OAUTH_DIALOG, parameters);
+        }
+
+        public AuthDialogBuilder setE2E(String e2e) {
+            this.e2e = e2e;
+            return this;
+        }
+
+        @Override
+        public WebDialog build() {
+            Bundle parameters = getParameters();
+            parameters.putString(ServerProtocol.DIALOG_PARAM_REDIRECT_URI, REDIRECT_URI);
+            parameters.putString(ServerProtocol.DIALOG_PARAM_CLIENT_ID, getApplicationId());
+            parameters.putString(ServerProtocol.DIALOG_PARAM_E2E, e2e);
+
+            return new WebDialog(getContext(), OAUTH_DIALOG, parameters, getTheme(), getListener());
+        }
+    }
+
+    static class AuthorizationRequest implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private transient final StartActivityDelegate startActivityDelegate;
+        private final SessionLoginBehavior loginBehavior;
+        private final int requestCode;
+        private final SessionDefaultAudience defaultAudience;
+        private final String applicationId;
+        private final String previousAccessToken;
+        private final String authId;
+        private boolean isLegacy = false;
+        private List<String> permissions;
+
+        AuthorizationRequest(SessionLoginBehavior loginBehavior, int requestCode, boolean isLegacy,
+                             List<String> permissions, SessionDefaultAudience defaultAudience, String applicationId,
+                             String validateSameFbidAsToken, StartActivityDelegate startActivityDelegate, String authId) {
+            this.loginBehavior = loginBehavior;
+            this.requestCode = requestCode;
+            this.isLegacy = isLegacy;
+            this.permissions = permissions;
+            this.defaultAudience = defaultAudience;
+            this.applicationId = applicationId;
+            this.previousAccessToken = validateSameFbidAsToken;
+            this.startActivityDelegate = startActivityDelegate;
+            this.authId = authId;
+
+        }
+
+        StartActivityDelegate getStartActivityDelegate() {
+            return startActivityDelegate;
+        }
+
+        List<String> getPermissions() {
+            return permissions;
+        }
+
+        void setPermissions(List<String> permissions) {
+            this.permissions = permissions;
+        }
+
+        SessionLoginBehavior getLoginBehavior() {
+            return loginBehavior;
+        }
+
+        int getRequestCode() {
+            return requestCode;
+        }
+
+        SessionDefaultAudience getDefaultAudience() {
+            return defaultAudience;
+        }
+
+        String getApplicationId() {
+            return applicationId;
+        }
+
+        boolean isLegacy() {
+            return isLegacy;
+        }
+
+        void setIsLegacy(boolean isLegacy) {
+            this.isLegacy = isLegacy;
+        }
+
+        String getPreviousAccessToken() {
+            return previousAccessToken;
+        }
+
+        boolean needsNewTokenValidation() {
+            return previousAccessToken != null && !isLegacy;
+        }
+
+        String getAuthId() {
+            return authId;
+        }
+    }
+
+    static class Result implements Serializable {
+        private static final long serialVersionUID = 1L;
+        final Code code;
+        final AccessToken token;
+        final String errorMessage;
+        final String errorCode;
+        final AuthorizationRequest request;
+        Map<String, String> loggingExtras;
+        private Result(AuthorizationRequest request, Code code, AccessToken token, String errorMessage,
+                       String errorCode) {
+            this.request = request;
+            this.token = token;
+            this.errorMessage = errorMessage;
+            this.code = code;
+            this.errorCode = errorCode;
+        }
+
+        static Result createTokenResult(AuthorizationRequest request, AccessToken token) {
+            return new Result(request, Code.SUCCESS, token, null, null);
+        }
+
+        static Result createCancelResult(AuthorizationRequest request, String message) {
+            return new Result(request, Code.CANCEL, null, message, null);
+        }
+
+        static Result createErrorResult(AuthorizationRequest request, String errorType, String errorDescription) {
+            return createErrorResult(request, errorType, errorDescription, null);
+        }
+
+        static Result createErrorResult(AuthorizationRequest request, String errorType, String errorDescription,
+                                        String errorCode) {
+            String message = TextUtils.join(": ", Utility.asListNoNulls(errorType, errorDescription));
+            return new Result(request, Code.ERROR, null, message, errorCode);
+        }
+
+        enum Code {
+            SUCCESS("success"),
+            CANCEL("cancel"),
+            ERROR("error");
+
+            private final String loggingValue;
+
+            Code(String loggingValue) {
+                this.loggingValue = loggingValue;
+            }
+
+            // For consistency across platforms, we want to use specific string values when logging these results.
+            String getLoggingValue() {
+                return loggingValue;
+            }
+        }
     }
 
     abstract class AuthHandler implements Serializable {
@@ -541,6 +719,7 @@ class AuthorizationClient implements Serializable {
         Map<String, String> methodLoggingExtras;
 
         abstract boolean tryAuthorize(AuthorizationRequest request);
+
         abstract String getNameForLogging();
 
         boolean onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -639,7 +818,7 @@ class AuthorizationClient implements Serializable {
         }
 
         void onWebDialogComplete(AuthorizationRequest request, Bundle values,
-                FacebookException error) {
+                                 FacebookException error) {
             Result outcome;
             if (values != null) {
                 // Actual e2e we got from the dialog should be used for logging.
@@ -667,7 +846,7 @@ class AuthorizationClient implements Serializable {
                     String errorCode = null;
                     String errorMessage = error.getMessage();
                     if (error instanceof FacebookServiceException) {
-                        FacebookRequestError requestError = ((FacebookServiceException)error).getRequestError();
+                        FacebookRequestError requestError = ((FacebookServiceException) error).getRequestError();
                         errorCode = String.format("%d", requestError.getErrorCode());
                         errorMessage = requestError.toString();
                     }
@@ -990,184 +1169,6 @@ class AuthorizationClient implements Serializable {
             } else {
                 return Result.createErrorResult(pendingRequest, error, errorMessage, errorCode);
             }
-        }
-    }
-
-    private static String getE2E() {
-        JSONObject e2e = new JSONObject();
-        try {
-            e2e.put("init", System.currentTimeMillis());
-        } catch (JSONException e) {
-        }
-        return e2e.toString();
-    }
-
-    private void logWebLoginCompleted(String applicationId, String e2e) {
-        AppEventsLogger appEventsLogger = AppEventsLogger.newLogger(context, applicationId);
-
-        Bundle parameters = new Bundle();
-        parameters.putString(AnalyticsEvents.PARAMETER_WEB_LOGIN_E2E, e2e);
-        parameters.putLong(AnalyticsEvents.PARAMETER_WEB_LOGIN_SWITCHBACK_TIME, System.currentTimeMillis());
-        parameters.putString(AnalyticsEvents.PARAMETER_APP_ID, applicationId);
-
-        appEventsLogger.logSdkEvent(AnalyticsEvents.EVENT_WEB_LOGIN_COMPLETE, null, parameters);
-    }
-
-    static class AuthDialogBuilder extends WebDialog.Builder {
-        private static final String OAUTH_DIALOG = "oauth";
-        static final String REDIRECT_URI = "fbconnect://success";
-        private String e2e;
-
-        public AuthDialogBuilder(Context context, String applicationId, Bundle parameters) {
-            super(context, applicationId, OAUTH_DIALOG, parameters);
-        }
-
-        public AuthDialogBuilder setE2E(String e2e) {
-            this.e2e = e2e;
-            return this;
-        }
-
-        @Override
-        public WebDialog build() {
-            Bundle parameters = getParameters();
-            parameters.putString(ServerProtocol.DIALOG_PARAM_REDIRECT_URI, REDIRECT_URI);
-            parameters.putString(ServerProtocol.DIALOG_PARAM_CLIENT_ID, getApplicationId());
-            parameters.putString(ServerProtocol.DIALOG_PARAM_E2E, e2e);
-
-            return new WebDialog(getContext(), OAUTH_DIALOG, parameters, getTheme(), getListener());
-        }
-    }
-
-    static class AuthorizationRequest implements Serializable {
-        private static final long serialVersionUID = 1L;
-
-        private transient final StartActivityDelegate startActivityDelegate;
-        private final SessionLoginBehavior loginBehavior;
-        private final int requestCode;
-        private boolean isLegacy = false;
-        private List<String> permissions;
-        private final SessionDefaultAudience defaultAudience;
-        private final String applicationId;
-        private final String previousAccessToken;
-        private final String authId;
-
-        AuthorizationRequest(SessionLoginBehavior loginBehavior, int requestCode, boolean isLegacy,
-                List<String> permissions, SessionDefaultAudience defaultAudience, String applicationId,
-                String validateSameFbidAsToken, StartActivityDelegate startActivityDelegate, String authId) {
-            this.loginBehavior = loginBehavior;
-            this.requestCode = requestCode;
-            this.isLegacy = isLegacy;
-            this.permissions = permissions;
-            this.defaultAudience = defaultAudience;
-            this.applicationId = applicationId;
-            this.previousAccessToken = validateSameFbidAsToken;
-            this.startActivityDelegate = startActivityDelegate;
-            this.authId = authId;
-
-        }
-
-        StartActivityDelegate getStartActivityDelegate() {
-            return startActivityDelegate;
-        }
-
-        List<String> getPermissions() {
-            return permissions;
-        }
-
-        void setPermissions(List<String> permissions) {
-            this.permissions = permissions;
-        }
-
-        SessionLoginBehavior getLoginBehavior() {
-            return loginBehavior;
-        }
-
-        int getRequestCode() {
-            return requestCode;
-        }
-
-        SessionDefaultAudience getDefaultAudience() {
-            return defaultAudience;
-        }
-
-        String getApplicationId() {
-            return applicationId;
-        }
-
-        boolean isLegacy() {
-            return isLegacy;
-        }
-
-        void setIsLegacy(boolean isLegacy) {
-            this.isLegacy = isLegacy;
-        }
-
-        String getPreviousAccessToken() {
-            return previousAccessToken;
-        }
-
-        boolean needsNewTokenValidation() {
-            return previousAccessToken != null && !isLegacy;
-        }
-
-        String getAuthId() {
-            return authId;
-        }
-    }
-
-
-    static class Result implements Serializable {
-        private static final long serialVersionUID = 1L;
-
-        enum Code {
-            SUCCESS("success"),
-            CANCEL("cancel"),
-            ERROR("error");
-
-            private final String loggingValue;
-
-            Code(String loggingValue) {
-                this.loggingValue = loggingValue;
-            }
-
-            // For consistency across platforms, we want to use specific string values when logging these results.
-            String getLoggingValue() {
-                return loggingValue;
-            }
-        }
-
-        final Code code;
-        final AccessToken token;
-        final String errorMessage;
-        final String errorCode;
-        final AuthorizationRequest request;
-        Map<String, String> loggingExtras;
-
-        private Result(AuthorizationRequest request, Code code, AccessToken token, String errorMessage,
-                String errorCode) {
-            this.request = request;
-            this.token = token;
-            this.errorMessage = errorMessage;
-            this.code = code;
-            this.errorCode = errorCode;
-        }
-
-        static Result createTokenResult(AuthorizationRequest request, AccessToken token) {
-            return new Result(request, Code.SUCCESS, token, null, null);
-        }
-
-        static Result createCancelResult(AuthorizationRequest request, String message) {
-            return new Result(request, Code.CANCEL, null, message, null);
-        }
-
-        static Result createErrorResult(AuthorizationRequest request, String errorType, String errorDescription) {
-            return createErrorResult(request, errorType, errorDescription, null);
-        }
-
-        static Result createErrorResult(AuthorizationRequest request, String errorType, String errorDescription,
-                String errorCode) {
-            String message = TextUtils.join(": ", Utility.asListNoNulls(errorType, errorDescription));
-            return new Result(request, Code.ERROR, null, message, errorCode);
         }
     }
 }

@@ -108,6 +108,7 @@ public class MembershipCell extends RelativeLayout {
         confirmRemoveButton.animate().x(getWidth()).setDuration(animationTime).setListener(null);
         setOnTouchListener(null);
     }
+
     public interface MembershipCellCallbacks {
         void memberRemovedAtPosition(int position);
     }

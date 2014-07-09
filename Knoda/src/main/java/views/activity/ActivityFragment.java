@@ -24,8 +24,8 @@ public class ActivityFragment extends BaseFragment {
     TextView selectedFilter;
     View selectedUnderline;
     View topview;
-    private ViewPager mViewPager;
     ActivityPagerAdapter adapter;
+    private ViewPager mViewPager;
 
 
     public ActivityFragment() {

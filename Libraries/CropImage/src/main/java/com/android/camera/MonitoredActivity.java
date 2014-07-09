@@ -16,7 +16,6 @@
 
 package com.android.camera;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -25,27 +24,6 @@ public class MonitoredActivity extends NoSearchActivity {
 
     private final ArrayList<LifeCycleListener> mListeners =
             new ArrayList<LifeCycleListener>();
-
-    public static interface LifeCycleListener {
-        public void onActivityCreated(MonitoredActivity activity);
-        public void onActivityDestroyed(MonitoredActivity activity);
-        public void onActivityStarted(MonitoredActivity activity);
-        public void onActivityStopped(MonitoredActivity activity);
-    }
-
-    public static class LifeCycleAdapter implements LifeCycleListener {
-        public void onActivityCreated(MonitoredActivity activity) {
-        }
-
-        public void onActivityDestroyed(MonitoredActivity activity) {
-        }
-
-        public void onActivityStarted(MonitoredActivity activity) {
-        }
-
-        public void onActivityStopped(MonitoredActivity activity) {
-        }
-    }
 
     public void addLifeCycleListener(LifeCycleListener listener) {
         if (mListeners.contains(listener)) return;
@@ -85,6 +63,30 @@ public class MonitoredActivity extends NoSearchActivity {
         super.onStop();
         for (LifeCycleListener listener : mListeners) {
             listener.onActivityStopped(this);
+        }
+    }
+
+    public static interface LifeCycleListener {
+        public void onActivityCreated(MonitoredActivity activity);
+
+        public void onActivityDestroyed(MonitoredActivity activity);
+
+        public void onActivityStarted(MonitoredActivity activity);
+
+        public void onActivityStopped(MonitoredActivity activity);
+    }
+
+    public static class LifeCycleAdapter implements LifeCycleListener {
+        public void onActivityCreated(MonitoredActivity activity) {
+        }
+
+        public void onActivityDestroyed(MonitoredActivity activity) {
+        }
+
+        public void onActivityStarted(MonitoredActivity activity) {
+        }
+
+        public void onActivityStopped(MonitoredActivity activity) {
         }
     }
 }

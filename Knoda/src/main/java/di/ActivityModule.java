@@ -43,7 +43,6 @@ import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
-import views.predictionlists.HistoryFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfile2Fragment;
 import views.profile.MyProfileFeedFragment;
@@ -69,7 +68,6 @@ import views.search.SearchFragment;
                 HomeFragment.class,
                 ActivityFragment.class,
                 ActivityTypeFragment.class,
-                HistoryFragment.class,
                 AnotherUsersProfileFragment.class,
                 MyProfileFragment.class,
                 GroupFragment.class,

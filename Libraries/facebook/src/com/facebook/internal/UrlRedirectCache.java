@@ -18,6 +18,7 @@ package com.facebook.internal;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.facebook.LoggingBehavior;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ class UrlRedirectCache {
 
     private volatile static FileLruCache urlRedirectCache;
 
-    synchronized static FileLruCache getCache(Context context) throws IOException{
+    synchronized static FileLruCache getCache(Context context) throws IOException {
         if (urlRedirectCache == null) {
             urlRedirectCache = new FileLruCache(context.getApplicationContext(), TAG, new FileLruCache.Limits());
         }

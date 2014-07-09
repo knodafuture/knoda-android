@@ -14,48 +14,74 @@
 -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:orientation="horizontal" android:background="#000000">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:orientation="horizontal">
 
-        <view android:id="@+id/image" class="com.android.camera.CropImageView"
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            android:layout_x="0dip" android:layout_y="0dip" android:background="#000000" />
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
-            android:orientation="horizontal" android:paddingLeft="10dip"
+        <view
+            android:id="@+id/image"
+            class="com.android.camera.CropImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_x="0dip"
+            android:layout_y="0dip"
+            android:background="#000000" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:paddingLeft="10dip"
             android:paddingRight="10dip">
-            <Button android:id="@+id/discard" android:layout_width="100dip"
+
+            <Button
+                android:id="@+id/discard"
+                android:layout_width="100dip"
                 android:layout_height="wrap_content"
+                android:layout_weight=".333"
+                android:background="#2a2a2a"
                 android:text="@string/crop_discard_text"
-                android:background="#2a2a2a"
+                android:textColor="#ffffff" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:background="#000000" />
+
+            <Button
+                android:id="@+id/rotate"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
                 android:layout_weight=".333"
-                android:textColor="#ffffff"/>
-            <View
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:layout_width="1dp"
-                android:background="#000000"/>
-            <Button android:id="@+id/rotate" android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:text="Rotate" android:onClick="rotateImage"
                 android:background="#2a2a2a"
-                android:textColor="#ffffff"
-                android:layout_weight=".333"/>
+                android:onClick="rotateImage"
+                android:text="Rotate"
+                android:textColor="#ffffff" />
+
             <View
-                android:layout_height="match_parent"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
                 android:layout_width="1dp"
-                android:background="#000000"/>
-            <Button android:id="@+id/save" android:layout_width="100dip"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:background="#000000" />
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="100dip"
                 android:layout_height="wrap_content"
+                android:layout_weight=".333"
+                android:background="#2a2a2a"
                 android:text="@string/crop_save_text"
-                android:textColor="#ffffff"
-                android:layout_weight=".333"
-                android:background="#2a2a2a"/>
+                android:textColor="#ffffff" />
         </LinearLayout>
     </RelativeLayout>
 

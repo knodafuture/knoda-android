@@ -32,7 +32,7 @@ public class VideoList extends BaseImageList {
     @SuppressWarnings("unused")
     private static final String TAG = "BaseImageList";
 
-    private static final String[] VIDEO_PROJECTION = new String[] {
+    private static final String[] VIDEO_PROJECTION = new String[]{
             Media._ID,
             Media.DATA,
             Media.DATE_TAKEN,
@@ -48,6 +48,11 @@ public class VideoList extends BaseImageList {
     private static final int INDEX_MIMI_THUMB_MAGIC = 4;
     private static final int INDEX_MIME_TYPE = 5;
     private static final int INDEX_DATE_MODIFIED = 6;
+
+    public VideoList(ContentResolver resolver, Uri uri, int sort,
+                     String bucketId) {
+        super(resolver, uri, sort, bucketId);
+    }
 
     @Override
     protected long getImageId(Cursor cursor) {
@@ -73,21 +78,17 @@ public class VideoList extends BaseImageList {
                 mimeType, dateTaken, title);
     }
 
-    public VideoList(ContentResolver resolver, Uri uri, int sort,
-            String bucketId) {
-        super(resolver, uri, sort, bucketId);
-    }
-
     public HashMap<String, String> getBucketIds() {
         Uri uri = mBaseUri.buildUpon()
                 .appendQueryParameter("distinct", "true").build();
         Cursor c = Images.Media.query(
                 mContentResolver, uri,
-                new String[] {
-                    Media.BUCKET_DISPLAY_NAME,
-                    Media.BUCKET_ID
+                new String[]{
+                        Media.BUCKET_DISPLAY_NAME,
+                        Media.BUCKET_ID
                 },
-                whereClause(), whereClauseArgs(), sortOrder());
+                whereClause(), whereClauseArgs(), sortOrder()
+        );
         try {
             HashMap<String, String> hash = new HashMap<String, String>();
             while (c.moveToNext()) {

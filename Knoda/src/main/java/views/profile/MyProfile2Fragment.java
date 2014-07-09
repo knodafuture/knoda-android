@@ -44,6 +44,10 @@ import views.core.Spinner;
 
 public class MyProfile2Fragment extends BaseFragment {
 
+    public FacebookManager facebookManager;
+    public TwitterManager twitterManager;
+    public ErrorReporter errorReporter;
+    public Spinner spinner;
     @InjectView(R.id.topview)
     LinearLayout topview;
     @InjectView(R.id.profile_twitter)
@@ -60,6 +64,16 @@ public class MyProfile2Fragment extends BaseFragment {
     TextView tv_winstreak;
     @InjectView(R.id.profile_winloss)
     TextView tv_winloss;
+    TextView selectedFilter;
+    View selectedUnderline;
+    ProfilePagerAdapter adapter;
+    MainActivity mainActivity;
+    private ViewPager mViewPager;
+
+    public static MyProfile2Fragment newInstance() {
+        MyProfile2Fragment fragment = new MyProfile2Fragment();
+        return fragment;
+    }
 
     @OnClick(R.id.activity_1)
     void onClickPredictions() {
@@ -86,22 +100,6 @@ public class MyProfile2Fragment extends BaseFragment {
         Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
         intent.putExtra("cancelable", true);
         startActivityForResult(intent, 123123129);
-    }
-
-    private ViewPager mViewPager;
-    TextView selectedFilter;
-    View selectedUnderline;
-    ProfilePagerAdapter adapter;
-
-    public FacebookManager facebookManager;
-    public TwitterManager twitterManager;
-    public ErrorReporter errorReporter;
-    MainActivity mainActivity;
-    public Spinner spinner;
-
-    public static MyProfile2Fragment newInstance() {
-        MyProfile2Fragment fragment = new MyProfile2Fragment();
-        return fragment;
     }
 
     @Override

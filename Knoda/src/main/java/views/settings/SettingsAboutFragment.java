@@ -18,8 +18,6 @@ import views.core.MainActivity;
 
 public class SettingsAboutFragment extends PreferenceFragment {
 
-    private PreferenceScreen preferenceScreen;
-
     Preference.OnPreferenceClickListener changeListener = new Preference.OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(Preference preference) {
@@ -33,7 +31,7 @@ public class SettingsAboutFragment extends PreferenceFragment {
             return false;
         }
     };
-
+    private PreferenceScreen preferenceScreen;
 
     public static SettingsAboutFragment newInstance() {
         SettingsAboutFragment fragment = new SettingsAboutFragment();

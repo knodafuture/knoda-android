@@ -16,9 +16,6 @@
 
 package com.android.camera.gallery;
 
-import com.android.camera.BitmapManager;
-import com.android.camera.Util;
-
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +23,9 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore.Images;
 import android.util.Log;
+
+import com.android.camera.BitmapManager;
+import com.android.camera.Util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,25 +39,22 @@ import java.io.InputStream;
 public abstract class BaseImage implements IImage {
     private static final String TAG = "BaseImage";
     private static final int UNKNOWN_LENGTH = -1;
+    private int mWidth = UNKNOWN_LENGTH;
+    private int mHeight = UNKNOWN_LENGTH;
+    protected final int mIndex;
+    private final long mDateTaken;
     protected ContentResolver mContentResolver;
-
     // Database field
     protected Uri mUri;
     protected long mId;
     protected String mDataPath;
-    protected final int mIndex;
     protected String mMimeType;
-    private final long mDateTaken;
+    protected BaseImageList mContainer;
     private String mTitle;
 
-    protected BaseImageList mContainer;
-
-    private int mWidth = UNKNOWN_LENGTH;
-    private int mHeight = UNKNOWN_LENGTH;
-
     protected BaseImage(BaseImageList container, ContentResolver cr,
-            long id, int index, Uri uri, String dataPath, String mimeType,
-            long dateTaken, String title) {
+                        long id, int index, Uri uri, String dataPath, String mimeType,
+                        long dateTaken, String title) {
         mContainer = container;
         mContentResolver = cr;
         mId = id;
@@ -90,7 +87,7 @@ public abstract class BaseImage implements IImage {
     }
 
     public Bitmap fullSizeBitmap(int minSideLength, int maxNumberOfPixels,
-            boolean rotateAsNeeded, boolean useNative) {
+                                 boolean rotateAsNeeded, boolean useNative) {
         Uri url = mContainer.contentUri(mId);
         if (url == null) return null;
 

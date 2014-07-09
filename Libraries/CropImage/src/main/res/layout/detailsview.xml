@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2008 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2008 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,186 +13,263 @@
      limitations under the License.
 -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/scroll_view"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
     android:layout_width="300dip"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout android:orientation="vertical"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
-            android:paddingBottom="10dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <LinearLayout android:orientation="horizontal"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/detail_photo_border"
                 android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
-            <LinearLayout android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/detail_photo_border">
-                <ImageView android:id="@+id/details_thumbnail_image"
-                        android:layout_width="64dip"
-                        android:layout_height="64dip"/>
+                <ImageView
+                    android:id="@+id/details_thumbnail_image"
+                    android:layout_width="64dip"
+                    android:layout_height="64dip" />
             </LinearLayout>
-            <TextView android:id="@+id/details_image_title"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:paddingLeft="6dip"
-                    android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/details_image_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="6dip"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </LinearLayout>
-        <TableLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dip"
-                android:layout_marginTop="10dip">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:paddingLeft="5dip">
 
             <TableRow>
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_file_size"/>
-                <TextView android:id="@+id/details_file_size_value"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_file_size"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_file_size_value"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
 
             <TableRow android:id="@+id/details_resolution_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_image_resolution"/>
-                <TextView android:id="@+id/details_resolution_value"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_image_resolution"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_resolution_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_make_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_image_make"/>
-                <TextView android:id="@+id/details_make_value"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_image_make"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_make_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_model_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_image_model"/>
-                <TextView android:id="@+id/details_model_value"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_image_model"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_model_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_whitebalance_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_image_whitebalance"/>
-                <TextView android:id="@+id/details_whitebalance_value"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_image_whitebalance"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_whitebalance_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_latitude_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_image_latitude"/>
-                <TextView android:id="@+id/details_latitude_value"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_image_latitude"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_latitude_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
-            <TableRow android:id="@+id/details_longitude_row"> <TextView
-                        android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_image_longitude"/>
-                <TextView android:id="@+id/details_longitude_value"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+            <TableRow android:id="@+id/details_longitude_row">
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_image_longitude"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_longitude_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_location_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_image_location"/>
-                <TextView android:id="@+id/details_location_value"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_image_location"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_location_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_duration_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_duration"/>
-                <TextView android:id="@+id/details_duration_value"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_duration"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_duration_value"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_frame_rate_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_frame_rate"/>
-                <TextView android:id="@+id/details_frame_rate_value"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_frame_rate"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_frame_rate_value"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
 
             <TableRow android:id="@+id/details_bit_rate_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_bit_rate"/>
-                <TextView android:id="@+id/details_bit_rate_value"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_bit_rate"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_bit_rate_value"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_format_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_format"/>
-                <TextView android:id="@+id/details_format_value"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_format"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_format_value"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_codec_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_codec"/>
-                <TextView android:id="@+id/details_codec_value"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_codec"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_codec_value"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
+
             <TableRow android:id="@+id/details_date_taken_row">
-                <TextView android:gravity="right"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/details_date_taken"/>
-                <TextView android:id="@+id/details_date_taken_value"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:paddingLeft="5dip"
-                        android:textColor="?android:attr/textColorPrimary"/>
+
+                <TextView
+                    android:gravity="right"
+                    android:text="@string/details_date_taken"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/details_date_taken_value"
+                    android:paddingLeft="5dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="?android:attr/textColorPrimary" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

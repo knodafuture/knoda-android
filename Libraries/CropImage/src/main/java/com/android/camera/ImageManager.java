@@ -16,17 +16,6 @@
 
 package com.android.camera;
 
-import com.android.camera.gallery.BaseImageList;
-// Don't have access to private DRM classes
-//import com.android.camera.gallery.DrmImageList;
-import com.android.camera.gallery.IImage;
-import com.android.camera.gallery.IImageList;
-import com.android.camera.gallery.ImageList;
-import com.android.camera.gallery.ImageListUber;
-import com.android.camera.gallery.SingleImageList;
-import com.android.camera.gallery.VideoList;
-import com.android.camera.gallery.VideoObject;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -38,11 +27,18 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
-// Don't have access to private DRM classes
-//import android.provider.DrmStore;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.util.Log;
+
+import com.android.camera.gallery.BaseImageList;
+import com.android.camera.gallery.IImage;
+import com.android.camera.gallery.IImageList;
+import com.android.camera.gallery.ImageList;
+import com.android.camera.gallery.ImageListUber;
+import com.android.camera.gallery.SingleImageList;
+import com.android.camera.gallery.VideoList;
+import com.android.camera.gallery.VideoObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,93 +49,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+// Don't have access to private DRM classes
+//import com.android.camera.gallery.DrmImageList;
+// Don't have access to private DRM classes
+//import android.provider.DrmStore;
+
 /**
  * ImageManager is used to retrieve and store images
  * in the media content provider.
  */
 public class ImageManager {
-    private static final String TAG = "ImageManager";
-
-    private static final Uri STORAGE_URI = Images.Media.EXTERNAL_CONTENT_URI;
-    private static final Uri THUMB_URI
-            = Images.Thumbnails.EXTERNAL_CONTENT_URI;
-
-    private static final Uri VIDEO_STORAGE_URI =
-            Uri.parse("content://media/external/video/media");
-
-    // ImageListParam specifies all the parameters we need to create an image
-    // list (we also need a ContentResolver).
-    public static class ImageListParam implements Parcelable {
-        public DataLocation mLocation;
-        public int mInclusion;
-        public int mSort;
-        public String mBucketId;
-
-        // This is only used if we are creating a single image list.
-        public Uri mSingleImageUri;
-
-        // This is only used if we are creating an empty image list.
-        public boolean mIsEmptyImageList;
-
-        public ImageListParam() {}
-
-        public void writeToParcel(Parcel out, int flags) {
-            out.writeInt(mLocation.ordinal());
-            out.writeInt(mInclusion);
-            out.writeInt(mSort);
-            out.writeString(mBucketId);
-            out.writeParcelable(mSingleImageUri, flags);
-            out.writeInt(mIsEmptyImageList ? 1 : 0);
-        }
-
-        private ImageListParam(Parcel in) {
-            mLocation = DataLocation.values()[in.readInt()];
-            mInclusion = in.readInt();
-            mSort = in.readInt();
-            mBucketId = in.readString();
-            mSingleImageUri = in.readParcelable(null);
-            mIsEmptyImageList = (in.readInt() != 0);
-        }
-
-        public String toString() {
-            return String.format("ImageListParam{loc=%s,inc=%d,sort=%d," +
-                "bucket=%s,empty=%b,single=%s}", mLocation, mInclusion,
-                mSort, mBucketId, mIsEmptyImageList, mSingleImageUri);
-        }
-
-        public static final Parcelable.Creator CREATOR
-                = new Parcelable.Creator() {
-            public ImageListParam createFromParcel(Parcel in) {
-                return new ImageListParam(in);
-            }
-
-            public ImageListParam[] newArray(int size) {
-                return new ImageListParam[size];
-            }
-        };
-
-        public int describeContents() {
-            return 0;
-        }
-    }
-
-    // Location
-    public static enum DataLocation { NONE, INTERNAL, EXTERNAL, ALL }
-
     // Inclusion
     public static final int INCLUDE_IMAGES = (1 << 0);
     public static final int INCLUDE_DRM_IMAGES = (1 << 1);
     public static final int INCLUDE_VIDEOS = (1 << 2);
-
     // Sort
     public static final int SORT_ASCENDING = 1;
     public static final int SORT_DESCENDING = 2;
-
     public static final String CAMERA_IMAGE_BUCKET_NAME =
             Environment.getExternalStorageDirectory().toString()
-            + "/DCIM/Camera";
+                    + "/DCIM/Camera";
     public static final String CAMERA_IMAGE_BUCKET_ID =
             getBucketId(CAMERA_IMAGE_BUCKET_NAME);
+    private static final String TAG = "ImageManager";
+    private static final Uri STORAGE_URI = Images.Media.EXTERNAL_CONTENT_URI;
+    private static final Uri THUMB_URI
+            = Images.Thumbnails.EXTERNAL_CONTENT_URI;
+    private static final Uri VIDEO_STORAGE_URI =
+            Uri.parse("content://media/external/video/media");
 
     /**
      * Matches code in MediaProvider.computeBucketValues. Should be a common
@@ -155,8 +92,9 @@ public class ImageManager {
      */
     public static void ensureOSXCompatibleFolder() {
         File nnnAAAAA = new File(
-            Environment.getExternalStorageDirectory().toString()
-            + "/DCIM/100ANDRO");
+                Environment.getExternalStorageDirectory().toString()
+                        + "/DCIM/100ANDRO"
+        );
         if ((!nnnAAAAA.exists()) && (!nnnAAAAA.mkdir())) {
             Log.e(TAG, "create NNNAAAAA file: " + nnnAAAAA.getPath()
                     + " failed");
@@ -169,15 +107,6 @@ public class ImageManager {
     public static boolean isImageMimeType(String mimeType) {
         return mimeType.startsWith("image/");
     }
-
-    /**
-     * @return true if the mimetype is a video mimetype.
-     */
-    /* This is commented out because isVideo is not calling this now.
-    public static boolean isVideoMimeType(String mimeType) {
-        return mimeType.startsWith("video/");
-    }
-    */
 
     /**
      * @return true if the image is an image.
@@ -195,6 +124,15 @@ public class ImageManager {
         return (image instanceof VideoObject);
     }
 
+    /**
+     * @return true if the mimetype is a video mimetype.
+     */
+    /* This is commented out because isVideo is not calling this now.
+    public static boolean isVideoMimeType(String mimeType) {
+        return mimeType.startsWith("video/");
+    }
+    */
+
     //
     // Stores a bitmap or a jpeg byte array to a file (using the specified
     // directory and filename). Also add an entry to the media store for
@@ -203,8 +141,8 @@ public class ImageManager {
     // of the picture.
     //
     public static Uri addImage(ContentResolver cr, String title, long dateTaken,
-            Location location, String directory, String filename,
-            Bitmap source, byte[] jpegData, int[] degree) {
+                               Location location, String directory, String filename,
+                               Bitmap source, byte[] jpegData, int[] degree) {
         // We should store image data earlier than insert it to ContentProvider, otherwise
         // we may not be able to generate thumbnail in time.
         OutputStream outputStream = null;
@@ -261,10 +199,10 @@ public class ImageManager {
         }
         if (exif != null) {
             int orientation = exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION, -1);
+                    ExifInterface.TAG_ORIENTATION, -1);
             if (orientation != -1) {
                 // We only recognize a subset of orientation tag values.
-                switch(orientation) {
+                switch (orientation) {
                     case ExifInterface.ORIENTATION_ROTATE_90:
                         degree = 90;
                         break;
@@ -283,7 +221,7 @@ public class ImageManager {
 
     // This is the factory function to create an image list.
     public static IImageList makeImageList(ContentResolver cr,
-            ImageListParam param) {
+                                           ImageListParam param) {
         DataLocation location = param.mLocation;
         int inclusion = param.mInclusion;
         int sort = param.mSort;
@@ -348,7 +286,7 @@ public class ImageManager {
 
     // This is a convenience function to create an image list from a Uri.
     public static IImageList makeImageList(ContentResolver cr, Uri uri,
-            int sort) {
+                                           int sort) {
         String uriString = (uri != null) ? uri.toString() : "";
 
         // TODO: we need to figure out whether we're viewing
@@ -377,51 +315,14 @@ public class ImageManager {
                 MediaStore.Images.Media.INTERNAL_CONTENT_URI.toString());
     }
 
-    private static class EmptyImageList implements IImageList {
-        public void close() {
-        }
-
-        public HashMap<String, String> getBucketIds() {
-            return new HashMap<String, String>();
-        }
-
-        public int getCount() {
-            return 0;
-        }
-
-        public boolean isEmpty() {
-            return true;
-        }
-
-        public IImage getImageAt(int i) {
-            return null;
-        }
-
-        public IImage getImageForUri(Uri uri) {
-            return null;
-        }
-
-        public boolean removeImage(IImage image) {
-            return false;
-        }
-
-        public boolean removeImageAt(int i) {
-            return false;
-        }
-
-        public int getImageIndex(IImage image) {
-            throw new UnsupportedOperationException();
-        }
-    }
-
     public static ImageListParam getImageListParam(DataLocation location,
-         int inclusion, int sort, String bucketId) {
-         ImageListParam param = new ImageListParam();
-         param.mLocation = location;
-         param.mInclusion = inclusion;
-         param.mSort = sort;
-         param.mBucketId = bucketId;
-         return param;
+                                                   int inclusion, int sort, String bucketId) {
+        ImageListParam param = new ImageListParam();
+        param.mLocation = location;
+        param.mInclusion = inclusion;
+        param.mSort = sort;
+        param.mBucketId = bucketId;
+        return param;
     }
 
     public static ImageListParam getSingleImageListParam(Uri uri) {
@@ -437,7 +338,7 @@ public class ImageManager {
     }
 
     public static IImageList makeImageList(ContentResolver cr,
-            DataLocation location, int inclusion, int sort, String bucketId) {
+                                           DataLocation location, int inclusion, int sort, String bucketId) {
         ImageListParam param = getImageListParam(location, inclusion, sort,
                 bucketId);
         return makeImageList(cr, param);
@@ -447,7 +348,7 @@ public class ImageManager {
         return makeImageList(null, getEmptyImageListParam());
     }
 
-    public static IImageList  makeSingleImageList(ContentResolver cr, Uri uri) {
+    public static IImageList makeSingleImageList(ContentResolver cr, Uri uri) {
         return makeImageList(cr, getSingleImageListParam(uri));
     }
 
@@ -501,15 +402,15 @@ public class ImageManager {
     }
 
     private static Cursor query(ContentResolver resolver, Uri uri,
-            String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
+                                String[] projection, String selection, String[] selectionArgs,
+                                String sortOrder) {
         try {
             if (resolver == null) {
                 return null;
             }
             return resolver.query(
                     uri, projection, selection, selectionArgs, sortOrder);
-         } catch (UnsupportedOperationException ex) {
+        } catch (UnsupportedOperationException ex) {
             return null;
         }
 
@@ -518,7 +419,7 @@ public class ImageManager {
     public static boolean isMediaScannerScanning(ContentResolver cr) {
         boolean result = false;
         Cursor cursor = query(cr, MediaStore.getMediaScannerUri(),
-                new String [] {MediaStore.MEDIA_SCANNER_VOLUME},
+                new String[]{MediaStore.MEDIA_SCANNER_VOLUME},
                 null, null, null);
         if (cursor != null) {
             if (cursor.getCount() == 1) {
@@ -529,5 +430,102 @@ public class ImageManager {
         }
 
         return result;
+    }
+
+    // Location
+    public static enum DataLocation {
+        NONE, INTERNAL, EXTERNAL, ALL
+    }
+
+    // ImageListParam specifies all the parameters we need to create an image
+    // list (we also need a ContentResolver).
+    public static class ImageListParam implements Parcelable {
+        public static final Parcelable.Creator CREATOR
+                = new Parcelable.Creator() {
+            public ImageListParam createFromParcel(Parcel in) {
+                return new ImageListParam(in);
+            }
+
+            public ImageListParam[] newArray(int size) {
+                return new ImageListParam[size];
+            }
+        };
+        public DataLocation mLocation;
+        public int mInclusion;
+        public int mSort;
+        public String mBucketId;
+        // This is only used if we are creating a single image list.
+        public Uri mSingleImageUri;
+        // This is only used if we are creating an empty image list.
+        public boolean mIsEmptyImageList;
+
+        public ImageListParam() {
+        }
+
+        private ImageListParam(Parcel in) {
+            mLocation = DataLocation.values()[in.readInt()];
+            mInclusion = in.readInt();
+            mSort = in.readInt();
+            mBucketId = in.readString();
+            mSingleImageUri = in.readParcelable(null);
+            mIsEmptyImageList = (in.readInt() != 0);
+        }
+
+        public void writeToParcel(Parcel out, int flags) {
+            out.writeInt(mLocation.ordinal());
+            out.writeInt(mInclusion);
+            out.writeInt(mSort);
+            out.writeString(mBucketId);
+            out.writeParcelable(mSingleImageUri, flags);
+            out.writeInt(mIsEmptyImageList ? 1 : 0);
+        }
+
+        public String toString() {
+            return String.format("ImageListParam{loc=%s,inc=%d,sort=%d," +
+                            "bucket=%s,empty=%b,single=%s}", mLocation, mInclusion,
+                    mSort, mBucketId, mIsEmptyImageList, mSingleImageUri
+            );
+        }
+
+        public int describeContents() {
+            return 0;
+        }
+    }
+
+    private static class EmptyImageList implements IImageList {
+        public void close() {
+        }
+
+        public HashMap<String, String> getBucketIds() {
+            return new HashMap<String, String>();
+        }
+
+        public int getCount() {
+            return 0;
+        }
+
+        public boolean isEmpty() {
+            return true;
+        }
+
+        public IImage getImageAt(int i) {
+            return null;
+        }
+
+        public IImage getImageForUri(Uri uri) {
+            return null;
+        }
+
+        public boolean removeImage(IImage image) {
+            return false;
+        }
+
+        public boolean removeImageAt(int i) {
+            return false;
+        }
+
+        public int getImageIndex(IImage image) {
+            throw new UnsupportedOperationException();
+        }
     }
 }

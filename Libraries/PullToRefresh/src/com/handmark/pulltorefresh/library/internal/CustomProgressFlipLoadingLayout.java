@@ -15,18 +15,18 @@ import com.handmark.pulltorefresh.library.R;
 
 /**
  * Uses a custom icon to show loading state instead of the indetermindate ProgressBar.
- * 
+ *
  * @author Will Hou (will@ezi.am)
  * @date Nov 18, 2012
  */
 public class CustomProgressFlipLoadingLayout extends FlipLoadingLayout {
-    
+
     private ImageView mCustomImageView;
     private Animation mSpinAnimation;
 
     public CustomProgressFlipLoadingLayout(Context context, final Mode mode, final Orientation scrollDirection, TypedArray attrs) {
         super(context, mode, scrollDirection, attrs);
-        
+
         mSpinAnimation = new RotateAnimation(-359, 0, Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         mSpinAnimation.setInterpolator(new LinearInterpolator());
@@ -35,7 +35,7 @@ public class CustomProgressFlipLoadingLayout extends FlipLoadingLayout {
         mSpinAnimation.setDuration(500);
 
         mCustomImageView = (ImageView) findViewById(R.id.pull_to_refresh_progress_custom);
-        
+
         if (attrs.hasValue(R.styleable.PullToRefresh_ptrCustomProgressDrawable)) {
             Drawable src = attrs.getDrawable(R.styleable.PullToRefresh_ptrCustomProgressDrawable);
             mCustomImageView.setImageDrawable(src);
@@ -53,7 +53,7 @@ public class CustomProgressFlipLoadingLayout extends FlipLoadingLayout {
             mCustomImageView.startAnimation(mSpinAnimation);
         }
     }
-    
+
     @Override
     protected void resetImpl() {
         super.resetImpl();

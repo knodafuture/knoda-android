@@ -80,6 +80,7 @@ public class AddPredictionFragment extends BaseFragment {
     private Group group;
     private boolean shouldShareToFacebook;
     private boolean shouldShareToTwitter;
+
     public AddPredictionFragment() {
     }
 

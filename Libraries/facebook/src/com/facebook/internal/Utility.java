@@ -27,22 +27,38 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import com.facebook.*;
+
+import com.facebook.FacebookException;
+import com.facebook.Request;
+import com.facebook.Session;
 import com.facebook.android.BuildConfig;
 import com.facebook.model.GraphObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -51,41 +67,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * any time.
  */
 public final class Utility {
+    // This is the default used by the buffer streams, but they trace a warning if you do not specify.
+    public static final int DEFAULT_STREAM_BUFFER_SIZE = 8192;
     static final String LOG_TAG = "FacebookSDK";
     private static final String HASH_ALGORITHM_MD5 = "MD5";
     private static final String HASH_ALGORITHM_SHA1 = "SHA-1";
     private static final String URL_SCHEME = "https";
     private static final String SUPPORTS_ATTRIBUTION = "supports_attribution";
     private static final String SUPPORTS_IMPLICIT_SDK_LOGGING = "supports_implicit_sdk_logging";
-    private static final String [] APP_SETTING_FIELDS = new String[] {
+    private static final String[] APP_SETTING_FIELDS = new String[]{
             SUPPORTS_ATTRIBUTION,
             SUPPORTS_IMPLICIT_SDK_LOGGING
     };
     private static final String APPLICATION_FIELDS = "fields";
-
-    // This is the default used by the buffer streams, but they trace a warning if you do not specify.
-    public static final int DEFAULT_STREAM_BUFFER_SIZE = 8192;
-
     private static Map<String, FetchedAppSettings> fetchedAppSettings =
             new ConcurrentHashMap<String, FetchedAppSettings>();
-
-    public static class FetchedAppSettings {
-        private boolean supportsAttribution;
-        private boolean supportsImplicitLogging;
-
-        private FetchedAppSettings(boolean supportsAttribution, boolean supportsImplicitLogging) {
-            this.supportsAttribution = supportsAttribution;
-            this.supportsImplicitLogging = supportsImplicitLogging;
-        }
-
-        public boolean supportsAttribution() {
-            return supportsAttribution;
-        }
-
-        public boolean supportsImplicitLogging() {
-            return supportsImplicitLogging;
-        }
-    }
 
     // Returns true iff all items in subset are in superset, treating null and
     // empty collections as
@@ -188,7 +184,7 @@ public final class Utility {
 
     public static void disconnectQuietly(URLConnection connection) {
         if (connection instanceof HttpURLConnection) {
-            ((HttpURLConnection)connection).disconnect();
+            ((HttpURLConnection) connection).disconnect();
         }
     }
 
@@ -421,7 +417,7 @@ public final class Utility {
     }
 
     public static void setAppEventAttributionParameters(GraphObject params,
-            AttributionIdentifiers attributionIdentifiers, String hashedDeviceAndAppId, boolean limitEventUsage) {
+                                                        AttributionIdentifiers attributionIdentifiers, String hashedDeviceAndAppId, boolean limitEventUsage) {
         // Send attributionID if it exists, otherwise send a hashed device+appid specific value as the advertiser_id.
         if (attributionIdentifiers.getAttributionId() != null) {
             params.setProperty("attribution", attributionIdentifiers.getAttributionId());
@@ -461,6 +457,24 @@ public final class Utility {
             return null;
         } catch (InvocationTargetException ex) {
             return null;
+        }
+    }
+
+    public static class FetchedAppSettings {
+        private boolean supportsAttribution;
+        private boolean supportsImplicitLogging;
+
+        private FetchedAppSettings(boolean supportsAttribution, boolean supportsImplicitLogging) {
+            this.supportsAttribution = supportsAttribution;
+            this.supportsImplicitLogging = supportsImplicitLogging;
+        }
+
+        public boolean supportsAttribution() {
+            return supportsAttribution;
+        }
+
+        public boolean supportsImplicitLogging() {
+            return supportsImplicitLogging;
         }
     }
 }

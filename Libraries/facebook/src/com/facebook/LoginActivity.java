@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 import com.facebook.android.R;
 
 /**
@@ -50,6 +51,12 @@ public class LoginActivity extends Activity {
     private String callingPackage;
     private AuthorizationClient authorizationClient;
     private AuthorizationClient.AuthorizationRequest request;
+
+    static Bundle populateIntentExtras(AuthorizationClient.AuthorizationRequest request) {
+        Bundle extras = new Bundle();
+        extras.putSerializable(EXTRA_REQUEST, request);
+        return extras;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,11 +143,5 @@ public class LoginActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         authorizationClient.onActivityResult(requestCode, resultCode, data);
-    }
-
-    static Bundle populateIntentExtras(AuthorizationClient.AuthorizationRequest request) {
-        Bundle extras = new Bundle();
-        extras.putSerializable(EXTRA_REQUEST, request);
-        return extras;
     }
 }

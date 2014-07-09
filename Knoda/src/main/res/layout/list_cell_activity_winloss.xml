@@ -39,11 +39,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical|left"
                 android:text="You Won-Booya! You Beat ZachG &amp; 37 Others"
                 android:textColor="@color/knodaDarkGreen"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-medium"/>
+                android:textSize="14sp" />
 
             <RelativeLayout
                 android:id="@+id/comment_background"

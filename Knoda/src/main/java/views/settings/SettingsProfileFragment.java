@@ -41,24 +41,15 @@ import views.core.Spinner;
 
 public class SettingsProfileFragment extends PreferenceFragment {
 
-    private PreferenceScreen preferenceScreen;
-    BitmapDrawable userPic;
-
     public NetworkingManager networkingManager;
-
     public Spinner spinner;
-
     public ErrorReporter errorReporter;
-
     public UserManager userManager;
     public Bus bus;
-
     public SharedPrefManager sharedPrefManager;
-
     public FacebookManager facebookManager;
-
     public TwitterManager twitterManager;
-
+    BitmapDrawable userPic;
     Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(Preference preference) {
@@ -80,6 +71,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
             return false;
         }
     };
+    private PreferenceScreen preferenceScreen;
 
     public static SettingsProfileFragment newInstance() {
         SettingsProfileFragment fragment = new SettingsProfileFragment();

@@ -120,6 +120,7 @@ public class InvitationsListCell extends RelativeLayout {
         confirmRemoveButton.animate().x(getWidth()).setDuration(animationTime).setListener(null);
         setOnTouchListener(null);
     }
+
     public interface InvitationsCellCallbacks {
         void invitationRemovedAtPosition(int position);
     }

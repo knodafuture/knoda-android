@@ -16,8 +16,6 @@
 
 package com.android.camera.gallery;
 
-import com.android.camera.BitmapManager;
-
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -25,6 +23,8 @@ import android.net.Uri;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Video;
 import android.util.Log;
+
+import com.android.camera.BitmapManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,15 +36,16 @@ import java.io.InputStream;
  */
 public class VideoObject extends BaseImage implements IImage {
     private static final String TAG = "VideoObject";
+
     /**
      * Constructor.
      *
-     * @param id        the image id of the image
-     * @param cr        the content resolver
+     * @param id the image id of the image
+     * @param cr the content resolver
      */
     protected VideoObject(BaseImageList container, ContentResolver cr,
-            long id, int index, Uri uri, String dataPath,
-            String mimeType, long dateTaken, String title) {
+                          long id, int index, Uri uri, String dataPath,
+                          String mimeType, long dateTaken, String title) {
         super(container, cr, id, index, uri, dataPath,
                 mimeType, dateTaken, title);
     }
@@ -63,7 +64,7 @@ public class VideoObject extends BaseImage implements IImage {
 
     @Override
     public Bitmap fullSizeBitmap(int minSideLength, int maxNumberOfPixels,
-            boolean rotateAsNeeded, boolean useNative) {
+                                 boolean rotateAsNeeded, boolean useNative) {
         return ThumbnailUtils.createVideoThumbnail(mDataPath,
                 Video.Thumbnails.MINI_KIND);
     }
@@ -81,7 +82,7 @@ public class VideoObject extends BaseImage implements IImage {
 
     @Override
     public int getHeight() {
-         return 0;
+        return 0;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class VideoObject extends BaseImage implements IImage {
     }
 
     public boolean rotateImageBy(int degrees) {
-       return false;
+        return false;
     }
 
     public Bitmap thumbBitmap(boolean rotateAsNeeded) {

@@ -16,14 +16,14 @@
 
 package com.android.camera.gallery;
 
-import com.android.camera.ImageManager;
-import com.android.camera.Util;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+
+import com.android.camera.ImageManager;
+import com.android.camera.Util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,17 +36,16 @@ public abstract class BaseImageList implements IImageList {
     private static final int CACHE_CAPACITY = 512;
     private final LruCache<Integer, BaseImage> mCache =
             new LruCache<Integer, BaseImage>(CACHE_CAPACITY);
-
+    private static final Pattern sPathWithId = Pattern.compile("(.*)/\\d+");
     protected ContentResolver mContentResolver;
     protected int mSort;
-
     protected Uri mBaseUri;
     protected Cursor mCursor;
     protected String mBucketId;
     protected boolean mCursorDeactivated = false;
 
     public BaseImageList(ContentResolver resolver, Uri uri, int sort,
-            String bucketId) {
+                         String bucketId) {
         mSort = sort;
         mBaseUri = uri;
         mBucketId = bucketId;
@@ -61,6 +60,12 @@ public abstract class BaseImageList implements IImageList {
         // list. After we implement the image list state, we can remove this
         // kind of usage.
         mCache.clear();
+    }
+
+    private static String getPathWithoutId(Uri uri) {
+        String path = uri.getPath();
+        Matcher matcher = sPathWithId.matcher(path);
+        return matcher.matches() ? matcher.group(1) : path;
     }
 
     public void close() {
@@ -163,14 +168,6 @@ public abstract class BaseImageList implements IImageList {
         mCache.clear();
     }
 
-    private static final Pattern sPathWithId = Pattern.compile("(.*)/\\d+");
-
-    private static String getPathWithoutId(Uri uri) {
-        String path = uri.getPath();
-        Matcher matcher = sPathWithId.matcher(path);
-        return matcher.matches() ? matcher.group(1) : path;
-    }
-
     private boolean isChildImageUri(Uri uri) {
         // Sometimes, the URI of an image contains a query string with key
         // "bucketId" inorder to restore the image list. However, the query
@@ -224,16 +221,16 @@ public abstract class BaseImageList implements IImageList {
     protected String sortOrder() {
         String ascending =
                 (mSort == ImageManager.SORT_ASCENDING)
-                ? " ASC"
-                : " DESC";
+                        ? " ASC"
+                        : " DESC";
 
         // Use DATE_TAKEN if it's non-null, otherwise use DATE_MODIFIED.
         // DATE_TAKEN is in milliseconds, but DATE_MODIFIED is in seconds.
         String dateExpr =
                 "case ifnull(datetaken,0)" +
-                " when 0 then date_modified*1000" +
-                " else datetaken" +
-                " end";
+                        " when 0 then date_modified*1000" +
+                        " else datetaken" +
+                        " end";
 
         // Add id to the end so that we don't ever get random sorting
         // which could happen, I suppose, if the date values are the same.

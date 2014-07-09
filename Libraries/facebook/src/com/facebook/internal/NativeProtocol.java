@@ -19,16 +19,30 @@ package com.facebook.internal;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.*;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import com.facebook.*;
+
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.Session;
 import com.facebook.android.BuildConfig;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * com.facebook.internal is solely for the use of other packages within the Facebook SDK for Android. Use of
@@ -38,39 +52,46 @@ import java.util.*;
 public final class NativeProtocol {
 
     public static final int NO_PROTOCOL_AVAILABLE = -1;
-
-    private static final String FACEBOOK_PROXY_AUTH_ACTIVITY = "com.facebook.katana.ProxyAuth";
-    private static final String FACEBOOK_TOKEN_REFRESH_ACTIVITY = "com.facebook.katana.platform.TokenRefreshService";
-
-    private static final String BASIC_INFO = "basic_info";
     public static final String FACEBOOK_PROXY_AUTH_PERMISSIONS_KEY = "scope";
     public static final String FACEBOOK_PROXY_AUTH_APP_ID_KEY = "client_id";
     public static final String FACEBOOK_PROXY_AUTH_E2E_KEY = "e2e";
-
-    // ---------------------------------------------------------------------------------------------
-    // Native Protocol updated 2012-11
-
-    static final String INTENT_ACTION_PLATFORM_ACTIVITY = "com.facebook.platform.PLATFORM_ACTIVITY";
-    static final String INTENT_ACTION_PLATFORM_SERVICE = "com.facebook.platform.PLATFORM_SERVICE";
-
     public static final int PROTOCOL_VERSION_20121101 = 20121101;
     public static final int PROTOCOL_VERSION_20130502 = 20130502;
     public static final int PROTOCOL_VERSION_20130618 = 20130618;
+
+    // ---------------------------------------------------------------------------------------------
+    // Native Protocol updated 2012-11
     public static final int PROTOCOL_VERSION_20131107 = 20131107;
     public static final int PROTOCOL_VERSION_20140204 = 20140204;
-
+    // Note: be sure this stays sorted in descending order; add new versions at the beginning
+    private static final List<Integer> KNOWN_PROTOCOL_VERSIONS =
+            Arrays.asList(
+                    PROTOCOL_VERSION_20140204,
+                    PROTOCOL_VERSION_20131107,
+                    PROTOCOL_VERSION_20130618,
+                    PROTOCOL_VERSION_20130502,
+                    PROTOCOL_VERSION_20121101
+            );
     public static final String EXTRA_PROTOCOL_VERSION = "com.facebook.platform.protocol.PROTOCOL_VERSION";
     public static final String EXTRA_PROTOCOL_ACTION = "com.facebook.platform.protocol.PROTOCOL_ACTION";
     public static final String EXTRA_PROTOCOL_CALL_ID = "com.facebook.platform.protocol.CALL_ID";
     public static final String EXTRA_GET_INSTALL_DATA_PACKAGE = "com.facebook.platform.extra.INSTALLDATA_PACKAGE";
-
     // Messages supported by PlatformService:
     public static final int MESSAGE_GET_ACCESS_TOKEN_REQUEST = 0x10000;
-    public static final int MESSAGE_GET_ACCESS_TOKEN_REPLY   = 0x10001;
-    static final int MESSAGE_GET_PROTOCOL_VERSIONS_REQUEST = 0x10002;
-    static final int MESSAGE_GET_PROTOCOL_VERSIONS_REPLY   = 0x10003;
+    public static final int MESSAGE_GET_ACCESS_TOKEN_REPLY = 0x10001;
     public static final int MESSAGE_GET_INSTALL_DATA_REQUEST = 0x10004;
-    public static final int MESSAGE_GET_INSTALL_DATA_REPLY   = 0x10005;
+    public static final int MESSAGE_GET_INSTALL_DATA_REPLY = 0x10005;
+    // Values of EXTRA_PROTOCOL_ACTION supported by PlatformActivity:
+    public static final String ACTION_LOGIN_DIALOG = "com.facebook.platform.action.request.LOGIN_DIALOG";
+    public static final String ACTION_FEED_DIALOG = "com.facebook.platform.action.request.FEED_DIALOG";
+    public static final String ACTION_OGACTIONPUBLISH_DIALOG =
+            "com.facebook.platform.action.request.OGACTIONPUBLISH_DIALOG";
+    public static final String ACTION_FEED_DIALOG_REPLY =
+            "com.facebook.platform.action.reply.FEED_DIALOG";
+    public static final String ACTION_OGACTIONPUBLISH_DIALOG_REPLY =
+            "com.facebook.platform.action.reply.OGACTIONPUBLISH_DIALOG";
+    // Extras supported for ACTION_LOGIN_DIALOG:
+    public static final String EXTRA_PERMISSIONS = "com.facebook.platform.extra.PERMISSIONS";
 
     // MESSAGE_ERROR_REPLY data keys:
     // See STATUS_*
@@ -82,36 +103,13 @@ public final class NativeProtocol {
     // EXTRA_ACCESS_TOKEN
     // EXTRA_EXPIRES_SECONDS_SINCE_EPOCH
     // EXTRA_PERMISSIONS
-
-    // MESSAGE_GET_PROTOCOL_VERSIONS_REPLY data keys:
-    static final String EXTRA_PROTOCOL_VERSIONS = "com.facebook.platform.extra.PROTOCOL_VERSIONS";
-
-    // Values of EXTRA_PROTOCOL_ACTION supported by PlatformActivity:
-    public static final String ACTION_LOGIN_DIALOG = "com.facebook.platform.action.request.LOGIN_DIALOG";
-    public static final String ACTION_FEED_DIALOG = "com.facebook.platform.action.request.FEED_DIALOG";
-    public static final String ACTION_OGACTIONPUBLISH_DIALOG =
-            "com.facebook.platform.action.request.OGACTIONPUBLISH_DIALOG";
-
-    // Values of EXTRA_PROTOCOL_ACTION values returned by PlatformActivity:
-    static final String ACTION_LOGIN_DIALOG_REPLY =
-            "com.facebook.platform.action.reply.LOGIN_DIALOG";
-    public static final String ACTION_FEED_DIALOG_REPLY =
-            "com.facebook.platform.action.reply.FEED_DIALOG";
-    public static final String ACTION_OGACTIONPUBLISH_DIALOG_REPLY =
-            "com.facebook.platform.action.reply.OGACTIONPUBLISH_DIALOG";
-
-    // Extras supported for ACTION_LOGIN_DIALOG:
-    public static final String EXTRA_PERMISSIONS = "com.facebook.platform.extra.PERMISSIONS";
     public static final String EXTRA_WRITE_PRIVACY = "com.facebook.platform.extra.WRITE_PRIVACY";
     public static final String EXTRA_APPLICATION_ID = "com.facebook.platform.extra.APPLICATION_ID";
     public static final String EXTRA_APPLICATION_NAME = "com.facebook.platform.extra.APPLICATION_NAME";
-
     // Extras returned by setResult() for ACTION_LOGIN_DIALOG
     public static final String EXTRA_ACCESS_TOKEN = "com.facebook.platform.extra.ACCESS_TOKEN";
     public static final String EXTRA_EXPIRES_SECONDS_SINCE_EPOCH =
             "com.facebook.platform.extra.EXPIRES_SECONDS_SINCE_EPOCH";
-    // EXTRA_PERMISSIONS
-
     // Extras supported for ACTION_FEED_DIALOG:
     public static final String EXTRA_PLACE_TAG = "com.facebook.platform.extra.PLACE";
     public static final String EXTRA_FRIEND_TAGS = "com.facebook.platform.extra.FRIENDS";
@@ -121,22 +119,20 @@ public final class NativeProtocol {
     public static final String EXTRA_SUBTITLE = "com.facebook.platform.extra.SUBTITLE";
     public static final String EXTRA_DESCRIPTION = "com.facebook.platform.extra.DESCRIPTION";
     public static final String EXTRA_REF = "com.facebook.platform.extra.REF";
+    // EXTRA_PERMISSIONS
     public static final String EXTRA_DATA_FAILURES_FATAL = "com.facebook.platform.extra.DATA_FAILURES_FATAL";
     public static final String EXTRA_PHOTOS = "com.facebook.platform.extra.PHOTOS";
-
     // Extras supported for ACTION_OGACTIONPUBLISH_DIALOG:
     public static final String EXTRA_ACTION = "com.facebook.platform.extra.ACTION";
     public static final String EXTRA_ACTION_TYPE = "com.facebook.platform.extra.ACTION_TYPE";
     public static final String EXTRA_PREVIEW_PROPERTY_NAME =
             "com.facebook.platform.extra.PREVIEW_PROPERTY_NAME";
-
     // OG objects will have this key to set to true if they should be created as part of OG Action publish
     public static final String OPEN_GRAPH_CREATE_OBJECT_KEY = "fbsdk:create_object";
     // Determines whether an image is user generated
     public static final String IMAGE_USER_GENERATED_KEY = "user_generated";
     // url key for images
     public static final String IMAGE_URL_KEY = "url";
-
     // Keys for status data in MESSAGE_ERROR_REPLY from PlatformService and for error
     // extras returned by PlatformActivity's setResult() in case of errors:
     public static final String STATUS_ERROR_TYPE = "com.facebook.platform.status.ERROR_TYPE";
@@ -145,7 +141,6 @@ public final class NativeProtocol {
     public static final String STATUS_ERROR_CODE = "com.facebook.platform.status.ERROR_CODE";
     public static final String STATUS_ERROR_SUBCODE = "com.facebook.platform.status.ERROR_SUBCODE";
     public static final String STATUS_ERROR_JSON = "com.facebook.platform.status.ERROR_JSON";
-
     // Expected values for ERROR_KEY_TYPE.  Clients should tolerate other values:
     public static final String ERROR_UNKNOWN_ERROR = "UnknownError";
     public static final String ERROR_PROTOCOL_ERROR = "ProtocolError";
@@ -154,106 +149,29 @@ public final class NativeProtocol {
     public static final String ERROR_NETWORK_ERROR = "NetworkError";
     public static final String ERROR_PERMISSION_DENIED = "PermissionDenied";
     public static final String ERROR_SERVICE_DISABLED = "ServiceDisabled";
-
     public static final String AUDIENCE_ME = "SELF";
     public static final String AUDIENCE_FRIENDS = "ALL_FRIENDS";
     public static final String AUDIENCE_EVERYONE = "EVERYONE";
-
     // Request codes for different categories of native protocol calls.
     public static final int DIALOG_REQUEST_CODE = 0xfacf;
-
+    static final String INTENT_ACTION_PLATFORM_ACTIVITY = "com.facebook.platform.PLATFORM_ACTIVITY";
+    static final String INTENT_ACTION_PLATFORM_SERVICE = "com.facebook.platform.PLATFORM_SERVICE";
+    static final int MESSAGE_GET_PROTOCOL_VERSIONS_REQUEST = 0x10002;
+    static final int MESSAGE_GET_PROTOCOL_VERSIONS_REPLY = 0x10003;
+    // MESSAGE_GET_PROTOCOL_VERSIONS_REPLY data keys:
+    static final String EXTRA_PROTOCOL_VERSIONS = "com.facebook.platform.extra.PROTOCOL_VERSIONS";
+    // Values of EXTRA_PROTOCOL_ACTION values returned by PlatformActivity:
+    static final String ACTION_LOGIN_DIALOG_REPLY =
+            "com.facebook.platform.action.reply.LOGIN_DIALOG";
+    private static final String FACEBOOK_PROXY_AUTH_ACTIVITY = "com.facebook.katana.ProxyAuth";
+    private static final String FACEBOOK_TOKEN_REFRESH_ACTIVITY = "com.facebook.katana.platform.TokenRefreshService";
+    private static final String BASIC_INFO = "basic_info";
     private static final String CONTENT_SCHEME = "content://";
     private static final String PLATFORM_PROVIDER_VERSIONS = ".provider.PlatformProvider/versions";
-
     // Columns returned by PlatformProvider
     private static final String PLATFORM_PROVIDER_VERSION_COLUMN = "version";
-
     // Broadcast action for asynchronously-executing AppCalls
     private static final String PLATFORM_ASYNC_APPCALL_ACTION = "com.facebook.platform.AppCallResultBroadcast";
-
-    private static abstract class NativeAppInfo {
-        abstract protected String getPackage();
-        abstract protected String getSignature();
-
-        public boolean validateSignature(Context context, String packageName) {
-            String brand = Build.BRAND;
-            int applicationFlags = context.getApplicationInfo().flags;
-            if (brand.startsWith("generic") && (applicationFlags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
-                // We are debugging on an emulator, don't validate package signature.
-                return true;
-            }
-
-            PackageInfo packageInfo = null;
-            try {
-                packageInfo = context.getPackageManager().getPackageInfo(packageName,
-                        PackageManager.GET_SIGNATURES);
-            } catch (PackageManager.NameNotFoundException e) {
-                return false;
-            }
-
-            for (Signature signature : packageInfo.signatures) {
-                if (signature.toCharsString().equals(this.getSignature())) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-    }
-
-    private static class KatanaAppInfo extends NativeAppInfo {
-        static final String KATANA_PACKAGE = "com.facebook.katana";
-        static final String KATANA_SIGNATURE =
-                "30820268308201d102044a9c4610300d06092a864886f70d0101040500307a310"
-                        + "b3009060355040613025553310b30090603550408130243413112301006035504"
-                        + "07130950616c6f20416c746f31183016060355040a130f46616365626f6f6b204"
-                        + "d6f62696c653111300f060355040b130846616365626f6f6b311d301b06035504"
-                        + "03131446616365626f6f6b20436f72706f726174696f6e3020170d30393038333"
-                        + "13231353231365a180f32303530303932353231353231365a307a310b30090603"
-                        + "55040613025553310b30090603550408130243413112301006035504071309506"
-                        + "16c6f20416c746f31183016060355040a130f46616365626f6f6b204d6f62696c"
-                        + "653111300f060355040b130846616365626f6f6b311d301b06035504031314466"
-                        + "16365626f6f6b20436f72706f726174696f6e30819f300d06092a864886f70d01"
-                        + "0101050003818d0030818902818100c207d51df8eb8c97d93ba0c8c1002c928fa"
-                        + "b00dc1b42fca5e66e99cc3023ed2d214d822bc59e8e35ddcf5f44c7ae8ade50d7"
-                        + "e0c434f500e6c131f4a2834f987fc46406115de2018ebbb0d5a3c261bd97581cc"
-                        + "fef76afc7135a6d59e8855ecd7eacc8f8737e794c60a761c536b72b11fac8e603"
-                        + "f5da1a2d54aa103b8a13c0dbc10203010001300d06092a864886f70d010104050"
-                        + "0038181005ee9be8bcbb250648d3b741290a82a1c9dc2e76a0af2f2228f1d9f9c"
-                        + "4007529c446a70175c5a900d5141812866db46be6559e2141616483998211f4a6"
-                        + "73149fb2232a10d247663b26a9031e15f84bc1c74d141ff98a02d76f85b2c8ab2"
-                        + "571b6469b232d8e768a7f7ca04f7abe4a775615916c07940656b58717457b42bd"
-                        + "928a2";
-        @Override
-        protected String getSignature() {
-            return KATANA_SIGNATURE;
-        }
-        @Override
-        protected String getPackage() {
-            return KATANA_PACKAGE;
-        }
-    }
-
-    private static class WakizashiAppInfo extends NativeAppInfo {
-        static final String WAKIZASHI_PACKAGE = "com.facebook.wakizashi";
-
-        @Override
-        public boolean validateSignature(Context context, String packageName) {
-            return true;
-        }
-
-        @Override
-        protected String getSignature() {
-            return null;
-        }
-
-        @Override
-        protected String getPackage() {
-            return WAKIZASHI_PACKAGE;
-        }
-    }
-
     private static final NativeAppInfo FACEBOOK_APP_INFO = new KatanaAppInfo();
     private static List<NativeAppInfo> facebookAppInfoList = buildFacebookAppList();
     private static Map<String, List<NativeAppInfo>> actionToAppInfoMap = buildActionToAppInfoMap();
@@ -264,7 +182,7 @@ public final class NativeProtocol {
         // Katana needs to be the first thing in the list since it will get selected as the default FACEBOOK_APP_INFO
         list.add(FACEBOOK_APP_INFO);
 
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             list.add(new WakizashiAppInfo());
         }
 
@@ -317,7 +235,7 @@ public final class NativeProtocol {
     }
 
     public static Intent createProxyAuthIntent(Context context, String applicationId, List<String> permissions,
-            String e2e) {
+                                               String e2e) {
         Intent intent = new Intent()
                 .setClassName(FACEBOOK_APP_INFO.getPackage(), FACEBOOK_PROXY_AUTH_ACTIVITY)
                 .putExtra(FACEBOOK_PROXY_AUTH_APP_ID_KEY, applicationId);
@@ -338,16 +256,6 @@ public final class NativeProtocol {
 
         return validateServiceIntent(context, intent, FACEBOOK_APP_INFO);
     }
-
-    // Note: be sure this stays sorted in descending order; add new versions at the beginning
-    private static final List<Integer> KNOWN_PROTOCOL_VERSIONS =
-            Arrays.asList(
-                    PROTOCOL_VERSION_20140204,
-                    PROTOCOL_VERSION_20131107,
-                    PROTOCOL_VERSION_20130618,
-                    PROTOCOL_VERSION_20130502,
-                    PROTOCOL_VERSION_20121101
-            );
 
     private static Intent findActivityIntent(Context context, String activityAction, String internalAction) {
         List<NativeAppInfo> list = actionToAppInfoMap.get(internalAction);
@@ -397,18 +305,18 @@ public final class NativeProtocol {
     }
 
     public static Intent createLoginDialog20121101Intent(Context context, String applicationId, ArrayList<String> permissions,
-            String audience) {
+                                                         String audience) {
         Intent intent = findActivityIntent(context, INTENT_ACTION_PLATFORM_ACTIVITY, ACTION_LOGIN_DIALOG);
         if (intent == null) {
             return null;
         }
 
         intent.putExtra(EXTRA_PROTOCOL_VERSION, PROTOCOL_VERSION_20121101)
-              .putExtra(EXTRA_PROTOCOL_ACTION, ACTION_LOGIN_DIALOG)
-              .putExtra(EXTRA_APPLICATION_ID, applicationId)
-              .putStringArrayListExtra(EXTRA_PERMISSIONS, ensureDefaultPermissions(permissions))
-              .putExtra(EXTRA_PROTOCOL_CALL_ID, generateCallId())
-              .putExtra(EXTRA_WRITE_PRIVACY, ensureDefaultAudience(audience));
+                .putExtra(EXTRA_PROTOCOL_ACTION, ACTION_LOGIN_DIALOG)
+                .putExtra(EXTRA_APPLICATION_ID, applicationId)
+                .putStringArrayListExtra(EXTRA_PERMISSIONS, ensureDefaultPermissions(permissions))
+                .putExtra(EXTRA_PROTOCOL_CALL_ID, generateCallId())
+                .putExtra(EXTRA_WRITE_PRIVACY, ensureDefaultAudience(audience));
 
         return intent;
     }
@@ -481,7 +389,7 @@ public final class NativeProtocol {
     }
 
     private static int getLatestAvailableProtocolVersionForAppInfoList(Context context, List<NativeAppInfo> appInfoList,
-            final int minimumVersion) {
+                                                                       final int minimumVersion) {
         if (appInfoList == null) {
             return NO_PROTOCOL_AVAILABLE;
         }
@@ -498,10 +406,10 @@ public final class NativeProtocol {
     }
 
     private static int getLatestAvailableProtocolVersionForAppInfo(Context context, NativeAppInfo appInfo,
-            final int minimumVersion) {
+                                                                   final int minimumVersion) {
         ContentResolver contentResolver = context.getContentResolver();
 
-        String [] projection = new String[]{ PLATFORM_PROVIDER_VERSION_COLUMN };
+        String[] projection = new String[]{PLATFORM_PROVIDER_VERSION_COLUMN};
         Uri uri = buildPlatformProviderVersionURI(appInfo);
         Cursor c = contentResolver.query(uri, projection, null, null, null);
         if (c == null) {
@@ -529,5 +437,91 @@ public final class NativeProtocol {
 
     private static Uri buildPlatformProviderVersionURI(NativeAppInfo appInfo) {
         return Uri.parse(CONTENT_SCHEME + appInfo.getPackage() + PLATFORM_PROVIDER_VERSIONS);
+    }
+
+    private static abstract class NativeAppInfo {
+        abstract protected String getPackage();
+
+        abstract protected String getSignature();
+
+        public boolean validateSignature(Context context, String packageName) {
+            String brand = Build.BRAND;
+            int applicationFlags = context.getApplicationInfo().flags;
+            if (brand.startsWith("generic") && (applicationFlags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+                // We are debugging on an emulator, don't validate package signature.
+                return true;
+            }
+
+            PackageInfo packageInfo = null;
+            try {
+                packageInfo = context.getPackageManager().getPackageInfo(packageName,
+                        PackageManager.GET_SIGNATURES);
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
+
+            for (Signature signature : packageInfo.signatures) {
+                if (signature.toCharsString().equals(this.getSignature())) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    }
+
+    private static class KatanaAppInfo extends NativeAppInfo {
+        static final String KATANA_PACKAGE = "com.facebook.katana";
+        static final String KATANA_SIGNATURE =
+                "30820268308201d102044a9c4610300d06092a864886f70d0101040500307a310"
+                        + "b3009060355040613025553310b30090603550408130243413112301006035504"
+                        + "07130950616c6f20416c746f31183016060355040a130f46616365626f6f6b204"
+                        + "d6f62696c653111300f060355040b130846616365626f6f6b311d301b06035504"
+                        + "03131446616365626f6f6b20436f72706f726174696f6e3020170d30393038333"
+                        + "13231353231365a180f32303530303932353231353231365a307a310b30090603"
+                        + "55040613025553310b30090603550408130243413112301006035504071309506"
+                        + "16c6f20416c746f31183016060355040a130f46616365626f6f6b204d6f62696c"
+                        + "653111300f060355040b130846616365626f6f6b311d301b06035504031314466"
+                        + "16365626f6f6b20436f72706f726174696f6e30819f300d06092a864886f70d01"
+                        + "0101050003818d0030818902818100c207d51df8eb8c97d93ba0c8c1002c928fa"
+                        + "b00dc1b42fca5e66e99cc3023ed2d214d822bc59e8e35ddcf5f44c7ae8ade50d7"
+                        + "e0c434f500e6c131f4a2834f987fc46406115de2018ebbb0d5a3c261bd97581cc"
+                        + "fef76afc7135a6d59e8855ecd7eacc8f8737e794c60a761c536b72b11fac8e603"
+                        + "f5da1a2d54aa103b8a13c0dbc10203010001300d06092a864886f70d010104050"
+                        + "0038181005ee9be8bcbb250648d3b741290a82a1c9dc2e76a0af2f2228f1d9f9c"
+                        + "4007529c446a70175c5a900d5141812866db46be6559e2141616483998211f4a6"
+                        + "73149fb2232a10d247663b26a9031e15f84bc1c74d141ff98a02d76f85b2c8ab2"
+                        + "571b6469b232d8e768a7f7ca04f7abe4a775615916c07940656b58717457b42bd"
+                        + "928a2";
+
+        @Override
+        protected String getSignature() {
+            return KATANA_SIGNATURE;
+        }
+
+        @Override
+        protected String getPackage() {
+            return KATANA_PACKAGE;
+        }
+    }
+
+    private static class WakizashiAppInfo extends NativeAppInfo {
+        static final String WAKIZASHI_PACKAGE = "com.facebook.wakizashi";
+
+        @Override
+        public boolean validateSignature(Context context, String packageName) {
+            return true;
+        }
+
+        @Override
+        protected String getSignature() {
+            return null;
+        }
+
+        @Override
+        protected String getPackage() {
+            return WAKIZASHI_PACKAGE;
+        }
     }
 }

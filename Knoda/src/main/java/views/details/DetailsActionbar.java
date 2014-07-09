@@ -24,6 +24,7 @@ public class DetailsActionbar extends RelativeLayout {
     public ImageView similarImageView;
     public ImageView shareImageView;
     private DetailsActionBarDelegate delegate;
+
     public DetailsActionbar(Context context) {
         super(context);
         initView(context);

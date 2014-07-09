@@ -39,10 +39,12 @@ public class DetailsHeaderView extends RelativeLayout {
         super(context);
         initView(context);
     }
+
     public DetailsHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
+
     public DetailsHeaderView(Context context, DetailsHeaderViewDelegate delegate) {
         super(context);
         initView(context);
