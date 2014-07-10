@@ -118,6 +118,13 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
             invitationCode = getArguments().getString("INVITATION_CODE");
         }
         bus.register(this);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onDestroy() {
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        super.onDestroy();
     }
 
     @Override

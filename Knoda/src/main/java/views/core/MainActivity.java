@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -18,10 +19,12 @@ import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
@@ -104,6 +107,10 @@ public class MainActivity extends BaseActivity {
     private AddPredictionFragment addPredictionFragment = null;
     private GroupFragment groupFragment = null;
     private MyProfileFragment myProfileFragment = null;
+    private SearchFragment searchFragment = null;
+    private SettingsFragment settingsFragment = null;
+
+    public Menu menu;
 
 
     @OnClick(R.id.nav_home)
@@ -249,15 +256,24 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.main2, menu);
         restoreActionBar();
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
 
+        // Checks the orientation of the screen
+        if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO) {
+            Toast.makeText(this, "shown", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
+            Toast.makeText(this, "hidden", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_NO) {
+            Toast.makeText(this, "shown", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.keyboardHidden == Configuration.KEYBOARDHIDDEN_YES) {
+            Toast.makeText(this, "hidden", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -278,6 +294,10 @@ public class MainActivity extends BaseActivity {
             return true;
 
         switch (item.getItemId()) {
+            case android.R.id.home: {
+                getFragmentManager().popBackStack();
+                break;
+            }
             case R.id.action_search: {
                 onSearch();
                 break;
@@ -474,8 +494,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onSettings() {
-        SettingsFragment fragment = new SettingsFragment();
-        pushFragment(fragment);
+        if (settingsFragment == null)
+            settingsFragment = new SettingsFragment();
+        pushFragment(settingsFragment);
     }
 
     private void onAddPrediction() {
@@ -485,8 +506,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onSearch() {
-        SearchFragment fragment = new SearchFragment();
-        pushFragment(fragment);
+        if (searchFragment == null)
+            searchFragment = new SearchFragment();
+        pushFragment(searchFragment);
     }
 
     private boolean checkPlayServices() {
@@ -667,6 +689,17 @@ public class MainActivity extends BaseActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && getFragmentManager().getBackStackEntryCount() <= 1) {
+            System.out.println("Stack: " + getFragmentManager().getBackStackEntryCount());
+            return true;
+        } else {
+            System.out.println("Key Down");
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
 }

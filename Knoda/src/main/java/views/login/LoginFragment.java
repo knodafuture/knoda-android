@@ -70,6 +70,7 @@ public class LoginFragment extends BaseDialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         updateBackground();
+        ((MainActivity)getActivity()).menu.setGroupVisible(R.id.default_menu_group,true);
         return view;
     }
 

@@ -81,6 +81,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         super.onCreate(savedInstanceState);
         this.prediction = GsonF.actory().fromJson(getArguments().getString("PREDICTION"), Prediction.class);
         bus.register(this);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -363,6 +364,11 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
             }
         };
 
+    }
+    @Override
+    public void onDestroy() {
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        super.onDestroy();
     }
 
     @Override

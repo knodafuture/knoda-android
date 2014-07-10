@@ -51,6 +51,7 @@ public class HomeFragment extends BasePredictionListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -166,6 +167,7 @@ public class HomeFragment extends BasePredictionListFragment {
         super.onResume();
         ((MainActivity) getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_home).setBackgroundResource(R.drawable.nav_home_active);
+
     }
 
 

@@ -10,11 +10,5 @@
             android:orderInCategory="0"
             android:showAsAction="ifRoom"
             android:title="Search" />
-        <item
-            android:id="@+id/action_add_prediction"
-            android:icon="@drawable/nav_predict"
-            android:orderInCategory="100"
-            android:showAsAction="ifRoom"
-            android:title="Add Prediction" />
     </group>
 </menu>

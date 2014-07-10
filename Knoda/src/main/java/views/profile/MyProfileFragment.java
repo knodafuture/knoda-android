@@ -209,7 +209,6 @@ public class MyProfileFragment extends BaseFragment {
     public void onPrepareOptionsMenu(Menu menu) {
         if (mainActivity.userManager.getUser().guestMode == false) {
             menu.removeItem(R.id.action_search);
-            menu.removeItem(R.id.action_add_prediction);
             if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings) != null)
                 menu.findItem(R.id.action_settings).setVisible(true);
         } else {

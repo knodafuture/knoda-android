@@ -56,6 +56,13 @@ public class GroupLeaderboardsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
         bus.register(this);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onDestroy() {
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        super.onDestroy();
     }
 
     @Override

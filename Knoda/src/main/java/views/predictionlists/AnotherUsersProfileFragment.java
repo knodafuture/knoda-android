@@ -32,6 +32,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userId = getArguments().getInt("USER_ID");
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -82,6 +83,12 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         }
 
         super.onItemClicked(position);
+    }
+
+    @Override
+    public void onDestroy() {
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        super.onDestroy();
     }
 
 
