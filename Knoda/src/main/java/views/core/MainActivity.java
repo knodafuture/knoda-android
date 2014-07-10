@@ -71,7 +71,7 @@ import views.group.GroupSettingsFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HomeFragment;
-import views.profile.MyProfile2Fragment;
+import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
 import views.settings.SettingsFragment;
 
@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity {
     private ActivityFragment activityFragment = null;
     private AddPredictionFragment addPredictionFragment = null;
     private GroupFragment groupFragment = null;
-    private MyProfile2Fragment myProfile2Fragment = null;
+    private MyProfileFragment myProfileFragment = null;
 
 
     @OnClick(R.id.nav_home)
@@ -316,7 +316,7 @@ public class MainActivity extends BaseActivity {
             showLogin("Whoa!", "To comment on predictions, you need to create an account.");
             return false;
         }
-//        else if (fragment instanceof MyProfile2Fragment) {
+//        else if (fragment instanceof MyProfileFragment) {
 //            showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
 //            return false;
 //        }
@@ -459,9 +459,9 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onProfile() {
-        if (myProfile2Fragment == null)
-            myProfile2Fragment = MyProfile2Fragment.newInstance();
-        pushFragment(myProfile2Fragment);
+        if (myProfileFragment == null)
+            myProfileFragment = MyProfileFragment.newInstance();
+        pushFragment(myProfileFragment);
     }
 
     public void onGroups() {
@@ -506,7 +506,7 @@ public class MainActivity extends BaseActivity {
         if (id == null)
             return;
         else if (id.equals(userManager.getUser().id)) {
-            MyProfile2Fragment fragment = MyProfile2Fragment.newInstance();
+            MyProfileFragment fragment = MyProfileFragment.newInstance();
             pushFragment(fragment);
         } else {
             AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(id);

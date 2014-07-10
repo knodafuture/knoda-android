@@ -40,7 +40,7 @@ import views.core.BaseFragment;
 import views.core.MainActivity;
 import views.core.Spinner;
 
-public class MyProfile2Fragment extends BaseFragment {
+public class MyProfileFragment extends BaseFragment {
 
     public FacebookManager facebookManager;
     public TwitterManager twitterManager;
@@ -68,8 +68,8 @@ public class MyProfile2Fragment extends BaseFragment {
     MainActivity mainActivity;
     private ViewPager mViewPager;
 
-    public static MyProfile2Fragment newInstance() {
-        MyProfile2Fragment fragment = new MyProfile2Fragment();
+    public static MyProfileFragment newInstance() {
+        MyProfileFragment fragment = new MyProfileFragment();
         return fragment;
     }
 
@@ -144,7 +144,7 @@ public class MyProfile2Fragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         final User user = userManager.getUser();
-        ((MainActivity)getActivity()).resetNavIcons();
+        ((MainActivity) getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_profile).setBackgroundResource(R.drawable.nav_me_active);
         updateUser(user);
 
@@ -199,16 +199,23 @@ public class MyProfile2Fragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.profile, menu);
+        if (mainActivity.userManager.getUser().guestMode == false)
+            inflater.inflate(R.menu.profile, menu);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        menu.removeItem(R.id.action_search);
-        menu.removeItem(R.id.action_add_prediction);
-        if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings) != null)
-            menu.findItem(R.id.action_settings).setVisible(true);
+        if (mainActivity.userManager.getUser().guestMode == false) {
+            menu.removeItem(R.id.action_search);
+            menu.removeItem(R.id.action_add_prediction);
+            if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings) != null)
+                menu.findItem(R.id.action_settings).setVisible(true);
+        } else {
+            if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings) != null)
+                menu.findItem(R.id.action_settings).setVisible(false);
+        }
         super.onPrepareOptionsMenu(menu);
     }
 
