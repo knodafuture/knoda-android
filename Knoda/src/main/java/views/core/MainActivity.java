@@ -276,31 +276,6 @@ public class MainActivity extends BaseActivity {
             return true;
 
         switch (item.getItemId()) {
-            case R.id.action_home: {
-                getFragmentManager().popBackStack();
-                return true;
-            }
-
-            case R.id.action_activity: {
-                onActivity();
-                break;
-            }
-            case R.id.action_predict: {
-                AddPredictionFragment fragment = AddPredictionFragment.newInstance(null);
-                pushFragment(fragment);
-                break;
-            }
-            case R.id.action_groups: {
-                GroupFragment fragment = GroupFragment.newInstance();
-                pushFragment(fragment);
-                break;
-            }
-            case R.id.action_profile: {
-                MyProfile2Fragment fragment = MyProfile2Fragment.newInstance();
-                pushFragment(fragment);
-                break;
-            }
-
             case R.id.action_search: {
                 onSearch();
                 break;
@@ -340,10 +315,11 @@ public class MainActivity extends BaseActivity {
         } else if (fragment instanceof CreateCommentFragment) {
             showLogin("Whoa!", "To comment on predictions, you need to create an account.");
             return false;
-        } else if (fragment instanceof MyProfile2Fragment) {
-            showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
-            return false;
         }
+//        else if (fragment instanceof MyProfile2Fragment) {
+//            showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
+//            return false;
+//        }
 
         return true;
     }
@@ -491,7 +467,8 @@ public class MainActivity extends BaseActivity {
     public void onGroups() {
         if (groupFragment == null)
             groupFragment = GroupFragment.newInstance();
-        pushFragment(groupFragment);
+        if (checkFragment(groupFragment))
+            pushFragment(groupFragment);
     }
 
     private void onSettings() {

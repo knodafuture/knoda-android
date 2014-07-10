@@ -136,6 +136,7 @@ public class SettingsFragment extends PreferenceFragment {
                 userManager.signout(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User u, ServerError error) {
+                        ((MainActivity) getActivity()).spinner.show();
                         alert.dismiss();
                         ((MainActivity) getActivity()).restart();
                     }

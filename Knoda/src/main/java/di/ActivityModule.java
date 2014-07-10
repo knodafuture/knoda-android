@@ -23,7 +23,6 @@ import views.avatar.UserAvatarChooserActivity;
 import views.avatar.UserAvatarChooserFragment;
 import views.core.BaseActivity;
 import views.core.MainActivity;
-import views.core.NavigationDrawerFragment;
 import views.core.Spinner;
 import views.core.SplashActivity;
 import views.details.CreateCommentFragment;
@@ -73,7 +72,6 @@ import views.search.SearchFragment;
                 SearchFragment.class,
                 CategoryFragment.class,
                 DetailsFragment.class,
-                NavigationDrawerFragment.class,
                 CreateCommentFragment.class,
                 AddGroupFragment.class,
                 GroupPredictionListFragment.class,
