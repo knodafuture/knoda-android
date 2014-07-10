@@ -241,9 +241,17 @@ public class MyProfileFragment extends BaseFragment {
         }
 
         tv_points.setText(user.points.toString());
-        tv_winstreak.setText(user.streak.toString());
+        tv_winstreak.setText(setStreak(user.streak));
         tv_winpercent.setText(user.winningPercentage.toString() + "%");
         tv_winloss.setText(user.won.toString() + "-" + user.lost.toString());
+    }
+
+    private String setStreak(String s) {
+        if (s == null || s.equals(""))
+            return "W0";
+        else
+            return s;
+
     }
 
     private void changeFilter(int id) {
