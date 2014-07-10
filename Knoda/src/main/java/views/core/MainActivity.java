@@ -148,6 +148,8 @@ public class MainActivity extends BaseActivity {
                     spinner.hide();
                 }
             });
+        } else {
+            restart();
         }
     }
 

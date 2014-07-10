@@ -33,3 +33,6 @@ local.properties
 *.swp
 
 .DS_STORE
+lint.html
+Knoda/lint.html
+Knoda/src/main/lint.html
