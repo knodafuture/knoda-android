@@ -37,6 +37,7 @@ import networking.NetworkListCallback;
 import pubsub.NewCommentEvent;
 import pubsub.PredictionChangeEvent;
 import views.core.BaseListFragment;
+import views.predictionlists.AnotherUsersProfile2Fragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
