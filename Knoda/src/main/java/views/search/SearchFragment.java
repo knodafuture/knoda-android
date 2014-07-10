@@ -22,7 +22,6 @@ import models.User;
 import networking.NetworkListCallback;
 import views.core.BaseFragment;
 import views.details.DetailsFragment;
-import views.predictionlists.AnotherUsersProfile2Fragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 

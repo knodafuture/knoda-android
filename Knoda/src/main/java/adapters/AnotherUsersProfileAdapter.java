@@ -10,7 +10,6 @@ import com.squareup.otto.Bus;
 import helpers.AdapterHelper;
 import models.Prediction;
 import models.User;
-import views.profile.UserProfile2HeaderView;
 import views.profile.UserProfileHeaderView;
 
 /**
@@ -52,10 +51,10 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
 
     View getHeaderView(View convertView) {
 
-        UserProfile2HeaderView header = (UserProfile2HeaderView) AdapterHelper.getConvertViewSafely(convertView, UserProfile2HeaderView.class);
+        UserProfileHeaderView header = (UserProfileHeaderView) AdapterHelper.getConvertViewSafely(convertView, UserProfileHeaderView.class);
 
         if (header == null)
-            header = new UserProfile2HeaderView(context);
+            header = new UserProfileHeaderView(context);
 
         header.pointsTextView.setText(user.points.toString());
 

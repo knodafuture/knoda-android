@@ -69,7 +69,6 @@ import views.group.AddGroupFragment;
 import views.group.GroupFragment;
 import views.group.GroupSettingsFragment;
 import views.login.WelcomeFragment;
-import views.predictionlists.AnotherUsersProfile2Fragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
