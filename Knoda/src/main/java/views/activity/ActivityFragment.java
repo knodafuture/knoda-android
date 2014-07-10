@@ -114,6 +114,7 @@ public class ActivityFragment extends BaseFragment {
         super.onResume();
         ((MainActivity)getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity_active);
+        ((TextView)getActivity().findViewById(R.id.nav_activity_text)).setTextColor(Color.parseColor("#EFEFEF"));
         bus.post(new ActivitiesViewedEvent());
         changeFilter(sharedPrefManager.getSavedActivityFilter());
 

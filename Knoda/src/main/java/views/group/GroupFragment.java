@@ -1,11 +1,13 @@
 package views.group;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
@@ -67,6 +69,7 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
         super.onResume();
         ((MainActivity)getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_groups).setBackgroundResource(R.drawable.nav_groups_active);
+        ((TextView)getActivity().findViewById(R.id.nav_groups_text)).setTextColor(Color.parseColor("#EFEFEF"));
         adapter.loadPage(0);
     }
 

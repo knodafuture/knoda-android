@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Session;
@@ -466,6 +468,11 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity);
         findViewById(R.id.nav_profile).setBackgroundResource(R.drawable.nav_me);
         findViewById(R.id.nav_groups).setBackgroundResource(R.drawable.nav_groups);
+
+        ((TextView) findViewById(R.id.nav_home_text)).setTextColor(Color.parseColor("#5C5D5C"));
+        ((TextView) findViewById(R.id.nav_activity_text)).setTextColor(Color.parseColor("#5C5D5C"));
+        ((TextView) findViewById(R.id.nav_profile_text)).setTextColor(Color.parseColor("#5C5D5C"));
+        ((TextView) findViewById(R.id.nav_groups_text)).setTextColor(Color.parseColor("#5C5D5C"));
     }
 
     public void onHome() {

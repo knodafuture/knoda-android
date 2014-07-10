@@ -1,6 +1,7 @@
 package views.predictionlists;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
@@ -167,6 +169,7 @@ public class HomeFragment extends BasePredictionListFragment {
         super.onResume();
         ((MainActivity) getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_home).setBackgroundResource(R.drawable.nav_home_active);
+        ((TextView)getActivity().findViewById(R.id.nav_home_text)).setTextColor(Color.parseColor("#EFEFEF"));
 
     }
 

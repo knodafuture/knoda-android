@@ -146,6 +146,7 @@ public class MyProfileFragment extends BaseFragment {
         final User user = userManager.getUser();
         ((MainActivity) getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_profile).setBackgroundResource(R.drawable.nav_me_active);
+        ((TextView) getActivity().findViewById(R.id.nav_profile_text)).setTextColor(Color.parseColor("#EFEFEF"));
         updateUser(user);
 
         if (mViewPager != null) {
