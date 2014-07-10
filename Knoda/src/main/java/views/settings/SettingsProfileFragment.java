@@ -27,7 +27,6 @@ import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.TwitterManager;
 import managers.UserManager;
-import models.KnodaScreen;
 import models.PasswordChangeRequest;
 import models.ServerError;
 import models.SocialAccount;
@@ -291,8 +290,6 @@ public class SettingsProfileFragment extends PreferenceFragment {
             finishAddingTwitterAccount();
         }
 
-        //requestingTwitterInfo = true;
-        ((MainActivity) getActivity()).requestStartupScreen(KnodaScreen.KnodaScreenOrder.PROFILE);
         spinner.show();
         twitterManager.openSession(getActivity());
     }

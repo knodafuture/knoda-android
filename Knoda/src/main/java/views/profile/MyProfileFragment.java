@@ -486,8 +486,6 @@ public class MyProfileFragment extends BaseFragment {
             finishAddingTwitterAccount();
         }
 
-        requestingTwitterInfo = true;
-        ((MainActivity) getActivity()).requestStartupScreen(KnodaScreen.KnodaScreenOrder.PROFILE);
         spinner.show();
         twitterManager.openSession(getActivity());
     }

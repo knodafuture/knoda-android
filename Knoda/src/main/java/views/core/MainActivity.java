@@ -1,16 +1,20 @@
 package views.core;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
@@ -74,14 +78,12 @@ import views.settings.SettingsFragment;
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    private static KnodaScreen.KnodaScreenOrder startupScreen;
     public String currentFragment = "";
     public HashMap<String, ArrayList<Setting>> settings;
     GoogleCloudMessaging gcm;
     @Inject
     AppOutdatedManager appOutdatedManager;
     private GcmManager gcmManager;
-    private NavigationDrawerFragment navigationDrawerFragment;
     private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
     private HashMap<KnodaScreen, Fragment> instanceMap;
     private ArrayList<KnodaScreen> screens;
@@ -127,6 +129,8 @@ public class MainActivity extends BaseActivity
         settings = new HashMap<String, ArrayList<Setting>>();
         pushNotification = new Notification();
 
+        refreshUser();
+
         initializeFragmentBackStack();
         //setUpNavigation();
 
@@ -159,7 +163,7 @@ public class MainActivity extends BaseActivity
                                     public void completionHandler(Prediction object, ServerError error) {
                                         spinner.hide();
                                         if (error != null)
-                                            showActivities();
+                                            onActivity();
                                         else {
                                             DetailsFragment fragment = DetailsFragment.newInstance(object);
                                             pushFragment(fragment);
@@ -172,7 +176,7 @@ public class MainActivity extends BaseActivity
                                     public void completionHandler(Invitation object, ServerError error) {
                                         spinner.hide();
                                         if (error != null)
-                                            showActivities();
+                                            onActivity();
                                         else {
                                             GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
                                             pushFragment(fragment);
@@ -180,7 +184,7 @@ public class MainActivity extends BaseActivity
                                     }
                                 });
                             } else {
-                                showActivities();
+                                onActivity();
                                 spinner.hide();
                             }
 
@@ -205,16 +209,9 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        if (navigationDrawerFragment != null && !navigationDrawerFragment.isDrawerOpen()) {
-//            getMenuInflater().inflate(R.menu.main2, menu);
-//            restoreActionBar();
-//            return true;
-//        }
         getMenuInflater().inflate(R.menu.main2, menu);
         restoreActionBar();
         return true;
-
-        //return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -247,8 +244,7 @@ public class MainActivity extends BaseActivity
             }
 
             case R.id.action_activity: {
-                ActivityFragment fragment = ActivityFragment.newInstance();
-                pushFragment(fragment);
+                onActivity();
                 break;
             }
             case R.id.action_predict: {
@@ -319,24 +315,7 @@ public class MainActivity extends BaseActivity
         return map;
     }
 
-    private void setUpNavigation() {
-
-//        navigationDrawerFragment = (NavigationDrawerFragment)
-//                getFragmentManager().findFragmentById(R.id.navigation_drawer);
-//
-//        navigationDrawerFragment.setUp(
-//                R.id.navigation_drawer,
-//                (DrawerLayout) findViewById(R.id.drawer_layout));
-//
-//        screens = new ArrayList<KnodaScreen>(classMap.keySet());
-//        Collections.sort(screens);
-//
-//        navigationDrawerFragment.setScreens(screens);
-    }
-
     public void restoreActionBar() {
-        ActionBar actionBar = getActionBar();
-        //actionBar.setDisplayHomeAsUpEnabled(true);
         setActionBarTitle(title);
     }
 
@@ -348,7 +327,6 @@ public class MainActivity extends BaseActivity
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null).replace(R.id.container, fragment).commitAllowingStateLoss();
-        //navigationDrawerFragment.setDrawerToggleEnabled(false);
     }
 
     public boolean checkFragment(Fragment fragment) {
@@ -386,7 +364,6 @@ public class MainActivity extends BaseActivity
         if (screen == null)
             return;
 
-        //navigationDrawerFragment.selectItem(position.ordinal());
     }
 
     private KnodaScreen findScreen(KnodaScreen.KnodaScreenOrder position) {
@@ -404,9 +381,6 @@ public class MainActivity extends BaseActivity
             @Override
             public void onBackStackChanged() {
                 Integer count = getFragmentManager().getBackStackEntryCount();
-
-//                if (count <= 0)
-//                    navigationDrawerFragment.setDrawerToggleEnabled(true);
             }
         });
     }
@@ -416,23 +390,11 @@ public class MainActivity extends BaseActivity
         WelcomeFragment f = WelcomeFragment.newInstance(titleMessage, detailMessage);
 
         f.show(getFragmentManager().beginTransaction(), "welcome");
-        //navigationDrawerFragment.resetDrawerUISelection();
-
     }
 
     public void launch() {
         registerGcm();
-        //navigationDrawerFragment.setDrawerToggleEnabled(true);
-        //navigationDrawerFragment.setDrawerLockerMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         invalidateOptionsMenu();
-
-//        if (startupScreen == null)
-//            navigationDrawerFragment.selectStartingItem();
-//        else {
-//            navigationDrawerFragment.selectItem(startupScreen.ordinal());
-//            startupScreen = null;
-//        }
-//        navigationDrawerFragment.refreshUser();
 
         if (getIntent().getExtras() != null) {
             String launchInfo = getIntent().getExtras().getString("launchInfo");
@@ -511,7 +473,7 @@ public class MainActivity extends BaseActivity
     public void onNewIntent(Intent newIntent) {
         this.setIntent(newIntent);
         if (getIntent().getBooleanExtra("showActivity", false)) {
-            showActivities();
+            onActivity();
         }
     }
 
@@ -519,6 +481,11 @@ public class MainActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         ((KnodaApplication) getApplication()).setCurrentActivity(null);
+    }
+
+    public void onActivity() {
+        ActivityFragment fragment = ActivityFragment.newInstance();
+        pushFragment(fragment);
     }
 
     private void onSettings() {
@@ -562,11 +529,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    public void showActivities() {
-        //navigationDrawerFragment.selectItem(1);
-    }
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -605,12 +567,7 @@ public class MainActivity extends BaseActivity
         Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
     }
 
-    public void requestStartupScreen(KnodaScreen.KnodaScreenOrder screen) {
-        startupScreen = screen;
-    }
-
     public void doLogin() {
-        //navigationDrawerFragment.refreshUser();
         bus.post(new ReloadListsEvent());
     }
 
@@ -683,6 +640,56 @@ public class MainActivity extends BaseActivity
     public void invalidateBackgroundImage() {
         if (getFragmentManager().findFragmentByTag("welcome") != null)
             captureScreen();
+    }
+
+    private static final int userRefreshInterval = 30000;
+    private Handler handler = new Handler();
+    private boolean userDialogShown = false;
+    private Runnable userRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshUser();
+        }
+    };
+
+    public void refreshUser() {
+
+        if (connectivityManager == null)
+            return;
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            userManager.refreshUser(new NetworkCallback<User>() {
+                @Override
+                public void completionHandler(User object, ServerError error) {
+                    handler.postDelayed(userRefreshRunnable, userRefreshInterval);
+                }
+            });
+        } else {
+            if (!userDialogShown) {
+                userDialogShown = true;
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Network Connectivity")
+                        .setMessage("You have lost internet connectivity. Retry connecting?")
+                        .setCancelable(false)
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                userDialogShown = false;
+                                handler.postDelayed(userRefreshRunnable, userRefreshInterval);
+                            }
+                        })
+                        .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                userDialogShown = false;
+                                refreshUser();
+                            }
+                        })
+                        .create().show();
+            }
+
+        }
+
     }
 
 }

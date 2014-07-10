@@ -40,7 +40,7 @@
     <style name="ActionBar.Solid.Apptheme" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/ab_solid_apptheme</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_apptheme</item>
-        <item name="android:backgroundSplit">#333</item>
+        <item name="android:backgroundSplit">#2A2A2A</item>
         <item name="android:height">50dp</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Apptheme</item>
         <item name="android:titleTextStyle">@style/ActionBar.Solid.Apptheme.TitleTextStyle</item>
@@ -65,6 +65,7 @@
 
     <style name="ActionBarTabStyle.Apptheme" parent="@android:style/Widget.Holo.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_apptheme</item>
+
     </style>
 
     <style name="DropDownNav.Apptheme" parent="@android:style/Widget.Holo.Spinner">

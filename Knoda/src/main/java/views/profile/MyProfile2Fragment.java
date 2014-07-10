@@ -28,7 +28,6 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import managers.FacebookManager;
 import managers.TwitterManager;
-import models.KnodaScreen;
 import models.ServerError;
 import models.SettingsCategory;
 import models.SocialAccount;
@@ -342,9 +341,6 @@ public class MyProfile2Fragment extends BaseFragment {
         if (twitterManager.hasAuthInfo()) {
             finishAddingTwitterAccount();
         }
-
-        //requestingTwitterInfo = true;
-        ((MainActivity) getActivity()).requestStartupScreen(KnodaScreen.KnodaScreenOrder.PROFILE);
         spinner.show();
         twitterManager.openSession(getActivity());
     }

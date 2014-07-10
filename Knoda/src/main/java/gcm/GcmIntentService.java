@@ -134,7 +134,7 @@ public class GcmIntentService extends IntentService {
                                                             public void completionHandler(Prediction object, ServerError error) {
                                                                 spinner.hide();
                                                                 if (error != null)
-                                                                    mainActivity.showActivities();
+                                                                    mainActivity.onActivity();
                                                                 else {
                                                                     DetailsFragment fragment = DetailsFragment.newInstance(object);
                                                                     mainActivity.pushFragment(fragment);
@@ -147,7 +147,7 @@ public class GcmIntentService extends IntentService {
                                                             public void completionHandler(Invitation object, ServerError error) {
                                                                 spinner.hide();
                                                                 if (error != null)
-                                                                    mainActivity.showActivities();
+                                                                    mainActivity.onActivity();
                                                                 else {
                                                                     GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
                                                                     mainActivity.pushFragment(fragment);
@@ -155,7 +155,7 @@ public class GcmIntentService extends IntentService {
                                                             }
                                                         });
                                                     } else {
-                                                        mainActivity.showActivities();
+                                                        mainActivity.onActivity();
                                                         spinner.hide();
                                                     }
                                                 }
