@@ -1,6 +1,5 @@
 package views.profile;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -129,10 +128,6 @@ public class MyProfile2Fragment extends BaseFragment {
         ButterKnife.inject(this, view);
         getActivity().invalidateOptionsMenu();
 
-        ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
         selectedUnderline = view.findViewById(R.id.underline_1);
 
@@ -149,6 +144,8 @@ public class MyProfile2Fragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         final User user = userManager.getUser();
+        ((MainActivity)getActivity()).resetNavIcons();
+        getActivity().findViewById(R.id.nav_profile).setBackgroundResource(R.drawable.nav_me_active);
         updateUser(user);
 
         if (mViewPager != null) {

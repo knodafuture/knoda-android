@@ -54,6 +54,7 @@ public class ImageList extends BaseImageList implements IImageList {
     private static final int INDEX_TITLE = 5;
     private static final int INDEX_MIME_TYPE = 6;
     private static final int INDEX_DATE_MODIFIED = 7;
+
     /**
      * ImageList constructor.
      */

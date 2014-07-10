@@ -46,7 +46,6 @@ import views.predictionlists.GroupPredictionListFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfile2Fragment;
 import views.profile.MyProfileFeedFragment;
-import views.profile.MyProfileFragment;
 import views.profile.PhotoFragment;
 import views.search.SearchFragment;
 
@@ -69,7 +68,6 @@ import views.search.SearchFragment;
                 ActivityFragment.class,
                 ActivityTypeFragment.class,
                 AnotherUsersProfileFragment.class,
-                MyProfileFragment.class,
                 GroupFragment.class,
                 AddPredictionFragment.class,
                 SearchFragment.class,

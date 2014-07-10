@@ -41,6 +41,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import di.KnodaApplication;
 import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
@@ -71,13 +72,12 @@ import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfile2Fragment;
-import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
 import views.settings.SettingsFragment;
 
-public class MainActivity extends BaseActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends BaseActivity {
 
+    private static final int userRefreshInterval = 30000;
     public String currentFragment = "";
     public HashMap<String, ArrayList<Setting>> settings;
     GoogleCloudMessaging gcm;
@@ -86,11 +86,50 @@ public class MainActivity extends BaseActivity
     private GcmManager gcmManager;
     private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
     private HashMap<KnodaScreen, Fragment> instanceMap;
-    private ArrayList<KnodaScreen> screens;
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
     private Notification pushNotification;
+    private Handler handler = new Handler();
+    private boolean userDialogShown = false;
+    private Runnable userRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshUser();
+        }
+    };
+
+    private HomeFragment homeFragment = null;
+    private ActivityFragment activityFragment = null;
+    private AddPredictionFragment addPredictionFragment = null;
+    private GroupFragment groupFragment = null;
+    private MyProfile2Fragment myProfile2Fragment = null;
+
+
+    @OnClick(R.id.nav_home)
+    void onClickHome() {
+        onHome();
+    }
+
+    @OnClick(R.id.nav_activity)
+    void onClickActivity() {
+        onActivity();
+    }
+
+    @OnClick(R.id.nav_predict)
+    void onClickPredict() {
+        onAddPrediction();
+    }
+
+    @OnClick(R.id.nav_groups)
+    void onClickGroups() {
+        onGroups();
+    }
+
+    @OnClick(R.id.nav_profile)
+    void onClickProfile() {
+        onProfile();
+    }
 
     @Subscribe
     public void changeGroup(ChangeGroupEvent event) {
@@ -125,7 +164,6 @@ public class MainActivity extends BaseActivity
         bus.register(this);
         appOutdatedManager.setBus(bus);
         instanceMap = new HashMap<KnodaScreen, Fragment>();
-        classMap = getClassMap();
         settings = new HashMap<String, ArrayList<Setting>>();
         pushNotification = new Notification();
 
@@ -209,7 +247,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main2, menu);
+        //getMenuInflater().inflate(R.menu.main2, menu);
         restoreActionBar();
         return true;
     }
@@ -275,46 +313,6 @@ public class MainActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(KnodaScreen screen) {
-        Fragment fragment = getFragment(screen);
-        if (!checkFragment(fragment))
-            return;
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.container, fragment).commitAllowingStateLoss();
-
-    }
-
-    public Fragment getFragment(KnodaScreen screen) {
-        Fragment fragment = instanceMap.get(screen);
-        if (fragment == null) {
-            Class<? extends Fragment> fragmentClass = classMap.get(screen);
-            try {
-                fragment = fragmentClass.newInstance();
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
-                throw new RuntimeException(ex);
-            }
-            instanceMap.put(screen, fragment);
-        }
-
-        return fragment;
-    }
-
-    private HashMap<KnodaScreen, Class<? extends Fragment>> getClassMap() {
-        HashMap<KnodaScreen, Class<? extends Fragment>> map = new HashMap<KnodaScreen, Class<? extends Fragment>>();
-
-        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.HOME, "Home", getResources().getDrawable(R.drawable.drawer_home)), HomeFragment.class);
-        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.ACTIVITY, "Activity", getResources().getDrawable(R.drawable.drawer_activity)), ActivityFragment.class);
-        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.GROUP, "Groups", getResources().getDrawable(R.drawable.drawer_groups)), GroupFragment.class);
-        map.put(new KnodaScreen(KnodaScreen.KnodaScreenOrder.PROFILE, "Profile", getResources().getDrawable(R.drawable.drawer_profile)), MyProfile2Fragment.class);
-        return map;
-    }
-
     public void restoreActionBar() {
         setActionBarTitle(title);
     }
@@ -333,7 +331,7 @@ public class MainActivity extends BaseActivity
         if (userManager != null && userManager.getUser() != null && !userManager.getUser().guestMode)
             return true;
 
-        if (fragment instanceof AddGroupFragment) {
+        if (fragment instanceof AddGroupFragment || fragment instanceof GroupFragment) {
             showLogin("Hey now!", "You need to create an account to join and create groups.");
             return false;
         } else if (fragment instanceof AddPredictionFragment) {
@@ -342,7 +340,7 @@ public class MainActivity extends BaseActivity
         } else if (fragment instanceof CreateCommentFragment) {
             showLogin("Whoa!", "To comment on predictions, you need to create an account.");
             return false;
-        } else if (fragment instanceof MyProfileFragment) {
+        } else if (fragment instanceof MyProfile2Fragment) {
             showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
             return false;
         }
@@ -356,23 +354,6 @@ public class MainActivity extends BaseActivity
 
     public void popToRootFragment() {
         getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    public void showFrament(KnodaScreen.KnodaScreenOrder position) {
-        KnodaScreen screen = findScreen(position);
-
-        if (screen == null)
-            return;
-
-    }
-
-    private KnodaScreen findScreen(KnodaScreen.KnodaScreenOrder position) {
-        KnodaScreen screen = screens.get(position.ordinal());
-
-        if (screen != null && screen.order == position)
-            return screen;
-
-        return null;
     }
 
     private void initializeFragmentBackStack() {
@@ -465,8 +446,7 @@ public class MainActivity extends BaseActivity
         ((KnodaApplication) getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
 
-        HomeFragment fragment = HomeFragment.newInstance();
-        pushFragment(fragment);
+        onHome();
     }
 
     @Override
@@ -483,9 +463,35 @@ public class MainActivity extends BaseActivity
         ((KnodaApplication) getApplication()).setCurrentActivity(null);
     }
 
+    public void resetNavIcons() {
+        findViewById(R.id.nav_home).setBackgroundResource(R.drawable.nav_home);
+        findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity);
+        findViewById(R.id.nav_profile).setBackgroundResource(R.drawable.nav_me);
+        findViewById(R.id.nav_groups).setBackgroundResource(R.drawable.nav_groups);
+    }
+
+    public void onHome() {
+        if (homeFragment == null)
+            homeFragment = HomeFragment.newInstance();
+        pushFragment(homeFragment);
+    }
+
     public void onActivity() {
-        ActivityFragment fragment = ActivityFragment.newInstance();
-        pushFragment(fragment);
+        if (activityFragment == null)
+            activityFragment = ActivityFragment.newInstance();
+        pushFragment(activityFragment);
+    }
+
+    public void onProfile() {
+        if (myProfile2Fragment == null)
+            myProfile2Fragment = MyProfile2Fragment.newInstance();
+        pushFragment(myProfile2Fragment);
+    }
+
+    public void onGroups() {
+        if (groupFragment == null)
+            groupFragment = GroupFragment.newInstance();
+        pushFragment(groupFragment);
     }
 
     private void onSettings() {
@@ -494,6 +500,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void onAddPrediction() {
+        resetNavIcons();
         AddPredictionFragment fragment = AddPredictionFragment.newInstance(currentGroup);
         pushFragment(fragment);
     }
@@ -522,7 +529,8 @@ public class MainActivity extends BaseActivity
         if (id == null)
             return;
         else if (id.equals(userManager.getUser().id)) {
-            showFrament(KnodaScreen.KnodaScreenOrder.PROFILE);
+            MyProfile2Fragment fragment = MyProfile2Fragment.newInstance();
+            pushFragment(fragment);
         } else {
             AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(id);
             pushFragment(fragment);
@@ -641,16 +649,6 @@ public class MainActivity extends BaseActivity
         if (getFragmentManager().findFragmentByTag("welcome") != null)
             captureScreen();
     }
-
-    private static final int userRefreshInterval = 30000;
-    private Handler handler = new Handler();
-    private boolean userDialogShown = false;
-    private Runnable userRefreshRunnable = new Runnable() {
-        @Override
-        public void run() {
-            refreshUser();
-        }
-    };
 
     public void refreshUser() {
 

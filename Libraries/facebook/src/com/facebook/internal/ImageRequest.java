@@ -36,6 +36,7 @@ public class ImageRequest {
     private Callback callback;
     private boolean allowCachedRedirects;
     private Object callerTag;
+
     private ImageRequest(Builder builder) {
         this.context = builder.context;
         this.imageUri = builder.imageUrl;

@@ -16,6 +16,7 @@ import butterknife.InjectView;
 import models.Group;
 import networking.NetworkListCallback;
 import views.core.BaseFragment;
+import views.core.MainActivity;
 import views.predictionlists.GroupPredictionListFragment;
 
 public class GroupFragment extends BaseFragment implements PagingAdapter.PagingAdapterDatasource<Group> {
@@ -64,6 +65,8 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
     @Override
     public void onResume() {
         super.onResume();
+        ((MainActivity)getActivity()).resetNavIcons();
+        getActivity().findViewById(R.id.nav_groups).setBackgroundResource(R.drawable.nav_groups_active);
         adapter.loadPage(0);
     }
 

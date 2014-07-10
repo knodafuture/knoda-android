@@ -18,6 +18,7 @@ import adapters.ActivityPagerAdapter;
 import butterknife.OnClick;
 import pubsub.ActivitiesViewedEvent;
 import views.core.BaseFragment;
+import views.core.MainActivity;
 
 public class ActivityFragment extends BaseFragment {
     String filter = "all";
@@ -88,6 +89,7 @@ public class ActivityFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         bus.register(this);
         sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
+
     }
 
     @Override
@@ -110,6 +112,8 @@ public class ActivityFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((MainActivity)getActivity()).resetNavIcons();
+        getActivity().findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity_active);
         bus.post(new ActivitiesViewedEvent());
         changeFilter(sharedPrefManager.getSavedActivityFilter());
 

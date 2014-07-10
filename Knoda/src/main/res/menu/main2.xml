@@ -10,7 +10,7 @@
             android:orderInCategory="100"
             android:showAsAction="ifRoom"
             android:title="Home"
-            android:titleCondensed=""/>
+            android:titleCondensed="" />
         <item
             android:id="@+id/action_activity"
             android:icon="@drawable/nav_activity"

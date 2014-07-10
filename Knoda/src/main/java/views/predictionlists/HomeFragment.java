@@ -20,6 +20,7 @@ import com.squareup.otto.Subscribe;
 
 import pubsub.LoginFlowDoneEvent;
 import pubsub.ReloadListsEvent;
+import views.core.MainActivity;
 
 public class HomeFragment extends BasePredictionListFragment {
 
@@ -158,6 +159,13 @@ public class HomeFragment extends BasePredictionListFragment {
             ((View) listView.getTag()).setVisibility(View.INVISIBLE);
             listView.setTag(null);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).resetNavIcons();
+        getActivity().findViewById(R.id.nav_home).setBackgroundResource(R.drawable.nav_home_active);
     }
 
 
