@@ -169,7 +169,7 @@ public class HomeFragment extends BasePredictionListFragment {
         super.onResume();
         ((MainActivity) getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_home).setBackgroundResource(R.drawable.nav_home_active);
-        ((TextView)getActivity().findViewById(R.id.nav_home_text)).setTextColor(Color.parseColor("#EFEFEF"));
+        ((TextView) getActivity().findViewById(R.id.nav_home_text)).setTextColor(Color.parseColor("#EFEFEF"));
 
     }
 

@@ -35,7 +35,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     SearchAdapter searchAdapter;
     SearchView searchView;
 
-    private String searchTerm;
+    private String searchTerm = null;
     private boolean keyboardHandled = false;
 
     public SearchFragment() {
@@ -56,11 +56,13 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     public void onResume() {
         super.onResume();
         getActivity().invalidateOptionsMenu();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
         hideKeyboard();
     }
 
@@ -69,14 +71,16 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         setTitle("");
         menu.removeGroup(R.id.default_menu_group);
         inflater.inflate(R.menu.search, menu);
-
         MenuItem menuItem = menu.findItem(R.id.search);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setCallbacks(this);
         if (searchTerm == null && !keyboardHandled) {
             showKeyboard(searchView.searchField);
             keyboardHandled = true;
+        } else if (searchTerm != null) {
+            searchView.searchField.setText(searchTerm);
         }
+
 
     }
 
@@ -89,27 +93,35 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (tagAdapter == null)
             tagAdapter = new TagAdapter(getActivity(), this, null);
 
-        if (searchAdapter == null)
-            searchAdapter = new SearchAdapter(getActivity(), this, this, networkingManager.getImageLoader());
-
+        searchAdapter = new SearchAdapter(getActivity(), this, this, networkingManager.getImageLoader());
+//        if (searchAdapter == null)
+//            searchAdapter = new SearchAdapter(getActivity(), this, this, networkingManager.getImageLoader());
+//
         if (searchAdapter.items.size() > 0)
             listview.setAdapter(searchAdapter);
         else
             onCancel();
 
         if (searchTerm != null) {
-            searchView.searchField.setText(searchTerm);
+            onSearch(searchTerm);
+//            Handler h = new Handler();
+//            h.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    searchView.searchField.setText(searchTerm.toString());
+//                }
+//            }, 1000);
         } else {
             if (searchView != null && !keyboardHandled) {
                 showKeyboard(searchView.searchField);
@@ -118,19 +130,15 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         }
     }
 
-
     @Override
     public void onSearch(String string) {
-
         hideKeyboard();
-
         searchTerm = string;
-
         listview.setAdapter(searchAdapter);
-
         searchAdapter.loadForSearchTerm(string);
-
         listview.setOnItemClickListener(searchAdapter.makeOnItemClickListeners());
+        if (!searchView.searchField.getText().toString().equals(searchTerm))
+            searchView.searchField.setText(searchTerm);
     }
 
     @Override
