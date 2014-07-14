@@ -158,7 +158,8 @@ public class MainActivity extends BaseActivity {
                 }
             });
         } else {
-            restart();
+            if (!userManager.getUser().guestMode)
+                restart();
         }
     }
 
