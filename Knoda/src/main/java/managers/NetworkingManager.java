@@ -65,7 +65,7 @@ public class NetworkingManager {
     public static String baseUrl = "http://captaincold.knoda.com/api/";
     private static RequestQueue mRequestQueue;
     Context context;
-    String api_version = "4";
+    String api_version = "5";
     @Inject
     SharedPrefManager sharedPrefManager;
     @Inject
