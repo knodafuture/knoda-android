@@ -411,6 +411,8 @@ public class MainActivity extends BaseActivity {
         } else if (userManager.getUser().avatar == null) {
             UserAvatarChooserFragment f = new UserAvatarChooserFragment();
             f.show(getFragmentManager(), "avatar");
+        } else {
+            onHome();
         }
     }
 
@@ -447,7 +449,7 @@ public class MainActivity extends BaseActivity {
         ((KnodaApplication) getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
 
-        onHome();
+
     }
 
     @Override
@@ -551,6 +553,7 @@ public class MainActivity extends BaseActivity {
         super.onStart();
         FlurryAgent.onStartSession(this, "56TTPBKSC2BJZGSW2W76");
         FlurryAgent.setCaptureUncaughtExceptions(true);
+
     }
 
     @Override
