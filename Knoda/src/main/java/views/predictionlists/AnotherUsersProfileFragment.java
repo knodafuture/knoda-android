@@ -32,15 +32,13 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userId = getArguments().getInt("USER_ID");
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("");
-
 
         networkingManager.getUser(userId, new NetworkCallback<User>() {
             @Override
@@ -86,9 +84,9 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
+        super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-        super.onDestroy();
     }
 
 

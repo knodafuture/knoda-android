@@ -81,7 +81,6 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         super.onCreate(savedInstanceState);
         this.prediction = GsonF.actory().fromJson(getArguments().getString("PREDICTION"), Prediction.class);
         bus.register(this);
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -96,13 +95,19 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         super.onViewCreated(view, savedInstanceState);
         setTitle("DETAILS");
         FlurryAgent.logEvent("Prediction_Details_Screen");
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
-
         return view;
     }
 
@@ -365,6 +370,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         };
 
     }
+
     @Override
     public void onDestroy() {
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
