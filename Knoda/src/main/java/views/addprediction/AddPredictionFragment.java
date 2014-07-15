@@ -39,6 +39,7 @@ import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.NewPredictionEvent;
 import views.core.BaseFragment;
+import views.core.MainActivity;
 
 public class AddPredictionFragment extends BaseFragment {
 
@@ -149,8 +150,14 @@ public class AddPredictionFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_prediction, container, false);
-
+        ((MainActivity) getActivity()).hideNavbar();
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) getActivity()).showNavbar();
     }
 
     @Override

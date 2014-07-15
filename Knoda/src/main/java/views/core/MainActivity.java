@@ -20,11 +20,16 @@ import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +51,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import di.KnodaApplication;
 import helpers.TapjoyPPA;
@@ -113,7 +119,15 @@ public class MainActivity extends BaseActivity {
     private SettingsFragment settingsFragment = null;
 
     public Menu menu;
+    @InjectView(R.id.navbar)
+    LinearLayout navbar;
+    @InjectView(R.id.fragmentContainer)
+    FrameLayout container;
 
+    private RelativeLayout.LayoutParams navbarShown;
+    private RelativeLayout.LayoutParams navbarHidden;
+    private RelativeLayout.LayoutParams containerFull;
+    private RelativeLayout.LayoutParams containerPartial;
 
     @OnClick(R.id.nav_home)
     void onClickHome() {
@@ -178,6 +192,24 @@ public class MainActivity extends BaseActivity {
         instanceMap = new HashMap<KnodaScreen, Fragment>();
         settings = new HashMap<String, ArrayList<Setting>>();
         pushNotification = new Notification();
+
+        final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+        }
+
+        navbarShown = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 60);
+        navbarShown.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        navbarHidden = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+
+
+        containerFull = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        containerFull.setMargins(0, actionBarHeight, 0, 0);
+        containerPartial = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        containerPartial.setMargins(0, actionBarHeight, 0, onedp * 60);
 
         refreshUser();
 
@@ -324,7 +356,7 @@ public class MainActivity extends BaseActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null).replace(R.id.container, fragment).commitAllowingStateLoss();
+        transaction.addToBackStack(null).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
     }
 
     public boolean checkFragment(Fragment fragment) {
@@ -712,5 +744,16 @@ public class MainActivity extends BaseActivity {
             return super.onKeyDown(keyCode, event);
         }
     }
+
+    public void hideNavbar() {
+        navbar.setLayoutParams(navbarHidden);
+        container.setLayoutParams(containerFull);
+    }
+
+    public void showNavbar() {
+        navbar.setLayoutParams(navbarShown);
+        container.setLayoutParams(containerPartial);
+    }
+
 
 }
