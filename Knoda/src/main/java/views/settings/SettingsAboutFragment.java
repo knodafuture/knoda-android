@@ -10,6 +10,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 
 import com.knoda.knoda.R;
 
@@ -104,6 +105,18 @@ public class SettingsAboutFragment extends PreferenceFragment {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
+    }
+
+    @Override
+    public void onViewCreated(View v, Bundle b) {
+        super.onViewCreated(v, b);
+        ((MainActivity) getActivity()).hideNavbar();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) getActivity()).showNavbar();
     }
 
 

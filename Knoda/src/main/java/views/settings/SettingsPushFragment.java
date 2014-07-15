@@ -10,6 +10,7 @@ import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.knoda.knoda.R;
@@ -112,7 +113,18 @@ public class SettingsPushFragment extends PreferenceFragment {
         //if (itemId == R.id.action_settings)
 
         return super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    public void onViewCreated(View v, Bundle b) {
+        super.onViewCreated(v, b);
+        ((MainActivity) getActivity()).hideNavbar();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) getActivity()).showNavbar();
     }
 
 

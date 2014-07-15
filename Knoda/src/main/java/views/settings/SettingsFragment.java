@@ -150,5 +150,17 @@ public class SettingsFragment extends PreferenceFragment {
 
     }
 
+    @Override
+    public void onViewCreated(View v, Bundle b) {
+        super.onViewCreated(v, b);
+        ((MainActivity) getActivity()).hideNavbar();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) getActivity()).showNavbar();
+    }
+
 
 }

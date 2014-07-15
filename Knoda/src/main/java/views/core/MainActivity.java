@@ -748,11 +748,13 @@ public class MainActivity extends BaseActivity {
     public void hideNavbar() {
         navbar.setLayoutParams(navbarHidden);
         container.setLayoutParams(containerFull);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void showNavbar() {
         navbar.setLayoutParams(navbarShown);
         container.setLayoutParams(containerPartial);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
 
