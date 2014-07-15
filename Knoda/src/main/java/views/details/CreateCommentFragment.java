@@ -26,6 +26,7 @@ import networking.NetworkCallback;
 import pubsub.NewCommentEvent;
 import views.addprediction.MessageCounter;
 import views.core.BaseFragment;
+import views.core.MainActivity;
 
 
 public class CreateCommentFragment extends BaseFragment {
@@ -91,7 +92,7 @@ public class CreateCommentFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        ((MainActivity) getActivity()).hideNavbar();
         showKeyboard(bodyEditText);
         messageCounter = new MessageCounter(bodyEditText, messageCounterTextView, 300);
 
@@ -143,5 +144,11 @@ public class CreateCommentFragment extends BaseFragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) getActivity()).showNavbar();
     }
 }

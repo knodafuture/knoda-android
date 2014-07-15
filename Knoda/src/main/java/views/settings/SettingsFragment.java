@@ -50,7 +50,6 @@ public class SettingsFragment extends PreferenceFragment {
         addPreferencesFromResource(R.layout.fragment_settings);
         getActivity().invalidateOptionsMenu();
         ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         preferenceScreen = this.getPreferenceScreen();
 
