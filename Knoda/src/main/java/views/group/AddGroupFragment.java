@@ -97,6 +97,18 @@ public class AddGroupFragment extends BaseFragment {
         hideKeyboard();
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
 
     private void submitGroup() {
 

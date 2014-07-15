@@ -101,6 +101,12 @@ public class EditGroupFragment extends BaseFragment {
         hideKeyboard();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
     private boolean validate() {
         String errorMessage = null;
         if (nameEditText.getText().length() == 0)
@@ -118,7 +124,6 @@ public class EditGroupFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_group, container, false);
-
         return view;
     }
 
@@ -126,7 +131,7 @@ public class EditGroupFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setTitle("EDIT GROUP");
-
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         if (group.avatar != null && group.avatar.small != null)
             avatarImageView.setImageUrl(group.avatar.small, networkingManager.getImageLoader());
         else

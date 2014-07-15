@@ -41,6 +41,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
         setTitle(group.name.toUpperCase());
         final GroupPredictionAdapter a = ((GroupPredictionAdapter) adapter);
         a.setGroup(group);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         /*
         headerview = new GroupPredictionListHeader(getActivity(), this);
         headerview.group = group;
@@ -107,6 +108,12 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
     public void onPause() {
         super.onPause();
         bus.post(new ChangeGroupEvent(null));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
 }

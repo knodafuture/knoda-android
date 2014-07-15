@@ -146,10 +146,17 @@ public class InvitationsFragment extends BaseFragment implements InvitationsList
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setTitle("INVITE");
         setHasOptionsMenu(true);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         animationTime = getActivity().getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         if (contacts == null) {

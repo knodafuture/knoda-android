@@ -41,6 +41,8 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
         super.onViewCreated(view, savedInstanceState);
         setTitle(group.name.toUpperCase());
         FlurryAgent.logEvent("GROUP_LEADERBOARD_" + board);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -56,5 +58,11 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
     @Override
     public String noContentString() {
         return "No Members";
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }
