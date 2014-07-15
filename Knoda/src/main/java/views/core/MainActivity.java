@@ -60,7 +60,6 @@ import managers.AppOutdatedManager;
 import managers.GcmManager;
 import models.Group;
 import models.Invitation;
-import models.KnodaScreen;
 import models.Notification;
 import models.Prediction;
 import models.ServerError;
@@ -91,12 +90,9 @@ public class MainActivity extends BaseActivity {
     private static final int userRefreshInterval = 30000;
     public String currentFragment = "";
     public HashMap<String, ArrayList<Setting>> settings;
-    GoogleCloudMessaging gcm;
     @Inject
     AppOutdatedManager appOutdatedManager;
     private GcmManager gcmManager;
-    private HashMap<KnodaScreen, Class<? extends Fragment>> classMap;
-    private HashMap<KnodaScreen, Fragment> instanceMap;
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
@@ -112,7 +108,6 @@ public class MainActivity extends BaseActivity {
 
     private HomeFragment homeFragment = null;
     private ActivityFragment activityFragment = null;
-    private AddPredictionFragment addPredictionFragment = null;
     private GroupFragment groupFragment = null;
     private MyProfileFragment myProfileFragment = null;
     private SearchFragment searchFragment = null;
@@ -189,7 +184,6 @@ public class MainActivity extends BaseActivity {
         ButterKnife.inject(this);
         bus.register(this);
         appOutdatedManager.setBus(bus);
-        instanceMap = new HashMap<KnodaScreen, Fragment>();
         settings = new HashMap<String, ArrayList<Setting>>();
         pushNotification = new Notification();
 
@@ -356,7 +350,7 @@ public class MainActivity extends BaseActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
+        transaction.addToBackStack(fragment.getClass().getSimpleName()).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
     }
 
     public boolean checkFragment(Fragment fragment) {
@@ -511,24 +505,32 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onHome() {
+        if (getCurrentFragment().equals("HomeFragment"))
+            return;
         if (homeFragment == null)
             homeFragment = HomeFragment.newInstance();
         pushFragment(homeFragment);
     }
 
     public void onActivity() {
+        if (getCurrentFragment().equals("ActivityFragment"))
+            return;
         if (activityFragment == null)
             activityFragment = ActivityFragment.newInstance();
         pushFragment(activityFragment);
     }
 
     public void onProfile() {
+        if (getCurrentFragment().equals("MyProfileFragment"))
+            return;
         if (myProfileFragment == null)
             myProfileFragment = MyProfileFragment.newInstance();
         pushFragment(myProfileFragment);
     }
 
     public void onGroups() {
+        if (getCurrentFragment().equals("GroupFragment"))
+            return;
         if (groupFragment == null)
             groupFragment = GroupFragment.newInstance();
         if (checkFragment(groupFragment))
@@ -755,6 +757,15 @@ public class MainActivity extends BaseActivity {
         navbar.setLayoutParams(navbarShown);
         container.setLayoutParams(containerPartial);
         getActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
+    private String getCurrentFragment() {
+        if (getFragmentManager().getBackStackEntryCount() == 0)
+            return "";
+        else {
+            return getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
+        }
+
     }
 
 
