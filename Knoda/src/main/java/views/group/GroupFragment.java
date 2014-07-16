@@ -48,10 +48,17 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
                 if (view instanceof CreateGroupHeaderView) {
                     fragment = AddGroupFragment.newInstance();
                 } else {
-                    GroupListCell v = ((GroupListCell) view);
-                    fragment = GroupPredictionListFragment.newInstance(v.group);
+                    if (view instanceof GroupListCell) {
+                        GroupListCell v = ((GroupListCell) view);
+                        fragment = GroupPredictionListFragment.newInstance(v.group);
+
+                    } else {
+                        fragment = AddGroupFragment.newInstance();
+                    }
+                    pushFragment(fragment);
+
                 }
-                pushFragment(fragment);
+
             }
         });
     }
@@ -67,9 +74,9 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity)getActivity()).resetNavIcons();
+        ((MainActivity) getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_groups).setBackgroundResource(R.drawable.nav_groups_active);
-        ((TextView)getActivity().findViewById(R.id.nav_groups_text)).setTextColor(Color.parseColor("#EFEFEF"));
+        ((TextView) getActivity().findViewById(R.id.nav_groups_text)).setTextColor(Color.parseColor("#EFEFEF"));
         adapter.loadPage(0);
     }
 
