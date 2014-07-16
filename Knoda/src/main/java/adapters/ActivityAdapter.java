@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -205,9 +206,15 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         TextView winlossbutton = (TextView) v.findViewById(R.id.winloss_button);
         RelativeLayout buttonContainer = (RelativeLayout) v.findViewById(R.id.winloss_button_container);
         RelativeLayout commentBackground = (RelativeLayout) v.findViewById(R.id.comment_background);
+        ImageView activityDot = (ImageView) v.findViewById(R.id.activity_dot);
 
         setUpCommentBg(commentBackground, false);
         winlossbutton.setOnClickListener(null);
+
+        if (!activityItem.seen)
+            activityDot.setVisibility(View.VISIBLE);
+        else
+            activityDot.setVisibility(View.INVISIBLE);
 
         if (activityItem.type == ActivityItemType.COMMENT && (filter.equals("all") || filter.equals("comments"))) {
             setUpCommentBg(commentBackground, true);

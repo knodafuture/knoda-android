@@ -16,7 +16,7 @@
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"/>
 
         <ImageView
             android:layout_width="38dp"
@@ -24,6 +24,13 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/avatar_mask" />
+        <ImageView
+            android:id="@+id/activity_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="44dp"
+            android:layout_marginTop="36dp"
+            android:src="@drawable/activity_dot"/>
 
         <LinearLayout
             android:id="@+id/winlosstext_container"
