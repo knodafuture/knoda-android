@@ -107,7 +107,7 @@ public class HomeFragment extends BasePredictionListFragment {
                         (Context.LAYOUT_INFLATER_SERVICE);
                 View v = inflater.inflate(R.layout.view_predict_walkthrough, null);
                 Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeingrow);
-                ((ViewGroup) getView()).addView(v);
+                ((ViewGroup) (getView()).findViewById(R.id.home_overlay)).addView(v);
                 v.startAnimation(fadeInAnimation);
                 listView.setTag(v);
                 v.setOnTouchListener(new View.OnTouchListener() {

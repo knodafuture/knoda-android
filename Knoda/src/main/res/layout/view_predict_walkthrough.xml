@@ -2,25 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="0dp"
-    android:translationY="-8dp">
+    android:translationY="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="bottom"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
-            android:gravity="right">
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/arrow" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -47,6 +35,17 @@
                 android:gravity="center"
                 android:text="Now that you're acquainted with Knoda, tap the predict icon to make your first prediction."
                 android:textColor="#FFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/arrowdown" />
         </LinearLayout>
 
     </LinearLayout>

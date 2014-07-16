@@ -434,6 +434,7 @@ public class MainActivity extends BaseActivity {
 
         if (userManager.getUser() == null || userManager.getUser().guestMode) {
             showLogin(null, null);
+            onHome();
         } else if (userManager.getUser().avatar == null) {
             UserAvatarChooserFragment f = new UserAvatarChooserFragment();
             f.show(getFragmentManager(), "avatar");
