@@ -3,6 +3,8 @@ package views.group;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,6 +33,12 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
     public static GroupFragment newInstance() {
         GroupFragment fragment = new GroupFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle b) {
+        setHasOptionsMenu(true);
+        super.onCreate(b);
     }
 
     @Override
@@ -67,7 +75,7 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group, container, false);
-
+        getActivity().invalidateOptionsMenu();
         return view;
     }
 
@@ -90,6 +98,33 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
     @Override
     public String noContentString() {
         return "You are not in any groups. Create a group with your friends to start making private predictions.";
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (((MainActivity) getActivity()).userManager.getUser().guestMode == false)
+            inflater.inflate(R.menu.groups, menu);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+//        if (((MainActivity) getActivity()).userManager.getUser().guestMode == false) {
+//            menu.removeItem(R.id.action_search);
+//            if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_create_group) != null)
+//                menu.findItem(R.id.action_create_group).setVisible(true);
+//        } else {
+//            if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_create_group) != null)
+//                menu.findItem(R.id.action_create_group).setVisible(false);
+//        }
+        super.onPrepareOptionsMenu(menu);
     }
 }
 

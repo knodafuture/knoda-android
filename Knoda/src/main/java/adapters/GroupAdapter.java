@@ -30,22 +30,20 @@ public class GroupAdapter extends PagingAdapter<Group> {
 
     @Override
     public int getCount() {
-        return super.getCount() + 1;
+        return super.getCount();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (position == 0)
-            return getHeaderView(convertView);
 
-        if (position - 1 >= objects.size())
-            return super.getView(position - 1, convertView, parent);
+        if (position >= objects.size())
+            return super.getView(position, convertView, parent);
 
         GroupListCell listItem = (GroupListCell) AdapterHelper.getConvertViewSafely(convertView, GroupListCell.class);
         if (listItem == null)
             listItem = (GroupListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_group, null);
 
-        Group group = getItem(position - 1);
+        Group group = getItem(position);
 
         if (group != null) {
             listItem.setGroup(group);
@@ -53,13 +51,6 @@ public class GroupAdapter extends PagingAdapter<Group> {
                 listItem.avatarImageView.setImageUrl(group.avatar.small, imageLoader);
         }
         return listItem;
-    }
-
-    View getHeaderView(View convertView) {
-        header = (CreateGroupHeaderView) AdapterHelper.getConvertViewSafely(convertView, CreateGroupHeaderView.class);
-        if (header == null)
-            header = new CreateGroupHeaderView(context);
-        return header;
     }
 
     public boolean canLoadNextPage() {

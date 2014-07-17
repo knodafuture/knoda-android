@@ -336,6 +336,10 @@ public class MainActivity extends BaseActivity {
                 onSettings();
                 break;
             }
+            case R.id.action_create_group: {
+                onCreateGroup();
+                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -543,6 +547,10 @@ public class MainActivity extends BaseActivity {
         if (settingsFragment == null)
             settingsFragment = new SettingsFragment();
         pushFragment(settingsFragment);
+    }
+
+    private void onCreateGroup() {
+        pushFragment(AddGroupFragment.newInstance());
     }
 
     private void onAddPrediction() {
