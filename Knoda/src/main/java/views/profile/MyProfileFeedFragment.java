@@ -25,6 +25,7 @@ import networking.NetworkListCallback;
 import pubsub.ActivitiesViewedEvent;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
+import views.predictionlists.PredictionListCell;
 
 public class MyProfileFeedFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Prediction> {
     @InjectView(R.id.base_listview)
@@ -135,8 +136,10 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DetailsFragment fragment = DetailsFragment.newInstance(predictionAdapter.getItem(i));
-                pushFragment(fragment);
+                if (view instanceof PredictionListCell) {
+                    DetailsFragment fragment = DetailsFragment.newInstance(predictionAdapter.getItem(i));
+                    pushFragment(fragment);
+                }
             }
         });
     }
