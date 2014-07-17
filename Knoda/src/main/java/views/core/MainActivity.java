@@ -312,8 +312,9 @@ public class MainActivity extends BaseActivity {
 
         if (getFragmentManager().getBackStackEntryCount() > 1)
             getFragmentManager().popBackStack();
-        else
-            super.onBackPressed();
+        else if (getFragmentManager().getBackStackEntryCount() <= 1) {
+            finish();
+        }
     }
 
     @Override
@@ -741,6 +742,7 @@ public class MainActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && getFragmentManager().getBackStackEntryCount() <= 1) {
             System.out.println("Stack: " + getFragmentManager().getBackStackEntryCount());
+            finish();
             return true;
         } else {
             System.out.println("Key Down");

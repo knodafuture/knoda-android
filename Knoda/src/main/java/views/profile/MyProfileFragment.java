@@ -109,8 +109,10 @@ public class MyProfileFragment extends BaseFragment {
         mainActivity.networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
             @Override
             public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
-                for (SettingsCategory s : object) {
-                    ((MainActivity) getActivity()).settings.put(s.name, s.settings);
+                if (error == null) {
+                    for (SettingsCategory s : object) {
+                        ((MainActivity) getActivity()).settings.put(s.name, s.settings);
+                    }
                 }
             }
         });
