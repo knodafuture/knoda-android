@@ -2,41 +2,46 @@ package views.settings;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.knoda.knoda.R;
 
+import butterknife.OnClick;
 import managers.UserManager;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
+import views.core.BaseFragment;
 import views.core.MainActivity;
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends BaseFragment {
 
-    Preference.OnPreferenceClickListener changeListener = new Preference.OnPreferenceClickListener() {
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
-            if (preference.getKey().equals("push")) {
-                loadPush();
-            } else if (preference.getKey().equals("profile")) {
-                loadProfile();
-            } else if (preference.getKey().equals("about")) {
-                loadAbout();
-            } else if (preference.getKey().equals("logout")) {
-                onClickSignOut();
-            }
-            return false;
-        }
-    };
-    private PreferenceScreen preferenceScreen;
+    @OnClick(R.id.pushNotifications)
+    public void onPush() {
+        loadPush();
+    }
+
+    @OnClick(R.id.profileSettings)
+    public void onProfile() {
+        loadProfile();
+    }
+
+    @OnClick(R.id.about)
+    public void onAbout() {
+        loadAbout();
+    }
+
+    @OnClick(R.id.logout_button)
+    public void OnLogout() {
+        onClickSignOut();
+    }
+
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -47,44 +52,24 @@ public class SettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setHasOptionsMenu(true);
-        addPreferencesFromResource(R.layout.fragment_settings);
         getActivity().invalidateOptionsMenu();
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setHomeButtonEnabled(true);
-        preferenceScreen = this.getPreferenceScreen();
-
-        buildPage();
-
     }
 
-    public void buildPage() {
-        Context c = getActivity();
-        Preference p1 = new Preference(c);
-        p1.setTitle("Push Notifications");
-        p1.setKey("push");
-        p1.setOnPreferenceClickListener(changeListener);
-        preferenceScreen.addPreference(p1);
+    @Override
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle b) {
+        View view = layoutInflater.inflate(R.layout.fragment_settings, container, false);
+        buildPage(view);
+        return view;
+    }
 
-        Preference p2 = new Preference(c);
-        p2.setTitle("Profile Settings");
-        p2.setKey("profile");
-        p2.setOnPreferenceClickListener(changeListener);
-        preferenceScreen.addPreference(p2);
-
-        Preference p3 = new Preference(c);
-        p3.setTitle("About");
-        p3.setKey("about");
-        p3.setOnPreferenceClickListener(changeListener);
-        preferenceScreen.addPreference(p3);
-
+    public void buildPage(View v) {
+        Button logout = (Button) v.findViewById(R.id.logout_button);
         if (((MainActivity) getActivity()).userManager.getUser() != null) {
-            Preference p4 = new Preference(c);
-            p4.setTitle("Log Out " + ((MainActivity) getActivity()).userManager.getUser().username);
-            p4.setKey("logout");
-            p4.setOnPreferenceClickListener(changeListener);
-            preferenceScreen.addPreference(p4);
-        }
-
+            logout.setText("Log Out " + ((MainActivity) getActivity()).userManager.getUser().username);
+        } else
+            logout.setVisibility(View.INVISIBLE);
 
     }
 

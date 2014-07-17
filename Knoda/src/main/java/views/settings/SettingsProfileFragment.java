@@ -81,7 +81,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setHasOptionsMenu(true);
-        addPreferencesFromResource(R.layout.fragment_settings);
+        addPreferencesFromResource(R.layout.fragment_settingspush);
         getActivity().invalidateOptionsMenu();
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

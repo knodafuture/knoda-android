@@ -43,10 +43,11 @@ import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
 import views.predictionlists.HomeFragment;
-import views.profile.MyProfileFragment;
 import views.profile.MyProfileFeedFragment;
+import views.profile.MyProfileFragment;
 import views.profile.PhotoFragment;
 import views.search.SearchFragment;
+import views.settings.SettingsFragment;
 
 /**
  * Created by nick on 1/17/14.
@@ -87,7 +88,8 @@ import views.search.SearchFragment;
                 UserAvatarChooserFragment.class,
                 SignupConfirmFragment.class,
                 MyProfileFragment.class,
-                MyProfileFeedFragment.class
+                MyProfileFeedFragment.class,
+                SettingsFragment.class
         },
         addsTo = KnodaModule.class,
         library = true
