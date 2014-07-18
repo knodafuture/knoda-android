@@ -13,12 +13,15 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import adapters.GroupAdapter;
 import adapters.PagingAdapter;
 import butterknife.InjectView;
 import models.Group;
 import networking.NetworkListCallback;
+import pubsub.GroupNavEvent;
+import pubsub.HomeNavEvent;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 import views.predictionlists.GroupPredictionListFragment;
@@ -33,6 +36,12 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
     public static GroupFragment newInstance() {
         GroupFragment fragment = new GroupFragment();
         return fragment;
+    }
+
+    @Subscribe
+    public void groupNav(final GroupNavEvent event) {
+        if (listView != null)
+            listView.smoothScrollToPosition(0);
     }
 
     @Override

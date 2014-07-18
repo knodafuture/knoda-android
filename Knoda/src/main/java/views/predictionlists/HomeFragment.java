@@ -20,6 +20,7 @@ import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 
+import pubsub.HomeNavEvent;
 import pubsub.LoginFlowDoneEvent;
 import pubsub.ReloadListsEvent;
 import views.core.MainActivity;
@@ -32,6 +33,12 @@ public class HomeFragment extends BasePredictionListFragment {
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
+    }
+
+    @Subscribe
+    public void homeNav(final HomeNavEvent event) {
+        if (listView != null)
+            listView.smoothScrollToPosition(0);
     }
 
     @Subscribe

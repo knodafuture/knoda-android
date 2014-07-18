@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,6 +13,7 @@ import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,7 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkListCallback;
 import pubsub.ActivitiesViewedEvent;
+import pubsub.ProfileNavEvent;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
 import views.predictionlists.PredictionListCell;
@@ -45,6 +46,12 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
         b.putInt("pageNumber", id);
         fragment.setArguments(b);
         return fragment;
+    }
+
+    @Subscribe
+    public void profileNav(final ProfileNavEvent event) {
+        if (listView != null)
+            listView.smoothScrollToPosition(0);
     }
 
     @Override
@@ -85,18 +92,6 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
         });
         pListView.setShowViewWhileRefreshing(false);
         loadPage(0);
-        pListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-            }
-        });
-
     }
 
     public void loadPage(final int page) {

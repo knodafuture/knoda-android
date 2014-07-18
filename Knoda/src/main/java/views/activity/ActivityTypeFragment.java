@@ -14,6 +14,7 @@ import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,8 @@ import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.ActivitiesViewedEvent;
+import pubsub.ActivityNavEvent;
+import pubsub.HomeNavEvent;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
 import views.group.GroupSettingsFragment;
@@ -48,6 +51,12 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
         b.putInt("pageNumber", id);
         fragment.setArguments(b);
         return fragment;
+    }
+
+    @Subscribe
+    public void activityNav(final ActivityNavEvent event) {
+        if (listView != null)
+            listView.smoothScrollToPosition(0);
     }
 
     @Override

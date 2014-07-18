@@ -66,8 +66,12 @@ import models.ServerError;
 import models.Setting;
 import models.User;
 import networking.NetworkCallback;
+import pubsub.ActivityNavEvent;
 import pubsub.ChangeGroupEvent;
+import pubsub.GroupNavEvent;
+import pubsub.HomeNavEvent;
 import pubsub.LoginFlowDoneEvent;
+import pubsub.ProfileNavEvent;
 import pubsub.ReloadListsEvent;
 import pubsub.ScreenCaptureEvent;
 import views.activity.ActivityFragment;
@@ -511,32 +515,40 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onHome() {
-        if (getCurrentFragment().equals("HomeFragment"))
+        if (getCurrentFragment().equals("HomeFragment")) {
+            bus.post(new HomeNavEvent());
             return;
+        }
         if (homeFragment == null)
             homeFragment = HomeFragment.newInstance();
         pushFragment(homeFragment);
     }
 
     public void onActivity() {
-        if (getCurrentFragment().equals("ActivityFragment"))
+        if (getCurrentFragment().equals("ActivityFragment")) {
+            bus.post(new ActivityNavEvent());
             return;
+        }
         if (activityFragment == null)
             activityFragment = ActivityFragment.newInstance();
         pushFragment(activityFragment);
     }
 
     public void onProfile() {
-        if (getCurrentFragment().equals("MyProfileFragment"))
+        if (getCurrentFragment().equals("MyProfileFragment")) {
+            bus.post(new ProfileNavEvent());
             return;
+        }
         if (myProfileFragment == null)
             myProfileFragment = MyProfileFragment.newInstance();
         pushFragment(myProfileFragment);
     }
 
     public void onGroups() {
-        if (getCurrentFragment().equals("GroupFragment"))
+        if (getCurrentFragment().equals("GroupFragment")) {
+            bus.post(new GroupNavEvent());
             return;
+        }
         if (groupFragment == null)
             groupFragment = GroupFragment.newInstance();
         if (checkFragment(groupFragment))

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,6 +34,8 @@ import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.GroupNavEvent;
+import pubsub.ProfileNavEvent;
 import unsorted.ErrorReporter;
 import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
