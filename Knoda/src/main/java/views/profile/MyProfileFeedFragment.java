@@ -88,7 +88,13 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
             }
         });
-        pListView.setShowViewWhileRefreshing(false);
+//        pListView.setOnScrollChangedListener(new PullToRefreshListView.OnScrollChangedListener() {
+//            @Override
+//            public void onScrollChanged(PullToRefreshListView list, int l, int t, int oldl, int oldt) {
+//                System.out.println("Profile Feed Scroll");
+//            }
+//        });
+        pListView.setRefreshing(true);
         loadPage(0);
     }
 
@@ -141,8 +147,8 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (view instanceof PredictionListCell) {
-                    DetailsFragment fragment = DetailsFragment.newInstance(predictionAdapter.getItem(i));
+                if (view instanceof PredictionListCell && (i - 1) >= 0) {
+                    DetailsFragment fragment = DetailsFragment.newInstance(predictionAdapter.getItem(i - 1));
                     pushFragment(fragment);
                 }
             }
