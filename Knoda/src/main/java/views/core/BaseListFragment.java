@@ -57,7 +57,7 @@ public class BaseListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        pListView.setShowIndicator(false);
         listView = pListView.getRefreshableView();
         onListViewCreated(listView);
 
