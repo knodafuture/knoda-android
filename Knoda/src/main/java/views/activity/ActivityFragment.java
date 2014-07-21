@@ -16,7 +16,6 @@ import java.util.Random;
 
 import adapters.ActivityPagerAdapter;
 import butterknife.OnClick;
-import pubsub.ActivitiesViewedEvent;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 
@@ -115,7 +114,6 @@ public class ActivityFragment extends BaseFragment {
         ((MainActivity) getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity_active);
         ((TextView) getActivity().findViewById(R.id.nav_activity_text)).setTextColor(Color.parseColor("#EFEFEF"));
-        bus.post(new ActivitiesViewedEvent());
         changeFilter(sharedPrefManager.getSavedActivityFilter());
 
 

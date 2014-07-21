@@ -23,7 +23,6 @@ import butterknife.InjectView;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkListCallback;
-import pubsub.ActivitiesViewedEvent;
 import pubsub.ProfileNavEvent;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
@@ -79,7 +78,6 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
     @Override
     public void onResume() {
         super.onResume();
-        bus.post(new ActivitiesViewedEvent());
         pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {

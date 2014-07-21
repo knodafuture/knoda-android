@@ -28,9 +28,7 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import pubsub.ActivitiesViewedEvent;
 import pubsub.ActivityNavEvent;
-import pubsub.HomeNavEvent;
 import views.core.BaseListFragment;
 import views.details.DetailsFragment;
 import views.group.GroupSettingsFragment;
@@ -85,7 +83,6 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     @Override
     public void onResume() {
         super.onResume();
-        bus.post(new ActivitiesViewedEvent());
         pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
