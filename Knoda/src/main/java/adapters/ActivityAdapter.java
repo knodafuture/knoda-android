@@ -257,7 +257,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         }
 
         if (activityItem.image_url != null)
-            setImage(iconImageView, activityItem.image_url);
+            setImageUrl(iconImageView, activityItem.image_url);
 
         if (activityItem.title != null)
             winlosstitle.setText(Html.fromHtml(activityItem.title));
@@ -314,7 +314,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             imageView.setBackgroundResource(id);
     }
 
-    private void setImage(NetworkImageView imageView, String url) {
+    private void setImageUrl(NetworkImageView imageView, String url) {
         //imageView.setImageDrawable(null);
         imageView.setBackgroundResource(R.drawable.ic_notification_avatar);
         imageView.setImageUrl(url, imageLoader);
