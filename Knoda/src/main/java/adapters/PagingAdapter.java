@@ -79,8 +79,9 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         if (objects.size() == 0 && noObjectsRetrieved)
             return getNoContentView();
 
-        View view = LayoutInflater.from(context).inflate(R.layout.list_cell_loading, null);
-        return view;
+        //View view = LayoutInflater.from(context).inflate(R.layout.list_cell_loading, null);
+        //return view;
+        return new View(parent.getContext());
     }
 
     public void loadPage(final int page) {

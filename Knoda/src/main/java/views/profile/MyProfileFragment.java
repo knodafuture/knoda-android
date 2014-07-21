@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,6 +34,7 @@ import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import pubsub.ProfileFeedScrollEvent;
 import unsorted.ErrorReporter;
 import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
@@ -102,6 +104,13 @@ public class MyProfileFragment extends BaseFragment {
             intent.putExtra("cancelable", true);
             startActivityForResult(intent, 123123129);
         }
+    }
+
+    @Subscribe
+    public void feedScroll(final ProfileFeedScrollEvent event) {
+        System.out.println("Profile Scroll");
+        topview.findViewById(R.id.statsContainer).setVisibility(View.INVISIBLE);
+        topview.findViewById(R.id.avatarContainer).setVisibility(View.INVISIBLE);
     }
 
     @Override

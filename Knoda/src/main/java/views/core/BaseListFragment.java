@@ -65,7 +65,6 @@ public class BaseListFragment extends BaseFragment {
             adapter = getAdapter();
             adapter.loadPage(0);
         }
-
         pListView.setAdapter(adapter);
 
         addScrollListener();
@@ -86,6 +85,7 @@ public class BaseListFragment extends BaseFragment {
                 adapter.loadPage(0);
             }
         });
+        pListView.setRefreshing(true);
     }
 
     @Override
