@@ -96,7 +96,7 @@ public class MyProfileFragment extends BaseFragment {
     @OnClick(R.id.profile_avatar)
     void OnClickAvatar() {
         if (userManager.getUser().guestMode) {
-            ((MainActivity)getActivity()).showLogin("Whoa there!","You need to be a registered user to change your avatar!");
+            ((MainActivity) getActivity()).showLogin("Whoa there!", "You need to be a registered user to change your avatar!");
         } else {
             Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
             intent.putExtra("cancelable", true);
@@ -107,9 +107,8 @@ public class MyProfileFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setHasOptionsMenu(true);
         mainActivity = ((MainActivity) getActivity());
-
+        setHasOptionsMenu(true);
         mainActivity.networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
             @Override
             public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
@@ -206,7 +205,7 @@ public class MyProfileFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (mainActivity.userManager.getUser().guestMode == false)
+        if (mainActivity.userManager.getUser() != null && mainActivity.userManager.getUser().guestMode == false)
             inflater.inflate(R.menu.profile, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
