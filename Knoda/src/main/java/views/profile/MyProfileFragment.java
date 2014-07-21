@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
-import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,8 +33,6 @@ import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import pubsub.GroupNavEvent;
-import pubsub.ProfileNavEvent;
 import unsorted.ErrorReporter;
 import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
@@ -98,9 +95,13 @@ public class MyProfileFragment extends BaseFragment {
 
     @OnClick(R.id.profile_avatar)
     void OnClickAvatar() {
-        Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
-        intent.putExtra("cancelable", true);
-        startActivityForResult(intent, 123123129);
+        if (userManager.getUser().guestMode) {
+            ((MainActivity)getActivity()).showLogin("Whoa there!","You need to be a registered user to change your avatar!");
+        } else {
+            Intent intent = new Intent(getActivity(), UserAvatarChooserActivity.class);
+            intent.putExtra("cancelable", true);
+            startActivityForResult(intent, 123123129);
+        }
     }
 
     @Override

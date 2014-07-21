@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -32,6 +33,7 @@ import models.ServerError;
 import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
+import unsorted.BitmapTools;
 import unsorted.ErrorReporter;
 import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
@@ -48,7 +50,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
     public SharedPrefManager sharedPrefManager;
     public FacebookManager facebookManager;
     public TwitterManager twitterManager;
-    BitmapDrawable userPic;
+    Drawable userPic;
     Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(Preference preference) {
@@ -95,18 +97,8 @@ public class SettingsProfileFragment extends PreferenceFragment {
         twitterManager = mainActivity.twitterManager;
         errorReporter = mainActivity.errorReporter;
 
+
         userPic = (BitmapDrawable) getActivity().getResources().getDrawable(R.drawable.ic_notification_avatar);
-        ((MainActivity) getActivity()).networkingManager.getImageLoader().get(userManager.getUser().avatar.big, new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                userPic = new BitmapDrawable(response.getBitmap());
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
 
     }
 
@@ -171,11 +163,27 @@ public class SettingsProfileFragment extends PreferenceFragment {
         p6.setOnPreferenceClickListener(clickListener);
         preferenceScreen.addPreference(p6);
 
+        loadUserPic();
+
+    }
+
+    private void loadUserPic() {
         ((MainActivity) getActivity()).networkingManager.getImageLoader().get(userManager.getUser().avatar.big, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 userPic = new BitmapDrawable(response.getBitmap());
-                preferenceScreen.getPreference(0).setIcon(userPic);
+                if (response == null || response.getBitmap() == null) {
+                    android.os.Handler handler = new android.os.Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadUserPic();
+                        }
+                    }, 100);
+                } else {
+                    userPic = new BitmapDrawable(BitmapTools.getclip(response.getBitmap()));
+                    preferenceScreen.getPreference(0).setIcon(userPic);
+                }
             }
 
             @Override
@@ -183,7 +191,6 @@ public class SettingsProfileFragment extends PreferenceFragment {
 
             }
         });
-
     }
 
     @Override
