@@ -87,4 +87,13 @@
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Apptheme</item>
     </style>
 
+    <style name="Theme.Transparent" parent="Theme.Apptheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
 </resources>

@@ -55,19 +55,22 @@
             android:name="views.avatar.UserAvatarChooserActivity"
             android:label="@string/app_name"
             android:parentActivityName="views.core.MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"></activity>
         <activity
             android:name="views.avatar.GroupAvatarChooserActivity"
             android:label="@string/app_name"
             android:parentActivityName="views.core.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent">
 
         </activity>
         <activity
             android:name="com.android.camera.CropImage"
             android:label="@string/app_name"
             android:parentActivityName="views.avatar.UserAvatarChooserActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"/>
         <activity
             android:name="views.core.SplashActivity"
             android:label="Knoda"
