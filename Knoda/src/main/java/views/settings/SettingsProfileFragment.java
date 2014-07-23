@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -98,7 +99,6 @@ public class SettingsProfileFragment extends PreferenceFragment {
         errorReporter = mainActivity.errorReporter;
         sharedPrefManager = mainActivity.sharedPrefManager;
 
-
         userPic = (BitmapDrawable) getActivity().getResources().getDrawable(R.drawable.ic_notification_avatar);
 
     }
@@ -109,7 +109,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
 
         Context c = getActivity();
         Preference p1 = new Preference(c);
-        p1.setTitle("Profile Photo");
+        p1.setTitle("Profile photo");
         p1.setSummary("Keep it fresh, tap to update your mugshot");
         p1.setKey("photo");
         p1.setIcon(userPic);
@@ -131,7 +131,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
         preferenceScreen.addPreference(p3);
 
         Preference p4 = new Preference(c);
-        p4.setTitle("Change Password");
+        p4.setTitle("Change password");
         p4.setSummary("lock it down");
         p4.setKey("password");
         p4.setOnPreferenceClickListener(clickListener);
@@ -182,7 +182,8 @@ public class SettingsProfileFragment extends PreferenceFragment {
                         }
                     }, 100);
                 } else {
-                    userPic = new BitmapDrawable(BitmapTools.getclip(response.getBitmap()));
+                    final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+                    userPic = new BitmapDrawable(BitmapTools.getclipSized(response.getBitmap(), onedp * 144, onedp * 144));
                     preferenceScreen.getPreference(0).setIcon(userPic);
                 }
             }

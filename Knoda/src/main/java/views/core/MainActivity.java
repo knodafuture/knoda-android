@@ -485,8 +485,6 @@ public class MainActivity extends BaseActivity {
         KnodaApplication.activityResumed();
         ((KnodaApplication) getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
-
-
     }
 
     @Override
