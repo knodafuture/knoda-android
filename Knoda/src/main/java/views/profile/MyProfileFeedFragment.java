@@ -108,6 +108,7 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
             }
         });
         pListView.setRefreshing(true);
+        resizeHeader(0);
         loadPage(0);
     }
 

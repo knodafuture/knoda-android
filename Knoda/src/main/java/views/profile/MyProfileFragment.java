@@ -160,6 +160,7 @@ public class MyProfileFragment extends BaseFragment {
         ((TextView) getActivity().findViewById(R.id.nav_profile_text)).setTextColor(Color.parseColor("#EFEFEF"));
         updateUser(user);
         topContainer = (LinearLayout) topview.findViewById(R.id.topContainer);
+        changeFilter(R.id.activity_1);
 
         topContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
