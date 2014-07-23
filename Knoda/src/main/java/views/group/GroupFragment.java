@@ -21,7 +21,6 @@ import butterknife.InjectView;
 import models.Group;
 import networking.NetworkListCallback;
 import pubsub.GroupNavEvent;
-import pubsub.HomeNavEvent;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 import views.predictionlists.GroupPredictionListFragment;

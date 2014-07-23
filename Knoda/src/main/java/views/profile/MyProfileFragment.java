@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
-import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,7 +33,7 @@ import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import pubsub.ProfileFeedScrollEvent;
+import pubsub.ProfilePagerScrollEvent;
 import unsorted.ErrorReporter;
 import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
@@ -69,6 +68,12 @@ public class MyProfileFragment extends BaseFragment {
     ProfilePagerAdapter adapter;
     MainActivity mainActivity;
     private ViewPager mViewPager;
+    @InjectView(R.id.topContainer)
+    LinearLayout topContainer;
+    int topContainerHeight;
+
+    public boolean loaded = false;
+    public LinearLayout.LayoutParams params;
 
     public static MyProfileFragment newInstance() {
         MyProfileFragment fragment = new MyProfileFragment();
@@ -106,13 +111,6 @@ public class MyProfileFragment extends BaseFragment {
         }
     }
 
-    @Subscribe
-    public void feedScroll(final ProfileFeedScrollEvent event) {
-        System.out.println("Profile Scroll");
-        topview.findViewById(R.id.statsContainer).setVisibility(View.INVISIBLE);
-        topview.findViewById(R.id.avatarContainer).setVisibility(View.INVISIBLE);
-    }
-
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -145,6 +143,7 @@ public class MyProfileFragment extends BaseFragment {
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
         selectedUnderline = view.findViewById(R.id.underline_1);
 
+
         return view;
     }
 
@@ -152,6 +151,7 @@ public class MyProfileFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("Profile_Screen");
+
     }
 
     @Override
@@ -162,7 +162,17 @@ public class MyProfileFragment extends BaseFragment {
         getActivity().findViewById(R.id.nav_profile).setBackgroundResource(R.drawable.nav_me_active);
         ((TextView) getActivity().findViewById(R.id.nav_profile_text)).setTextColor(Color.parseColor("#EFEFEF"));
         updateUser(user);
+        topContainer = (LinearLayout) topview.findViewById(R.id.topContainer);
 
+        topContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                topContainerHeight = topContainer.getHeight();
+                params = (LinearLayout.LayoutParams) topContainer.getLayoutParams();
+                topContainer.removeOnLayoutChangeListener(this);
+                loaded = true;
+            }
+        });
         if (mViewPager != null) {
             topview.removeView(mViewPager);
         }
@@ -171,7 +181,7 @@ public class MyProfileFragment extends BaseFragment {
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                bus.post(new ProfilePagerScrollEvent());
             }
 
             @Override
@@ -194,10 +204,16 @@ public class MyProfileFragment extends BaseFragment {
             }
         });
         topview.addView(mViewPager);
-        adapter = new ProfilePagerAdapter(getFragmentManager());
+        adapter = new ProfilePagerAdapter(getFragmentManager(), this);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);
 
+    }
+
+    @Override
+    public void onPause() {
+        loaded = false;
+        super.onPause();
     }
 
     @Override
@@ -434,6 +450,5 @@ public class MyProfileFragment extends BaseFragment {
             }
         });
     }
-
 
 }
