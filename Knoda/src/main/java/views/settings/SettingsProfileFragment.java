@@ -96,6 +96,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
         facebookManager = new FacebookManager(userManager, networkingManager);
         twitterManager = mainActivity.twitterManager;
         errorReporter = mainActivity.errorReporter;
+        sharedPrefManager = mainActivity.sharedPrefManager;
 
 
         userPic = (BitmapDrawable) getActivity().getResources().getDrawable(R.drawable.ic_notification_avatar);
@@ -297,6 +298,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
         }
 
         spinner.show();
+        sharedPrefManager.setTwitterAuthScreen("profile");
         twitterManager.openSession(getActivity());
     }
 
