@@ -51,6 +51,7 @@ public abstract class AvatarChooserActivity extends BaseActivity {
     private File cameraOutputFile;
     private RequestQueue requestQueue;
     private boolean cancelable;
+    private boolean shownWindow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +85,10 @@ public abstract class AvatarChooserActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
 
-        if (hasFocus && !madeInitialSelection)
+        if (hasFocus && !madeInitialSelection && !shownWindow) {
+            shownWindow = true;
             openContextMenu(imageView);
+        }
 
         super.onWindowFocusChanged(hasFocus);
     }
