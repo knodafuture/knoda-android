@@ -445,7 +445,11 @@ public class MainActivity extends BaseActivity {
             UserAvatarChooserFragment f = new UserAvatarChooserFragment();
             f.show(getFragmentManager(), "avatar");
         } else {
-            onHome();
+            if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
+                sharedPrefManager.setTwitterAuthScreen("");
+                onProfile();
+            } else
+                onHome();
         }
     }
 

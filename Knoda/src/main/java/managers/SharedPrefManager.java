@@ -33,6 +33,7 @@ public class SharedPrefManager {
     private static final String SAVED_VOTING_WALKTHROUGH_KEY = "SAVED_VOTING_WALKTHROUGHT";
     private static final String SAVED_AGREED_TO_TERMS_KEYS = "SAVED_AGREEED_TO_TERMS_KEY";
     private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
+    private static final String TWITTER_AUTH_SCREEN = "TWITTER_AUTH_SCREEN";
     private Context context;
 
     public SharedPrefManager(Context context) {
@@ -212,5 +213,15 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putInt(SAVED_ACTIVITY_FILTER, filter).commit();
     }
+
+    public String getTwitterAuthScreen() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getString(TWITTER_AUTH_SCREEN, "");
+    }
+    public void setTwitterAuthScreen(String screen) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putString(TWITTER_AUTH_SCREEN, screen).commit();
+    }
+
 }
 

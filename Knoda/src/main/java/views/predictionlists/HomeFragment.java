@@ -86,7 +86,7 @@ public class HomeFragment extends BasePredictionListFragment {
 
     @Override
     protected void onLoadFinished() {
-        if (adapter.currentPage == 0 && !sharedPrefManager.getFirstLaunch() && !sharedPrefManager.haveShownPredictionWalkthrough() && !userManager.getUser().guestMode)
+        if (adapter.currentPage == 0 && !sharedPrefManager.getFirstLaunch() && !sharedPrefManager.haveShownPredictionWalkthrough() && !userManager.getUser().guestMode && userManager.getUser().points > 0)
             showPredictionWalkthrough();
     }
 

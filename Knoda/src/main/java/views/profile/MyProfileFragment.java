@@ -142,7 +142,6 @@ public class MyProfileFragment extends BaseFragment {
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
         selectedUnderline = view.findViewById(R.id.underline_1);
 
-
         return view;
     }
 
@@ -150,7 +149,6 @@ public class MyProfileFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("Profile_Screen");
-
     }
 
     @Override
@@ -293,7 +291,6 @@ public class MyProfileFragment extends BaseFragment {
                 selectedUnderline = topview.findViewById(R.id.underline_2);
                 break;
         }
-        //sharedPrefManager.setSavedActivityFilter(id);
         selectedFilter.setTextColor(getResources().getColor(R.color.knodaLighterGreen));
         selectedFilter = ((TextView) topview.findViewById(id));
         selectedFilter.setTextColor(Color.WHITE);
@@ -383,6 +380,7 @@ public class MyProfileFragment extends BaseFragment {
             finishAddingTwitterAccount();
         }
         spinner.show();
+        sharedPrefManager.setTwitterAuthScreen("profile");
         twitterManager.openSession(getActivity());
     }
 
