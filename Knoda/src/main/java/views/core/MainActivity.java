@@ -94,8 +94,13 @@ public class MainActivity extends BaseActivity {
     private static final int userRefreshInterval = 30000;
     public String currentFragment = "";
     public HashMap<String, ArrayList<Setting>> settings;
+    public Menu menu;
     @Inject
     AppOutdatedManager appOutdatedManager;
+    @InjectView(R.id.navbar)
+    LinearLayout navbar;
+    @InjectView(R.id.fragmentContainer)
+    FrameLayout container;
     private GcmManager gcmManager;
     private boolean actionBarEnabled = true;
     private String title;
@@ -109,20 +114,12 @@ public class MainActivity extends BaseActivity {
             refreshUser();
         }
     };
-
     private HomeFragment homeFragment = null;
     private ActivityFragment activityFragment = null;
     private GroupFragment groupFragment = null;
     private MyProfileFragment myProfileFragment = null;
     private SearchFragment searchFragment = null;
     private SettingsFragment settingsFragment = null;
-
-    public Menu menu;
-    @InjectView(R.id.navbar)
-    LinearLayout navbar;
-    @InjectView(R.id.fragmentContainer)
-    FrameLayout container;
-
     private RelativeLayout.LayoutParams navbarShown;
     private RelativeLayout.LayoutParams navbarHidden;
     private RelativeLayout.LayoutParams containerFull;

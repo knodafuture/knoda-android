@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Predict"
-                android:textColor="#77BC1F"/>
+                android:textColor="#77BC1F" />
         </LinearLayout>
 
         <LinearLayout

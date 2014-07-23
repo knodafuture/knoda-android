@@ -22,6 +22,11 @@ import views.core.MainActivity;
 
 public class SettingsFragment extends BaseFragment {
 
+    public static SettingsFragment newInstance() {
+        SettingsFragment fragment = new SettingsFragment();
+        return fragment;
+    }
+
     @OnClick(R.id.pushNotifications)
     public void onPush() {
         loadPush();
@@ -40,12 +45,6 @@ public class SettingsFragment extends BaseFragment {
     @OnClick(R.id.logout_button)
     public void OnLogout() {
         onClickSignOut();
-    }
-
-
-    public static SettingsFragment newInstance() {
-        SettingsFragment fragment = new SettingsFragment();
-        return fragment;
     }
 
     @Override

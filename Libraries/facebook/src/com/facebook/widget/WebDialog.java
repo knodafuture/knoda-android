@@ -369,7 +369,7 @@ public class WebDialog extends Dialog {
         private String applicationId;
         private String action;
         private OnCompleteListener listener;
-        private Bundle parameters;        private int theme = DEFAULT_THEME;
+        private Bundle parameters;
         protected BuilderBase(Context context, String action) {
             Session activeSession = Session.getActiveSession();
             if (activeSession != null && activeSession.isOpened()) {
@@ -384,7 +384,7 @@ public class WebDialog extends Dialog {
                 }
             }
             finishInit(context, action, null);
-        }
+        }        private int theme = DEFAULT_THEME;
 
         protected BuilderBase(Context context, Session session, String action, Bundle parameters) {
             Validate.notNull(session, "session");

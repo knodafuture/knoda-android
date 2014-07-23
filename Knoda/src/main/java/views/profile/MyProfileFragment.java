@@ -47,6 +47,8 @@ public class MyProfileFragment extends BaseFragment {
     public TwitterManager twitterManager;
     public ErrorReporter errorReporter;
     public Spinner spinner;
+    public boolean loaded = false;
+    public LinearLayout.LayoutParams params;
     @InjectView(R.id.topview)
     LinearLayout topview;
     @InjectView(R.id.profile_twitter)
@@ -67,13 +69,10 @@ public class MyProfileFragment extends BaseFragment {
     View selectedUnderline;
     ProfilePagerAdapter adapter;
     MainActivity mainActivity;
-    private ViewPager mViewPager;
     @InjectView(R.id.topContainer)
     LinearLayout topContainer;
     int topContainerHeight;
-
-    public boolean loaded = false;
-    public LinearLayout.LayoutParams params;
+    private ViewPager mViewPager;
 
     public static MyProfileFragment newInstance() {
         MyProfileFragment fragment = new MyProfileFragment();
@@ -373,7 +372,7 @@ public class MyProfileFragment extends BaseFragment {
 
 
     private void handleTwitter() {
-        if (userManager.getUser().getTwitterAccount() != null)
+        if (userManager.getUser() != null && userManager.getUser().getTwitterAccount() != null)
             removeTwitterAccount();
         else
             addTwitterAccount();

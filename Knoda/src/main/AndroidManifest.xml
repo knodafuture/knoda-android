@@ -70,7 +70,7 @@
             android:label="@string/app_name"
             android:parentActivityName="views.avatar.UserAvatarChooserActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent"/>
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name="views.core.SplashActivity"
             android:label="Knoda"
