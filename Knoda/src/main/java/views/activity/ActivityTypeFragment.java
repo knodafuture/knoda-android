@@ -83,17 +83,17 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     @Override
     public void onResume() {
         super.onResume();
-        pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                loadPage(0);
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-            }
-        });
-        pListView.setShowViewWhileRefreshing(false);
+//        pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+//            @Override
+//            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+//                loadPage(0);
+//            }
+//
+//            @Override
+//            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+//            }
+//        });
+        pListView.setRefreshing(true);
         loadPage(0);
 
     }
