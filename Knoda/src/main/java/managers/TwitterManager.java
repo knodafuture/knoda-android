@@ -110,6 +110,12 @@ public class TwitterManager {
         }
     }
 
+    public void clearTwitterInfo() {
+        token = null;
+        accessToken = null;
+        savedData = null;
+    }
+
     private class AccessTokenContainer {
         public NetworkCallback<SocialAccount> callback;
         public Uri uri;

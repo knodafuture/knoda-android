@@ -355,6 +355,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
                             errorReporter.showError(error);
                             return;
                         }
+                        twitterManager.clearTwitterInfo();
                         updateUser(object);
                     }
                 });

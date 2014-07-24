@@ -446,7 +446,7 @@ public class MainActivity extends BaseActivity {
             f.show(getFragmentManager(), "avatar");
         } else {
             if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
-                sharedPrefManager.setTwitterAuthScreen("");
+
                 onProfile();
             } else
                 onHome();
