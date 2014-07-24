@@ -11,7 +11,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
@@ -30,6 +29,7 @@ import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.ActivityNavEvent;
 import views.core.BaseListFragment;
+import views.core.MainActivity;
 import views.details.DetailsFragment;
 import views.group.GroupSettingsFragment;
 
@@ -93,7 +93,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 //            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
 //            }
 //        });
-       // pListView.setRefreshing(true);
+        // pListView.setRefreshing(true);
         //loadPage(0);
 
     }
@@ -125,6 +125,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
             }
         });
     }
+
 
     @Override
     public void onPause() {
@@ -206,6 +207,11 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
         if (screenNumber == 3)
             return "No invitations";
         return "No Activity";
+    }
+
+    @Override
+    public void onLoadFinished() {
+        ((MainActivity) getActivity()).setActivitiesDot(true);
     }
 
 }

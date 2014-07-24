@@ -10,17 +10,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v8.renderscript.RenderScript;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +63,7 @@ import butterknife.OnClick;
 import di.KnodaApplication;
 import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
+import helpers.blur.RenderScriptGaussianBlur;
 import managers.AppOutdatedManager;
 import managers.GcmManager;
 import models.ActivityItem;
@@ -135,6 +142,8 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout.LayoutParams navbarHidden;
     private RelativeLayout.LayoutParams containerFull;
     private RelativeLayout.LayoutParams containerPartial;
+
+    public BitmapDrawable blurredBackground;
 
     @OnClick(R.id.nav_home)
     void onClickHome() {
@@ -216,6 +225,8 @@ public class MainActivity extends BaseActivity {
         containerFull.setMargins(0, actionBarHeight, 0, 0);
         containerPartial = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         containerPartial.setMargins(0, actionBarHeight, 0, onedp * 60);
+
+        createTransparentBackground();
 
         refreshUser();
         refreshActivities();
@@ -835,6 +846,23 @@ public class MainActivity extends BaseActivity {
         else {
             return getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
         }
+
+    }
+
+    private void createTransparentBackground() {
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        Point size = new Point();
+        display.getSize(size);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent));
+
+        RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(this));
+        bitmap = blur.blur(15, bitmap);
+        blurredBackground = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
 
     }
 

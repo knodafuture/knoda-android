@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
-import com.squareup.otto.Subscribe;
 
 import org.joda.time.DateTime;
 
@@ -26,7 +25,6 @@ import models.SocialAccount;
 import models.User;
 import networking.NetworkCallback;
 import pubsub.LoginFlowDoneEvent;
-import pubsub.ScreenCaptureEvent;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
@@ -100,11 +98,6 @@ public class WelcomeFragment extends BaseDialogFragment {
         dismissFade();
     }
 
-    @Subscribe
-    public void screenCapture(final ScreenCaptureEvent event) {
-        updateBackground();
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -147,6 +140,7 @@ public class WelcomeFragment extends BaseDialogFragment {
         if (!wprompt.equals(""))
             welcomePrompt.setText(wprompt);
 
+
         return view;
     }
 
@@ -158,6 +152,7 @@ public class WelcomeFragment extends BaseDialogFragment {
         } else {
             sharedPrefManager.setAgreedToTerms(true);
         }
+        updateBackground();
     }
 
     public void openUrl(String url) {

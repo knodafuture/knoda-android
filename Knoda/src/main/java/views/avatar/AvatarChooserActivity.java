@@ -7,13 +7,11 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v8.renderscript.RenderScript;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Display;
 import android.view.Menu;
@@ -240,10 +238,6 @@ public abstract class AvatarChooserActivity extends BaseActivity {
                 @Override
                 public void run() {
                     try {
-                        File file = new File(
-                                Environment.getExternalStorageDirectory()
-                                        + "/blur_background.png"
-                        );
                         Display display = getWindowManager().getDefaultDisplay();
                         DisplayMetrics displayMetrics = new DisplayMetrics();
                         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -256,16 +250,8 @@ public abstract class AvatarChooserActivity extends BaseActivity {
 
                         RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(relativeLayout.getContext()));
                         bitmap = blur.blur(15, bitmap);
+                        BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
 
-                        //Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
-
-                        //Get actionbar size to take off image
-                        TypedValue tv = new TypedValue();
-                        getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-                        int actionBarHeight = getResources().getDimensionPixelSize(tv.resourceId);
-
-
-                        BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, actionBarHeight, bitmap.getWidth(), bitmap.getHeight() - actionBarHeight));
                         relativeLayout.setBackgroundDrawable(d);
                     } catch (Exception e) {
                         Log.e("Knoda Error", e.getMessage());

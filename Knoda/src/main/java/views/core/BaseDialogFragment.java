@@ -4,11 +4,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,8 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.knoda.knoda.R;
 import com.squareup.otto.Bus;
-
-import java.io.File;
 
 import javax.inject.Inject;
 
@@ -141,8 +135,7 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     public void updateBackground() {
-
-        if (getView() == null) {
+        if (getActivity() instanceof MainActivity != true || ((MainActivity) getActivity()).blurredBackground == null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -150,27 +143,7 @@ public class BaseDialogFragment extends DialogFragment {
                 }
             }, 10);
         } else {
-            getView().post(new Runnable() {
-                @Override
-                public void run() {
-                    File file = new File(
-                            Environment.getExternalStorageDirectory()
-                                    + "/blur_background.png"
-                    );
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), options);
-
-                    try {
-                        BitmapDrawable d = new BitmapDrawable(getActivity().getResources(), bitmap);
-
-                        getView().setBackgroundDrawable(d);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            getView().setBackgroundDrawable(((MainActivity) getActivity()).blurredBackground);
         }
     }
 }
