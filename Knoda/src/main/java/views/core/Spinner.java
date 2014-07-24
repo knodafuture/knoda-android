@@ -18,7 +18,7 @@ public class Spinner {
     }
 
     public void hide() {
-        if (spinnerFragment != null)
+        if (spinnerFragment != null && isVisible())
             spinnerFragment.dismiss();
     }
 
