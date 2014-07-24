@@ -2,6 +2,7 @@ package adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.android.volley.TimeoutError;
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
 
@@ -99,8 +101,14 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
             public void completionHandler(ArrayList<T> objectsToAdd, ServerError error) {
                 loading = false;
 
-                if (error != null || objectsToAdd == null)
+                if (error != null || objectsToAdd == null) {
+                    if (onLoadFinished != null)
+                        onLoadFinished.adapterFinishedLoadingPage(page);
+                    if (error.underlyingError instanceof TimeoutError) {
+                        Log.e("Timeout", error.getDescription());
+                    }
                     return;
+                }
 
                 if (page == 0) {
                     noObjectsRetrieved = objectsToAdd.size() == 0;
