@@ -89,13 +89,13 @@ public class SignUpFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        updateBackground();
         return inflate;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        updateBackground();
         setupListeners();
         InputFilter[] filterArray = new InputFilter[2];
         filterArray[0] = new InputFilter() {

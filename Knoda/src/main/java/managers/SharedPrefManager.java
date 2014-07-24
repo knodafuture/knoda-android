@@ -34,6 +34,7 @@ public class SharedPrefManager {
     private static final String SAVED_AGREED_TO_TERMS_KEYS = "SAVED_AGREEED_TO_TERMS_KEY";
     private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
     private static final String TWITTER_AUTH_SCREEN = "TWITTER_AUTH_SCREEN";
+    private static final String SAVED_PREDICT_DATE_WALKTHROUGH_KEY = "SAVED_PREDICT_DATE_WALKTHROUGH_KEY";
     private Context context;
 
     public SharedPrefManager(Context context) {
@@ -218,9 +219,21 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getString(TWITTER_AUTH_SCREEN, "");
     }
+
     public void setTwitterAuthScreen(String screen) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putString(TWITTER_AUTH_SCREEN, screen).commit();
+    }
+
+
+    public boolean shouldShowPredictDateWalkthrough() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getBoolean(SAVED_PREDICT_DATE_WALKTHROUGH_KEY, true);
+    }
+
+    public void sethouldShowPredictDateWalkthrough(boolean shouldShowVotingWalkthrough) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putBoolean(SAVED_PREDICT_DATE_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
     }
 
 }

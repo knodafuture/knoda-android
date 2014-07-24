@@ -69,7 +69,7 @@ public class LoginFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        updateBackground();
+
         return view;
     }
 
@@ -78,6 +78,7 @@ public class LoginFragment extends BaseDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         configureEditTextListeners();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        updateBackground();
 
     }
 

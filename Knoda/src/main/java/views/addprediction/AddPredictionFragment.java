@@ -1,6 +1,7 @@
 package views.addprediction;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,8 +10,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -46,7 +50,7 @@ public class AddPredictionFragment extends BaseFragment {
     private static boolean requestingTwitterConnect;
     @InjectView(R.id.add_prediction_body_edittext)
     EditText bodyEditText;
-//    @InjectView(R.id.add_prediction_resolution_date_edittext)
+    //    @InjectView(R.id.add_prediction_resolution_date_edittext)
 //    EditText resolutionDateEditText;
 //    @InjectView(R.id.add_prediction_resolution_time_edittext)
 //    EditText resolutionTimeEditText;
@@ -201,6 +205,18 @@ public class AddPredictionFragment extends BaseFragment {
             }
         });
         FlurryAgent.logEvent("Add_Prediction_Screen");
+
+
+        if (sharedPrefManager.shouldShowPredictDateWalkthrough()) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
+                    (Context.LAYOUT_INFLATER_SERVICE);
+            View v = inflater.inflate(R.layout.view_predict_date_walkthrough, null);
+            Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeingrow);
+            ((RelativeLayout) getView().findViewById(R.id.add_prediction_date_container)).addView(v);
+            v.startAnimation(fadeInAnimation);
+            getView().findViewById(R.id.add_prediction_social_container).setTranslationY(-36f);
+            sharedPrefManager.sethouldShowPredictDateWalkthrough(false);
+        }
     }
 
     private void buildTopicsDialog() {

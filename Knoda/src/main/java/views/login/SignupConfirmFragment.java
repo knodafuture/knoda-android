@@ -55,14 +55,13 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup_confirm, container, false);
-        updateBackground();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        updateBackground();
 
         User u = userManager.getUser();
 
