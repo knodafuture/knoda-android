@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
 import managers.AppOutdatedManager;
 import managers.GcmManager;
+import models.ActivityItem;
 import models.Group;
 import models.Invitation;
 import models.Notification;
@@ -66,6 +68,7 @@ import models.ServerError;
 import models.Setting;
 import models.User;
 import networking.NetworkCallback;
+import networking.NetworkListCallback;
 import pubsub.ActivityNavEvent;
 import pubsub.ChangeGroupEvent;
 import pubsub.GroupNavEvent;
@@ -101,6 +104,8 @@ public class MainActivity extends BaseActivity {
     LinearLayout navbar;
     @InjectView(R.id.fragmentContainer)
     FrameLayout container;
+    @InjectView(R.id.nav_activity_dot)
+    ImageView activityDot;
     private GcmManager gcmManager;
     private boolean actionBarEnabled = true;
     private String title;
@@ -112,6 +117,12 @@ public class MainActivity extends BaseActivity {
         @Override
         public void run() {
             refreshUser();
+        }
+    };
+    private Runnable activitiesRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshActivities();
         }
     };
     private HomeFragment homeFragment = null;
@@ -207,6 +218,7 @@ public class MainActivity extends BaseActivity {
         containerPartial.setMargins(0, actionBarHeight, 0, onedp * 60);
 
         refreshUser();
+        refreshActivities();
 
         initializeFragmentBackStack();
         //setUpNavigation();
@@ -341,6 +353,10 @@ public class MainActivity extends BaseActivity {
                 onCreateGroup();
                 break;
             }
+            case R.id.action_profile_guest: {
+                showLogin("Giddy Up!", "Now we're talking! Choose an option below to sign-up and start tracking your predictions.");
+                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -446,7 +462,6 @@ public class MainActivity extends BaseActivity {
             f.show(getFragmentManager(), "avatar");
         } else {
             if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
-
                 onProfile();
             } else
                 onHome();
@@ -741,6 +756,7 @@ public class MainActivity extends BaseActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 userDialogShown = false;
                                 handler.postDelayed(userRefreshRunnable, userRefreshInterval);
+                                handler.postDelayed(activitiesRefreshRunnable, userRefreshInterval);
                             }
                         })
                         .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -748,6 +764,7 @@ public class MainActivity extends BaseActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 userDialogShown = false;
                                 refreshUser();
+                                refreshActivities();
                             }
                         })
                         .create().show();
@@ -756,6 +773,37 @@ public class MainActivity extends BaseActivity {
         }
 
     }
+
+    public void refreshActivities() {
+        if (connectivityManager == null)
+            return;
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            networkingManager.getUnseenActivityItems(null, new NetworkListCallback<ActivityItem>() {
+                @Override
+                public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
+                    if (error != null) {
+
+                    } else {
+                        if (object != null && object.size() > 0) {
+                            setActivitiesDot(false);
+                        }
+                        handler.postDelayed(activitiesRefreshRunnable, userRefreshInterval);
+                    }
+
+                }
+            });
+        }
+
+    }
+
+    public void setActivitiesDot(boolean seen) {
+        if (seen)
+            activityDot.setVisibility(View.INVISIBLE);
+        else
+            activityDot.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

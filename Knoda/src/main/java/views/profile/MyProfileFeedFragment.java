@@ -96,9 +96,9 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
     @Override
     public void onResume() {
         super.onResume();
-        pListView.setRefreshing(true);
+        //pListView.setRefreshing(true);
         resizeHeader(0);
-        loadPage(0);
+        //loadPage(0);
     }
 
     @Override

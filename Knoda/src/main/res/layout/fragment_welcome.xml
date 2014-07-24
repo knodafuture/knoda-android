@@ -2,14 +2,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/knodaLightGreenTransparent" />
+
+    <Button
+        android:id="@+id/wall_close"
+        style="@style/xButton" />
+
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/knodaLightGreenTransparent" />
 
         <ImageView
             android:id="@+id/welcome_logo"
@@ -37,6 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/wall_welcome"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="@string/signup_welcome_message"
@@ -50,7 +58,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/knoda_button_background"
             android:clickable="true"
             android:orientation="horizontal">
@@ -185,16 +193,12 @@
             android:text="@string/login_promp"
             android:textColor="@color/white" />
 
-        <Button
-            android:id="@+id/wall_close"
-            style="@style/xButton" />
-
 
         <RelativeLayout
             android:id="@+id/terms_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@id/wall_login"
             android:layout_centerHorizontal="true">
 
             <TextView

@@ -160,8 +160,11 @@ public class MyProfileFragment extends BaseFragment {
         ((TextView) getActivity().findViewById(R.id.nav_profile_text)).setTextColor(Color.parseColor("#EFEFEF"));
         updateUser(user);
         topContainer = (LinearLayout) topview.findViewById(R.id.topContainer);
-        changeFilter(R.id.activity_1);
 
+        if (userManager.getUser().guestMode)
+            changeFilter(R.id.activity_2);
+        else
+            changeFilter(R.id.activity_1);
         if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
             sharedPrefManager.setTwitterAuthScreen("");
             //twitter update
@@ -212,7 +215,10 @@ public class MyProfileFragment extends BaseFragment {
         topview.addView(mViewPager);
         adapter = new ProfilePagerAdapter(getFragmentManager(), this);
         mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(0);
+        if (userManager.getUser().guestMode)
+            mViewPager.setCurrentItem(1);
+        else
+            mViewPager.setCurrentItem(0);
 
     }
 
@@ -238,6 +244,8 @@ public class MyProfileFragment extends BaseFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mainActivity.userManager.getUser() != null && mainActivity.userManager.getUser().guestMode == false)
             inflater.inflate(R.menu.profile, menu);
+        else
+            inflater.inflate(R.menu.profile_guest, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

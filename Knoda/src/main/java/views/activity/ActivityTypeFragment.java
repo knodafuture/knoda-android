@@ -93,8 +93,8 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 //            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
 //            }
 //        });
-        pListView.setRefreshing(true);
-        loadPage(0);
+       // pListView.setRefreshing(true);
+        //loadPage(0);
 
     }
 
