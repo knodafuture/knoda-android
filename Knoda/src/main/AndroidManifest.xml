@@ -27,7 +27,7 @@
     <application
         android:name="di.KnodaApplication"
         android:allowBackup="true"
-        android:logo="@drawable/applogo"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <meta-data
