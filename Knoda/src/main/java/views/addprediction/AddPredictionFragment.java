@@ -46,10 +46,10 @@ public class AddPredictionFragment extends BaseFragment {
     private static boolean requestingTwitterConnect;
     @InjectView(R.id.add_prediction_body_edittext)
     EditText bodyEditText;
-    @InjectView(R.id.add_prediction_resolution_date_edittext)
-    EditText resolutionDateEditText;
-    @InjectView(R.id.add_prediction_resolution_time_edittext)
-    EditText resolutionTimeEditText;
+//    @InjectView(R.id.add_prediction_resolution_date_edittext)
+//    EditText resolutionDateEditText;
+//    @InjectView(R.id.add_prediction_resolution_time_edittext)
+//    EditText resolutionTimeEditText;
     @InjectView(R.id.add_prediction_vote_date_edittext)
     EditText voteDateEditText;
     @InjectView(R.id.add_prediction_vote_time_edittext)
@@ -70,7 +70,7 @@ public class AddPredictionFragment extends BaseFragment {
     TextView bodyCounterTextView;
     @InjectView(R.id.add_prediction_user_avatar)
     NetworkImageView avatarImageView;
-    private DateTimePicker resolutionDatePicker;
+    //private DateTimePicker resolutionDatePicker;
     private DateTimePicker votingDatePicker;
     private ArrayList<Tag> tags;
     private Tag selectedTag;
@@ -169,10 +169,10 @@ public class AddPredictionFragment extends BaseFragment {
         votingDatePicker = new DateTimePicker(voteDateEditText, voteTimeEditText, Calendar.getInstance(), new DateTimePicker.OnCalenderChangedListener() {
             @Override
             public void onCalenderChanged(Calendar calendar) {
-                resolutionDatePicker.setMinimumCalender(calendar);
+                //resolutionDatePicker.setMinimumCalender(calendar);
             }
         });
-        resolutionDatePicker = new DateTimePicker(resolutionDateEditText, resolutionTimeEditText, Calendar.getInstance(), null);
+        //resolutionDatePicker = new DateTimePicker(resolutionDateEditText, resolutionTimeEditText, Calendar.getInstance(), null);
 
         networkingManager.getTags(new NetworkListCallback<Tag>() {
             @Override
@@ -289,7 +289,8 @@ public class AddPredictionFragment extends BaseFragment {
             prediction.groupId = selectedGroup.id;
         }
         prediction.expirationDate = votingDatePicker.getDateTime();
-        prediction.resolutionDate = resolutionDatePicker.getDateTime();
+        //prediction.resolutionDate = resolutionDatePicker.getDateTime();
+        prediction.resolutionDate = null;
 
         return prediction;
     }
@@ -302,7 +303,7 @@ public class AddPredictionFragment extends BaseFragment {
     private void restoreFromPrediction(final Prediction prediction) {
         bodyEditText.setText(prediction.body);
         votingDatePicker.setDateTime(prediction.expirationDate);
-        resolutionDatePicker.setDateTime(prediction.resolutionDate);
+        //resolutionDatePicker.setDateTime(prediction.resolutionDate);
         networkingManager.getTags(new NetworkListCallback<Tag>() {
             @Override
             public void completionHandler(ArrayList<Tag> object, ServerError error) {
@@ -394,17 +395,17 @@ public class AddPredictionFragment extends BaseFragment {
         String errorMessage = null;
 
         DateTime votingDate = votingDatePicker.getDateTime();
-        DateTime resolutionDate = resolutionDatePicker.getDateTime();
+        //DateTime resolutionDate = resolutionDatePicker.getDateTime();
         DateTime now = new DateTime();
 
         if (bodyEditText.getText().length() == 0)
             errorMessage = "Please enter a prediction.";
         else if (selectedTag == null)
             errorMessage = "Please select a category.";
-        else if (resolutionDate.isBefore(votingDate))
-            errorMessage = "You can't Knoda Future before the voting deadline.";
-        else if (resolutionDate.isBefore(now) || votingDate.isBefore(now))
-            errorMessage = "You can't end voting or resolve your prediction in the past";
+        //else if (resolutionDate.isBefore(votingDate))
+        //    errorMessage = "You can't Knoda Future before the voting deadline.";
+        //else if (resolutionDate.isBefore(now) || votingDate.isBefore(now))
+        //    errorMessage = "You can't end voting or resolve your prediction in the past";
 
         if (errorMessage != null) {
             errorReporter.showError(errorMessage);
