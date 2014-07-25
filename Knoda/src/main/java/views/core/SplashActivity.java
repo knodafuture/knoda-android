@@ -31,6 +31,7 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.inject(this);
         intent = new Intent(this, MainActivity.class);
+        networkingManager.baseUrl = sharedPrefManager.getAPIurl();
     }
 
 

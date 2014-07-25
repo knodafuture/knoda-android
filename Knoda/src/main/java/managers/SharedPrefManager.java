@@ -35,6 +35,7 @@ public class SharedPrefManager {
     private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
     private static final String TWITTER_AUTH_SCREEN = "TWITTER_AUTH_SCREEN";
     private static final String SAVED_PREDICT_DATE_WALKTHROUGH_KEY = "SAVED_PREDICT_DATE_WALKTHROUGH_KEY";
+    private static final String API_URL = "API_URL";
     private Context context;
 
     public SharedPrefManager(Context context) {
@@ -234,6 +235,16 @@ public class SharedPrefManager {
     public void sethouldShowPredictDateWalkthrough(boolean shouldShowVotingWalkthrough) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putBoolean(SAVED_PREDICT_DATE_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
+    }
+
+    public String getAPIurl() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getString(API_URL, "http://captaincold.knoda.com/api/");//this is the new spot to switch API URL
+    }
+
+    public void setAPIurl(String url) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putString(API_URL, url).commit();
     }
 
 }
