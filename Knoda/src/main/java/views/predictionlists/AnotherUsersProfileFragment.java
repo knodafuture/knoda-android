@@ -53,7 +53,6 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
             }
         });
         FlurryAgent.logEvent("Another_User_Profile_Screen");
-        pListView.setMode(PullToRefreshBase.Mode.MANUAL_REFRESH_ONLY);
     }
 
     @Override

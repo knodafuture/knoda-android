@@ -12,20 +12,16 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
-
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
 import butterknife.InjectView;
 import models.Prediction;
-import models.ServerError;
 import networking.NetworkListCallback;
 import pubsub.ProfileNavEvent;
 import pubsub.ProfilePagerScrollEvent;
@@ -96,9 +92,7 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
     @Override
     public void onResume() {
         super.onResume();
-        //pListView.setRefreshing(true);
         resizeHeader(0);
-        //loadPage(0);
     }
 
     @Override
@@ -137,26 +131,26 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
     }
 
     public void loadPage(final int page) {
-        if (pageLoaded) {
-            return;
-        }
-        pageLoaded = true;
-        boolean challenged = (screenNumber == 1) ? true : false;
-
-        networkingManager.getPredictions(challenged, new NetworkListCallback<Prediction>() {
-            @Override
-            public void completionHandler(ArrayList<Prediction> object, ServerError error) {
-                pListView.setShowIndicator(false);
-                pListView.onRefreshComplete();
-                if (error != null) {
-                    Toast.makeText(getActivity(), "Error getting predictions", Toast.LENGTH_SHORT).show();
-                } else {
-                    adapter = getAdapter();
-                    pListView.setAdapter(adapter);
-                    adapter.loadPage(page);
-                }
-            }
-        });
+//        if (pageLoaded) {
+//            return;
+//        }
+//        pageLoaded = true;
+//        boolean challenged = (screenNumber == 1) ? true : false;
+//
+//        networkingManager.getPredictions(challenged, new NetworkListCallback<Prediction>() {
+//            @Override
+//            public void completionHandler(ArrayList<Prediction> object, ServerError error) {
+//                pListView.setShowIndicator(false);
+//                pListView.onRefreshComplete();
+//                if (error != null) {
+//                    Toast.makeText(getActivity(), "Error getting predictions", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    adapter = getAdapter();
+//                    pListView.setAdapter(adapter);
+//                    adapter.loadPage(page);
+//                }
+//            }
+//        });
     }
 
     public void resizeHeader(int state) {
@@ -192,7 +186,8 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
     public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
         boolean challenged = (screenNumber == 1) ? true : false;
         pageLoaded = true;
-        networkingManager.getPredictions(challenged, callback);
+        int lastId = object == null ? 0 : object.id;
+        networkingManager.getPredictionsAfterId(challenged, lastId, callback);
     }
 
     @Override

@@ -62,7 +62,7 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static String supportUrl = "http://knoda.com/support";
     public static Integer PAGE_LIMIT = 50;
-    public static String baseUrl = "http://captaincold.knoda.com/api/";
+    public static String baseUrl = "http://api.knoda.com/api/";
     private static RequestQueue mRequestQueue;
     Context context;
     String api_version = "5";
@@ -145,13 +145,13 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
-    public void getPredictions(final boolean challenged, final NetworkListCallback<Prediction> callback) {
+    public void getPredictionsAfterId(final boolean challenged, Integer lastId, final NetworkListCallback<Prediction> callback) {
         String url;
+        ParamBuilder builder = ParamBuilder.create().withPageLimit().withLastId(lastId);
         if (challenged) {
-            ParamBuilder builder = ParamBuilder.create().withPageLimit().add("challenged", "true");
-            url = buildUrl("predictions.json", false, builder);
-        } else
-            url = buildUrl("predictions.json", false, null);
+            builder.add("challenged", "true");
+        }
+        url = buildUrl("predictions.json", false, builder);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
