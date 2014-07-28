@@ -91,38 +91,41 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_below="@id/details_cell_settle_textview"
                 android:layout_margin="5dp">
 
                 <Button
                     android:id="@+id/details_cell_yes_button"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".33"
+                    android:layout_height="fill_parent"
+                    android:layout_weight=".25"
                     android:background="@color/knodaLightGreen"
                     android:text="Yes"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/details_cell_no_button"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:layout_marginLeft="2dp"
-                    android:layout_weight=".33"
+                    android:layout_weight=".25"
                     android:background="@color/knodaLightGreen"
                     android:text="No"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/details_cell_idk_button"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:layout_marginLeft="2dp"
-                    android:layout_weight=".33"
+                    android:layout_weight=".5"
                     android:background="@color/knodaLightGreen"
-                    android:text="IDK Yet"
-                    android:textColor="@color/white" />
+                    android:text="Remind Me Later"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
 
             </LinearLayout>
