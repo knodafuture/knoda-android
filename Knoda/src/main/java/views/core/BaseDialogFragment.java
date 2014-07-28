@@ -135,7 +135,7 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     public void updateBackground() {
-        if (getActivity() instanceof MainActivity != true || ((MainActivity) getActivity()).blurredBackground == null) {
+        if (getActivity() == null || getActivity() instanceof MainActivity != true || ((MainActivity) getActivity()).blurredBackground == null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -143,7 +143,8 @@ public class BaseDialogFragment extends DialogFragment {
                 }
             }, 10);
         } else {
-            getView().setBackgroundDrawable(((MainActivity) getActivity()).blurredBackground);
+            if (getActivity() != null && ((MainActivity) getActivity()).blurredBackground == null)
+                getView().setBackgroundDrawable(((MainActivity) getActivity()).blurredBackground);
         }
     }
 }

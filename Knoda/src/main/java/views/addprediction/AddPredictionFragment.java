@@ -176,6 +176,8 @@ public class AddPredictionFragment extends BaseFragment {
                 //resolutionDatePicker.setMinimumCalender(calendar);
             }
         });
+        DateTime dt = new DateTime();
+        votingDatePicker.setDateTime(dt.plusMinutes(1));
         //resolutionDatePicker = new DateTimePicker(resolutionDateEditText, resolutionTimeEditText, Calendar.getInstance(), null);
 
         networkingManager.getTags(new NetworkListCallback<Tag>() {
@@ -183,6 +185,12 @@ public class AddPredictionFragment extends BaseFragment {
             public void completionHandler(ArrayList<Tag> object, ServerError error) {
                 if (error == null) {
                     tags = object;
+                    buildTopicsDialog();
+                } else {
+                    Tag t = new Tag();
+                    t.name = "Other";
+                    tags = new ArrayList<Tag>();
+                    tags.add(t);
                     buildTopicsDialog();
                 }
             }
@@ -418,10 +426,10 @@ public class AddPredictionFragment extends BaseFragment {
             errorMessage = "Please enter a prediction.";
         else if (selectedTag == null)
             errorMessage = "Please select a category.";
-        //else if (resolutionDate.isBefore(votingDate))
-        //    errorMessage = "You can't Knoda Future before the voting deadline.";
-        //else if (resolutionDate.isBefore(now) || votingDate.isBefore(now))
-        //    errorMessage = "You can't end voting or resolve your prediction in the past";
+            //else if (resolutionDate.isBefore(votingDate))
+            //    errorMessage = "You can't Knoda Future before the voting deadline.";
+        else if (votingDate.isBefore(now))
+            errorMessage = "You can't end voting in the past.";
 
         if (errorMessage != null) {
             errorReporter.showError(errorMessage);

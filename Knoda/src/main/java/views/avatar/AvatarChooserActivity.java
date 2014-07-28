@@ -180,8 +180,10 @@ public abstract class AvatarChooserActivity extends BaseActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_RESULT && resultCode == RESULT_OK) {
+            shownWindow = true;
             startCrop(Uri.fromFile(cameraOutputFile));
         } else if (requestCode == CROP_RESULT) {
+            shownWindow = true;
             if (resultCode == RESULT_OK) {
                 if (showFinalCropped()) {
                     showCroppedImage();
@@ -193,6 +195,7 @@ public abstract class AvatarChooserActivity extends BaseActivity {
                 openContextMenu(imageView);
             }
         } else if (requestCode == GALLERY_RESULT && resultCode == RESULT_OK) {
+            shownWindow = true;
             Uri imageUri = data.getData();
             startCrop(imageUri);
         }

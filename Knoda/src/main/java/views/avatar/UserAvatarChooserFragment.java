@@ -55,8 +55,6 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     Button doneButton;
     private boolean madeInitialSelection = false;
     private File cameraOutputFile;
-    private RequestQueue requestQueue;
-    private boolean cancelable;
 
     @OnClick(R.id.avatar_done)
     void onDone() {
@@ -118,9 +116,13 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     }
 
     public void startGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        galleryIntent.setType("image/png");
-        startActivityForResult(Intent.createChooser(galleryIntent, "Select a profile picture"), GALLERY_RESULT);
+        //Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        //galleryIntent.setType("image/png");
+        //startActivityForResult(Intent.createChooser(galleryIntent, "Select a profile picture"), GALLERY_RESULT);
+
+        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        i.setType("image/png");
+        startActivityForResult(i, GALLERY_RESULT);
     }
 
 
