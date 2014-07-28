@@ -58,6 +58,13 @@ public class PhotoFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         imageView.setImageUrl(imageUrl, networkingManager.getImageLoader());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }
