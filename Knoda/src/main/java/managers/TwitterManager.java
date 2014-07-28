@@ -89,6 +89,12 @@ public class TwitterManager {
 
     }
 
+    public void clearTwitterInfo() {
+        token = null;
+        accessToken = null;
+        savedData = null;
+    }
+
     private class GetOauthTask extends AsyncTask<Activity, Void, Void> {
         @Override
         protected Void doInBackground(Activity... params) {
@@ -108,12 +114,6 @@ public class TwitterManager {
         protected void onPostExecute(Void result) {
             Logger.log("ON POST EXECUTE");
         }
-    }
-
-    public void clearTwitterInfo() {
-        token = null;
-        accessToken = null;
-        savedData = null;
     }
 
     private class AccessTokenContainer {

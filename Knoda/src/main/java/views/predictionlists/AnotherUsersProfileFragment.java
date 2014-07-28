@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.flurry.android.FlurryAgent;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 import adapters.AnotherUsersProfileAdapter;
 import adapters.PagingAdapter;

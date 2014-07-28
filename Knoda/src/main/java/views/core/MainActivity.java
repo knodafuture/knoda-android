@@ -110,9 +110,16 @@ import views.settings.SettingsFragment;
 public class MainActivity extends BaseActivity {
 
     private static final int userRefreshInterval = 30000;
+    // Storage for camera image URI components
+    private final static String CAPTURED_PHOTO_PATH_KEY = "mCurrentPhotoPath";
+    private final static String CAPTURED_PHOTO_URI_KEY = "mCapturedImageURI";
+    private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
     public String currentFragment = "";
     public HashMap<String, ArrayList<Setting>> settings;
     public Menu menu;
+    public BitmapDrawable blurredBackground;
+    public String mCurrentPhotoPath = null;
+    public Uri mCapturedImageURI = null;
     @Inject
     AppOutdatedManager appOutdatedManager;
     @InjectView(R.id.navbar)
@@ -150,8 +157,6 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout.LayoutParams navbarHidden;
     private RelativeLayout.LayoutParams containerFull;
     private RelativeLayout.LayoutParams containerPartial;
-
-    public BitmapDrawable blurredBackground;
 
     @OnClick(R.id.nav_home)
     void onClickHome() {
@@ -378,6 +383,28 @@ public class MainActivity extends BaseActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        if (mCurrentPhotoPath != null) {
+            savedInstanceState.putString(CAPTURED_PHOTO_PATH_KEY, mCurrentPhotoPath);
+        }
+        if (mCapturedImageURI != null) {
+            savedInstanceState.putString(CAPTURED_PHOTO_URI_KEY, mCapturedImageURI.toString());
+        }
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(CAPTURED_PHOTO_PATH_KEY)) {
+            mCurrentPhotoPath = savedInstanceState.getString(CAPTURED_PHOTO_PATH_KEY);
+        }
+        if (savedInstanceState.containsKey(CAPTURED_PHOTO_URI_KEY)) {
+            mCapturedImageURI = Uri.parse(savedInstanceState.getString(CAPTURED_PHOTO_URI_KEY));
+        }
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     public void restoreActionBar() {
@@ -824,7 +851,6 @@ public class MainActivity extends BaseActivity {
             activityDot.setVisibility(View.VISIBLE);
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && getFragmentManager().getBackStackEntryCount() <= 1) {
@@ -874,8 +900,6 @@ public class MainActivity extends BaseActivity {
         blurredBackground = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
 
     }
-
-    private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
 
     public boolean isDebuggable(Context ctx) {
         boolean debuggable = false;

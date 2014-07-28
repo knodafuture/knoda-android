@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.android.camera.CropImageIntentBuilder;
-import com.android.volley.RequestQueue;
 import com.knoda.knoda.R;
 
 import java.io.File;
@@ -55,6 +55,7 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     Button doneButton;
     private boolean madeInitialSelection = false;
     private File cameraOutputFile;
+    private Uri imageUri = null;
 
     @OnClick(R.id.avatar_done)
     void onDone() {
@@ -94,8 +95,9 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Logger.log("ACTIVITY RESULT");
-        if (requestCode == CAMERA_RESULT && resultCode == Activity.RESULT_OK) {
-            startCrop(Uri.fromFile(cameraOutputFile));
+        if (requestCode == CAMERA_RESULT && resultCode == Activity.RESULT_OK && imageUri != null) {
+            startCrop(imageUri);
+            //startCrop(Uri.fromFile(cameraOutputFile));
         } else if (requestCode == CROP_RESULT) {
             if (resultCode == Activity.RESULT_OK) {
                 showCroppedImage();
@@ -110,8 +112,10 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
 
     public void startCamera() {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraOutputFile));
-        cameraIntent.putExtra("return-data", true);
+        File photo = new File(Environment.getExternalStorageDirectory(), "pic.png");
+        imageUri = Uri.fromFile(photo);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
+
         startActivityForResult(cameraIntent, CAMERA_RESULT);
     }
 
@@ -127,6 +131,8 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
 
 
     public void startCrop(Uri sourceUri) {
+        if (sourceUri == null)
+            return;
         CropImageIntentBuilder builder = new CropImageIntentBuilder(AVATAR_SIZE, AVATAR_SIZE, Uri.fromFile(cropResultFile));
         builder.setSourceImage(sourceUri);
         startActivityForResult(builder.getIntent(getActivity()), CROP_RESULT);

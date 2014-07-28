@@ -49,9 +49,9 @@ public class AppOutdatedManager {
                         public void onClick(DialogInterface dialog, int id) {
                             Intent marketIntent = new Intent(
                                     Intent.ACTION_VIEW,
-                                    //Uri.parse("market://details?id=com.knoda.knoda"
-                                     //       + activity.getPackageName())
-                                    Uri.parse("http://www.amazon.com/gp/mas/dl/android?p=com.knoda.knoda")//link for amazon
+                                    Uri.parse("market://details?id=com.knoda.knoda"
+                                            + activity.getPackageName())
+                                    //Uri.parse("http://www.amazon.com/gp/mas/dl/android?p=com.knoda.knoda")//link for amazon
                             );
                             activity.startActivity(marketIntent);
                         }
