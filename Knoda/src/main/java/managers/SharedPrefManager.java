@@ -239,7 +239,7 @@ public class SharedPrefManager {
 
     public String getAPIurl() {
         SharedPreferences sharedPreferences = getSP();
-        return sharedPreferences.getString(API_URL, "http://captaincold.knoda.com/api/");//this is the new spot to switch API URL
+        return sharedPreferences.getString(API_URL, NetworkingManager.baseUrl);
     }
 
     public void setAPIurl(String url) {

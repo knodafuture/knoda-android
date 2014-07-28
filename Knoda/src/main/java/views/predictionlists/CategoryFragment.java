@@ -45,7 +45,7 @@ public class CategoryFragment extends BasePredictionListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(tag.toUpperCase());
         Map<String, String> flurryParams = new HashMap<String, String>();
         flurryParams.put("Category", tag.toUpperCase());
@@ -57,5 +57,11 @@ public class CategoryFragment extends BasePredictionListFragment {
         int lastId = object == null ? 0 : object.id;
 
         networkingManager.getPredictionsWithTagAfter(tag, lastId, callback);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 }
