@@ -22,6 +22,7 @@ import views.avatar.GroupAvatarChooserActivity;
 import views.avatar.UserAvatarChooserActivity;
 import views.avatar.UserAvatarChooserFragment;
 import views.core.BaseActivity;
+import views.core.BaseWebFragment;
 import views.core.MainActivity;
 import views.core.Spinner;
 import views.core.SplashActivity;
@@ -89,7 +90,8 @@ import views.settings.SettingsFragment;
                 SignupConfirmFragment.class,
                 MyProfileFragment.class,
                 MyProfileFeedFragment.class,
-                SettingsFragment.class
+                SettingsFragment.class,
+                BaseWebFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

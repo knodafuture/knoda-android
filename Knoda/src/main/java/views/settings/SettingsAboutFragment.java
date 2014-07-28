@@ -2,8 +2,6 @@ package views.settings;
 
 import android.app.ActionBar;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -15,6 +13,7 @@ import android.view.View;
 import com.knoda.knoda.R;
 
 import managers.NetworkingManager;
+import views.core.BaseWebFragment;
 import views.core.MainActivity;
 
 public class SettingsAboutFragment extends PreferenceFragment {
@@ -83,9 +82,7 @@ public class SettingsAboutFragment extends PreferenceFragment {
         p4.setKey("support");
         p4.setOnPreferenceClickListener(changeListener);
         preferenceScreen.addPreference(p4);
-
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -102,9 +99,11 @@ public class SettingsAboutFragment extends PreferenceFragment {
     }
 
     public void openUrl(String url) {
-        Uri uri = Uri.parse(url);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+        BaseWebFragment fragment = BaseWebFragment.newInstance(url, true);
+        ((MainActivity) getActivity()).pushFragment(fragment);
+        //Uri uri = Uri.parse(url);
+        //Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        //startActivity(intent);
     }
 
     @Override
