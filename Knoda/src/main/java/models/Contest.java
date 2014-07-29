@@ -9,7 +9,6 @@ import java.util.ArrayList;
  */
 public class Contest extends BaseModel {
 
-
     @SerializedName("id")
     public int id;
     @SerializedName("name")
@@ -20,14 +19,12 @@ public class Contest extends BaseModel {
     public String created;
     @SerializedName("avatar_image")
     public String avatar;
-
-    public String leader;
-    public int rank;
-
+    @SerializedName("leader_info")
+    public ContestLeaderInfo contestLeaderInfo;
+    @SerializedName("my_info")
+    public ContestMyInfo contestMyInfo;
     @SerializedName("participants")
     public int participants;
-
     @SerializedName("contest_stages")
     public ArrayList<ContestStage> contestStages;
-
 }

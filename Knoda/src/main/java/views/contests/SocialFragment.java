@@ -68,23 +68,16 @@ public class SocialFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.social, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bus.register(this);
-        setHasOptionsMenu(true);
         sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().invalidateOptionsMenu();
+
         View view = inflater.inflate(R.layout.fragment_social, container, false);
         topview = view;
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);

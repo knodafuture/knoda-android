@@ -2,11 +2,9 @@ package views.contests;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
@@ -25,40 +23,33 @@ public class ContestListCell extends RelativeLayout {
 
     public NetworkImageView avatarImageView;
 
-    ImageLoader imageLoader;
 
-    public ContestListCell(Context context, ImageLoader il) {
+    public ContestListCell(Context context) {
         super(context);
-        imageLoader = il;
-        initView(context);
     }
 
-    public ContestListCell(Context context, AttributeSet attrs, ImageLoader il) {
+    public ContestListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
-        imageLoader = il;
-        initView(context);
     }
 
-    private void initView(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.list_cell_contest, this);
-
+    @Override
+    public void onFinishInflate() {
         titleTV = (TextView) findViewById(R.id.contest_title);
         descriptionTV = (TextView) findViewById(R.id.contest_description);
         leaderTV = (TextView) findViewById(R.id.contest_leader);
         placeTV = (TextView) findViewById(R.id.contest_place);
         overallTV = (TextView) findViewById(R.id.contest_overall);
         avatarImageView = (NetworkImageView) findViewById(R.id.contest_avatar);
-
     }
 
 
     public void setContest(Contest contest) {
+        setTag(contest);
         titleTV.setText(contest.name);
         descriptionTV.setText(contest.description);
-        avatarImageView.setImageUrl(contest.avatar, imageLoader);
 
-        //leaderTV.setText(contest.leader);
-        //placeTV.setText(getPlace(contest.rank));
+        leaderTV.setText(contest.contestLeaderInfo.username);
+        placeTV.setText(getPlace(contest.contestMyInfo.rank));
         overallTV.setText("overall(" + contest.participants + ")");
 
     }

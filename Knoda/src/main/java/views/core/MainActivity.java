@@ -95,6 +95,7 @@ import pubsub.ScreenCaptureEvent;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserFragment;
+import views.contests.ContestFragment;
 import views.contests.SocialFragment;
 import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
@@ -381,6 +382,10 @@ public class MainActivity extends BaseActivity {
             }
             case R.id.action_profile_guest: {
                 showLogin("Giddy Up!", "Now we're talking! Choose an option below to sign-up and start tracking your predictions.");
+                break;
+            }
+            case R.id.action_explore: {
+                pushFragment(ContestFragment.newInstance("explore"));
                 break;
             }
         }

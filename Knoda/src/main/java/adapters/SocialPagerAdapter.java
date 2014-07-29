@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import unsorted.Logger;
-import views.activity.ActivityTypeFragment;
+import views.contests.ContestFragment;
 import views.group.GroupFragment;
 
 public class SocialPagerAdapter extends FragmentPagerAdapter {
@@ -19,7 +19,7 @@ public class SocialPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int id) {
         Logger.log("Social Page filter " + id);
         if (id == 0)
-            return ActivityTypeFragment.newInstance(id);
+            return ContestFragment.newInstance("entered");
         else if (id == 1)
             return GroupFragment.newInstance();
 

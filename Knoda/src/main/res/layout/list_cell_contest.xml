@@ -11,20 +11,21 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp">
 
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/contest_avatar"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@color/black" />
+
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/avatar_mask"/>
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/avatar_mask" />
 
         </RelativeLayout>
 
@@ -36,11 +37,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             android:text="Chiefs Call'em All"
             android:textColor="@color/knodaDarkGreen"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <TextView
@@ -50,13 +51,13 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:gravity="left|center_vertical"
             android:maxLines="2"
             android:text="This will show the first 2 lines of Contest description, if longer it will truncate. Vote each week on the Star's"
             android:textColor="@color/knodaDarkGreen"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <View
@@ -67,7 +68,7 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="60dp"
+            android:layout_height="55dp"
             android:orientation="horizontal"
             android:weightSum="7">
 
@@ -155,12 +156,6 @@
             android:background="@color/lightGray" />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginTop="0dp"
-        android:background="@color/lightGray" />
 </views.contests.ContestListCell>
 
 

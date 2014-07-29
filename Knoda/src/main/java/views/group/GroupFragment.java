@@ -53,7 +53,6 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("Groups_Screen");
-        setTitle("GROUPS");
 
         adapter = new GroupAdapter(getActivity(), this, networkingManager.getImageLoader());
         listView.setAdapter(adapter);
@@ -67,7 +66,6 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
                     if (view instanceof GroupListCell) {
                         GroupListCell v = ((GroupListCell) view);
                         fragment = GroupPredictionListFragment.newInstance(v.group);
-
                     } else {
                         fragment = AddGroupFragment.newInstance();
                     }
@@ -116,6 +114,7 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         if (((MainActivity) getActivity()).userManager.getUser().guestMode == false)
             inflater.inflate(R.menu.groups, menu);
 
