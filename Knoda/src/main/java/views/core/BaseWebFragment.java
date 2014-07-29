@@ -26,6 +26,7 @@ public class BaseWebFragment extends BaseFragment {
     public static BaseWebFragment newInstance(String url, boolean disableNav) {
         BaseWebFragment fragment = new BaseWebFragment();
         fragment.url = url;
+        fragment.disableNav = disableNav;
         return fragment;
     }
 

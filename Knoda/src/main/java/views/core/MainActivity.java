@@ -362,7 +362,8 @@ public class MainActivity extends BaseActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home: {
-                getFragmentManager().popBackStack();
+                if (getActionBar().getDisplayOptions() == 15)
+                    onBackPressed();
                 break;
             }
             case R.id.action_search: {

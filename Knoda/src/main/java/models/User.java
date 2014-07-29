@@ -41,7 +41,6 @@ public class User extends BaseModel {
     @SerializedName("total_predictions")
     public Integer totalPredictions;
 
-
     @SerializedName("avatar_image")
     public RemoteImage avatar;
 
