@@ -95,6 +95,7 @@ import pubsub.ScreenCaptureEvent;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserFragment;
+import views.contests.SocialFragment;
 import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
 import views.group.AddGroupFragment;
@@ -149,7 +150,7 @@ public class MainActivity extends BaseActivity {
     };
     private HomeFragment homeFragment = null;
     private ActivityFragment activityFragment = null;
-    private GroupFragment groupFragment = null;
+    private SocialFragment socialFragment = null;
     private MyProfileFragment myProfileFragment = null;
     private SearchFragment searchFragment = null;
     private SettingsFragment settingsFragment = null;
@@ -427,7 +428,7 @@ public class MainActivity extends BaseActivity {
             return true;
 
         if (fragment instanceof AddGroupFragment || fragment instanceof GroupFragment) {
-            showLogin("Hey now!", "You need to create an account to join and create groups.");
+            showLogin("Hey now!", "You need to create an account to access contests and groups.");
             return false;
         } else if (fragment instanceof AddPredictionFragment) {
             showLogin("Oh Snap!", "You need to create an account to make predictions.");
@@ -607,14 +608,14 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onGroups() {
-        if (getCurrentFragment().equals("GroupFragment")) {
+        if (getCurrentFragment().equals("SocialFragment")) {
             bus.post(new GroupNavEvent());
             return;
         }
-        if (groupFragment == null)
-            groupFragment = GroupFragment.newInstance();
-        if (checkFragment(groupFragment))
-            pushFragment(groupFragment);
+        if (socialFragment == null)
+            socialFragment = SocialFragment.newInstance();
+        if (checkFragment(socialFragment))
+            pushFragment(socialFragment);
     }
 
     private void onSettings() {

@@ -63,7 +63,7 @@ public class NetworkingManager {
     public static String privacyPolicyUrl = "http://knoda.com/privacy";
     public static String supportUrl = "http://knoda.com/support";
     public static Integer PAGE_LIMIT = 50;
-    public static String baseUrl = "http://api.knoda.com/api/";
+    public static String baseUrl = "http://captaincold.knoda.com/api/";
     private static RequestQueue mRequestQueue;
     Context context;
     String api_version = "5";
@@ -506,8 +506,11 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getSettingsTypeToken(), callback);
     }
 
-    public void getContests(final NetworkListCallback<Contest> callback) {
-        String url = buildUrl("contests.json", true, null);
+    public void getContests(String filter, final NetworkListCallback<Contest> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        if (filter != null)
+            builder.add("list", filter);
+        String url = buildUrl("contests.json", true, builder);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getContestsTypeToken(), callback);
     }

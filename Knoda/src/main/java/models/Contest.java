@@ -19,7 +19,13 @@ public class Contest extends BaseModel {
     @SerializedName("created_at")
     public String created;
     @SerializedName("avatar_image")
-    public RemoteImage avatar;
+    public String avatar;
+
+    public String leader;
+    public int rank;
+
+    @SerializedName("participants")
+    public int participants;
 
     @SerializedName("contest_stages")
     public ArrayList<ContestStage> contestStages;

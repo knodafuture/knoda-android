@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/social_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/knodaLightGreen"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5">
+
+            <TextView
+                android:id="@+id/activity_1"
+                style="@style/tabText"
+                android:text="Contests"
+                android:textColor="@color/white" />
+
+            <View
+                android:id="@+id/underline_1"
+                style="@style/tabUnderline" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5">
+
+            <TextView
+                android:id="@+id/activity_2"
+                style="@style/tabText"
+                android:text="Groups" />
+
+            <View
+                android:id="@+id/underline_2"
+                style="@style/tabUnderline"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

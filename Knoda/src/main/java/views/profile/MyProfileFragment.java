@@ -161,7 +161,7 @@ public class MyProfileFragment extends BaseFragment {
         updateUser(user);
         topContainer = (LinearLayout) topview.findViewById(R.id.topContainer);
 
-        if (userManager.getUser().guestMode)
+        if (userManager.getUser() == null || userManager.getUser().guestMode)
             changeFilter(R.id.activity_2);
         else
             changeFilter(R.id.activity_1);
