@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import models.ActivityItem;
 import models.Comment;
+import models.Contest;
 import models.Group;
 import models.Leader;
 import models.Member;
@@ -61,6 +62,11 @@ public class TypeTokenFactory {
 
     public static TypeToken getSettingsTypeToken() {
         return new TypeToken<ArrayList<SettingsCategory>>() {
+        };
+    }
+
+    public static TypeToken getContestsTypeToken() {
+        return new TypeToken<ArrayList<Contest>>() {
         };
     }
 }

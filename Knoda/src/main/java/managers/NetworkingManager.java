@@ -30,6 +30,7 @@ import models.AndroidDeviceToken;
 import models.BaseModel;
 import models.Challenge;
 import models.Comment;
+import models.Contest;
 import models.ForgotPasswordRequest;
 import models.Group;
 import models.GroupInvitation;
@@ -503,6 +504,21 @@ public class NetworkingManager {
         String url = buildUrl("settings.json", true, null);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getSettingsTypeToken(), callback);
+    }
+
+    public void getContests(final NetworkListCallback<Contest> callback) {
+        String url = buildUrl("contests.json", true, null);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getContestsTypeToken(), callback);
+    }
+
+    public void getContestsPredictions(int contestId, boolean expired, final NetworkListCallback<Prediction> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        if (expired)
+            builder.add("list", "expired");
+
+        String url = buildUrl("contests/" + contestId + "/predictions.json", true, builder);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
     public void loginAsGuest(final NetworkCallback<LoginResponse> callback) {
