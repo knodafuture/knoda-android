@@ -1,6 +1,7 @@
 package views.contests;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +22,10 @@ public class ContestListCell extends RelativeLayout {
     public TextView leaderTV;
     public TextView placeTV;
     public TextView overallTV;
+    private ColorStateList csl;
+    public RelativeLayout buttonContainer;
+    public TextView buttonText;
+    public LinearLayout standingsContainer;
 
     public NetworkImageView avatarImageView;
 
@@ -41,6 +46,10 @@ public class ContestListCell extends RelativeLayout {
         placeTV = (TextView) findViewById(R.id.contest_place);
         overallTV = (TextView) findViewById(R.id.contest_overall);
         avatarImageView = (NetworkImageView) findViewById(R.id.contest_avatar);
+        buttonContainer = (RelativeLayout) findViewById(R.id.contest_button_container);
+        buttonText = (TextView) findViewById(R.id.contest_button);
+        buttonText.setTextColor(getResources().getColorStateList(R.color.group_selector_text));
+        standingsContainer = (LinearLayout) findViewById(R.id.contest_standings_container);
     }
 
     public void setHeaderMode() {
@@ -61,6 +70,10 @@ public class ContestListCell extends RelativeLayout {
         if (contest.contestMyInfo != null)
             placeTV.setText(getPlace(contest.contestMyInfo.rank));
         overallTV.setText("overall(" + contest.participants + ")");
+        if (contest.contestMyInfo == null) {//explore
+            buttonContainer.setVisibility(VISIBLE);
+            standingsContainer.setVisibility(INVISIBLE);
+        }
 
     }
 

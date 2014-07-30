@@ -39,6 +39,8 @@ public class ContestDetailFragment extends BaseFragment {
     RelativeLayout header;
     private ViewPager mViewPager;
     Contest contest;
+    LinearLayout.LayoutParams params;
+    int topContainerHeight;
 
     public static ContestDetailFragment newInstance(Contest contest) {
         ContestDetailFragment fragment = new ContestDetailFragment();
@@ -121,9 +123,19 @@ public class ContestDetailFragment extends BaseFragment {
             }
         });
         topview.addView(mViewPager);
-        adapter = new ContestDetailPagerAdapter(getFragmentManager(), contest.id);
+        adapter = new ContestDetailPagerAdapter(getFragmentManager(), contest.id, this);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);
+
+        header.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                topContainerHeight = header.getHeight();
+                params = (LinearLayout.LayoutParams) header.getLayoutParams();
+                header.removeOnLayoutChangeListener(this);
+                loaded = true;
+            }
+        });
 
     }
 
@@ -140,8 +152,8 @@ public class ContestDetailFragment extends BaseFragment {
     }
 
     @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            menu.clear();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.contestdetails, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }

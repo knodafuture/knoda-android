@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
@@ -27,7 +30,7 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
     int screenNumber;
     boolean pageLoaded = false;
     PredictionAdapter predictionAdapter;
-    //MyProfileFragment parentFragment;
+    ContestDetailFragment parentFragment;
     String filter;
     int contestId;
 
@@ -38,9 +41,9 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
     public ContestDetailFeedFragment() {
     }
 
-    public static ContestDetailFeedFragment newInstance(String filter, int contestId) {
+    public static ContestDetailFeedFragment newInstance(String filter, int contestId, ContestDetailFragment parentFragment) {
         ContestDetailFeedFragment fragment = new ContestDetailFeedFragment();
-        //fragment.parentFragment = parentfragment;
+        fragment.parentFragment = parentFragment;
         fragment.filter = filter;
         fragment.contestId = contestId;
         return fragment;
@@ -136,10 +139,6 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
 
     @Override
     public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
-//        boolean challenged = (screenNumber == 1) ? true : false;
-//        pageLoaded = true;
-//        int lastId = object == null ? 0 : object.id;
-//        networkingManager.getPredictionsAfterId(challenged, lastId, callback);
         if (filter != null && filter.equals("expired"))
             networkingManager.getContestsPredictions(contestId, true, callback);
         else
@@ -167,29 +166,29 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
         super.onPredictionAgreed(cell);
     }
 
-//    private class ExpandAnimation extends Animation {
-//        private final int mStartHeight;
-//        private final int mDeltaHeight;
-//        LinearLayout.LayoutParams lp;
-//
-//        public ExpandAnimation(int endHeight) {
-//            mStartHeight = (endHeight == parentFragment.topContainerHeight) ? 0 : parentFragment.topContainerHeight;
-//            mDeltaHeight = mStartHeight - endHeight;
-//            this.setDuration(400);
-//            lp = parentFragment.params;
-//        }
-//
-//        @Override
-//        protected void applyTransformation(float interpolatedTime,
-//                                           Transformation t) {
-//            lp.height = (int) (mStartHeight - (mDeltaHeight * interpolatedTime));
-//            parentFragment.topContainer.setLayoutParams(lp);
-//        }
-//
-//        @Override
-//        public boolean willChangeBounds() {
-//            return true;
-//        }
-//    }
+    private class ExpandAnimation extends Animation {
+        private final int mStartHeight;
+        private final int mDeltaHeight;
+        LinearLayout.LayoutParams lp;
+
+        public ExpandAnimation(int endHeight) {
+            mStartHeight = (endHeight == parentFragment.topContainerHeight) ? 0 : parentFragment.topContainerHeight;
+            mDeltaHeight = mStartHeight - endHeight;
+            this.setDuration(400);
+            lp = parentFragment.params;
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime,
+                                           Transformation t) {
+            lp.height = (int) (mStartHeight - (mDeltaHeight * interpolatedTime));
+            parentFragment.header.setLayoutParams(lp);
+        }
+
+        @Override
+        public boolean willChangeBounds() {
+            return true;
+        }
+    }
 
 }
