@@ -37,6 +37,7 @@ public class PredictionListCell extends RelativeLayout {
 
     public RelativeLayout groupView;
     public TextView groupTextView;
+    public ImageView groupIcon;
 
     public RelativeLayout walkthroughView;
     public RelativeLayout container;
@@ -75,6 +76,7 @@ public class PredictionListCell extends RelativeLayout {
         walkthroughView = (RelativeLayout) findViewById(R.id.prediction_cell_swipe_walkthrough);
         container = (RelativeLayout) findViewById(R.id.prediction_cell_container);
         textContainer = (LinearLayout) findViewById(R.id.prediction_cell_username_textview_container);
+        groupIcon = (ImageView) findViewById(R.id.prediction_cell_group_icon);
     }
 
     public void setAgree(boolean agree) {
@@ -129,12 +131,17 @@ public class PredictionListCell extends RelativeLayout {
 
         updateVoteImage();
 
-        if (prediction.groupName == null) {
-            groupView.setVisibility(GONE);
-        } else {
+        if (prediction.contest_name != null) {
+            groupView.setVisibility(VISIBLE);
+            groupTextView.setText(prediction.contest_name);
+            groupIcon.setImageDrawable(null);//CHANGE THIS
+        } else if (prediction.groupName != null) {
             groupView.setVisibility(VISIBLE);
             groupTextView.setText(prediction.groupName);
+        } else {
+            groupView.setVisibility(GONE);
         }
+
         avatarImageView.setTag(prediction.userId);
         textContainer.setTag(prediction.userId);
 

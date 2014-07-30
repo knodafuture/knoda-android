@@ -156,7 +156,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         objects.clear();
     }
 
-    private View getNoContentView() {
+    protected View getNoContentView() {
         View view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content, null);
         ((TextView) view.findViewById(R.id.no_content_textview)).setText(datasource.noContentString());
         return view;

@@ -110,7 +110,6 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
                 resizing = true;
                 if (visible == 0)
                     visible = visibleItemCount;
-
                 if (firstVisibleItem > 2 && headerSize != 1) {
                     resizeHeader(1);
                 } else if (firstVisibleItem == 0) {
