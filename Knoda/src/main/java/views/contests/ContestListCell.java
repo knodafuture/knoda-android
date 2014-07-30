@@ -56,9 +56,10 @@ public class ContestListCell extends RelativeLayout {
         setTag(contest);
         titleTV.setText(contest.name);
         descriptionTV.setText(contest.description);
-
-        leaderTV.setText(contest.contestLeaderInfo.username);
-        placeTV.setText(getPlace(contest.contestMyInfo.rank));
+        if (contest.contestLeaderInfo != null)
+            leaderTV.setText(contest.contestLeaderInfo.username);
+        if (contest.contestMyInfo != null)
+            placeTV.setText(getPlace(contest.contestMyInfo.rank));
         overallTV.setText("overall(" + contest.participants + ")");
 
     }

@@ -1,6 +1,8 @@
 package views.predictionlists;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import com.flurry.android.FlurryAgent;
@@ -31,6 +33,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userId = getArguments().getInt("USER_ID");
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -87,5 +90,8 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+    }
 }

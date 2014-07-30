@@ -3,8 +3,9 @@ package views.contests;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
@@ -16,11 +17,10 @@ import adapters.PredictionAdapter;
 import butterknife.InjectView;
 import models.Prediction;
 import networking.NetworkListCallback;
-import views.core.BaseListFragment;
-import views.details.DetailsFragment;
+import views.predictionlists.BasePredictionListFragment;
 import views.predictionlists.PredictionListCell;
 
-public class ContestDetailFeedFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Prediction> {
+public class ContestDetailFeedFragment extends BasePredictionListFragment implements PagingAdapter.PagingAdapterDatasource<Prediction> {
     @InjectView(R.id.base_listview)
     public PullToRefreshListView pListView;
     View topview;
@@ -66,7 +66,6 @@ public class ContestDetailFeedFragment extends BaseListFragment implements Pagin
         super.onResume();
         //resizeHeader(0);
     }
-
 //    @Override
 //    public AbsListView.OnScrollListener getOnScrollListener() {
 //        return new AbsListView.OnScrollListener() {
@@ -102,7 +101,7 @@ public class ContestDetailFeedFragment extends BaseListFragment implements Pagin
 //        };
 //    }
 
-//    public void resizeHeader(int state) {
+    //    public void resizeHeader(int state) {
 //        if (headerSize == state) {
 //            return;
 //        }
@@ -116,6 +115,10 @@ public class ContestDetailFeedFragment extends BaseListFragment implements Pagin
 //        }
 //
 //    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+    }
 
     @Override
     public void onPause() {
@@ -145,21 +148,23 @@ public class ContestDetailFeedFragment extends BaseListFragment implements Pagin
 
     @Override
     public void onListViewCreated(ListView listView) {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (view instanceof PredictionListCell && (i - 1) >= 0) {
-                    DetailsFragment fragment = DetailsFragment.newInstance(predictionAdapter.getItem(i - 1));
-                    pushFragment(fragment);
-                }
-            }
-        });
+        super.onListViewCreated(listView);
     }
 
     @Override
     public String noContentString() {
         pListView.setBackgroundColor(Color.WHITE);
         return "No Predictions for this contest.";
+    }
+
+    @Override
+    public void onPredictionDisagreed(final PredictionListCell cell) {
+        super.onPredictionDisagreed(cell);
+    }
+
+    @Override
+    public void onPredictionAgreed(final PredictionListCell cell) {
+        super.onPredictionAgreed(cell);
     }
 
 //    private class ExpandAnimation extends Animation {

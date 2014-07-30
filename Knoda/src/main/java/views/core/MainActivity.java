@@ -100,7 +100,6 @@ import views.contests.SocialFragment;
 import views.details.CreateCommentFragment;
 import views.details.DetailsFragment;
 import views.group.AddGroupFragment;
-import views.group.GroupFragment;
 import views.group.GroupSettingsFragment;
 import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
@@ -432,7 +431,7 @@ public class MainActivity extends BaseActivity {
         if (userManager != null && userManager.getUser() != null && !userManager.getUser().guestMode)
             return true;
 
-        if (fragment instanceof AddGroupFragment || fragment instanceof GroupFragment) {
+        if (fragment instanceof SocialFragment) {
             showLogin("Hey now!", "You need to create an account to access contests and groups.");
             return false;
         } else if (fragment instanceof AddPredictionFragment) {

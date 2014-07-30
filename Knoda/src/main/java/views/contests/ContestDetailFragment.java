@@ -71,6 +71,7 @@ public class ContestDetailFragment extends BaseFragment {
 
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
         selectedUnderline = view.findViewById(R.id.underline_1);
+        setTitle("DETAILS");
 
         return view;
     }
@@ -139,8 +140,8 @@ public class ContestDetailFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            menu.clear();
         inflater.inflate(R.menu.contestdetails, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }

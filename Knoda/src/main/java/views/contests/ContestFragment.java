@@ -69,8 +69,10 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("ContestFragment");
-        if (filter.equals("explore"))
+        if (filter.equals("explore")) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+            setTitle("EXPLORE");
+        }
     }
 
     @Override
@@ -154,7 +156,11 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
             inflater.inflate(R.menu.social, menu);
             super.onCreateOptionsMenu(menu, inflater);
         }
+    }
 
+    @Override
+    public void onOptionsMenuClosed(Menu menu) {
+        menu.clear();
     }
 
 }

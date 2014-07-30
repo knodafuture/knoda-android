@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -81,6 +83,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         super.onCreate(savedInstanceState);
         this.prediction = GsonF.actory().fromJson(getArguments().getString("PREDICTION"), Prediction.class);
         bus.register(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -438,6 +441,11 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 });
             }
         };
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
     }
 
     @Override

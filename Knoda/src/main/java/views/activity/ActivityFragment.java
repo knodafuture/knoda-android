@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -89,6 +91,7 @@ public class ActivityFragment extends BaseFragment {
         bus.register(this);
         sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
         ((MainActivity) getActivity()).setActivitiesDot(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -176,6 +179,11 @@ public class ActivityFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
     }
 
 }

@@ -242,6 +242,7 @@ public class MyProfileFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         if (mainActivity.userManager.getUser() != null && mainActivity.userManager.getUser().guestMode == false)
             inflater.inflate(R.menu.profile, menu);
         else
