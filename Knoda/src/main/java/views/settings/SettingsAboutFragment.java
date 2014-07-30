@@ -22,11 +22,11 @@ public class SettingsAboutFragment extends PreferenceFragment {
         @Override
         public boolean onPreferenceClick(Preference preference) {
             if (preference.getKey().equals("terms")) {
-                openUrl(NetworkingManager.termsOfServiceUrl);
+                openUrl(NetworkingManager.termsOfServiceUrl, "TERMS OF SERVICE");
             } else if (preference.getKey().equals("privacy")) {
-                openUrl(NetworkingManager.privacyPolicyUrl);
+                openUrl(NetworkingManager.privacyPolicyUrl, "PRIVACY POLICY");
             } else if (preference.getKey().equals("support")) {
-                openUrl(NetworkingManager.supportUrl);
+                openUrl(NetworkingManager.supportUrl, "SUPPORT");
             }
             return false;
         }
@@ -98,8 +98,8 @@ public class SettingsAboutFragment extends PreferenceFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void openUrl(String url) {
-        BaseWebFragment fragment = BaseWebFragment.newInstance(url, true);
+    public void openUrl(String url, String title) {
+        BaseWebFragment fragment = BaseWebFragment.newInstance(url, title, true);
         ((MainActivity) getActivity()).pushFragment(fragment);
         //Uri uri = Uri.parse(url);
         //Intent intent = new Intent(Intent.ACTION_VIEW, uri);

@@ -18,13 +18,15 @@ public class BaseWebFragment extends BaseFragment {
     public WebView webView;
     private String url;
     private boolean disableNav = false;
+    private String title;
 
     public BaseWebFragment() {
     }
 
-    public static BaseWebFragment newInstance(String url, boolean disableNav) {
+    public static BaseWebFragment newInstance(String url, String title, boolean disableNav) {
         BaseWebFragment fragment = new BaseWebFragment();
         fragment.url = url;
+        fragment.title = title;
         fragment.disableNav = disableNav;
         return fragment;
     }
@@ -32,6 +34,7 @@ public class BaseWebFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        setTitle(title);
         super.onCreate(savedInstanceState);
     }
 

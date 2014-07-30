@@ -74,7 +74,6 @@ public class ContestDetailFragment extends BaseFragment {
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
         selectedUnderline = view.findViewById(R.id.underline_1);
         setTitle("DETAILS");
-
         return view;
     }
 
@@ -184,7 +183,7 @@ public class ContestDetailFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_contest_info: {
-                pushFragment(BaseWebFragment.newInstance(contest.detail_url, false));
+                pushFragment(BaseWebFragment.newInstance(contest.detail_url, "DETAILS", false));
                 break;
             }
         }

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_contest_info"
-        android:icon="@drawable/ic_settings"
+        android:icon="@drawable/ic_contest_info"
         android:orderInCategory="0"
         android:showAsAction="always"
         android:title="Contest Info" />
