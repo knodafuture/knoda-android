@@ -22,6 +22,7 @@ import models.Contest;
 import networking.NetworkListCallback;
 import pubsub.GroupNavEvent;
 import views.core.BaseListFragment;
+import views.core.MainActivity;
 
 public class ContestFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<Contest> {
     @InjectView(R.id.base_listview)
@@ -114,7 +115,9 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
                     } else {
 
                     }
-                    
+                    ContestDetailFragment fragment = ContestDetailFragment.newInstance(contest);
+                    ((MainActivity) getActivity()).pushFragment(fragment);
+
                 }
 //                if (activityItem != null) {
 //                    if (activityItem.type == ActivityItemType.INVITATION) {

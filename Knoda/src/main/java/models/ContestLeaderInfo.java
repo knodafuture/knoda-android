@@ -5,4 +5,5 @@ package models;
  */
 public class ContestLeaderInfo {
     public String username;
+    public int id;
 }

@@ -27,4 +27,6 @@ public class Contest extends BaseModel {
     public int participants;
     @SerializedName("contest_stages")
     public ArrayList<ContestStage> contestStages;
+    @SerializedName("detail_url")
+    public String detail_url;
 }

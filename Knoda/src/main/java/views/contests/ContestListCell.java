@@ -2,6 +2,7 @@ package views.contests;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,14 @@ public class ContestListCell extends RelativeLayout {
         placeTV = (TextView) findViewById(R.id.contest_place);
         overallTV = (TextView) findViewById(R.id.contest_overall);
         avatarImageView = (NetworkImageView) findViewById(R.id.contest_avatar);
+    }
+
+    public void setHeaderMode() {
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) findViewById(R.id.spacer).getLayoutParams();
+        lp.height = 1;
+        findViewById(R.id.spacer).setLayoutParams(lp);
+        descriptionTV.setMaxLines(1000);
+        descriptionTV.setEllipsize(null);
     }
 
 
