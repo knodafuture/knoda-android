@@ -39,6 +39,7 @@ import networking.NetworkListCallback;
 import pubsub.NewCommentEvent;
 import pubsub.PredictionChangeEvent;
 import views.core.BaseListFragment;
+import views.core.MainActivity;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
@@ -310,6 +311,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 headerview.setPrediction(prediction);
             }
         });
+        guestContest(prediction);
         FlurryAgent.logEvent("Agree_Button_Tapped");
     }
 
@@ -329,6 +331,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 headerview.setPrediction(prediction);
             }
         });
+        guestContest(prediction);
         FlurryAgent.logEvent("Disagree_Button_Tapped");
     }
 
@@ -451,5 +454,28 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     @Override
     public String noContentString() {
         return "Be the first to comment.";
+    }
+
+    private void guestContest(Prediction prediction) {
+        if (prediction.contest_id == null)
+            return;
+        if (userManager.getUser() == null || userManager.getUser().guestMode) {
+            AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+            b.setTitle("Show me the contest!")
+                    .setMessage("This prediction is part of a contest. To be eligible to win, you must be a registered Knoda user. Sign up now for your chance to win!")
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setPositiveButton("Sign Up", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ((MainActivity) getActivity()).showLogin("Giddy Up!", "Now we're talking! Choose an option below to sign-up and start participating in contests.");
+                        }
+                    })
+                    .show();
+        }
     }
 }

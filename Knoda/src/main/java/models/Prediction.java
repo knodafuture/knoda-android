@@ -78,6 +78,9 @@ public class Prediction extends BaseModel {
     @SerializedName("predicted_text")
     public String predictedText;
 
+    @SerializedName("contest_id")
+    public Integer contest_id;
+
     public String getCreationString() {
         return "made " + DateUtil.getPeriodString(creationDate) + " ago";
     }
