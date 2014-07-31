@@ -586,6 +586,7 @@ public class MainActivity extends BaseActivity {
             bus.post(new HomeNavEvent());
             return;
         }
+        clearStack();
         if (homeFragment == null)
             homeFragment = HomeFragment.newInstance();
         pushFragment(homeFragment);
@@ -596,6 +597,7 @@ public class MainActivity extends BaseActivity {
             bus.post(new ActivityNavEvent());
             return;
         }
+        clearStack();
         if (activityFragment == null)
             activityFragment = ActivityFragment.newInstance();
         pushFragment(activityFragment);
@@ -606,6 +608,7 @@ public class MainActivity extends BaseActivity {
             bus.post(new ProfileNavEvent());
             return;
         }
+        clearStack();
         if (myProfileFragment == null)
             myProfileFragment = MyProfileFragment.newInstance();
         pushFragment(myProfileFragment);
@@ -616,6 +619,7 @@ public class MainActivity extends BaseActivity {
             bus.post(new GroupNavEvent());
             return;
         }
+        clearStack();
         if (socialFragment == null)
             socialFragment = SocialFragment.newInstance();
         if (checkFragment(socialFragment))
@@ -626,6 +630,13 @@ public class MainActivity extends BaseActivity {
         if (settingsFragment == null)
             settingsFragment = new SettingsFragment();
         pushFragment(settingsFragment);
+    }
+
+    private void clearStack() {
+        FragmentManager fm = getFragmentManager();
+        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStackImmediate();
+        }
     }
 
     private void onCreateGroup() {
