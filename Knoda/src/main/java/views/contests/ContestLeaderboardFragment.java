@@ -1,9 +1,11 @@
 package views.contests;
 
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,7 +40,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
     ArrayList<CustomTab> tabs = new ArrayList<CustomTab>();
     CustomTab selected;
 
-    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
+    LinearLayout.LayoutParams lp;
     RelativeLayout.LayoutParams lpTV = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     RelativeLayout.LayoutParams lpUnder;
 
@@ -49,8 +51,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
     public static ContestLeaderboardFragment newInstance(Contest contest) {
         ContestLeaderboardFragment fragment = new ContestLeaderboardFragment();
         fragment.contest = contest;
-        fragment.lp.weight = .333f;
-
         return fragment;
     }
 
@@ -71,8 +71,17 @@ public class ContestLeaderboardFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         bus.register(this);
         setHasOptionsMenu(true);
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        //lp = new LinearLayout.LayoutParams((int) (width / 3), ViewGroup.LayoutParams.MATCH_PARENT);
+        lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        lp.weight = 1;
         lpTV.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics()), 0, 0);
         lpUnder = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
+
         lpUnder.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
     }
 
@@ -87,6 +96,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         FlurryAgent.logEvent("Contest Leaderboard");
         setTitle("LEADERBOARD");
         ContestStage overall = new ContestStage();
@@ -124,6 +134,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 changeFilter(((ContestStage) v.getTag()).sort_order);
+                mViewPager.setCurrentItem((((ContestStage) v.getTag()).sort_order));
             }
         });
 
@@ -136,7 +147,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
         super.onResume();
 
         if (mViewPager != null) {
-            ((LinearLayout) topview.findViewById(R.id.activity_container)).removeView(mViewPager);
+            ((LinearLayout) topview).removeView(mViewPager);
         }
         mViewPager = new ViewPager(getActivity().getApplicationContext());
         mViewPager.setId(2000 + new Random().nextInt(100));
@@ -149,7 +160,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 changeFilter(position);
-//                adapter.getItem(position);
             }
 
             @Override
@@ -161,17 +171,17 @@ public class ContestLeaderboardFragment extends BaseFragment {
         adapter = new ContestStagesPagerAdapter(getFragmentManager(), contest);
         mViewPager.setAdapter(adapter);
         changeFilter(0);
-        //mViewPager.setCurrentItem(0, true);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
+    }
+
+    @Override
+    public void onDestroyView() {
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        super.onDestroyView();
     }
 
 }

@@ -29,24 +29,28 @@ public class ContestLeaderboardUserAdapter extends PagingAdapter<ContestUser> {
 
     @Override
     public int getCount() {
-        return super.getCount();
+        return super.getCount() + 1;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if (position >= objects.size())
+        if (position > objects.size())
             return super.getView(position, convertView, parent);
 
 
         ContestUserListCell listItem = (ContestUserListCell) AdapterHelper.getConvertViewSafely(convertView, ContestUserListCell.class);
         if (listItem == null)
             listItem = (ContestUserListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_contestuser, null);
-        final ContestUser contestUser = objects.get(position);
-        if (contestUser != null) {
-            listItem.setContestUser(contestUser);
-            if (contestUser.avatar != null)
-                listItem.avatarImageView.setImageUrl(contestUser.avatar.small, imageLoader);
+        if (position == 0) {
+            listItem.setHeaderMode();
+        } else {
+            final ContestUser contestUser = objects.get(position - 1);
+            if (contestUser != null) {
+                listItem.setContestUser(contestUser);
+                if (contestUser.avatar != null)
+                    listItem.avatarImageView.setImageUrl(contestUser.avatar.small, imageLoader);
+            }
         }
 
 

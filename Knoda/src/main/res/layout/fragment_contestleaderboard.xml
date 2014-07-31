@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/knodaLightGreen"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="3">
 
     </LinearLayout>
 

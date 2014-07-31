@@ -80,16 +80,17 @@ public class ContestListCell extends RelativeLayout {
             //buttonContainer.setVisibility(VISIBLE);
             //standingsContainer.setVisibility(INVISIBLE);
         } else {
-            standingsContainer.setTag(contest);
-            standingsContainer.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Contest contest1 = (Contest) v.getTag();
-                    ContestLeaderboardFragment fragment = ContestLeaderboardFragment.newInstance(contest1);
-                    mainActivity.pushFragment(fragment);
-                }
-            });
+
         }
+        standingsContainer.setTag(contest);
+        standingsContainer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Contest contest1 = (Contest) v.getTag();
+                ContestLeaderboardFragment fragment = ContestLeaderboardFragment.newInstance(contest1);
+                mainActivity.pushFragment(fragment);
+            }
+        });
 
     }
 

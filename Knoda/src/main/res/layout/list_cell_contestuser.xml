@@ -3,15 +3,14 @@
 <views.contests.ContestUserListCell xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:background="#CCC"
-    android:gravity="center_vertical">
+    android:background="#CCC">
 
     <TextView
         android:id="@+id/contestuser_rank"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="15dp"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:text="1"
         android:textColor="@color/knodaLightGreen"
         android:textSize="24sp"
@@ -21,15 +20,14 @@
         android:id="@+id/contestuser_avatar"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="65dp"
         android:layout_marginTop="4dp"
-        android:layout_toRightOf="@id/contestuser_rank"
         android:background="@color/black" />
 
     <TextView
         android:id="@+id/contestuser_username"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/contestuser_avatar"
         android:gravity="center_vertical"
@@ -40,7 +38,7 @@
     <TextView
         android:id="@+id/contestuser_wins"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:gravity="center_vertical"

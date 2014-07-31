@@ -3,8 +3,6 @@ package views.contests;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -41,15 +39,12 @@ public class ContestLeaderboardFeedFragment extends BaseListFragment implements 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        bus.register(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         topview = getView();
-        getActivity().invalidateOptionsMenu();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -57,13 +52,11 @@ public class ContestLeaderboardFeedFragment extends BaseListFragment implements 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("ContestLeaderboardFeedFragment");
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
@@ -103,12 +96,6 @@ public class ContestLeaderboardFeedFragment extends BaseListFragment implements 
     public String noContentString() {
         pListView.setBackgroundColor(Color.WHITE);
         return "There are no users ranked in this contest.";
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
     }
 
 }

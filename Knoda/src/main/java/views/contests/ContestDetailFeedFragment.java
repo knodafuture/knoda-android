@@ -118,10 +118,6 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
 //        }
 //
 //    }
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-    }
 
     @Override
     public void onPause() {
