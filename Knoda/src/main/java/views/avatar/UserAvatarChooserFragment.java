@@ -80,14 +80,13 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        updateBackground();
         return inflater.inflate(R.layout.fragment_user_avatar, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        updateBackground();
         cameraOutputFile = new File(getActivity().getExternalFilesDir(null), FROM_CAMERA_FILENAME);
         cropResultFile = new File(getActivity().getExternalFilesDir(null), CROP_RESULT_FILENAME);
     }

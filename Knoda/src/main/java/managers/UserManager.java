@@ -264,6 +264,8 @@ public class UserManager {
     }
 
     public Group getGroupById(Integer id) {
+        if (id == null || groups == null)
+            return null;
         for (int i = 0; i < groups.size(); i++) {
             if (groups.get(i).id.equals(id)) {
                 return groups.get(i);

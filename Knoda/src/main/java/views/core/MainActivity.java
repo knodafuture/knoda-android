@@ -835,13 +835,16 @@ public class MainActivity extends BaseActivity {
             networkingManager.getUnseenActivityItems(null, new NetworkListCallback<ActivityItem>() {
                 @Override
                 public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
-                    if (error != null) {
+                    try {
+                        if (error != null) {
 
-                    } else {
-                        if (object != null && object.size() > 0) {
-                            setActivitiesDot(false);
+                        } else {
+                            if (object != null && object.size() > 0) {
+                                setActivitiesDot(false);
+                            }
+                            handler.postDelayed(activitiesRefreshRunnable, userRefreshInterval);
                         }
-                        handler.postDelayed(activitiesRefreshRunnable, userRefreshInterval);
+                    } catch (Exception e) {
                     }
 
                 }
@@ -851,6 +854,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setActivitiesDot(boolean seen) {
+
         if (seen)
             activityDot.setVisibility(View.INVISIBLE);
         else
