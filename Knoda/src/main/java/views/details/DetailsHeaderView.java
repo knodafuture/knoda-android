@@ -112,7 +112,7 @@ public class DetailsHeaderView extends RelativeLayout {
     }
 
     private void configureVariableSpot() {
-        if (prediction.closeDate != null & prediction.challenge != null)
+        if (prediction.closeDate != null && prediction.challenge != null)
             updateAndShowPoints();
         else if (prediction.canSetOutcome() && prediction.challenge.isOwn)
             updateAndShowSettle();

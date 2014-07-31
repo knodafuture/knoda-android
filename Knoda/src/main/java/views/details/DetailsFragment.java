@@ -308,6 +308,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                     return;
 
                 prediction = object;
+                checkComments(true);
                 headerview.setPrediction(prediction);
             }
         });
@@ -328,11 +329,22 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                     return;
 
                 prediction = object;
+                checkComments(false);
                 headerview.setPrediction(prediction);
             }
         });
         guestContest(prediction);
         FlurryAgent.logEvent("Disagree_Button_Tapped");
+    }
+
+    public void checkComments(boolean agree) {
+        for (int i = 0; i != commentAdapter.getCount() - 2; i++) {
+            Comment comment = commentAdapter.getItem(i);
+            if (comment != null && comment.userId == userManager.getUser().id && comment.challenge != null) {
+                comment.challenge.agree = agree;
+            }
+        }
+        commentAdapter.notifyDataSetChanged();
     }
 
     @Override

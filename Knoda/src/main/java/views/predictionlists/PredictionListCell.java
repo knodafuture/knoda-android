@@ -134,7 +134,7 @@ public class PredictionListCell extends RelativeLayout {
         if (prediction.contest_name != null) {
             groupView.setVisibility(VISIBLE);
             groupTextView.setText(prediction.contest_name);
-            groupIcon.setImageResource(R.drawable.contest_prediction_badge);//CHANGE THIS
+            groupIcon.setImageResource(R.drawable.contest_prediction_badge);
         } else if (prediction.groupName != null) {
             groupView.setVisibility(VISIBLE);
             groupTextView.setText(prediction.groupName);
