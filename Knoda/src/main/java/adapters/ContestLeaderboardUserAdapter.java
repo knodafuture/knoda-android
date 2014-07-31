@@ -14,18 +14,16 @@ import javax.inject.Inject;
 
 import helpers.AdapterHelper;
 import managers.UserManager;
-import models.Contest;
-import views.contests.ContestListCell;
-import views.core.MainActivity;
+import models.ContestUser;
+import views.contests.ContestUserListCell;
 
-public class ContestAdapter extends PagingAdapter<Contest> {
+public class ContestLeaderboardUserAdapter extends PagingAdapter<ContestUser> {
 
     @Inject
     public UserManager userManager;
     public Bus bus;
-    public MainActivity mainActivity;
 
-    public ContestAdapter(Context context, PagingAdapterDatasource<Contest> datasource, ImageLoader imageLoader) {
+    public ContestLeaderboardUserAdapter(Context context, PagingAdapterDatasource<ContestUser> datasource, ImageLoader imageLoader) {
         super(context, datasource, imageLoader);
     }
 
@@ -41,18 +39,14 @@ public class ContestAdapter extends PagingAdapter<Contest> {
             return super.getView(position, convertView, parent);
 
 
-        ContestListCell listItem = (ContestListCell) AdapterHelper.getConvertViewSafely(convertView, ContestListCell.class);
+        ContestUserListCell listItem = (ContestUserListCell) AdapterHelper.getConvertViewSafely(convertView, ContestUserListCell.class);
         if (listItem == null)
-            listItem = (ContestListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_contest, null);
-        final Contest contest = objects.get(position);
-        if (contest != null) {
-            listItem.setContest(contest, mainActivity);
-            if (contest.avatar != null)
-                listItem.avatarImageView.setImageUrl(contest.avatar, imageLoader);
-
-            if (contest.contestStages != null && contest.contestStages.size() > 0) {
-                //listItem.arrow.setVisibility(View.VISIBLE);
-            }
+            listItem = (ContestUserListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_contestuser, null);
+        final ContestUser contestUser = objects.get(position);
+        if (contestUser != null) {
+            listItem.setContestUser(contestUser);
+            if (contestUser.avatar != null)
+                listItem.avatarImageView.setImageUrl(contestUser.avatar.small, imageLoader);
         }
 
 

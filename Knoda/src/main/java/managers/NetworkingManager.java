@@ -31,6 +31,7 @@ import models.BaseModel;
 import models.Challenge;
 import models.Comment;
 import models.Contest;
+import models.ContestUser;
 import models.ForgotPasswordRequest;
 import models.Group;
 import models.GroupInvitation;
@@ -522,6 +523,15 @@ public class NetworkingManager {
 
         String url = buildUrl("contests/" + contestId + "/predictions.json", true, builder);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
+    }
+
+    public void getContestLeaderboard(int contestId, Integer stage, final NetworkListCallback<ContestUser> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        if (stage != null)
+            builder.add("stage", stage + "");
+
+        String url = buildUrl("contests/" + contestId + "/leaderboard.json", true, builder);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getContestUserTypeToken(), callback);
     }
 
     public void loginAsGuest(final NetworkCallback<LoginResponse> callback) {

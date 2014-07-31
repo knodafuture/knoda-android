@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="4"
+                    android:layout_weight="3"
                     android:orientation="vertical">
 
                     <TextView
@@ -153,7 +153,19 @@
                         android:textSize="12sp" />
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:src="@drawable/settings_arrow"
+                    android:visibility="visible" />
             </LinearLayout>
+
 
             <RelativeLayout
                 android:id="@+id/contest_button_container"
@@ -164,7 +176,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/contest_button"

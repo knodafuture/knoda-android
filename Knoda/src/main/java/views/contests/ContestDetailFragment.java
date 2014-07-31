@@ -26,6 +26,7 @@ import butterknife.OnClick;
 import models.Contest;
 import views.core.BaseFragment;
 import views.core.BaseWebFragment;
+import views.core.MainActivity;
 
 public class ContestDetailFragment extends BaseFragment {
 
@@ -81,7 +82,7 @@ public class ContestDetailFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ContestListCell listItem = (ContestListCell) LayoutInflater.from(getActivity()).inflate(R.layout.list_cell_contest, null);
-        listItem.setContest(contest);
+        listItem.setContest(contest, (MainActivity) getActivity());
         listItem.setHeaderMode();
         header.addView(listItem);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);

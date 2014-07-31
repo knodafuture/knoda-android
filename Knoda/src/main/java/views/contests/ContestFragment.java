@@ -96,7 +96,9 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public PagingAdapter getAdapter() {
-        return new ContestAdapter(getActivity(), this, networkingManager.getImageLoader());
+        ContestAdapter adapter1 = new ContestAdapter(getActivity(), this, networkingManager.getImageLoader());
+        adapter1.mainActivity = (MainActivity) getActivity();
+        return adapter1;
     }
 
     @Override
@@ -112,13 +114,14 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final Contest contest = (Contest) adapter.getItem(i - 1);
                 if (contest != null) {
-                    if (view.getId() == R.id.contest_leader) {
-
+                    if (view.getId() == R.id.contest_standings_container) {
+                        ContestLeaderboardFragment fragment = ContestLeaderboardFragment.newInstance(contest);
+                        ((MainActivity) getActivity()).pushFragment(fragment);
                     } else {
-
+                        ContestDetailFragment fragment = ContestDetailFragment.newInstance(contest);
+                        ((MainActivity) getActivity()).pushFragment(fragment);
                     }
-                    ContestDetailFragment fragment = ContestDetailFragment.newInstance(contest);
-                    ((MainActivity) getActivity()).pushFragment(fragment);
+
 
                 }
 //                if (activityItem != null) {

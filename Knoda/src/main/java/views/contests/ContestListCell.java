@@ -3,6 +3,8 @@ package views.contests;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
 import models.Contest;
+import views.core.MainActivity;
 
 /**
  * Created by nick on 2/3/14.
@@ -28,7 +31,8 @@ public class ContestListCell extends RelativeLayout {
     public LinearLayout standingsContainer;
 
     public NetworkImageView avatarImageView;
-
+    public ImageView arrow;
+    MainActivity mainActivity;
 
     public ContestListCell(Context context) {
         super(context);
@@ -50,6 +54,7 @@ public class ContestListCell extends RelativeLayout {
         buttonText = (TextView) findViewById(R.id.contest_button);
         buttonText.setTextColor(getResources().getColorStateList(R.color.group_selector_text));
         standingsContainer = (LinearLayout) findViewById(R.id.contest_standings_container);
+        arrow = (ImageView) findViewById(R.id.arrow);
     }
 
     public void setHeaderMode() {
@@ -61,7 +66,8 @@ public class ContestListCell extends RelativeLayout {
     }
 
 
-    public void setContest(Contest contest) {
+    public void setContest(Contest contest, MainActivity mainActivity1) {
+        this.mainActivity = mainActivity1;
         setTag(contest);
         titleTV.setText(contest.name);
         descriptionTV.setText(contest.description);
@@ -71,8 +77,18 @@ public class ContestListCell extends RelativeLayout {
             placeTV.setText(getPlace(contest.contestMyInfo.rank));
         overallTV.setText("overall(" + contest.participants + ")");
         if (contest.contestMyInfo == null) {//explore
-            buttonContainer.setVisibility(VISIBLE);
-            standingsContainer.setVisibility(INVISIBLE);
+            //buttonContainer.setVisibility(VISIBLE);
+            //standingsContainer.setVisibility(INVISIBLE);
+        } else {
+            standingsContainer.setTag(contest);
+            standingsContainer.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Contest contest1 = (Contest) v.getTag();
+                    ContestLeaderboardFragment fragment = ContestLeaderboardFragment.newInstance(contest1);
+                    mainActivity.pushFragment(fragment);
+                }
+            });
         }
 
     }
