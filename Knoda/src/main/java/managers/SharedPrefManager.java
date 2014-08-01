@@ -31,6 +31,7 @@ public class SharedPrefManager {
     private static final String SAVED_GUEST_MODE_KEY = "GUEST_MODE_KEY";
     private static final String SAVED_PREDICTION_WALKTHROUGH_KEY = "SAVED_PREDICTION_WALKTHROUGH";
     private static final String SAVED_VOTING_WALKTHROUGH_KEY = "SAVED_VOTING_WALKTHROUGHT";
+    private static final String SAVED_CONTEST_VOTING_WALKTHROUGH_KEY = "SAVED_CONTEST_VOTING_WALKTHROUGHT";
     private static final String SAVED_AGREED_TO_TERMS_KEYS = "SAVED_AGREEED_TO_TERMS_KEY";
     private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
     private static final String TWITTER_AUTH_SCREEN = "TWITTER_AUTH_SCREEN";
@@ -195,6 +196,16 @@ public class SharedPrefManager {
     public void setShouldShowVotingWalkthrough(boolean shouldShowVotingWalkthrough) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putBoolean(SAVED_VOTING_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
+    }
+
+    public boolean shouldShowContestVotingWalkthrough() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getBoolean(SAVED_CONTEST_VOTING_WALKTHROUGH_KEY, true);
+    }
+
+    public void setShouldShowContestVotingWalkthrough(boolean shouldShowContestVotingWalkthrough) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putBoolean(SAVED_CONTEST_VOTING_WALKTHROUGH_KEY, shouldShowContestVotingWalkthrough).commit();
     }
 
     public boolean agreedToTerms() {

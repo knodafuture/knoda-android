@@ -89,7 +89,7 @@ public class SocialFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("SocialFeed");
-        setTitle("SOCIAL");
+        setTitle("");
     }
 
     @Override

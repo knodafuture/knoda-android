@@ -6,10 +6,13 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -129,6 +132,7 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
     @Override
     public PagingAdapter getAdapter() {
         predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true);
+        predictionAdapter.showContestTour=true;
         return predictionAdapter;
     }
 
@@ -154,13 +158,39 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
 
     @Override
     public void onPredictionDisagreed(final PredictionListCell cell) {
+        hideTour();
         super.onPredictionDisagreed(cell);
     }
 
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
+        hideTour();
         super.onPredictionAgreed(cell);
     }
+
+    private void hideTour() {
+//        if (listView.getTag() != null) {
+//            //sharedPrefManager.setShouldShowContestVotingWalkthrough(false);
+//            final RelativeLayout walkthrough = ((RelativeLayout) listView.getTag());
+//            walkthrough.setVisibility(View.INVISIBLE);
+//            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
+//            walkthrough.startAnimation(fadeOutAnimation);
+//
+//            final Handler animHandler = new Handler();
+//            animHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    ViewGroup.LayoutParams lp = walkthrough.getLayoutParams();
+//                    lp.height = 0;
+//                    walkthrough.setLayoutParams(lp);
+//                    listView.setTag(null);
+//                    //showPredictionWalkthrough();
+//
+//                }
+//            }, 500);
+//        }
+    }
+
 
     private class ExpandAnimation extends Animation {
         private final int mStartHeight;
