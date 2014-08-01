@@ -1,11 +1,9 @@
 package views.contests;
 
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,13 +35,14 @@ public class ContestLeaderboardFragment extends BaseFragment {
     Contest contest;
     @InjectView(R.id.tabContainer)
     LinearLayout tabContainer;
-    ArrayList<CustomTab> tabs = new ArrayList<CustomTab>();
-    CustomTab selected;
+    //ArrayList<CustomTab> tabs = new ArrayList<CustomTab>();
+    //CustomTab selected;
 
     LinearLayout.LayoutParams lp;
     RelativeLayout.LayoutParams lpTV = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     RelativeLayout.LayoutParams lpUnder;
-
+    ArrayList<TextView> tabTV = new ArrayList<TextView>();
+    ArrayList<View> tabUnderline = new ArrayList<View>();
 
     public ContestLeaderboardFragment() {
     }
@@ -55,15 +54,54 @@ public class ContestLeaderboardFragment extends BaseFragment {
     }
 
     private void changeFilter(int number) {
-        if (tabs.get(number) == selected || number > tabs.size() - 1)
-            return;
-        if (selected != null) {
-            selected.text.setTextColor(getResources().getColor(R.color.knodaLighterGreen));
-            selected.underline.setVisibility(View.INVISIBLE);
+        //clear all tabs colors
+        for (int i = 0; i != 3; i++) {
+            tabTV.get(i).setTextColor(getResources().getColor(R.color.knodaLighterGreen));
+            tabUnderline.get(i).setVisibility(View.INVISIBLE);
+            tabTV.get(i).setText("");
         }
-        selected = tabs.get(number);
-        selected.text.setTextColor(Color.WHITE);
-        selected.underline.setVisibility(View.VISIBLE);
+
+        //set color of right tab
+        if (number == contest.contestStages.size() - 1) {
+            if (contest.contestStages.size() > 2) {
+                tabTV.get(2).setTextColor(Color.WHITE);
+                tabUnderline.get(2).setVisibility(View.VISIBLE);
+                tabTV.get(2).setText(contest.contestStages.get(number).name);
+                tabTV.get(1).setText(contest.contestStages.get(number - 1).name);
+                tabTV.get(0).setText(contest.contestStages.get(number - 2).name);
+            } else {
+                tabTV.get(number).setTextColor(Color.WHITE);
+                tabUnderline.get(number).setVisibility(View.VISIBLE);
+                tabTV.get(number).setText(contest.contestStages.get(number).name);
+                if (number - 1 >= 0)
+                    tabTV.get(number - 1).setText(contest.contestStages.get(number - 1).name);
+            }
+        } else if (number == 0) {
+            tabTV.get(0).setTextColor(Color.WHITE);
+            tabUnderline.get(0).setVisibility(View.VISIBLE);
+            tabTV.get(0).setText(contest.contestStages.get(number).name);
+            if (number + 1 < contest.contestStages.size())
+                tabTV.get(1).setText(contest.contestStages.get(number + 1).name);
+            if (number + 2 < contest.contestStages.size())
+                tabTV.get(2).setText(contest.contestStages.get(number + 2).name);
+        } else {
+            tabTV.get(1).setTextColor(Color.WHITE);
+            tabUnderline.get(1).setVisibility(View.VISIBLE);
+            tabTV.get(0).setText(contest.contestStages.get(number - 1).name);
+            tabTV.get(1).setText(contest.contestStages.get(number).name);
+            tabTV.get(2).setText(contest.contestStages.get(number + 1).name);
+        }
+
+
+//        if (tabs.get(number) == selected || number > tabs.size() - 1)
+//            return;
+//        if (selected != null) {
+//            selected.text.setTextColor(getResources().getColor(R.color.knodaLighterGreen));
+//            selected.underline.setVisibility(View.INVISIBLE);
+//        }
+//        selected = tabs.get(number);
+//        selected.text.setTextColor(Color.WHITE);
+//        selected.underline.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -71,14 +109,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         bus.register(this);
         setHasOptionsMenu(true);
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        //lp = new LinearLayout.LayoutParams((int) (width / 3), ViewGroup.LayoutParams.MATCH_PARENT);
-        lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-        lp.weight = 1;
+        lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         lpTV.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics()), 0, 0);
         lpUnder = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
 
@@ -105,42 +136,76 @@ public class ContestLeaderboardFragment extends BaseFragment {
         overall.name = "Overall";
         overall.sort_order = 0;
         contest.contestStages.add(0, overall);
-        for (ContestStage cs : contest.contestStages) {
-            addTab(cs);
+
+        tabTV.add((TextView) getView().findViewById(R.id.activity_1));
+        tabTV.add((TextView) getView().findViewById(R.id.activity_2));
+        tabTV.add((TextView) getView().findViewById(R.id.activity_3));
+        tabUnderline.add(getView().findViewById(R.id.underline_1));
+        tabUnderline.add(getView().findViewById(R.id.underline_2));
+        tabUnderline.add(getView().findViewById(R.id.underline_3));
+
+        if (contest.contestStages.size() == 1) {
+            lp.weight = 1f;
+            getView().findViewById(R.id.container_1).setLayoutParams(lp);
+        } else if (contest.contestStages.size() == 2) {
+            lp.weight = .5f;
+            getView().findViewById(R.id.container_1).setLayoutParams(lp);
+            getView().findViewById(R.id.container_2).setLayoutParams(lp);
+        } else
+            lp.weight = .333f;
+
+        if (contest.contestStages.size() > 0) {
+            tabTV.get(0).setText(contest.contestStages.get(0).name);
+        } else {
+            tabTV.get(0).setVisibility(View.GONE);
+            tabUnderline.get(0).setVisibility(View.GONE);
         }
+        if (contest.contestStages.size() > 1) {
+            tabTV.get(1).setText(contest.contestStages.get(1).name);
+        } else {
+            tabTV.get(1).setVisibility(View.GONE);
+            tabUnderline.get(1).setVisibility(View.GONE);
+        }
+        if (contest.contestStages.size() > 2) {
+            tabTV.get(2).setText(contest.contestStages.get(2).name);
+        } else {
+            tabTV.get(2).setVisibility(View.GONE);
+            tabUnderline.get(2).setVisibility(View.GONE);
+        }
+
     }
-
-    public void addTab(ContestStage contestStage) {
-        CustomTab customTab = new CustomTab(getActivity());
-        customTab.setLayoutParams(lp);
-
-        TextView textView = new TextView(getActivity());
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextColor(getResources().getColor(R.color.knodaLighterGreen));
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        textView.setLayoutParams(lpTV);
-        textView.setText(contestStage.name);
-        customTab.text = textView;
-        customTab.addView(textView);
-
-        View view = new View(getActivity());
-        view.setBackgroundColor(getResources().getColor(R.color.knodaDarkGreen));
-        view.setLayoutParams(lpUnder);
-        view.setVisibility(View.INVISIBLE);
-        customTab.underline = view;
-        customTab.addView(view);
-        customTab.setTag(contestStage);
-        customTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeFilter(((ContestStage) v.getTag()).sort_order);
-                mViewPager.setCurrentItem((((ContestStage) v.getTag()).sort_order));
-            }
-        });
-
-        tabs.add(customTab);
-        tabContainer.addView(customTab);
-    }
+//
+//    public void addTab(ContestStage contestStage) {
+//        CustomTab customTab = new CustomTab(getActivity());
+//        customTab.setLayoutParams(lp);
+//
+//        TextView textView = new TextView(getActivity());
+//        textView.setGravity(Gravity.CENTER);
+//        textView.setTextColor(getResources().getColor(R.color.knodaLighterGreen));
+//        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//        textView.setLayoutParams(lpTV);
+//        textView.setText(contestStage.name);
+//        customTab.text = textView;
+//        customTab.addView(textView);
+//
+//        View view = new View(getActivity());
+//        view.setBackgroundColor(getResources().getColor(R.color.knodaDarkGreen));
+//        view.setLayoutParams(lpUnder);
+//        view.setVisibility(View.INVISIBLE);
+//        customTab.underline = view;
+//        customTab.addView(view);
+//        customTab.setTag(contestStage);
+//        customTab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                changeFilter(((ContestStage) v.getTag()).sort_order);
+//                mViewPager.setCurrentItem((((ContestStage) v.getTag()).sort_order));
+//            }
+//        });
+//
+//        //tabs.add(customTab);
+//        tabContainer.addView(customTab);
+//    }
 
     @Override
     public void onResume() {

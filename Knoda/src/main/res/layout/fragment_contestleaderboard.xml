@@ -11,7 +11,62 @@
         android:layout_height="40dp"
         android:background="@color/knodaLightGreen"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:id="@+id/container_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".333">
+
+            <TextView
+                android:id="@+id/activity_1"
+                style="@style/tabText"
+                android:text="Expired" />
+
+            <View
+                android:id="@+id/underline_1"
+                style="@style/tabUnderline"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/container_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".333">
+
+            <TextView
+                android:id="@+id/activity_2"
+                style="@style/tabText"
+                android:text="Expired" />
+
+            <View
+                android:id="@+id/underline_2"
+                style="@style/tabUnderline"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/container_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".333">
+
+            <TextView
+                android:id="@+id/activity_3"
+                style="@style/tabText"
+                android:text="Expired" />
+
+            <View
+                android:id="@+id/underline_3"
+                style="@style/tabUnderline"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 
