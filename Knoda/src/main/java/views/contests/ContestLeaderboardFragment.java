@@ -29,16 +29,15 @@ public class ContestLeaderboardFragment extends BaseFragment {
     String filter = "all";
     View topview;
     ContestStagesPagerAdapter adapter;
-    private ViewPager mViewPager;
     Contest contest;
     @InjectView(R.id.tabContainer)
     LinearLayout tabContainer;
-
     LinearLayout.LayoutParams lp;
     RelativeLayout.LayoutParams lpTV = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     RelativeLayout.LayoutParams lpUnder;
     ArrayList<TextView> tabTV = new ArrayList<TextView>();
     ArrayList<View> tabUnderline = new ArrayList<View>();
+    private ViewPager mViewPager;
 
     public ContestLeaderboardFragment() {
     }
@@ -199,8 +198,8 @@ public class ContestLeaderboardFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
         super.onDestroyView();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
 }

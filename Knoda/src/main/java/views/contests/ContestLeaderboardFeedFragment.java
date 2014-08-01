@@ -55,16 +55,6 @@ public class ContestLeaderboardFeedFragment extends BaseListFragment implements 
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         adapter.reset();

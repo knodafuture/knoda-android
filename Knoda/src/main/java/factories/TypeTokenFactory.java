@@ -70,6 +70,7 @@ public class TypeTokenFactory {
         return new TypeToken<ArrayList<Contest>>() {
         };
     }
+
     public static TypeToken getContestUserTypeToken() {
         return new TypeToken<ArrayList<ContestUser>>() {
         };

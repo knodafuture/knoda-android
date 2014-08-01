@@ -25,7 +25,6 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
     @InjectView(R.id.base_listview)
     public PullToRefreshListView pListView;
     View topview;
-    int screenNumber;
     boolean pageLoaded = false;
     PredictionAdapter predictionAdapter;
     ContestDetailFragment parentFragment;
@@ -120,14 +119,20 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
     @Override
     public void onPause() {
         super.onPause();
-        adapter.reset();
         pageLoaded = false;
     }
 
     @Override
+    public void onDestroy() {
+        parentFragment = null;
+        super.onDestroy();
+    }
+
+
+    @Override
     public PagingAdapter getAdapter() {
         predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true);
-        predictionAdapter.showContestTour=true;
+        predictionAdapter.showContestTour = true;
         return predictionAdapter;
     }
 

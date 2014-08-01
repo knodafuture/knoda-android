@@ -21,8 +21,8 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
 
     public Bus bus;
     public SharedPrefManager sharedPrefManager;
+    public boolean showContestTour = false;
     boolean disableTour = false;
-    public boolean showContestTour=false;
 
     public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus) {
         super(context, datasource, imageLoader);

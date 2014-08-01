@@ -637,7 +637,7 @@ public class MainActivity extends BaseActivity {
     private void clearStack() {
         FragmentManager fm = getFragmentManager();
         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-            fm.popBackStackImmediate();
+            fm.popBackStack();
         }
     }
 
@@ -890,6 +890,7 @@ public class MainActivity extends BaseActivity {
         else {
             return getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
         }
+
 
     }
 

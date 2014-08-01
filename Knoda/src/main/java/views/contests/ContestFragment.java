@@ -147,10 +147,6 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
         return "No contests";
     }
 
-    @Override
-    public void onLoadFinished() {
-        //
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

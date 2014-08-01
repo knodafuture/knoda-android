@@ -41,11 +41,11 @@ public class ContestDetailFragment extends BaseFragment {
     LinearLayout topview;
     @InjectView(R.id.contest_detail_header)
     RelativeLayout header;
-    private ViewPager mViewPager;
     Contest contest;
     LinearLayout.LayoutParams params;
     int topContainerHeight;
     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    private ViewPager mViewPager;
 
     public static ContestDetailFragment newInstance(Contest contest) {
         ContestDetailFragment fragment = new ContestDetailFragment();
@@ -186,20 +186,12 @@ public class ContestDetailFragment extends BaseFragment {
                 loaded = true;
             }
         });
-
-
     }
 
     @Override
     public void onPause() {
         loaded = false;
         super.onPause();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null)
-            return;
     }
 
     @Override
@@ -224,6 +216,7 @@ public class ContestDetailFragment extends BaseFragment {
         selectedFilter.setTextColor(Color.WHITE);
         selectedUnderline.setVisibility(View.VISIBLE);
     }
+
 
     @Override
     public void onDestroyView() {

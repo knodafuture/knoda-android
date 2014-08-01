@@ -25,14 +25,13 @@ public class ContestListCell extends RelativeLayout {
     public TextView leaderTV;
     public TextView placeTV;
     public TextView overallTV;
-    private ColorStateList csl;
     public RelativeLayout buttonContainer;
     public TextView buttonText;
     public LinearLayout standingsContainer;
-
     public NetworkImageView avatarImageView;
     public ImageView arrow;
     MainActivity mainActivity;
+    private ColorStateList csl;
 
     public ContestListCell(Context context) {
         super(context);
