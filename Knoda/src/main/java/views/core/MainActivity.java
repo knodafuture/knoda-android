@@ -351,7 +351,10 @@ public class MainActivity extends BaseActivity {
         if (getFragmentManager().getBackStackEntryCount() > 1)
             getFragmentManager().popBackStack();
         else if (getFragmentManager().getBackStackEntryCount() <= 1) {
-            finish();
+            if (getCurrentFragment().equals("HomeFragment"))
+                finish();
+            else
+                onHome();
         }
     }
 
@@ -797,7 +800,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public void refreshUser() {
-
         if (connectivityManager == null)
             return;
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -865,23 +867,10 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setActivitiesDot(boolean seen) {
-
         if (seen)
             activityDot.setVisibility(View.INVISIBLE);
         else
             activityDot.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && getFragmentManager().getBackStackEntryCount() <= 1) {
-            System.out.println("Stack: " + getFragmentManager().getBackStackEntryCount());
-            finish();
-            return true;
-        } else {
-            System.out.println("Key Down");
-            return super.onKeyDown(keyCode, event);
-        }
     }
 
     public void hideNavbar() {
