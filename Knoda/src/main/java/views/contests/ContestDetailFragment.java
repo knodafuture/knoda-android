@@ -90,7 +90,7 @@ public class ContestDetailFragment extends BaseFragment {
         listItem.setHeaderMode();
         header.addView(listItem);
 
-        if (sharedPrefManager.shouldShowContestVotingWalkthrough() || true) {
+        if (sharedPrefManager.shouldShowContestVotingWalkthrough() && contest.contestMyInfo == null) {
             final android.os.Handler h = new android.os.Handler();
             //h.postDelayed(new Runnable() {
             //     @Override
@@ -136,7 +136,7 @@ public class ContestDetailFragment extends BaseFragment {
                 h.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        v.setVisibility(View.INVISIBLE);
+                        v.setVisibility(View.GONE);
                     }
                 }, 500);
             }
