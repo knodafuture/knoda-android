@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +24,6 @@ import butterknife.InjectView;
 import models.Contest;
 import models.ContestStage;
 import views.core.BaseFragment;
-import views.core.CustomTab;
 
 public class ContestLeaderboardFragment extends BaseFragment {
     String filter = "all";
@@ -35,8 +33,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
     Contest contest;
     @InjectView(R.id.tabContainer)
     LinearLayout tabContainer;
-    //ArrayList<CustomTab> tabs = new ArrayList<CustomTab>();
-    //CustomTab selected;
 
     LinearLayout.LayoutParams lp;
     RelativeLayout.LayoutParams lpTV = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -92,16 +88,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
             tabTV.get(2).setText(contest.contestStages.get(number + 1).name);
         }
 
-
-//        if (tabs.get(number) == selected || number > tabs.size() - 1)
-//            return;
-//        if (selected != null) {
-//            selected.text.setTextColor(getResources().getColor(R.color.knodaLighterGreen));
-//            selected.underline.setVisibility(View.INVISIBLE);
-//        }
-//        selected = tabs.get(number);
-//        selected.text.setTextColor(Color.WHITE);
-//        selected.underline.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -174,38 +160,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
         }
 
     }
-//
-//    public void addTab(ContestStage contestStage) {
-//        CustomTab customTab = new CustomTab(getActivity());
-//        customTab.setLayoutParams(lp);
-//
-//        TextView textView = new TextView(getActivity());
-//        textView.setGravity(Gravity.CENTER);
-//        textView.setTextColor(getResources().getColor(R.color.knodaLighterGreen));
-//        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-//        textView.setLayoutParams(lpTV);
-//        textView.setText(contestStage.name);
-//        customTab.text = textView;
-//        customTab.addView(textView);
-//
-//        View view = new View(getActivity());
-//        view.setBackgroundColor(getResources().getColor(R.color.knodaDarkGreen));
-//        view.setLayoutParams(lpUnder);
-//        view.setVisibility(View.INVISIBLE);
-//        customTab.underline = view;
-//        customTab.addView(view);
-//        customTab.setTag(contestStage);
-//        customTab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                changeFilter(((ContestStage) v.getTag()).sort_order);
-//                mViewPager.setCurrentItem((((ContestStage) v.getTag()).sort_order));
-//            }
-//        });
-//
-//        //tabs.add(customTab);
-//        tabContainer.addView(customTab);
-//    }
 
     @Override
     public void onResume() {

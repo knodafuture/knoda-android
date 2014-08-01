@@ -92,9 +92,6 @@ public class ContestDetailFragment extends BaseFragment {
 
         if (sharedPrefManager.shouldShowContestVotingWalkthrough() && contest.contestMyInfo == null) {
             final android.os.Handler h = new android.os.Handler();
-            //h.postDelayed(new Runnable() {
-            //     @Override
-            //  public void run() {
             final View v = LayoutInflater.from(getActivity()).inflate(R.layout.view_contest_predict_walkthrough, null);
             Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeingrow);
             v.startAnimation(fadeInAnimation);
@@ -115,8 +112,6 @@ public class ContestDetailFragment extends BaseFragment {
                     }, 500);
                 }
             });
-            //    }
-            //}, 500);
         }
 
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
