@@ -621,11 +621,13 @@ public class MainActivity extends BaseActivity {
             bus.post(new GroupNavEvent());
             return;
         }
-        clearStack();
+
         if (socialFragment == null)
             socialFragment = SocialFragment.newInstance();
-        if (checkFragment(socialFragment))
+        if (checkFragment(socialFragment)) {
+            clearStack();
             pushFragment(socialFragment);
+        }
     }
 
     private void onSettings() {
