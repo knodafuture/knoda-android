@@ -83,7 +83,7 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.global, menu);
-        menu.removeItem(R.id.action_search);
+        menu.clear();
         ((MainActivity) getActivity()).setActionBarTitle("SETTINGS");
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -191,6 +191,8 @@ public class SettingsFragment extends BaseFragment {
         super.onDestroyView();
         ((MainActivity) getActivity()).showNavbar();
     }
+
+
 
 
 }
