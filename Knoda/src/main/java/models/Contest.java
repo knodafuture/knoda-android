@@ -18,7 +18,7 @@ public class Contest extends BaseModel {
     @SerializedName("created_at")
     public String created;
     @SerializedName("avatar_image")
-    public String avatar;
+    public RemoteImage avatar;
     @SerializedName("leader_info")
     public ContestLeaderInfo contestLeaderInfo;
     @SerializedName("my_info")

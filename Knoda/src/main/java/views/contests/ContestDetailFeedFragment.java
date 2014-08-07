@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -66,55 +67,54 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
         super.onResume();
         //resizeHeader(0);
     }
-//    @Override
-//    public AbsListView.OnScrollListener getOnScrollListener() {
-//        return new AbsListView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                scroll_state = scrollState;
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                if (!parentFragment.loaded || resizing == true || scroll_state == SCROLL_STATE_IDLE)
-//                    return;
-//                resizing = true;
-//                if (visible == 0)
-//                    visible = visibleItemCount;
-//
-//                if (firstVisibleItem > 2 && headerSize != 1) {
-//                    resizeHeader(1);
-//                } else if (firstVisibleItem == 0) {
-//                    resizeHeader(0);
-//                } else {
-//                    resizing = false;
-//                    return;
-//                }
-//                h.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        resizing = false;
-//                    }
-//                }, 800);
-//
-//            }
-//        };
-//    }
+    @Override
+    public AbsListView.OnScrollListener getOnScrollListener() {
+        return new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                scroll_state = scrollState;
+            }
 
-    //    public void resizeHeader(int state) {
-//        if (headerSize == state) {
-//            return;
-//        }
-//        headerSize = state;
-//        if (state == 0) {
-//            final ExpandAnimation expandAnimation = new ExpandAnimation(parentFragment.topContainerHeight);
-//            parentFragment.topContainer.startAnimation(expandAnimation);
-//        } else if (state == 1) {
-//            final ExpandAnimation expandAnimation = new ExpandAnimation(0);
-//            parentFragment.topContainer.startAnimation(expandAnimation);
-//        }
-//
-//    }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (!parentFragment.loaded || resizing == true || scroll_state == SCROLL_STATE_IDLE)
+                    return;
+                resizing = true;
+                if (visible == 0)
+                    visible = visibleItemCount;
+                if (firstVisibleItem > 2 && headerSize != 1) {
+                    resizeHeader(1);
+                } else if (firstVisibleItem == 0) {
+                    resizeHeader(0);
+                } else {
+                    resizing = false;
+                    return;
+                }
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        resizing = false;
+                    }
+                }, 800);
+
+            }
+        };
+    }
+
+    public void resizeHeader(int state) {
+        if (headerSize == state) {
+            return;
+        }
+        headerSize = state;
+        if (state == 0) {
+            final ExpandAnimation expandAnimation = new ExpandAnimation(parentFragment.topContainerHeight);
+            parentFragment.header.startAnimation(expandAnimation);
+        } else if (state == 1) {
+            final ExpandAnimation expandAnimation = new ExpandAnimation(0);
+            parentFragment.header.startAnimation(expandAnimation);
+        }
+
+    }
 
     @Override
     public void onPause() {

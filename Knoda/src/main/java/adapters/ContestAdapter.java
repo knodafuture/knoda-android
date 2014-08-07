@@ -48,7 +48,7 @@ public class ContestAdapter extends PagingAdapter<Contest> {
         if (contest != null) {
             listItem.setContest(contest, mainActivity);
             if (contest.avatar != null)
-                listItem.avatarImageView.setImageUrl(contest.avatar, imageLoader);
+                listItem.avatarImageView.setImageUrl(contest.avatar.big, imageLoader);
 
             if (contest.contestStages != null && contest.contestStages.size() > 0) {
                 //listItem.arrow.setVisibility(View.VISIBLE);

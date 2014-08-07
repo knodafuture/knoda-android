@@ -2,6 +2,7 @@ package views.contests;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -72,7 +73,9 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
         if (filter.equals("explore")) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle("EXPLORE");
-        }
+            Log.i("TAG", "set title EXPLORE");
+        }else
+            setTitle(" ");
     }
 
     @Override
@@ -124,15 +127,6 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
 
 
                 }
-//                if (activityItem != null) {
-//                    if (activityItem.type == ActivityItemType.INVITATION) {
-//
-//                    } else {
-////                        if (activityItem.type == ActivityItemType.WON && view.getId() == R.id.winloss_button) {
-////
-////                        }
-//                    }
-//                }
             }
         });
     }

@@ -3,6 +3,7 @@ package views.contests;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,7 @@ public class SocialFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("SocialFeed");
-        setTitle("");
+        setTitle(" ");
     }
 
     @Override
