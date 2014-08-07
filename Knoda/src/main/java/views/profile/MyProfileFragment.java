@@ -215,7 +215,7 @@ public class MyProfileFragment extends BaseFragment {
         topview.addView(mViewPager);
         adapter = new ProfilePagerAdapter(getFragmentManager(), this);
         mViewPager.setAdapter(adapter);
-        if (userManager.getUser().guestMode)
+        if (userManager.getUser()==null || userManager.getUser().guestMode)
             mViewPager.setCurrentItem(1);
         else
             mViewPager.setCurrentItem(0);

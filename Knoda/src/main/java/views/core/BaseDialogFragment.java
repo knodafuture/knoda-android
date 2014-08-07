@@ -143,8 +143,9 @@ public class BaseDialogFragment extends DialogFragment {
                 }
             }, 10);
         } else {
-            if (getActivity() != null && ((MainActivity) getActivity()).blurredBackground == null)
+            if (getActivity() != null && ((MainActivity) getActivity()).blurredBackground != null)
                 getView().setBackgroundDrawable(((MainActivity) getActivity()).blurredBackground);
+
         }
     }
 }

@@ -25,11 +25,17 @@ public class RenderScriptGaussianBlur {
     public Bitmap blur(int radius, Bitmap bitmapOriginal) {
         final Allocation input = Allocation.createFromBitmap(rs, bitmapOriginal);
         final Allocation output = Allocation.createTyped(rs, input.getType());
+
+        Bitmap outputBitmap = Bitmap.createBitmap(bitmapOriginal.getWidth(), bitmapOriginal.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
         final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-        script.setRadius(radius);
+        //script.setRadius(radius);
+        script.setRadius(25.f);
         script.setInput(input);
         script.forEach(output);
-        output.copyTo(bitmapOriginal);
-        return bitmapOriginal;
+        output.copyTo(outputBitmap);
+        bitmapOriginal.recycle();
+        return outputBitmap;
     }
 }

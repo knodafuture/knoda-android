@@ -905,12 +905,11 @@ public class MainActivity extends BaseActivity {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
-        bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent));
+        bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent2));
 
         RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(this));
         bitmap = blur.blur(15, bitmap);
         blurredBackground = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
-
     }
 
     public boolean isDebuggable(Context ctx) {
