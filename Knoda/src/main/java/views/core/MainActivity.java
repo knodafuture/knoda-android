@@ -868,10 +868,12 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setActivitiesDot(boolean seen) {
-        if (seen)
-            activityDot.setVisibility(View.INVISIBLE);
-        else
-            activityDot.setVisibility(View.VISIBLE);
+        if (activityDot != null) {
+            if (seen)
+                activityDot.setVisibility(View.INVISIBLE);
+            else
+                activityDot.setVisibility(View.VISIBLE);
+        }
     }
 
     public void hideNavbar() {
@@ -908,7 +910,7 @@ public class MainActivity extends BaseActivity {
         bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent2));
 
         RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(this));
-        bitmap = blur.blur(15, bitmap);
+        //bitmap = blur.blur(15, bitmap);
         blurredBackground = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
     }
 
