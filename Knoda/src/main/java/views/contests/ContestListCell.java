@@ -74,14 +74,14 @@ public class ContestListCell extends RelativeLayout {
         descriptionTV.setText(contest.description);
         if (contest.contestLeaderInfo != null)
             leaderTV.setText(contest.contestLeaderInfo.username);
-        if (contest.contestMyInfo != null)
+        if (contest.contestMyInfo != null) {
             placeTV.setText(getPlace(contest.contestMyInfo.rank));
-        overallTV.setText("overall(" + contest.participants + ")");
-        if (contest.contestMyInfo == null) {//explore
+            overallTV.setText("overall(" + contest.participants + ")");
+        } else if (contest.contestMyInfo == null) {//explore
+            placeTV.setText(contest.participants+"");
+            overallTV.setText("participants");
             buttonContainer.setVisibility(VISIBLE);
             standingsContainer.setVisibility(INVISIBLE);
-        } else {
-
         }
         standingsContainer.setTag(contest);
         standingsContainer.setOnClickListener(new OnClickListener() {
