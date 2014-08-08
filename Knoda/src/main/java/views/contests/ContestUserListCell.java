@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,6 +35,11 @@ public class ContestUserListCell extends RelativeLayout {
         super(context, attrs);
     }
 
+    final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+
+    AbsListView.LayoutParams lp_header= new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,onedp*20);
+    AbsListView.LayoutParams lp_normal= new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,onedp*40);
+
     @Override
     public void onFinishInflate() {
         rankTV = (TextView) findViewById(R.id.contestuser_rank);
@@ -44,20 +52,22 @@ public class ContestUserListCell extends RelativeLayout {
     }
 
     public void setHeaderMode() {
-        this.setBackgroundColor(Color.parseColor("#cccccc"));
+        this.setBackgroundColor(Color.parseColor("#efefef"));
         rankTV.setText("RANK");
         rankTV.setTextColor(Color.BLACK);
-        rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         usernameTV.setText("USERNAME");
-        usernameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        usernameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         winsTV.setText("WINS");
-        winsTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        winsTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         avatarImageView.setBackgroundDrawable(null);
         avatarImageView.setImageDrawable(null);
+        this.setLayoutParams(lp_header);
 
     }
 
     public void setContestUser(ContestUser contestUser) {
+        this.setLayoutParams(lp_normal);
         if (contestUser.rank % 2 != 0)
             this.setBackgroundColor(Color.parseColor("#ffffff"));
         else
