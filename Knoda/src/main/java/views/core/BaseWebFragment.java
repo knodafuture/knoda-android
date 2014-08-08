@@ -55,10 +55,20 @@ public class BaseWebFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
+        spinner.show();
+        webView.setWebViewClient(new WebViewClient() {
+            public void onPageFinished(WebView wv, String url) {
+                spinner.hide();
+            }
+
+            public void onReceivedError(WebView wv, int error, String description, String failingUrl) {
+                spinner.hide();
+            }
+        });
         webView.loadUrl(url);
         if (disableNav)
             ((MainActivity) getActivity()).hideNavbar();
+
     }
 
     @Override
