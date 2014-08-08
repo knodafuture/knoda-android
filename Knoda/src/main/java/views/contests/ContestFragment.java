@@ -73,7 +73,6 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
         if (filter.equals("explore")) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle("EXPLORE");
-            Log.i("TAG", "set title EXPLORE");
         }else
             setTitle(" ");
     }

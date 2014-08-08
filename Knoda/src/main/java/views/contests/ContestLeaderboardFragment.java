@@ -72,13 +72,15 @@ public class ContestLeaderboardFragment extends BaseFragment {
                     tabTV.get(number - 1).setText(contest.contestStages.get(number - 1).name);
             }
         } else if (number == 0) {
-            tabTV.get(0).setTextColor(Color.WHITE);
-            tabUnderline.get(0).setVisibility(View.VISIBLE);
-            tabTV.get(0).setText(contest.contestStages.get(number).name);
-            if (number + 1 < contest.contestStages.size())
-                tabTV.get(1).setText(contest.contestStages.get(number + 1).name);
-            if (number + 2 < contest.contestStages.size())
-                tabTV.get(2).setText(contest.contestStages.get(number + 2).name);
+            if (contest.contestStages.size() > 0) {
+                tabTV.get(0).setTextColor(Color.WHITE);
+                tabUnderline.get(0).setVisibility(View.VISIBLE);
+                tabTV.get(0).setText(contest.contestStages.get(number).name);
+                if (number + 1 < contest.contestStages.size())
+                    tabTV.get(1).setText(contest.contestStages.get(number + 1).name);
+                if (number + 2 < contest.contestStages.size())
+                    tabTV.get(2).setText(contest.contestStages.get(number + 2).name);
+            }
         } else {
             tabTV.get(1).setTextColor(Color.WHITE);
             tabUnderline.get(1).setVisibility(View.VISIBLE);
@@ -115,12 +117,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         FlurryAgent.logEvent("Contest Leaderboard");
         setTitle("LEADERBOARD");
-        ContestStage overall = new ContestStage();
-        overall.id = -1;
-        overall.contest_id = contest.id;
-        overall.name = "Overall";
-        overall.sort_order = 0;
-        contest.contestStages.add(0, overall);
 
         tabTV.add((TextView) getView().findViewById(R.id.activity_1));
         tabTV.add((TextView) getView().findViewById(R.id.activity_2));
@@ -128,6 +124,21 @@ public class ContestLeaderboardFragment extends BaseFragment {
         tabUnderline.add(getView().findViewById(R.id.underline_1));
         tabUnderline.add(getView().findViewById(R.id.underline_2));
         tabUnderline.add(getView().findViewById(R.id.underline_3));
+
+        if (contest.contestStages.size() > 0 && contest.contestStages.get(0).name.equals("Overall")) {
+            //dont add overall again
+        } else  {
+            ContestStage overall = new ContestStage();
+            overall.id = -1;
+            overall.contest_id = contest.id;
+            overall.name = "Overall";
+            overall.sort_order = 0;
+            contest.contestStages.add(0, overall);
+        }
+
+        if(contest.contestStages.size()==1 && contest.contestStages.get(0).name.equals("Overall")){
+            tabContainer.setVisibility(View.GONE);
+        }
 
         if (contest.contestStages.size() == 1) {
             lp.weight = 1f;
