@@ -3,6 +3,7 @@ package views.contests;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +39,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
     ArrayList<TextView> tabTV = new ArrayList<TextView>();
     ArrayList<View> tabUnderline = new ArrayList<View>();
     private ViewPager mViewPager;
+    int lastPosition = 0;
 
     public ContestLeaderboardFragment() {
     }
@@ -49,6 +51,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
     }
 
     private void changeFilter(int number) {
+        lastPosition = number;
         //clear all tabs colors
         for (int i = 0; i != 3; i++) {
             tabTV.get(i).setTextColor(getResources().getColor(R.color.knodaLighterGreen));
@@ -124,10 +127,28 @@ public class ContestLeaderboardFragment extends BaseFragment {
         tabUnderline.add(getView().findViewById(R.id.underline_1));
         tabUnderline.add(getView().findViewById(R.id.underline_2));
         tabUnderline.add(getView().findViewById(R.id.underline_3));
+        tabTV.get(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabClick(0);
+            }
+        });
+        tabTV.get(1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabClick(1);
+            }
+        });
+        tabTV.get(2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabClick(2);
+            }
+        });
 
         if (contest.contestStages.size() > 0 && contest.contestStages.get(0).name.equals("Overall")) {
             //dont add overall again
-        } else  {
+        } else {
             ContestStage overall = new ContestStage();
             overall.id = -1;
             overall.contest_id = contest.id;
@@ -136,7 +157,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
             contest.contestStages.add(0, overall);
         }
 
-        if(contest.contestStages.size()==1 && contest.contestStages.get(0).name.equals("Overall")){
+        if (contest.contestStages.size() == 1 && contest.contestStages.get(0).name.equals("Overall")) {
             tabContainer.setVisibility(View.GONE);
         }
 
@@ -213,4 +234,28 @@ public class ContestLeaderboardFragment extends BaseFragment {
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
+    private void tabClick(int x) {
+        Log.i("tab", "Last position: " + lastPosition);
+        Log.i("tab", "x: " + x);
+        if (lastPosition == 0) {
+            Log.i("tab","first");
+            mViewPager.setCurrentItem(x, true);
+            //changeFilter(x);
+        } else if (lastPosition == contest.contestStages.size() - 1) {
+            Log.i("tab","last");
+            if (contest.contestStages.size() == 2) {
+                mViewPager.setCurrentItem(lastPosition + x - 1, true);
+                //changeFilter(lastPosition + x - 1);
+            } else {
+                mViewPager.setCurrentItem(lastPosition + x - 2, true);
+                //changeFilter(lastPosition + x - 2);
+            }
+        } else {
+            Log.i("tab","middle");
+            if (x != 1) {
+                mViewPager.setCurrentItem(lastPosition + x - 1);
+                //changeFilter(lastPosition + x - 1);
+            }
+        }
+    }
 }

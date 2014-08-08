@@ -36,7 +36,7 @@ public class ContestAdapter extends PagingAdapter<Contest> {
         final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
         title_no_image.setMargins(onedp * 15, onedp * 15, onedp * 15, 0);
         title_normal.setMargins(onedp * 15, onedp * 5, onedp * 15, 0);
-    }
+}
 
     @Override
     public int getCount() {

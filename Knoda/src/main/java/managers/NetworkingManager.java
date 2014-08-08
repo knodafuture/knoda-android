@@ -2,6 +2,7 @@ package managers;
 
 import android.content.Context;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -74,6 +75,8 @@ public class NetworkingManager {
     Bus bus;
     private HashMap<String, String> headers;
     private ImageLoader imageLoader;
+
+    int timeout = 15;//timeout in seconds
 
     @Inject
     public NetworkingManager(Context applicationContext) {
@@ -606,7 +609,7 @@ public class NetworkingManager {
     }
 
     private <T extends BaseModel> void executeRequest(int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback) {
-        executeRequestWithTimeout(httpMethod, url, payload, responseClass, callback, 15);
+        executeRequestWithTimeout(httpMethod, url, payload, responseClass, callback, timeout);
     }
 
     private <T extends BaseModel> void executeListRequest(int httpMethod, final String url, final BaseModel payload, final TypeToken token, final NetworkListCallback<T> callback) {
@@ -631,6 +634,7 @@ public class NetworkingManager {
         };
 
         GsonArrayRequest<ArrayList<T>> request = new GsonArrayRequest<ArrayList<T>>(httpMethod, url, token, getHeaders(), responseListener, errorListener);
+        request.setRetryPolicy(new DefaultRetryPolicy(timeout * 1000, 0, 2.0f));
 
         if (payload != null)
             request.setPayload(payload);

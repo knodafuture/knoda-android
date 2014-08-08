@@ -169,26 +169,7 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
     }
 
     private void hideTour() {
-//        if (listView.getTag() != null) {
-//            //sharedPrefManager.setShouldShowContestVotingWalkthrough(false);
-//            final RelativeLayout walkthrough = ((RelativeLayout) listView.getTag());
-//            walkthrough.setVisibility(View.INVISIBLE);
-//            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
-//            walkthrough.startAnimation(fadeOutAnimation);
-//
-//            final Handler animHandler = new Handler();
-//            animHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    ViewGroup.LayoutParams lp = walkthrough.getLayoutParams();
-//                    lp.height = 0;
-//                    walkthrough.setLayoutParams(lp);
-//                    listView.setTag(null);
-//                    //showPredictionWalkthrough();
-//
-//                }
-//            }, 500);
-//        }
+        parentFragment.hidePredictWalkthrough();
     }
 
 

@@ -1,10 +1,10 @@
 package views.contests;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +47,7 @@ public class ContestDetailFragment extends BaseFragment {
     int topContainerHeight;
     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     private CustomViewPager mViewPager;
+    View walkthrough1 = null;
 
     public static ContestDetailFragment newInstance(Contest contest) {
         ContestDetailFragment fragment = new ContestDetailFragment();
@@ -90,34 +91,57 @@ public class ContestDetailFragment extends BaseFragment {
         ContestListCell listItem = (ContestListCell) LayoutInflater.from(getActivity()).inflate(R.layout.list_cell_contest, null);
         listItem.setContest(contest, (MainActivity) getActivity());
         listItem.setHeaderMode();
+
+        LinearLayout.LayoutParams title_normal = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams title_no_image = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getActivity().getResources().getDisplayMetrics());
+        title_no_image.setMargins(onedp * 15, onedp * 15, onedp * 15, 0);
+        title_normal.setMargins(onedp * 15, onedp * 5, onedp * 15, 0);
+
+        if (contest.avatar != null) {
+            listItem.avatarImageView.setImageUrl(contest.avatar.big, networkingManager.getImageLoader());
+            listItem.titleTV.setLayoutParams(title_normal);
+        } else {
+            listItem.findViewById(R.id.contest_avatar_container).setVisibility(View.GONE);
+            listItem.titleTV.setLayoutParams(title_no_image);
+        }
+
         header.addView(listItem);
 
         if (sharedPrefManager.shouldShowContestVotingWalkthrough() && contest.contestMyInfo == null) {
             final android.os.Handler h = new android.os.Handler();
             final View v = LayoutInflater.from(getActivity()).inflate(R.layout.view_contest_predict_walkthrough, null);
-            Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeingrow);
+            Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slidein);
             v.startAnimation(fadeInAnimation);
             header.addView(v);
             header.setLayoutParams(lp);
+            walkthrough1 = v;
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    sharedPrefManager.setShouldShowContestVotingWalkthrough(false);
-                    Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
-                    v.startAnimation(fadeOutAnimation);
-                    h.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            v.setVisibility(View.INVISIBLE);
-                            addVotedWalkthrough();
-                        }
-                    }, 500);
+                    hidePredictWalkthrough();
                 }
             });
         }
 
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         FlurryAgent.logEvent("ContestDetail_Screen");
+    }
+
+    public void hidePredictWalkthrough() {
+        if (walkthrough1 != null) {
+            sharedPrefManager.setShouldShowContestVotingWalkthrough(false);
+            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
+            walkthrough1.startAnimation(fadeOutAnimation);
+            walkthrough1.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    walkthrough1.setVisibility(View.INVISIBLE);
+                    walkthrough1 = null;
+                    addVotedWalkthrough();
+                }
+            }, 500);
+        }
     }
 
     private void addVotedWalkthrough() {
@@ -140,6 +164,7 @@ public class ContestDetailFragment extends BaseFragment {
         });
         ((RelativeLayout) getView().findViewById(R.id.contest_walkthrough_container)).addView(v);
     }
+
 
     @Override
     public void onResume() {
