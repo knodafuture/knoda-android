@@ -122,7 +122,7 @@ public class ContestDetailFragment extends BaseFragment {
 
     private void addVotedWalkthrough() {
         final View v = LayoutInflater.from(getActivity()).inflate(R.layout.view_contest_voted_walkthrough, null);
-        Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeingrow);
+        Animation fadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.slidein);
         v.startAnimation(fadeInAnimation);
         final Handler h = new Handler();
         v.setOnClickListener(new View.OnClickListener() {

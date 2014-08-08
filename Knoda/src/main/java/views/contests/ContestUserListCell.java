@@ -7,7 +7,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,6 +27,8 @@ public class ContestUserListCell extends RelativeLayout {
 
     public NetworkImageView avatarImageView;
 
+    public ImageView mask;
+
     public ContestUserListCell(Context context) {
         super(context);
     }
@@ -37,8 +39,8 @@ public class ContestUserListCell extends RelativeLayout {
 
     final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
 
-    AbsListView.LayoutParams lp_header= new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,onedp*20);
-    AbsListView.LayoutParams lp_normal= new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,onedp*40);
+    AbsListView.LayoutParams lp_header = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 20);
+    AbsListView.LayoutParams lp_normal = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 40);
 
     @Override
     public void onFinishInflate() {
@@ -46,6 +48,7 @@ public class ContestUserListCell extends RelativeLayout {
         usernameTV = (TextView) findViewById(R.id.contestuser_username);
         avatarImageView = (NetworkImageView) findViewById(R.id.contestuser_avatar);
         winsTV = (TextView) findViewById(R.id.contestuser_wins);
+        mask = (ImageView) findViewById(R.id.contestuser_avatar_mask);
         rankTV.setGravity(Gravity.CENTER);
         usernameTV.setGravity(Gravity.CENTER_VERTICAL);
         winsTV.setGravity(Gravity.CENTER_VERTICAL);
@@ -68,10 +71,13 @@ public class ContestUserListCell extends RelativeLayout {
 
     public void setContestUser(ContestUser contestUser) {
         this.setLayoutParams(lp_normal);
-        if (contestUser.rank % 2 != 0)
+        if (contestUser.rank % 2 != 0) {
             this.setBackgroundColor(Color.parseColor("#ffffff"));
-        else
+            mask.setImageResource(R.drawable.leaderboard_mask);
+        } else {
             this.setBackgroundColor(Color.parseColor("#efefef"));
+            mask.setImageResource(R.drawable.leaderboard_gray_mask);
+        }
         rankTV.setText(contestUser.rank + "");
         rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
         rankTV.setTextColor(getResources().getColor(R.color.knodaLightGreen));

@@ -1,9 +1,11 @@
 package adapters;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -25,8 +27,15 @@ public class ContestAdapter extends PagingAdapter<Contest> {
     public Bus bus;
     public MainActivity mainActivity;
 
+    LinearLayout.LayoutParams title_normal = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    LinearLayout.LayoutParams title_no_image = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
     public ContestAdapter(Context context, PagingAdapterDatasource<Contest> datasource, ImageLoader imageLoader) {
         super(context, datasource, imageLoader);
+        final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+        title_no_image.setMargins(onedp * 15, onedp * 15, onedp * 15, 0);
+        title_normal.setMargins(onedp * 15, onedp * 5, onedp * 15, 0);
     }
 
     @Override
@@ -47,11 +56,12 @@ public class ContestAdapter extends PagingAdapter<Contest> {
         final Contest contest = objects.get(position);
         if (contest != null) {
             listItem.setContest(contest, mainActivity);
-            if (contest.avatar != null)
+            if (contest.avatar != null) {
                 listItem.avatarImageView.setImageUrl(contest.avatar.big, imageLoader);
-
-            if (contest.contestStages != null && contest.contestStages.size() > 0) {
-                //listItem.arrow.setVisibility(View.VISIBLE);
+                listItem.titleTV.setLayoutParams(title_normal);
+            } else {
+                listItem.findViewById(R.id.contest_avatar_container).setVisibility(View.GONE);
+                listItem.titleTV.setLayoutParams(title_no_image);
             }
         }
 

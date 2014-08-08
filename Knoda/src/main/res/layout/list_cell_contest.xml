@@ -11,22 +11,22 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/contest_avatar_container"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:visibility="visible">
 
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/contest_avatar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"/>
                 <!--android:src="@drawable/groups_avatar_default" />-->
-
-
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/avatar_mask" />
+                android:src="@drawable/contest_mask" />
 
         </RelativeLayout>
 
