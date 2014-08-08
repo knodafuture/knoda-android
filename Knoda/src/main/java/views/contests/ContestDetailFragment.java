@@ -29,6 +29,7 @@ import butterknife.OnClick;
 import models.Contest;
 import views.core.BaseFragment;
 import views.core.BaseWebFragment;
+import views.core.CustomViewPager;
 import views.core.MainActivity;
 
 public class ContestDetailFragment extends BaseFragment {
@@ -45,7 +46,7 @@ public class ContestDetailFragment extends BaseFragment {
     LinearLayout.LayoutParams params;
     int topContainerHeight;
     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    private ViewPager mViewPager;
+    private CustomViewPager mViewPager;
 
     public static ContestDetailFragment newInstance(Contest contest) {
         ContestDetailFragment fragment = new ContestDetailFragment();
@@ -67,6 +68,7 @@ public class ContestDetailFragment extends BaseFragment {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setHasOptionsMenu(true);
+        sharedPrefManager.setShouldShowContestVotingWalkthrough(true);
     }
 
     @Override
@@ -146,7 +148,8 @@ public class ContestDetailFragment extends BaseFragment {
         if (mViewPager != null) {
             topview.removeView(mViewPager);
         }
-        mViewPager = new ViewPager(getActivity().getApplicationContext());
+        mViewPager = new CustomViewPager(getActivity().getApplicationContext());
+        mViewPager.setPagingEnabled(false);
         mViewPager.setId(2000 + new Random().nextInt(100));
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

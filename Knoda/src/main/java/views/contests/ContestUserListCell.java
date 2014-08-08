@@ -61,7 +61,7 @@ public class ContestUserListCell extends RelativeLayout {
         if (contestUser.rank % 2 != 0)
             this.setBackgroundColor(Color.parseColor("#ffffff"));
         else
-            this.setBackgroundColor(Color.parseColor("#cccccc"));
+            this.setBackgroundColor(Color.parseColor("#efefef"));
         rankTV.setText(contestUser.rank + "");
         rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
         rankTV.setTextColor(getResources().getColor(R.color.knodaLightGreen));

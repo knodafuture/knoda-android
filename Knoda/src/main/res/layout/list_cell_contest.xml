@@ -19,8 +19,9 @@
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/contest_avatar"
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@color/black" />
+                android:layout_height="60dp"/>
+                <!--android:src="@drawable/groups_avatar_default" />-->
+
 
             <ImageView
                 android:layout_width="60dp"
@@ -41,7 +42,7 @@
             android:gravity="center_horizontal"
             android:text="Chiefs Call'em All"
             android:textColor="@color/knodaDarkGreen"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -53,7 +54,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:gravity="left|center_vertical"
+            android:gravity="center"
             android:maxLines="2"
             android:text="This will show the first 2 lines of Contest description, if longer it will truncate. Vote each week on the Star's"
             android:textColor="@color/knodaDarkGreen"
@@ -93,7 +94,7 @@
                         android:gravity="right"
                         android:text="131st"
                         android:textColor="@color/knodaDarkGreen"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/contest_overall"
@@ -119,9 +120,10 @@
 
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="25dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_contest_rank" />
+                        android:src="@drawable/ic_contest_rank"
+                        android:background="@color/white"/>
 
                 </RelativeLayout>
 
@@ -141,7 +143,7 @@
                         android:maxLines="1"
                         android:text="UtahStateAggies"
                         android:textColor="@color/knodaDarkGreen"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="fill_parent"
@@ -159,7 +161,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:scaleType="center"
                     android:src="@drawable/settings_arrow"

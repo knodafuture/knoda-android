@@ -62,6 +62,8 @@ public class ContestListCell extends RelativeLayout {
         findViewById(R.id.spacer).setLayoutParams(lp);
         descriptionTV.setMaxLines(1000);
         descriptionTV.setEllipsize(null);
+        buttonContainer.setVisibility(INVISIBLE);
+        standingsContainer.setVisibility(VISIBLE);
     }
 
 
