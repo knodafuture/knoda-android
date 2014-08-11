@@ -115,22 +115,16 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        if (((MainActivity) getActivity()).userManager.getUser().guestMode == false)
+        if (((MainActivity) getActivity()).userManager.getUser().guestMode == false) {
             inflater.inflate(R.menu.groups, menu);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
 
-        super.onCreateOptionsMenu(menu, inflater);
+
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-//        if (((MainActivity) getActivity()).userManager.getUser().guestMode == false) {
-//            menu.removeItem(R.id.action_search);
-//            if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_create_group) != null)
-//                menu.findItem(R.id.action_create_group).setVisible(true);
-//        } else {
-//            if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_create_group) != null)
-//                menu.findItem(R.id.action_create_group).setVisible(false);
-//        }
         super.onPrepareOptionsMenu(menu);
     }
 }

@@ -124,6 +124,7 @@ public class ActivityFragment extends BaseFragment {
             ((LinearLayout) topview.findViewById(R.id.activity_container)).removeView(mViewPager);
         }
         mViewPager = new ViewPager(getActivity().getApplicationContext());
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setId(2000 + new Random().nextInt(100));
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

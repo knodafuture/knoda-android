@@ -1,10 +1,13 @@
 package views.predictionlists;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
+import com.knoda.knoda.R;
 
 import adapters.GroupPredictionAdapter;
 import adapters.PagingAdapter;
@@ -13,6 +16,7 @@ import models.Group;
 import models.Prediction;
 import networking.NetworkListCallback;
 import pubsub.ChangeGroupEvent;
+import views.core.MainActivity;
 import views.group.GroupLeaderboardsFragment;
 import views.group.GroupPredictionListHeader;
 import views.group.GroupSettingsFragment;
@@ -33,6 +37,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
         super.onCreate(savedInstanceState);
         group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
         bus.register(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -114,6 +119,12 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }

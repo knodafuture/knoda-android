@@ -141,13 +141,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
         tabs.setTextSize(onesp * 16);
         tabs.setBackgroundResource(R.color.knodaLightGreen);
 
-        if (contest.contestStages.size() > 2) {
-            tabs.setTabWidth((int) (screenwidth * 1.0f / 3));
-        } else {
-            tabs.setTabWidth((int) (screenwidth * 1.0f) / contest.contestStages.size());
-        }
-
-
         if (contest.contestStages.size() > 0 && contest.contestStages.get(0).name.equals("Overall")) {
             //dont add overall again
         } else {
@@ -158,6 +151,14 @@ public class ContestLeaderboardFragment extends BaseFragment {
             overall.sort_order = 0;
             contest.contestStages.add(0, overall);
         }
+
+        if (contest.contestStages.size() > 2) {
+            tabs.setTabWidth((int) (screenwidth * 1.0f / 3));
+        } else {
+            tabs.setTabWidth((int) (screenwidth * 1.0f) / contest.contestStages.size());
+        }
+        if (contest.contestStages.size() == 1)
+            tabs.setVisibility(View.GONE);
     }
 
     @Override
@@ -169,6 +170,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
         }
         mViewPager = new ViewPager(getActivity().getApplicationContext());
         mViewPager.setId(2000 + new Random().nextInt(100));
+        mViewPager.setOffscreenPageLimit(2);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

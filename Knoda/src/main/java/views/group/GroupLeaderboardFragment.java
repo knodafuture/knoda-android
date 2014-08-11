@@ -1,9 +1,12 @@
 package views.group;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import com.flurry.android.FlurryAgent;
+import com.knoda.knoda.R;
 
 import adapters.LeaderboardAdapter;
 import adapters.PagingAdapter;
@@ -34,6 +37,7 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
         super.onCreate(savedInstanceState);
         group = GsonF.actory().fromJson(getArguments().getString("GROUP"), Group.class);
         board = getArguments().getString("BOARD");
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -64,5 +68,9 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
     }
 }
