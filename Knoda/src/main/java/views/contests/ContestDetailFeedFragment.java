@@ -83,7 +83,7 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
                 resizing = true;
                 if (visible == 0)
                     visible = visibleItemCount;
-                if (firstVisibleItem > 2 && headerSize != 1) {
+                if (firstVisibleItem > 1 && headerSize != 1) {
                     resizeHeader(1);
                 } else if (firstVisibleItem == 0) {
                     resizeHeader(0);
