@@ -26,4 +26,9 @@ public class ContestStagesPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return contest.contestStages.size();
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return contest.contestStages.get(position).name;
+    }
 }

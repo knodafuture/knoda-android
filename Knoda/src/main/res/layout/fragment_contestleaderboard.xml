@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--
     <LinearLayout
         android:id="@+id/tabContainer"
         android:layout_width="match_parent"
@@ -69,5 +70,10 @@
 
 
     </LinearLayout>
+    -->
+    <unsorted.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
 
 </LinearLayout>
