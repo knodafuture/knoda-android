@@ -3,12 +3,13 @@ package adapters;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 
 import unsorted.Logger;
 import views.contests.ContestDetailFeedFragment;
 import views.contests.ContestDetailFragment;
 
-public class ContestDetailPagerAdapter extends FragmentPagerAdapter {
+public class ContestDetailPagerAdapter extends FragmentStatePagerAdapter {
     int contestId;
     ContestDetailFragment parentFragment;
 

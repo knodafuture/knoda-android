@@ -3,12 +3,13 @@ package adapters;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 
 import models.Group;
 import unsorted.Logger;
 import views.group.GroupLeaderboardFragment;
 
-public class LeaderboardPagerAdapter extends FragmentPagerAdapter {
+public class LeaderboardPagerAdapter extends FragmentStatePagerAdapter {
     public Group group;
 
     public LeaderboardPagerAdapter(FragmentManager fm, Group group) {
