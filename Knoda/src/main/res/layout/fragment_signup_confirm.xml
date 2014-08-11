@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="views.login.SignupConfirmFragment"
-    android:background="@color/knodaLightGreenTransparent" >
+    android:background="@color/knodaLightGreenTransparent"
+    tools:context="views.login.SignupConfirmFragment">
 
     <View
         android:layout_width="match_parent"

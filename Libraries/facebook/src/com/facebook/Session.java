@@ -1576,8 +1576,8 @@ public class Session implements Serializable {
         private final Map<String, String> loggingExtras = new HashMap<String, String>();
         private SessionLoginBehavior loginBehavior = SessionLoginBehavior.SSO_WITH_FALLBACK;
         private StatusCallback statusCallback;
-        private boolean isLegacy = false;        private int requestCode = DEFAULT_AUTHORIZE_ACTIVITY_CODE;
-        private List<String> permissions = Collections.emptyList();
+        private boolean isLegacy = false;
+        private List<String> permissions = Collections.emptyList();        private int requestCode = DEFAULT_AUTHORIZE_ACTIVITY_CODE;
         private SessionDefaultAudience defaultAudience = SessionDefaultAudience.FRIENDS;
         private String applicationId;
         private String validateSameFbidAsToken;

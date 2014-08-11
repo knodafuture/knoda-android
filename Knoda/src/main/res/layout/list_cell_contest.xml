@@ -21,8 +21,8 @@
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/contest_avatar"
                 android:layout_width="60dp"
-                android:layout_height="60dp"/>
-                <!--android:src="@drawable/groups_avatar_default" />-->
+                android:layout_height="60dp" />
+            <!--android:src="@drawable/groups_avatar_default" />-->
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -122,8 +122,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_contest_rank"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:src="@drawable/ic_contest_rank" />
 
                 </RelativeLayout>
 

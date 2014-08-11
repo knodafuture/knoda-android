@@ -28,12 +28,12 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:background="@color/black" />
-        
+
         <ImageView
             android:id="@+id/contestuser_avatar_mask"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:src="@drawable/leaderboard_gray_mask"/>
+            android:src="@drawable/leaderboard_gray_mask" />
     </RelativeLayout>
 
     <TextView

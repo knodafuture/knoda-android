@@ -67,6 +67,7 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
         super.onResume();
         //resizeHeader(0);
     }
+
     @Override
     public AbsListView.OnScrollListener getOnScrollListener() {
         return new AbsListView.OnScrollListener() {

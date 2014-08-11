@@ -73,10 +73,9 @@ public class NetworkingManager {
     SharedPrefManager sharedPrefManager;
     @Inject
     Bus bus;
+    int timeout = 15;//timeout in seconds
     private HashMap<String, String> headers;
     private ImageLoader imageLoader;
-
-    int timeout = 15;//timeout in seconds
 
     @Inject
     public NetworkingManager(Context applicationContext) {

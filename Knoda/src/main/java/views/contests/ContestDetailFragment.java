@@ -46,8 +46,8 @@ public class ContestDetailFragment extends BaseFragment {
     LinearLayout.LayoutParams params;
     int topContainerHeight;
     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    private CustomViewPager mViewPager;
     View walkthrough1 = null;
+    private CustomViewPager mViewPager;
 
     public static ContestDetailFragment newInstance(Contest contest) {
         ContestDetailFragment fragment = new ContestDetailFragment();

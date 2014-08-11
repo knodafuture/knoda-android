@@ -2,7 +2,6 @@ package views.contests;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -73,7 +72,7 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
         if (filter.equals("explore")) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle("EXPLORE");
-        }else
+        } else
             setTitle(" ");
     }
 

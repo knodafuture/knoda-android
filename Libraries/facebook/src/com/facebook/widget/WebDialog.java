@@ -395,7 +395,7 @@ public class WebDialog extends Dialog {
             this.session = session;
 
             finishInit(context, action, parameters);
-        }        private int theme = DEFAULT_THEME;
+        }
 
         protected BuilderBase(Context context, String applicationId, String action, Bundle parameters) {
             if (applicationId == null) {
@@ -405,7 +405,7 @@ public class WebDialog extends Dialog {
             this.applicationId = applicationId;
 
             finishInit(context, action, parameters);
-        }
+        }        private int theme = DEFAULT_THEME;
 
         /**
          * Sets the listener which will be notified when the dialog finishes.

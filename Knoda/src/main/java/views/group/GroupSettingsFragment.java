@@ -266,6 +266,7 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
             }
         });
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();

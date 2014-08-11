@@ -193,6 +193,4 @@ public class SettingsFragment extends BaseFragment {
     }
 
 
-
-
 }

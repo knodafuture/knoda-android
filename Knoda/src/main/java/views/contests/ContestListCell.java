@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -79,7 +78,7 @@ public class ContestListCell extends RelativeLayout {
             placeTV.setText(getPlace(contest.contestMyInfo.rank));
             overallTV.setText("overall(" + contest.participants + ")");
         } else if (contest.contestMyInfo == null) {//explore
-            placeTV.setText(contest.participants+"");
+            placeTV.setText(contest.participants + "");
             overallTV.setText("participants");
             buttonContainer.setVisibility(VISIBLE);
             standingsContainer.setVisibility(INVISIBLE);

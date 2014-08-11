@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
-import com.knoda.knoda.R;
 
 import adapters.GroupPredictionAdapter;
 import adapters.PagingAdapter;
@@ -16,7 +15,6 @@ import models.Group;
 import models.Prediction;
 import networking.NetworkListCallback;
 import pubsub.ChangeGroupEvent;
-import views.core.MainActivity;
 import views.group.GroupLeaderboardsFragment;
 import views.group.GroupPredictionListHeader;
 import views.group.GroupSettingsFragment;

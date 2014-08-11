@@ -6,7 +6,6 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import com.flurry.android.FlurryAgent;
-import com.knoda.knoda.R;
 
 import adapters.LeaderboardAdapter;
 import adapters.PagingAdapter;
@@ -69,6 +68,7 @@ public class GroupLeaderboardFragment extends BaseListFragment implements Paging
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();

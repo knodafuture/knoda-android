@@ -21,26 +21,21 @@ import models.ContestUser;
  */
 public class ContestUserListCell extends RelativeLayout {
 
+    final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+    AbsListView.LayoutParams lp_header = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 20);
+    AbsListView.LayoutParams lp_normal = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 40);
     public TextView rankTV;
     public TextView usernameTV;
     public TextView winsTV;
-
     public NetworkImageView avatarImageView;
-
     public ImageView mask;
 
     public ContestUserListCell(Context context) {
         super(context);
     }
-
     public ContestUserListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
-    final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
-
-    AbsListView.LayoutParams lp_header = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 20);
-    AbsListView.LayoutParams lp_normal = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 40);
 
     @Override
     public void onFinishInflate() {

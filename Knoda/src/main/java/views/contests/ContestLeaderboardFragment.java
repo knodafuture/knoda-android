@@ -44,8 +44,8 @@ public class ContestLeaderboardFragment extends BaseFragment {
     RelativeLayout.LayoutParams lpUnder;
     ArrayList<TextView> tabTV = new ArrayList<TextView>();
     ArrayList<View> tabUnderline = new ArrayList<View>();
-    private ViewPager mViewPager;
     int lastPosition = 0;
+    private ViewPager mViewPager;
 
     public ContestLeaderboardFragment() {
     }
