@@ -21,7 +21,6 @@ import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
 import views.avatar.UserAvatarChooserActivity;
 import views.avatar.UserAvatarChooserFragment;
-import views.contests.ContestDetailFeedFragment;
 import views.contests.ContestDetailFragment;
 import views.contests.ContestFragment;
 import views.contests.ContestLeaderboardFeedFragment;
@@ -101,7 +100,6 @@ import views.settings.SettingsFragment;
                 SocialFragment.class,
                 ContestFragment.class,
                 ContestDetailFragment.class,
-                ContestDetailFeedFragment.class,
                 ContestLeaderboardFragment.class,
                 ContestLeaderboardFeedFragment.class
         },

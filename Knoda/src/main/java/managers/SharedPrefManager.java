@@ -265,7 +265,7 @@ public class SharedPrefManager {
         sharedPreferences.edit().putString(name, gson.toJson(object)).commit();
     }
 
-    public String getObjectString(String object, String name) {
+    public String getObjectString(String name) {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getString(name, null);
     }

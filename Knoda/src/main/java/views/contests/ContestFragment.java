@@ -11,14 +11,19 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
+import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
+
 import adapters.ContestAdapter;
 import adapters.PagingAdapter;
 import butterknife.InjectView;
+import factories.TypeTokenFactory;
 import models.Contest;
+import models.ServerError;
 import networking.NetworkListCallback;
 import pubsub.GroupNavEvent;
 import views.core.BaseListFragment;
@@ -99,13 +104,29 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
     public PagingAdapter getAdapter() {
         ContestAdapter adapter1 = new ContestAdapter(getActivity(), this, networkingManager.getImageLoader());
         adapter1.mainActivity = (MainActivity) getActivity();
+
+        String cachedObject = sharedPrefManager.getObjectString(filter + "contests");
+        if (cachedObject != null) {
+            Gson gson = new Gson();
+            ArrayList<Contest> cachedContest = gson.fromJson(cachedObject, TypeTokenFactory.getContestsTypeToken().getType());
+            adapter1.setCachedObjects(cachedContest);
+        }
+
         return adapter1;
     }
 
     @Override
-    public void getObjectsAfterObject(Contest contest, NetworkListCallback<Contest> callback) {
+    public void getObjectsAfterObject(Contest contest, final NetworkListCallback<Contest> callback) {
         pageLoaded = true;
-        networkingManager.getContests(filter, callback);
+        networkingManager.getContests(filter, new NetworkListCallback<Contest>() {
+            @Override
+            public void completionHandler(ArrayList<Contest> object, ServerError error) {
+                callback.completionHandler(object, error);
+                if (error == null) {
+                    sharedPrefManager.saveObjectString(object, filter + "contests");
+                }
+            }
+        });
     }
 
     @Override

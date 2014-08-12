@@ -128,6 +128,12 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         });
     }
 
+    public void setCachedObjects(ArrayList<T> cachedObjects) {
+        objects = cachedObjects;
+        currentPage = 0;
+        notifyDataSetChanged();
+    }
+
     public boolean canLoadNextPage() {
         double div = (double) objects.size() / (double) NetworkingManager.PAGE_LIMIT;
 
