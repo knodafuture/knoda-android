@@ -3,6 +3,7 @@ package managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
 import com.knoda.knoda.R;
 
 import javax.inject.Singleton;
@@ -256,6 +257,17 @@ public class SharedPrefManager {
     public void setAPIurl(String url) {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putString(API_URL, url).commit();
+    }
+
+    public void saveObjectString(Object object, String name) {
+        SharedPreferences sharedPreferences = getSP();
+        Gson gson = new Gson();
+        sharedPreferences.edit().putString(name, gson.toJson(object)).commit();
+    }
+
+    public String getObjectString(String object, String name) {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getString(name, null);
     }
 
 }
