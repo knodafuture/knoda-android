@@ -1,11 +1,9 @@
 package views.contests;
 
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -14,13 +12,10 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import adapters.ContestStagesPagerAdapter;

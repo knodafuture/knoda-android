@@ -26,10 +26,10 @@ import views.core.BaseFragment;
 
 public class GroupLeaderboardsFragment extends BaseFragment {
     public Group group;
-    private ViewPager mViewPager;
-    private View view;
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
+    private ViewPager mViewPager;
+    private View view;
 
     public GroupLeaderboardsFragment() {
     }

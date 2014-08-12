@@ -33,6 +33,7 @@ public class ContestUserListCell extends RelativeLayout {
     public ContestUserListCell(Context context) {
         super(context);
     }
+
     public ContestUserListCell(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

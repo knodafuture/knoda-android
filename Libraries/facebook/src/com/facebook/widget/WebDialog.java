@@ -405,7 +405,7 @@ public class WebDialog extends Dialog {
             this.applicationId = applicationId;
 
             finishInit(context, action, parameters);
-        }        private int theme = DEFAULT_THEME;
+        }
 
         /**
          * Sets the listener which will be notified when the dialog finishes.
@@ -418,7 +418,7 @@ public class WebDialog extends Dialog {
             @SuppressWarnings("unchecked")
             CONCRETE result = (CONCRETE) this;
             return result;
-        }
+        }        private int theme = DEFAULT_THEME;
 
         /**
          * Constructs a WebDialog using the parameters provided. The dialog is not shown,

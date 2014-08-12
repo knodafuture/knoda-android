@@ -1577,8 +1577,8 @@ public class Session implements Serializable {
         private SessionLoginBehavior loginBehavior = SessionLoginBehavior.SSO_WITH_FALLBACK;
         private StatusCallback statusCallback;
         private boolean isLegacy = false;
-        private List<String> permissions = Collections.emptyList();        private int requestCode = DEFAULT_AUTHORIZE_ACTIVITY_CODE;
-        private SessionDefaultAudience defaultAudience = SessionDefaultAudience.FRIENDS;
+        private List<String> permissions = Collections.emptyList();
+        private SessionDefaultAudience defaultAudience = SessionDefaultAudience.FRIENDS;        private int requestCode = DEFAULT_AUTHORIZE_ACTIVITY_CODE;
         private String applicationId;
         private String validateSameFbidAsToken;
         AuthorizationRequest(final Activity activity) {
