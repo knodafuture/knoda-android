@@ -97,7 +97,6 @@ public class ContestDetailFeedFragment extends BasePredictionListFragment implem
                         resizing = false;
                     }
                 }, 800);
-
             }
         };
     }

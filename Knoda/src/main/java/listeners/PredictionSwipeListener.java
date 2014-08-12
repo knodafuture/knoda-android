@@ -33,7 +33,7 @@ public class PredictionSwipeListener implements View.OnTouchListener {
     private int slop;
     private long animationTime;
     private ListView listView;
-    private boolean paused;
+    public boolean paused;
     private float downX;
     private boolean swiping;
     private PredictionListCell downView;
@@ -213,6 +213,9 @@ public class PredictionSwipeListener implements View.OnTouchListener {
 
         return Color.rgb((int) R, (int) G, (int) B);
 
+    }
+    public void resetSwipe(){
+        reset();
     }
 
     private void reset() {

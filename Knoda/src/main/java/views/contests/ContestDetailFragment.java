@@ -3,7 +3,6 @@ package views.contests;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,31 +12,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Transformation;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
 
-import java.util.Random;
-
-import adapters.ContestDetailPagerAdapter;
+import adapters.PagingAdapter;
+import adapters.PredictionAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import helpers.ListenerHelper;
+import listeners.PredictionSwipeListener;
 import models.Contest;
+import models.Prediction;
+import models.ServerError;
+import networking.NetworkCallback;
+import networking.NetworkListCallback;
+import pubsub.PredictionChangeEvent;
 import views.core.BaseFragment;
 import views.core.BaseWebFragment;
-import views.core.CustomViewPager;
 import views.core.MainActivity;
+import views.details.DetailsFragment;
+import views.predictionlists.PredictionListCell;
 
-public class ContestDetailFragment extends BaseFragment {
+public class ContestDetailFragment extends BaseFragment implements PredictionSwipeListener.PredictionCellCallbacks, PagingAdapter.PagingAdapterDatasource<Prediction> {
 
     public boolean loaded = false;
     TextView selectedFilter;
     View selectedUnderline;
-    ContestDetailPagerAdapter adapter;
     @InjectView(R.id.topview)
     LinearLayout topview;
     @InjectView(R.id.contest_detail_header)
@@ -47,7 +58,17 @@ public class ContestDetailFragment extends BaseFragment {
     int topContainerHeight;
     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     View walkthrough1 = null;
-    private CustomViewPager mViewPager;
+
+    int visible, scroll_state, headerSize = 0;
+    boolean resizing = false;
+    Handler h;
+
+    @InjectView(R.id.pListview)
+    PullToRefreshListView pListview;
+
+    PredictionSwipeListener swipeListener;
+    PredictionAdapter predictionAdapter;
+    String filter = "";
 
     public static ContestDetailFragment newInstance(Contest contest) {
         ContestDetailFragment fragment = new ContestDetailFragment();
@@ -57,12 +78,23 @@ public class ContestDetailFragment extends BaseFragment {
 
     @OnClick(R.id.activity_1)
     void onClick1() {
-        mViewPager.setCurrentItem(0, true);
+        if (!filter.equals("")) {
+            resizeHeader(0);
+            filter = "";
+            pListview.setRefreshing();
+            changeFilter(R.id.activity_1);
+        }
     }
 
     @OnClick(R.id.activity_2)
     void onClick2() {
-        mViewPager.setCurrentItem(1, true);
+        if (!filter.equals("expired")) {
+            resizeHeader(0);
+            filter = "expired";
+            predictionAdapter.reset();
+            pListview.setRefreshing();
+            changeFilter(R.id.activity_2);
+        }
     }
 
     @Override
@@ -70,6 +102,7 @@ public class ContestDetailFragment extends BaseFragment {
         super.onCreate(bundle);
         setHasOptionsMenu(true);
         sharedPrefManager.setShouldShowContestVotingWalkthrough(true);
+        h = new Handler();
     }
 
     @Override
@@ -78,6 +111,7 @@ public class ContestDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_contest_detail, container, false);
         ButterKnife.inject(this, view);
         getActivity().invalidateOptionsMenu();
+        swipeListener = new PredictionSwipeListener(pListview.getRefreshableView(), this);
 
         selectedFilter = (TextView) view.findViewById(R.id.activity_1);
         selectedUnderline = view.findViewById(R.id.underline_1);
@@ -123,9 +157,55 @@ public class ContestDetailFragment extends BaseFragment {
                 }
             });
         }
-
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         FlurryAgent.logEvent("ContestDetail_Screen");
+
+        pListview.setShowIndicator(false);
+        pListview.getRefreshableView().setDivider(null);
+        pListview.setRefreshing(true);
+        predictionAdapter = (PredictionAdapter) getAdapter();
+
+        pListview.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                predictionAdapter.loadPage(0);
+                resizeHeader(0);
+            }
+        });
+
+        pListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Prediction prediction = predictionAdapter.getItem(position - 1);
+                if (prediction != null) {
+                    DetailsFragment fragment = DetailsFragment.newInstance(prediction);
+                    pushFragment(fragment);
+                }
+            }
+        });
+
+        pListview.getRefreshableView().setOnTouchListener(swipeListener);
+        pListview.setRefreshing();
+        addScrollListener();
+
+    }
+
+    public PagingAdapter getAdapter() {
+        predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true);
+        predictionAdapter.showContestTour = true;
+
+        predictionAdapter.setLoadFinishedListener(new PagingAdapter.PagingAdapaterPageLoadFinishListener() {
+            @Override
+            public void adapterFinishedLoadingPage(int page) {
+                pListview.onRefreshComplete();
+                //onLoadFinished();
+                if (getActivity() != null)
+                    ((MainActivity) getActivity()).invalidateBackgroundImage();
+            }
+        });
+
+
+        return predictionAdapter;
     }
 
     public void hidePredictWalkthrough() {
@@ -169,42 +249,6 @@ public class ContestDetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        if (mViewPager != null) {
-            topview.removeView(mViewPager);
-        }
-        mViewPager = new CustomViewPager(getActivity().getApplicationContext());
-        mViewPager.setPagingEnabled(false);
-        mViewPager.setId(2000 + new Random().nextInt(100));
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                int filterId = 0;
-                switch (position) {
-                    case 0:
-                        filterId = R.id.activity_1;
-                        break;
-                    case 1:
-                        filterId = R.id.activity_2;
-                        break;
-                }
-                changeFilter(filterId);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        topview.addView(mViewPager);
-        adapter = new ContestDetailPagerAdapter(getFragmentManager(), contest.id, this);
-        mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(0);
-
         header.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -214,6 +258,9 @@ public class ContestDetailFragment extends BaseFragment {
                 loaded = true;
             }
         });
+        pListview.setAdapter(predictionAdapter);
+        filter = "";
+        predictionAdapter.loadPage(0);
     }
 
     @Override
@@ -262,4 +309,141 @@ public class ContestDetailFragment extends BaseFragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onPredictionAgreed(final PredictionListCell cell) {
+        cell.setAgree(true);
+        networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
+            @Override
+            public void completionHandler(Prediction object, ServerError error) {
+                if (error != null)
+                    errorReporter.showError(error);
+                else {
+                    cell.prediction = object;
+                    cell.update();
+                    bus.post(new PredictionChangeEvent(object));
+                }
+            }
+        });
+        FlurryAgent.logEvent("Swiped_Agree");
+    }
+
+    @Override
+    public void onPredictionDisagreed(final PredictionListCell cell) {
+        cell.setAgree(false);
+        networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
+            @Override
+            public void completionHandler(Prediction object, ServerError error) {
+                if (error != null) {
+                    errorReporter.showError(error);
+                } else {
+                    cell.prediction = object;
+                    cell.update();
+                    bus.post(new PredictionChangeEvent(object));
+                }
+            }
+        });
+        FlurryAgent.logEvent("Swiped_Disagree");
+    }
+
+    @Override
+    public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
+        if (filter != null && filter.equals("expired"))
+            networkingManager.getContestsPredictions(contest.id, true, callback);
+        else
+            networkingManager.getContestsPredictions(contest.id, false, callback);
+    }
+
+    @Override
+    public String noContentString() {
+        return "No predictions for this contest.";
+    }
+
+    public AbsListView.OnScrollListener getOnScrollListener() {
+        return new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                scroll_state = scrollState;
+                boolean enabled = scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE;
+                swipeListener.paused = !enabled;
+                if (swipeListener.paused)
+                    swipeListener.resetSwipe();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (!loaded || resizing == true || scroll_state == SCROLL_STATE_IDLE)
+                    return;
+                resizing = true;
+                if (visible == 0)
+                    visible = visibleItemCount;
+                if (firstVisibleItem > 1 && headerSize != 1) {
+                    resizeHeader(1);
+                } else if (firstVisibleItem == 0) {
+                    resizeHeader(0);
+                } else {
+                    resizing = false;
+                    return;
+                }
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        resizing = false;
+                    }
+                }, 800);
+            }
+        };
+    }
+
+    private void addScrollListener() {
+
+        AbsListView.OnScrollListener listener = getOnScrollListener();
+
+        if (listener == null)
+            pListview.getRefreshableView().setOnScrollListener(predictionAdapter.makeScrollListener());
+        else
+            pListview.getRefreshableView().setOnScrollListener(ListenerHelper.concatListeners(listener, predictionAdapter.makeScrollListener()));
+    }
+
+    public void resizeHeader(int state) {
+        if (headerSize == state) {
+            return;
+        }
+        headerSize = state;
+        if (state == 0) {
+            final ExpandAnimation expandAnimation = new ExpandAnimation(topContainerHeight);
+            header.startAnimation(expandAnimation);
+        } else if (state == 1) {
+            final ExpandAnimation expandAnimation = new ExpandAnimation(0);
+            header.startAnimation(expandAnimation);
+        }
+
+    }
+
+    private class ExpandAnimation extends Animation {
+        private final int mStartHeight;
+        private final int mDeltaHeight;
+        LinearLayout.LayoutParams lp;
+
+        public ExpandAnimation(int endHeight) {
+            mStartHeight = (endHeight == topContainerHeight) ? 0 : topContainerHeight;
+            mDeltaHeight = mStartHeight - endHeight;
+            this.setDuration(400);
+            lp = params;
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime,
+                                           Transformation t) {
+            lp.height = (int) (mStartHeight - (mDeltaHeight * interpolatedTime));
+            header.setLayoutParams(lp);
+        }
+
+        @Override
+        public boolean willChangeBounds() {
+            return true;
+        }
+    }
+
+
 }

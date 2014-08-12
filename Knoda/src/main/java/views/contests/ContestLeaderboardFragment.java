@@ -31,20 +31,11 @@ import unsorted.PagerSlidingTabStrip;
 import views.core.BaseFragment;
 
 public class ContestLeaderboardFragment extends BaseFragment {
-    String filter = "all";
     View topview;
     ContestStagesPagerAdapter adapter;
     Contest contest;
-    //@InjectView(R.id.tabContainer)
-    //LinearLayout tabContainer;
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
-    LinearLayout.LayoutParams lp;
-    RelativeLayout.LayoutParams lpTV = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-    RelativeLayout.LayoutParams lpUnder;
-    ArrayList<TextView> tabTV = new ArrayList<TextView>();
-    ArrayList<View> tabUnderline = new ArrayList<View>();
-    int lastPosition = 0;
     private ViewPager mViewPager;
 
     public ContestLeaderboardFragment() {
@@ -56,61 +47,11 @@ public class ContestLeaderboardFragment extends BaseFragment {
         return fragment;
     }
 
-    private void changeFilter(int number) {
-
-        //clear all tabs colors
-        for (int i = 0; i != 3; i++) {
-            tabTV.get(i).setTextColor(getResources().getColor(R.color.knodaLighterGreen));
-            tabUnderline.get(i).setVisibility(View.INVISIBLE);
-            tabTV.get(i).setText("");
-        }
-
-        //set color of right tab
-        if (number == contest.contestStages.size() - 1) {
-            if (contest.contestStages.size() > 2) {
-                tabTV.get(2).setTextColor(Color.WHITE);
-                tabUnderline.get(2).setVisibility(View.VISIBLE);
-                tabTV.get(2).setText(contest.contestStages.get(number).name);
-                tabTV.get(1).setText(contest.contestStages.get(number - 1).name);
-                tabTV.get(0).setText(contest.contestStages.get(number - 2).name);
-            } else {
-                tabTV.get(number).setTextColor(Color.WHITE);
-                tabUnderline.get(number).setVisibility(View.VISIBLE);
-                tabTV.get(number).setText(contest.contestStages.get(number).name);
-                if (number - 1 >= 0)
-                    tabTV.get(number - 1).setText(contest.contestStages.get(number - 1).name);
-            }
-        } else if (number == 0) {
-            if (contest.contestStages.size() > 0) {
-                tabTV.get(0).setTextColor(Color.WHITE);
-                tabUnderline.get(0).setVisibility(View.VISIBLE);
-                tabTV.get(0).setText(contest.contestStages.get(number).name);
-                if (number + 1 < contest.contestStages.size())
-                    tabTV.get(1).setText(contest.contestStages.get(number + 1).name);
-                if (number + 2 < contest.contestStages.size())
-                    tabTV.get(2).setText(contest.contestStages.get(number + 2).name);
-            }
-        } else {
-            tabTV.get(1).setTextColor(Color.WHITE);
-            tabUnderline.get(1).setVisibility(View.VISIBLE);
-            tabTV.get(0).setText(contest.contestStages.get(number - 1).name);
-            tabTV.get(1).setText(contest.contestStages.get(number).name);
-            tabTV.get(2).setText(contest.contestStages.get(number + 1).name);
-        }
-        lastPosition = number;
-
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bus.register(this);
         setHasOptionsMenu(true);
-        lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-        lpTV.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics()), 0, 0);
-        lpUnder = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
-
-        lpUnder.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
     }
 
     @Override
@@ -179,7 +120,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                //changeFilter(position);
             }
 
             @Override
@@ -191,7 +131,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
         adapter = new ContestStagesPagerAdapter(getFragmentManager(), contest);
         mViewPager.setAdapter(adapter);
         tabs.setViewPager(mViewPager);
-        //changeFilter(0);
     }
 
     @Override
@@ -203,31 +142,6 @@ public class ContestLeaderboardFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-    }
-
-    private void tabClick(int x) {
-        Log.i("tab", "Last position: " + lastPosition);
-        Log.i("tab", "x: " + x);
-        if (lastPosition == 0) {
-            Log.i("tab", "first");
-            mViewPager.setCurrentItem(x, true);
-            //changeFilter(x);
-        } else if (lastPosition == contest.contestStages.size() - 1) {
-            Log.i("tab", "last");
-            if (contest.contestStages.size() == 2) {
-                mViewPager.setCurrentItem(lastPosition + x - 1, true);
-                //changeFilter(lastPosition + x - 1);
-            } else {
-                mViewPager.setCurrentItem(lastPosition + x - 2, true);
-                //changeFilter(lastPosition + x - 2);
-            }
-        } else {
-            Log.i("tab", "middle");
-            if (x != 1) {
-                mViewPager.setCurrentItem(lastPosition + x - 1);
-                //changeFilter(lastPosition + x - 1);
-            }
-        }
     }
 
 }
