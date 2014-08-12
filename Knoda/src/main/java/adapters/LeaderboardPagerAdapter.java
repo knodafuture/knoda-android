@@ -37,4 +37,17 @@ public class LeaderboardPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return 3;
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "7 DAY";
+            case 1:
+                return "30 DAY";
+            case 2:
+                return "ALL TIME";
+        }
+        return "";
+    }
 }
