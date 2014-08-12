@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
@@ -31,6 +32,7 @@ import butterknife.OnClick;
 import factories.GsonF;
 import models.BaseModel;
 import models.Comment;
+import models.Contest;
 import models.Prediction;
 import models.ServerError;
 import models.User;
@@ -38,6 +40,7 @@ import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.NewCommentEvent;
 import pubsub.PredictionChangeEvent;
+import views.contests.ContestDetailFragment;
 import views.core.BaseListFragment;
 import views.core.MainActivity;
 import views.predictionlists.AnotherUsersProfileFragment;
@@ -150,6 +153,10 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         if (prediction.hasGroup() && (userManager.getGroupById(prediction.groupId) != null)) {
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.GONE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.VISIBLE);
+        } else if (prediction.contest_id != null) {
+            actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.GONE);
+            actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.VISIBLE);
+            ((TextView) actionbar.findViewById(R.id.details_action_group_textview)).setText("VIEW CONTEST");
         } else {
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.VISIBLE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.GONE);
@@ -212,8 +219,24 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public void onGroup() {
-        GroupPredictionListFragment fragment = GroupPredictionListFragment.newInstance(userManager.getGroupById(prediction.groupId));
-        pushFragment(fragment);
+        if (prediction.groupId != null) {
+            GroupPredictionListFragment fragment = GroupPredictionListFragment.newInstance(userManager.getGroupById(prediction.groupId));
+            pushFragment(fragment);
+        } else if (prediction.contest_id != null) {
+            spinner.show();
+            networkingManager.getContest(prediction.contest_id, new NetworkCallback<Contest>() {
+                @Override
+                public void completionHandler(Contest object, ServerError error) {
+                    spinner.hide();
+                    if (error == null) {
+                        ContestDetailFragment fragment = ContestDetailFragment.newInstance(object);
+                        pushFragment(fragment);
+                    }
+                }
+            });
+
+        }
+
     }
 
     @Override

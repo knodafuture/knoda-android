@@ -509,6 +509,11 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getSettingsTypeToken(), callback);
     }
 
+    public void getContest(int id, final NetworkCallback<Contest> callback) {
+        String url = buildUrl("contests/" + id + ".json", true, null);
+        executeRequest(Request.Method.GET, url, null, Contest.class, callback);
+    }
+
     public void getContests(String filter, final NetworkListCallback<Contest> callback) {
         ParamBuilder builder = ParamBuilder.create();
         if (filter != null)
