@@ -125,9 +125,9 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroyView() {
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-        super.onDestroy();
+        super.onDestroyView();
     }
 
     @Override

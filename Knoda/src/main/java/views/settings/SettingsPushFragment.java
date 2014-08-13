@@ -100,6 +100,7 @@ public class SettingsPushFragment extends PreferenceFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.global, menu);
+        menu.clear();
         menu.removeItem(R.id.action_search);
         ((MainActivity) getActivity()).setActionBarTitle("PUSH NOTIFICATIONS");
         super.onCreateOptionsMenu(menu, inflater);
