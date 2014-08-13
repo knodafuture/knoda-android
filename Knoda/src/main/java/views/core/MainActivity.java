@@ -36,7 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -126,8 +125,6 @@ public class MainActivity extends BaseActivity {
     LinearLayout navbar;
     @InjectView(R.id.fragmentContainer)
     FrameLayout container;
-    @InjectView(R.id.nav_activity_dot)
-    ImageView activityDot;
     private GcmManager gcmManager;
     private boolean actionBarEnabled = true;
     private String title;
@@ -870,11 +867,11 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setActivitiesDot(boolean seen) {
-        if (activityDot != null) {
+        if (findViewById(R.id.nav_activity) != null) {
             if (seen)
-                activityDot.setVisibility(View.INVISIBLE);
+                findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity);
             else
-                activityDot.setVisibility(View.VISIBLE);
+                findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity_notifications);
         }
     }
 

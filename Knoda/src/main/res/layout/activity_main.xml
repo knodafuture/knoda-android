@@ -52,26 +52,12 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <Button
+                android:id="@+id/nav_activity"
                 android:layout_width="40dp"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:background="@drawable/nav_activity" />
 
-                <Button
-                    android:id="@+id/nav_activity"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/nav_activity" />
-
-                <ImageView
-                    android:id="@+id/nav_activity_dot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="7dp"
-                    android:src="@drawable/activity_dot"
-                    android:visibility="invisible" />
-            </RelativeLayout>
 
             <TextView
                 android:id="@+id/nav_activity_text"

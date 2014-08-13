@@ -79,7 +79,6 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     @OnClick(R.id.activity_1)
     void onClick1() {
         if (!filter.equals("")) {
-            resizeHeader(0);
             filter = "";
             pListview.setRefreshing();
             changeFilter(R.id.activity_1);
@@ -89,7 +88,6 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     @OnClick(R.id.activity_2)
     void onClick2() {
         if (!filter.equals("expired")) {
-            resizeHeader(0);
             filter = "expired";
             predictionAdapter.reset();
             pListview.setRefreshing();
@@ -101,7 +99,6 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setHasOptionsMenu(true);
-        sharedPrefManager.setShouldShowContestVotingWalkthrough(true);
         h = new Handler();
     }
 
@@ -153,7 +150,16 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    hidePredictWalkthrough();
+                    if (walkthrough1 != null) {
+                        Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
+                        walkthrough1.startAnimation(fadeOutAnimation);
+                        walkthrough1.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                walkthrough1.setVisibility(View.INVISIBLE);
+                            }
+                        }, 500);
+                    }
                 }
             });
         }
@@ -211,8 +217,10 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     public void hidePredictWalkthrough() {
         if (walkthrough1 != null) {
             sharedPrefManager.setShouldShowContestVotingWalkthrough(false);
-            Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
-            walkthrough1.startAnimation(fadeOutAnimation);
+            if (walkthrough1.getVisibility() != View.INVISIBLE) {
+                Animation fadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadeoutshrink);
+                walkthrough1.startAnimation(fadeOutAnimation);
+            }
             walkthrough1.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -312,6 +320,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
 
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
+        hidePredictWalkthrough();
         cell.setAgree(true);
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -330,6 +339,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
 
     @Override
     public void onPredictionDisagreed(final PredictionListCell cell) {
+        hidePredictWalkthrough();
         cell.setAgree(false);
         networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override

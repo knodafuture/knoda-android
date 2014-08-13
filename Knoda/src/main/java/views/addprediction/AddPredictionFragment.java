@@ -225,6 +225,13 @@ public class AddPredictionFragment extends BaseFragment {
             v.startAnimation(fadeInAnimation);
             getView().findViewById(R.id.add_prediction_social_container).setTranslationY(-36f);
             sharedPrefManager.sethouldShowPredictDateWalkthrough(false);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setVisibility(View.GONE);
+                    getView().findViewById(R.id.add_prediction_social_container).setTranslationY(0);
+                }
+            });
         }
     }
 

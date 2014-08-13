@@ -28,12 +28,12 @@ public class PredictionSwipeListener implements View.OnTouchListener {
     private final static int fullGreenB = 31;
 
     private final static double thresholdPercentange = 0.25;
+    public boolean paused;
     int viewWidth = 1;
     private double threshold;
     private int slop;
     private long animationTime;
     private ListView listView;
-    public boolean paused;
     private float downX;
     private boolean swiping;
     private PredictionListCell downView;
@@ -214,7 +214,8 @@ public class PredictionSwipeListener implements View.OnTouchListener {
         return Color.rgb((int) R, (int) G, (int) B);
 
     }
-    public void resetSwipe(){
+
+    public void resetSwipe() {
         reset();
     }
 
