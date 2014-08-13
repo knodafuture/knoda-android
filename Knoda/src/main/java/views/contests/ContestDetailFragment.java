@@ -312,6 +312,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
 
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
+        hidePredictWalkthrough();
         cell.setAgree(true);
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -330,6 +331,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
 
     @Override
     public void onPredictionDisagreed(final PredictionListCell cell) {
+        hidePredictWalkthrough();
         cell.setAgree(false);
         networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override

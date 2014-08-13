@@ -413,12 +413,6 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
     }
 
     @Override
-    public void onDestroy() {
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-        super.onDestroy();
-    }
-
-    @Override
     public void onOutcome(boolean outcome) {
         spinner.show();
 
