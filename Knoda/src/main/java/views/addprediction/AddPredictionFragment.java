@@ -216,7 +216,7 @@ public class AddPredictionFragment extends BaseFragment {
         FlurryAgent.logEvent("Add_Prediction_Screen");
 
 
-        if (sharedPrefManager.shouldShowPredictDateWalkthrough() || true) {
+        if (sharedPrefManager.shouldShowPredictDateWalkthrough()) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.view_predict_date_walkthrough, null);
