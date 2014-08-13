@@ -108,11 +108,6 @@ public class SettingsPushFragment extends PreferenceFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        int itemId = item.getItemId();
-
-        //if (itemId == R.id.action_settings)
-
         return super.onOptionsItemSelected(item);
     }
 
