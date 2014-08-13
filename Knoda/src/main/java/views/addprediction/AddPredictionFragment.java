@@ -216,7 +216,7 @@ public class AddPredictionFragment extends BaseFragment {
         FlurryAgent.logEvent("Add_Prediction_Screen");
 
 
-        if (sharedPrefManager.shouldShowPredictDateWalkthrough()) {
+        if (sharedPrefManager.shouldShowPredictDateWalkthrough() || true) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
                     (Context.LAYOUT_INFLATER_SERVICE);
             View v = inflater.inflate(R.layout.view_predict_date_walkthrough, null);
@@ -225,6 +225,13 @@ public class AddPredictionFragment extends BaseFragment {
             v.startAnimation(fadeInAnimation);
             getView().findViewById(R.id.add_prediction_social_container).setTranslationY(-36f);
             sharedPrefManager.sethouldShowPredictDateWalkthrough(false);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setVisibility(View.GONE);
+                    getView().findViewById(R.id.add_prediction_social_container).setTranslationY(0);
+                }
+            });
         }
     }
 

@@ -79,7 +79,6 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     @OnClick(R.id.activity_1)
     void onClick1() {
         if (!filter.equals("")) {
-            resizeHeader(0);
             filter = "";
             pListview.setRefreshing();
             changeFilter(R.id.activity_1);
@@ -89,7 +88,6 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     @OnClick(R.id.activity_2)
     void onClick2() {
         if (!filter.equals("expired")) {
-            resizeHeader(0);
             filter = "expired";
             predictionAdapter.reset();
             pListview.setRefreshing();
