@@ -118,11 +118,8 @@ public class NetworkingManager {
     }
 
     public void signup(final SignUpRequest payload, final NetworkCallback<LoginResponse> callback) {
-
         String url = buildUrl("registration.json", true, null);
-
         executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
-
     }
 
     public void signout(final NetworkCallback<User> callback) {
