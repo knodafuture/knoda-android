@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import adapters.ContestAdapter;
 import adapters.PagingAdapter;
 import butterknife.InjectView;
+import factories.GsonF;
 import factories.TypeTokenFactory;
 import models.Contest;
 import models.ServerError;
@@ -107,7 +108,7 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
 
         String cachedObject = sharedPrefManager.getObjectString(filter + "contests");
         if (cachedObject != null) {
-            Gson gson = new Gson();
+            Gson gson = GsonF.actory();
             ArrayList<Contest> cachedContest = gson.fromJson(cachedObject, TypeTokenFactory.getContestsTypeToken().getType());
             adapter1.setCachedObjects(cachedContest);
         }

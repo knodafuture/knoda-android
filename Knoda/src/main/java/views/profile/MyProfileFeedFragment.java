@@ -14,14 +14,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
+import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
+
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
 import butterknife.InjectView;
+import factories.GsonF;
+import factories.TypeTokenFactory;
 import models.Prediction;
+import models.ServerError;
 import networking.NetworkListCallback;
 import pubsub.ProfileNavEvent;
 import pubsub.ProfilePagerScrollEvent;
@@ -177,16 +183,31 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
     @Override
     public PagingAdapter getAdapter() {
         predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true);
+        String cachedObject = sharedPrefManager.getObjectString(screenNumber + "profile");
+        if (cachedObject != null) {
+            Gson gson = GsonF.actory();
+            ArrayList<Prediction> cachedContest = gson.fromJson(cachedObject, TypeTokenFactory.getPredictionListTypeToken().getType());
+            predictionAdapter.setCachedObjects(cachedContest);
+        }
+
         return predictionAdapter;
     }
 
 
     @Override
-    public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
+    public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {
         boolean challenged = (screenNumber == 1) ? true : false;
         pageLoaded = true;
         int lastId = object == null ? 0 : object.id;
-        networkingManager.getPredictionsAfterId(challenged, lastId, callback);
+        networkingManager.getPredictionsAfterId(challenged, lastId, new NetworkListCallback<Prediction>() {
+            @Override
+            public void completionHandler(ArrayList<Prediction> object, ServerError error) {
+                callback.completionHandler(object, error);
+                if (error == null) {
+                    sharedPrefManager.saveObjectString(object, screenNumber + "profile");
+                }
+            }
+        });
     }
 
     @Override

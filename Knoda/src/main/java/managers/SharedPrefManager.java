@@ -261,7 +261,7 @@ public class SharedPrefManager {
 
     public void saveObjectString(Object object, String name) {
         SharedPreferences sharedPreferences = getSP();
-        Gson gson = new Gson();
+        Gson gson = GsonF.actory();
         sharedPreferences.edit().putString(name, gson.toJson(object)).commit();
     }
 

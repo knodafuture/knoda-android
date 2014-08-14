@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
 import butterknife.InjectView;
+import factories.GsonF;
 import factories.TypeTokenFactory;
 import models.ActivityItem;
 import models.ActivityItemType;
@@ -128,7 +129,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
         ActivityAdapter adapter1 = new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader(), getActivity());
         String cachedObject = sharedPrefManager.getObjectString(screenNumber + "activity");
         if (cachedObject != null) {
-            Gson gson = new Gson();
+            Gson gson = GsonF.actory();
             ArrayList<ActivityItem> cachedContest = gson.fromJson(cachedObject, TypeTokenFactory.getActivityItemTypeToken().getType());
             adapter1.setCachedObjects(cachedContest);
         }

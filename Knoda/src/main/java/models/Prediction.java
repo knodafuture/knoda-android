@@ -84,16 +84,16 @@ public class Prediction extends BaseModel {
     @SerializedName("contest_name")
     public String contest_name;
 
-    public String getCreationString() {
-        return "made " + DateUtil.getPeriodString(creationDate) + " ago";
-    }
+//    public String getCreationString() {
+//        return "made " + DateUtil.getPeriodString(creationDate) + " ago";
+//    }
 
-    public String getExpirationString() {
-        String string = expired ? "closed" : "closes";
-        string += " " + DateUtil.getPeriodString(expirationDate);
-        string += expired ? " ago" : "";
-        return string;
-    }
+//    public String getExpirationString() {
+//        String string = expired ? "closed" : "closes";
+//        string += " " + DateUtil.getPeriodString(expirationDate);
+//        string += expired ? " ago" : "";
+//        return string;
+//    }
 
     public String getAgreePercentString() {
         float agreePercent = (float) agreedCount / (float) (agreedCount + disagreedCount) * 100;
