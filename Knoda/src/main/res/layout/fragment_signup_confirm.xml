@@ -5,48 +5,66 @@
     android:background="@color/knodaLightGreenTransparent"
     tools:context="views.login.SignupConfirmFragment">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <TextView
         android:id="@+id/confirm_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Temp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:text="TESt"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/confirm_copy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/confirm_username"
-        android:layout_centerHorizontal="true"
-        android:text="nice selfie!"
-        android:textColor="@color/white" />
-
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/confirm_imageview"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_below="@id/confirm_copy"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"
-        android:src="@drawable/add_avatar" />
-
-    <Button
-        android:id="@+id/confirm_start_predicting_button"
-        style="@style/button_main"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/confirm_imageview"
-        android:layout_margin="20dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:text="Start Predicting" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/confirm_imageview"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/add_avatar" />
+
+            <ImageView
+                android:id="@+id/confirm_imageview_mask"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/profile_mask" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:text="Predicting is more fun with friends."
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/confirm_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Follow your friends on Knoda and invite others to join!"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/confirm_start_predicting_button"
+            style="@style/button_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="Get Started" />
+    </LinearLayout>
 </RelativeLayout>

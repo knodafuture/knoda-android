@@ -175,15 +175,14 @@ public class UserAvatarChooserFragment extends BaseDialogFragment {
             return;
 
         spinner.show();
-
         networkingManager.uploadUserAvatar(cropResultFile, new NetworkCallback<User>() {
             @Override
             public void completionHandler(User object, ServerError error) {
-                spinner.hide();
                 uploadInProgress = false;
                 userManager.refreshUser(new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
                         if (error != null)
                             errorReporter.showError("Please try again later");
                         finish();

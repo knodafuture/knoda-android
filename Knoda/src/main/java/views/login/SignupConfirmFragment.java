@@ -1,6 +1,8 @@
 package views.login;
 
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,9 @@ import com.knoda.knoda.R;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import helpers.TypefaceSpan;
 import models.User;
-import pubsub.LoginFlowDoneEvent;
+import views.contacts.FindFriendsFragment;
 import views.core.BaseDialogFragment;
 
 /**
@@ -24,7 +27,7 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     NetworkImageView imageView;
 
     @InjectView(R.id.confirm_username)
-    TextView textView;
+    TextView usernameTV;
 
     public SignupConfirmFragment() {
     }
@@ -38,7 +41,10 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     void onClick() {
         try {
             sharedPrefManager.setShouldShowVotingWalkthrough(true);
-            bus.post(new LoginFlowDoneEvent());
+            //bus.post(new LoginFlowDoneEvent());
+            //BEGIN CONTACT IMPORT
+            FindFriendsFragment fragment= FindFriendsFragment.newInstance();
+            pushFragment(fragment);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -68,8 +74,10 @@ public class SignupConfirmFragment extends BaseDialogFragment {
         if (u == null)
             return;
 
-        textView.setText(u.username + ",");
-
+        SpannableString s = new SpannableString(u.username.toUpperCase());
+        s.setSpan(new TypefaceSpan(getActivity(), "KronaOne-Regular.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        usernameTV.setText(s);
         imageView.setImageUrl(u.avatar.small, networkingManager.getImageLoader());
     }
 

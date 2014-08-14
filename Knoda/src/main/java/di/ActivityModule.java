@@ -21,6 +21,7 @@ import views.addprediction.AddPredictionFragment;
 import views.avatar.GroupAvatarChooserActivity;
 import views.avatar.UserAvatarChooserActivity;
 import views.avatar.UserAvatarChooserFragment;
+import views.contacts.FindFriendsFragment;
 import views.contests.ContestDetailFragment;
 import views.contests.ContestFragment;
 import views.contests.ContestLeaderboardFeedFragment;
@@ -101,7 +102,8 @@ import views.settings.SettingsFragment;
                 ContestFragment.class,
                 ContestDetailFragment.class,
                 ContestLeaderboardFragment.class,
-                ContestLeaderboardFeedFragment.class
+                ContestLeaderboardFeedFragment.class,
+                FindFriendsFragment.class
         },
         addsTo = KnodaModule.class,
         library = true
