@@ -70,7 +70,9 @@ public class SplashActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
-        userManager.loginSavedUser(new NetworkCallback<User>() {
+
+
+        userManager.refreshUser(new NetworkCallback<User>() {
             @Override
             public void completionHandler(User object, ServerError error) {
                 if (error == null) {

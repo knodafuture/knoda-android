@@ -102,29 +102,29 @@ public class SharedPrefManager {
         return getSP().getString(REG_ID_KEY, "");
     }
 
-    public LoginRequest getSavedLoginRequest() {
+//    public LoginRequest getSavedLoginRequest() {
+//
+//        SharedPreferences sharedPreferences = getSP();
+//        String login = sharedPreferences.getString(SAVED_USERNAME_KEY, null);
+//        String password = sharedPreferences.getString(SAVED_PASSWORD_KEY, null);
+//
+//        if (login == null || password == null)
+//            return null;
+//
+//        return new LoginRequest(login, password);
+//    }
 
-        SharedPreferences sharedPreferences = getSP();
-        String login = sharedPreferences.getString(SAVED_USERNAME_KEY, null);
-        String password = sharedPreferences.getString(SAVED_PASSWORD_KEY, null);
-
-        if (login == null || password == null)
-            return null;
-
-        return new LoginRequest(login, password);
-    }
-
-    public SocialAccount getSavedSocialAccount() {
-        SharedPreferences sharedPreferences = getSP();
-        String json = sharedPreferences.getString(SAVED_SOCIAL_ACCOUNT_KEY, null);
-
-        if (json == null)
-            return null;
-
-        SocialAccount account = GsonF.actory().fromJson(json, SocialAccount.class);
-
-        return account;
-    }
+//    public SocialAccount getSavedSocialAccount() {
+//        SharedPreferences sharedPreferences = getSP();
+//        String json = sharedPreferences.getString(SAVED_SOCIAL_ACCOUNT_KEY, null);
+//
+//        if (json == null)
+//            return null;
+//
+//        SocialAccount account = GsonF.actory().fromJson(json, SocialAccount.class);
+//
+//        return account;
+//    }
 
     public String getSavedAuthtoken() {
         SharedPreferences sharedPreferences = getSP();
@@ -145,6 +145,14 @@ public class SharedPrefManager {
                 .remove(SAVED_AUTHTOKEN_KEY)
                 .remove(SAVED_SOCIAL_ACCOUNT_KEY)
                 .remove(SAVED_GUEST_MODE_KEY)
+                .commit();
+    }
+    public void clearUnsafeData(){
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences
+                .edit()
+                .remove(SAVED_PASSWORD_KEY)
+                .remove(SAVED_USERNAME_KEY)
                 .commit();
     }
 

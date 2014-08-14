@@ -255,6 +255,8 @@ public class MainActivity extends BaseActivity {
             pushNotification.id = getIntent().getStringExtra("id");
         }
 
+        sharedPrefManager.clearUnsafeData();
+
         launch();
 
         if (getIntent().getStringExtra("type") != null) {
@@ -533,7 +535,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public void restart() {
-        bus.unregister(this);
         finish();
         Intent i = getBaseContext().getPackageManager()
                 .getLaunchIntentForPackage(getBaseContext().getPackageName());
@@ -568,6 +569,7 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ((KnodaApplication) getApplication()).setCurrentActivity(null);
+        bus.unregister(this);
     }
 
     public void resetNavIcons() {

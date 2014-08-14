@@ -34,24 +34,23 @@ public class UserManager {
         this.networkingManager = networkingManager;
     }
 
-    public void loginSavedUser(final NetworkCallback<User> callback) {
-        LoginRequest request = sharedPrefManager.getSavedLoginRequest();
-        SocialAccount account = sharedPrefManager.getSavedSocialAccount();
-
-
-        if (sharedPrefManager.guestMode() && sharedPrefManager.getSavedAuthtoken() != null) {
-            refreshUser(callback); //does this on switch from test to/from prod
-        } else {
-            if (request != null) {
-                login(request, callback);
-            } else if (account != null) {
-                socialSignIn(account, callback);
-            } else {
-                callback.completionHandler(null, new ServerError("No saved account."));
-            }
-        }
-    }
-
+//    public void loginSavedUser(final NetworkCallback<User> callback) {
+//        LoginRequest request = sharedPrefManager.getSavedLoginRequest();
+//        SocialAccount account = sharedPrefManager.getSavedSocialAccount();
+//
+//
+//        if (sharedPrefManager.guestMode() && sharedPrefManager.getSavedAuthtoken() != null) {
+//            refreshUser(callback); //does this on switch from test to/from prod
+//        } else {
+//            if (request != null) {
+//                login(request, callback);
+//            } else if (account != null) {
+//                socialSignIn(account, callback);
+//            } else {
+//                callback.completionHandler(null, new ServerError("No saved account."));
+//            }
+//        }
+//    }
 
     public void refreshUser(final NetworkCallback<User> callback) {
         networkingManager.getCurrentUser(new NetworkCallback<User>() {
