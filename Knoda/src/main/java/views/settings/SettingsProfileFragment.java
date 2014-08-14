@@ -211,6 +211,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.global, menu);
+        menu.clear();
         menu.removeItem(R.id.action_search);
         ((MainActivity) getActivity()).setActionBarTitle("PROFILE SETTINGS");
         super.onCreateOptionsMenu(menu, inflater);

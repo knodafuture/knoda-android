@@ -93,6 +93,7 @@ public class SettingsAboutFragment extends PreferenceFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.global, menu);
+        menu.clear();
         menu.removeItem(R.id.action_search);
         ((MainActivity) getActivity()).setActionBarTitle("ABOUT");
         super.onCreateOptionsMenu(menu, inflater);
