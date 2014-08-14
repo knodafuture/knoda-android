@@ -853,7 +853,7 @@ public class MainActivity extends BaseActivity {
 
                         } else {
                             if (object != null && object.size() > 0) {
-                                setActivitiesDot(false);
+                                setActivitiesDot(false, false);
                             }
                             handler.postDelayed(activitiesRefreshRunnable, userRefreshInterval);
                         }
@@ -866,11 +866,14 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    public void setActivitiesDot(boolean seen) {
+    public void setActivitiesDot(boolean seen, boolean fromActivity) {
         if (findViewById(R.id.nav_activity) != null) {
-            if (seen)
-                findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity);
-            else
+            if (seen) {
+                if (fromActivity) {
+                    findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity_active);
+                } else
+                    findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity);
+            } else
                 findViewById(R.id.nav_activity).setBackgroundResource(R.drawable.nav_activity_notifications);
         }
     }

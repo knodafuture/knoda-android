@@ -22,8 +22,8 @@ public class ActivityItem extends BaseModel {
     @SerializedName("user_id")
     public Integer userId;
 
-    @SerializedName("created_at")
-    public DateTime creationDate;
+    //@SerializedName("created_at")
+    public String creationDate;
 
     @SerializedName("title")
     public String title;
@@ -44,7 +44,7 @@ public class ActivityItem extends BaseModel {
     public boolean shareable = true;
 
 
-    public String getCreationString() {
-        return "made " + DateUtil.getPeriodString(creationDate) + " ago";
-    }
+//    public String getCreationString() {
+//        return "made " + DateUtil.getPeriodString(creationDate) + " ago";
+//    }
 }

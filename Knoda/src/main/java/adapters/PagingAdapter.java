@@ -129,9 +129,11 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
     }
 
     public void setCachedObjects(ArrayList<T> cachedObjects) {
-        objects = cachedObjects;
-        currentPage = 0;
-        notifyDataSetChanged();
+        if (objects.size() == 0) {
+            objects = cachedObjects;
+            currentPage = 0;
+            notifyDataSetChanged();
+        }
     }
 
     public boolean canLoadNextPage() {

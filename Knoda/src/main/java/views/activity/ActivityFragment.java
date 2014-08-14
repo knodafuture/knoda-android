@@ -90,7 +90,7 @@ public class ActivityFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         bus.register(this);
         sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
-        ((MainActivity) getActivity()).setActivitiesDot(true);
+        ((MainActivity) getActivity()).setActivitiesDot(true, true);
         setHasOptionsMenu(true);
     }
 

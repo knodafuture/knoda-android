@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
 import butterknife.InjectView;
+import factories.TypeTokenFactory;
 import models.ActivityItem;
 import models.ActivityItemType;
 import models.Invitation;
@@ -83,19 +85,6 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     @Override
     public void onResume() {
         super.onResume();
-//        pListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
-//            @Override
-//            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-//                loadPage(0);
-//            }
-//
-//            @Override
-//            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-//            }
-//        });
-        // pListView.setRefreshing(true);
-        //loadPage(0);
-
     }
 
     public void loadPage(final int page) {
@@ -136,12 +125,19 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 
     @Override
     public PagingAdapter getAdapter() {
-        return new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader(), getActivity());
+        ActivityAdapter adapter1 = new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader(), getActivity());
+        String cachedObject = sharedPrefManager.getObjectString(screenNumber + "activity");
+        if (cachedObject != null) {
+            Gson gson = new Gson();
+            ArrayList<ActivityItem> cachedContest = gson.fromJson(cachedObject, TypeTokenFactory.getActivityItemTypeToken().getType());
+            adapter1.setCachedObjects(cachedContest);
+        }
+        return adapter1;
     }
 
 
     @Override
-    public void getObjectsAfterObject(ActivityItem object, NetworkListCallback<ActivityItem> callback) {
+    public void getObjectsAfterObject(ActivityItem object, final NetworkListCallback<ActivityItem> callback) {
         int lastId = object == null ? 0 : object.id;
         String filter = null;
         if (screenNumber == 1)
@@ -151,7 +147,15 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
         else if (screenNumber == 3)
             filter = "invites";
         pageLoaded = true;
-        networkingManager.getActivityItemsAfter(lastId, filter, callback);
+        networkingManager.getActivityItemsAfter(lastId, filter, new NetworkListCallback<ActivityItem>() {
+            @Override
+            public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
+                callback.completionHandler(object, error);
+                if (error == null) {
+                    sharedPrefManager.saveObjectString(object, screenNumber + "activity");
+                }
+            }
+        });
     }
 
     @Override
@@ -211,7 +215,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 
     @Override
     public void onLoadFinished() {
-        ((MainActivity) getActivity()).setActivitiesDot(true);
+        ((MainActivity) getActivity()).setActivitiesDot(true, true);
     }
 
 }
