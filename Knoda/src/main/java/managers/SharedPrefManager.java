@@ -145,9 +145,18 @@ public class SharedPrefManager {
                 .remove(SAVED_AUTHTOKEN_KEY)
                 .remove(SAVED_SOCIAL_ACCOUNT_KEY)
                 .remove(SAVED_GUEST_MODE_KEY)
+                .remove("1activity")
+                .remove("2activity")
+                .remove("3activity")
+                .remove("4activity")
+                .remove("enteredcontests")
+                .remove("explorecontests")
+                .remove("0profile")
+                .remove("1profile")
                 .commit();
     }
-    public void clearUnsafeData(){
+
+    public void clearUnsafeData() {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences
                 .edit()
