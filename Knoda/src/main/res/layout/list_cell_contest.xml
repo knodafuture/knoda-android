@@ -40,7 +40,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
-            android:text="Chiefs Call'em All"
+            android:text="Contest Title"
             android:textColor="@color/knodaDarkGreen"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -56,7 +56,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"
-            android:text="This will show the first 2 lines of Contest description, if longer it will truncate. Vote each week on the Star's"
+            android:text="This will show the first 2 lines of Contest description, if longer it will truncate. Vote each week"
             android:textColor="@color/knodaDarkGreen"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -92,7 +92,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="131st"
+                        android:text="0"
                         android:textColor="@color/knodaDarkGreen"
                         android:textSize="20sp" />
 
@@ -101,7 +101,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="overall (278)"
+                        android:text="overall (0)"
                         android:textColor="@color/knodaDarkGreen"
                         android:textSize="12sp" />
 
@@ -141,7 +141,7 @@
                         android:layout_marginLeft="15dp"
                         android:gravity="left"
                         android:maxLines="1"
-                        android:text="UtahStateAggies"
+                        android:text="No Leader Yet"
                         android:textColor="@color/knodaDarkGreen"
                         android:textSize="20sp" />
 
