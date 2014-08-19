@@ -107,7 +107,7 @@ public class FindFriendsActivity extends BaseActivity {
         submitBtn.setText("Follow (" + following.size() + ") + Invite (" + inviting.size() + ")");
     }
 
-    public void setupUI(){
+    public void setupUI() {
         if (mViewPager != null) {
             container.removeView(mViewPager);
         }
@@ -163,6 +163,8 @@ public class FindFriendsActivity extends BaseActivity {
                 UserContact userContact = new UserContact();
                 userContact.contact_id = name;
                 if (type.equals(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)) {
+                    if (stripChars(data1).length() < 7)
+                        continue;
                     userContact.phones.add(stripChars(data1));
                 } else if (type.equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
                     userContact.emails.add(data1);

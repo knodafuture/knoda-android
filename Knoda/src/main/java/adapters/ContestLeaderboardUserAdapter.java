@@ -64,6 +64,7 @@ public class ContestLeaderboardUserAdapter extends PagingAdapter<ContestUser> {
         return view;
     }
 
+    @Override
     public boolean canLoadNextPage() {
         return false;
     }

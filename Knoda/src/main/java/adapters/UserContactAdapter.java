@@ -61,5 +61,10 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
 
         return listItem;
     }
+
+    @Override
+    public boolean canLoadNextPage() {
+        return false;
+    }
 }
 

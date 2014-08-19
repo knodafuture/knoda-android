@@ -156,7 +156,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
             public void onScroll(AbsListView absListView, int firstVisible, int visibleCount, int totalCount) {
                 boolean shouldLoadMore = firstVisible + visibleCount >= totalCount;
 
-                if (shouldLoadMore && totalCount > NetworkingManager.PAGE_LIMIT)
+                if (canLoadNextPage()&& shouldLoadMore && totalCount > NetworkingManager.PAGE_LIMIT)
                     loadPage(currentPage + 1);
             }
         };
