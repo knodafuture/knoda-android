@@ -31,6 +31,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import helpers.TypefaceSpan;
 import managers.NetworkingManager;
+import managers.SharedPrefManager;
 import models.UserContact;
 import models.UserContacts;
 import pubsub.LoginFlowDoneEvent;
@@ -57,7 +58,7 @@ public class FindFriendsActivity extends BaseActivity {
 
     @OnClick(R.id.wall_close)
     public void close() {
-        //dismissFade();
+        finish();
         bus.post(new LoginFlowDoneEvent());
     }
 
@@ -65,10 +66,11 @@ public class FindFriendsActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.fragment_findfriends);
+        setContentView(R.layout.activity_findfriends);
         ButterKnife.inject(this);
         bus.register(this);
         networkingManager = new NetworkingManager(this);
+        networkingManager.sharedPrefManager = new SharedPrefManager(this);
 
         SpannableString s = new SpannableString("FIND FRIENDS");
         s.setSpan(new TypefaceSpan(this, "KronaOne-Regular.ttf"), 0, s.length(),

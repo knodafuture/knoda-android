@@ -8,8 +8,8 @@
     <Button
         android:id="@+id/wall_close"
         style="@style/xButton"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="false" />
 

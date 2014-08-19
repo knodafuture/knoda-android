@@ -72,7 +72,7 @@ public class NetworkingManager {
     Context context;
     String api_version = "5";
     @Inject
-    SharedPrefManager sharedPrefManager;
+    public SharedPrefManager sharedPrefManager;
     @Inject
     Bus bus;
     int timeout = 15;//timeout in seconds
@@ -549,6 +549,18 @@ public class NetworkingManager {
     public void matchPhoneContacts(UserContacts contacts, final NetworkListCallback<UserContact> callback) {
         String url = buildUrl("contact_matches.json", false, null);
         executeListRequest(Request.Method.POST, url, contacts.contacts, TypeTokenFactory.getUserContactTypeToken(), callback);
+    }
+
+    public void getFriendsOnKnoda(String filter, final NetworkListCallback<UserContact> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        if (filter != null) {
+            if (filter.equals("facebook"))
+                builder.add("facebook", "true");
+            else if (filter.equals("twitter"))
+                builder.add("twitter", "true");
+        }
+        String url = buildUrl("contact_matches.json", true, builder);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserContactTypeToken(), callback);
     }
 
 

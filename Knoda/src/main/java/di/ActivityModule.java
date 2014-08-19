@@ -23,6 +23,7 @@ import views.avatar.UserAvatarChooserActivity;
 import views.avatar.UserAvatarChooserFragment;
 import views.contacts.FindFriendsActivity;
 import views.contacts.FindFriendsContactsFragment;
+import views.contacts.FindFriendsFacebookFragment;
 import views.contacts.FindFriendsFragment;
 import views.contests.ContestDetailFragment;
 import views.contests.ContestFragment;
@@ -107,7 +108,8 @@ import views.settings.SettingsFragment;
                 ContestLeaderboardFeedFragment.class,
                 FindFriendsFragment.class,
                 FindFriendsContactsFragment.class,
-                FindFriendsActivity.class
+                FindFriendsActivity.class,
+                FindFriendsFacebookFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

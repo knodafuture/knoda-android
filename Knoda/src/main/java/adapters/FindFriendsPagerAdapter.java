@@ -8,6 +8,7 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import models.Group;
 import views.contacts.FindFriendsActivity;
 import views.contacts.FindFriendsContactsFragment;
+import views.contacts.FindFriendsFacebookFragment;
 
 public class FindFriendsPagerAdapter extends FragmentStatePagerAdapter {
     public Group group;
@@ -23,6 +24,8 @@ public class FindFriendsPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = new Fragment();
         if (position == 0) {
             fragment = FindFriendsContactsFragment.newInstance(parent);
+        } else if (position == 1) {
+            fragment = FindFriendsFacebookFragment.newInstance(parent);
         } else
             fragment = new Fragment();
         return fragment;

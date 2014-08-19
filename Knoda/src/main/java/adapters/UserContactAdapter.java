@@ -37,17 +37,8 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         if (listItem == null)
             listItem = (FindFriendsListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_findfriends_follow, null);
         final UserContact userContact = objects.get(position);
-        if (userContact != null) {
+        if (userContact != null)
             listItem.setUser(userContact);
-//            if (contest.avatar != null) {
-//                listItem.avatarImageView.setImageUrl(contest.avatar.big, imageLoader);
-//                listItem.titleTV.setLayoutParams(title_normal);
-//            } else {
-//                listItem.findViewById(R.id.contest_avatar_container).setVisibility(View.GONE);
-//                listItem.titleTV.setLayoutParams(title_no_image);
-//            }
-        }
-
 
         return listItem;
     }

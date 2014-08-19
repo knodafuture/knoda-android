@@ -83,18 +83,18 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         settlecolor = activity.getResources().getColorStateList(R.color.settle_selector_text);
         groupcolor = activity.getResources().getColorStateList(R.color.group_selector_text);
 
+        if (((MainActivity) activity).userManager.getUser() != null)
+            imageLoader.get(((MainActivity) activity).userManager.getUser().avatar.thumb, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    userPic = new BitmapDrawable(response.getBitmap());
+                }
 
-        imageLoader.get(((MainActivity) activity).userManager.getUser().avatar.thumb, new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                userPic = new BitmapDrawable(response.getBitmap());
-            }
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
+                }
+            });
 
         bragClick = new View.OnClickListener() {
             @Override
