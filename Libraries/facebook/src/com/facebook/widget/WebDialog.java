@@ -418,7 +418,7 @@ public class WebDialog extends Dialog {
             @SuppressWarnings("unchecked")
             CONCRETE result = (CONCRETE) this;
             return result;
-        }        private int theme = DEFAULT_THEME;
+        }
 
         /**
          * Constructs a WebDialog using the parameters provided. The dialog is not shown,
@@ -435,7 +435,7 @@ public class WebDialog extends Dialog {
             }
 
             return new WebDialog(context, action, parameters, theme, listener);
-        }
+        }        private int theme = DEFAULT_THEME;
 
         protected String getApplicationId() {
             return applicationId;

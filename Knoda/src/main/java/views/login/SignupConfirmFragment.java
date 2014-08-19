@@ -43,7 +43,7 @@ public class SignupConfirmFragment extends BaseDialogFragment {
             sharedPrefManager.setShouldShowVotingWalkthrough(true);
             //bus.post(new LoginFlowDoneEvent());
             //BEGIN CONTACT IMPORT
-            FindFriendsFragment fragment= FindFriendsFragment.newInstance();
+            FindFriendsFragment fragment = FindFriendsFragment.newInstance();
             pushFragment(fragment);
         } catch (Exception e) {
             System.out.println(e.getMessage());

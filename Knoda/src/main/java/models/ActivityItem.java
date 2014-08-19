@@ -2,10 +2,6 @@ package models;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.joda.time.DateTime;
-
-import helpers.DateUtil;
-
 /**
  * Created by nick on 2/1/14.
  */

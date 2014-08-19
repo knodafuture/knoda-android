@@ -15,7 +15,6 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import com.knoda.knoda.R;
 import java.util.ArrayList;
 import java.util.Random;
 
-import adapters.FindFriendsPagerAdapter;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import helpers.TypefaceSpan;
@@ -37,29 +35,17 @@ import views.core.MainActivity;
 
 public class FindFriendsFragment extends BaseFragment {
 
-    @InjectView(R.id.tabs)
-    PagerSlidingTabStrip tabs;
-
-    @InjectView(R.id.findfriends_title)
-    TextView title;
-
-    @InjectView(R.id.findfriends_container)
-    LinearLayout container;
-
-    ViewPager mViewPager;
-
-    @OnClick(R.id.wall_close)
-    public void close() {
-        //dismissFade();
-        bus.post(new LoginFlowDoneEvent());
-    }
-
-    @InjectView(R.id.findfriends_submit)
-    Button submitBtn;
-
     public ArrayList<UserContact> following;
     public ArrayList<UserContact> inviting;
-
+    @InjectView(R.id.tabs)
+    PagerSlidingTabStrip tabs;
+    @InjectView(R.id.findfriends_title)
+    TextView title;
+    @InjectView(R.id.findfriends_container)
+    LinearLayout container;
+    ViewPager mViewPager;
+    @InjectView(R.id.findfriends_submit)
+    Button submitBtn;
     public FindFriendsFragment() {
     }
 
@@ -68,11 +54,16 @@ public class FindFriendsFragment extends BaseFragment {
         return fragment;
     }
 
+    @OnClick(R.id.wall_close)
+    public void close() {
+        //dismissFade();
+        bus.post(new LoginFlowDoneEvent());
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity)getActivity()).hideNavbar();
+        ((MainActivity) getActivity()).hideNavbar();
 
 
     }
@@ -126,7 +117,7 @@ public class FindFriendsFragment extends BaseFragment {
             }
         });
         container.addView(mViewPager);
-       // FindFriendsPagerAdapter adapter = new FindFriendsPagerAdapter(getFragmentManager(), this);
+        // FindFriendsPagerAdapter adapter = new FindFriendsPagerAdapter(getFragmentManager(), this);
         //mViewPager.setAdapter(adapter);
         tabs.setViewPager(mViewPager);
     }

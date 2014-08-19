@@ -40,31 +40,26 @@ import views.core.BaseActivity;
 public class FindFriendsActivity extends BaseActivity {
 
 
+    public ArrayList<UserContact> following = new ArrayList<UserContact>();
+    public ArrayList<UserContact> inviting = new ArrayList<UserContact>();
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
-
     @InjectView(R.id.findfriends_title)
     TextView title;
-
     @InjectView(R.id.findfriends_container)
     LinearLayout container;
-
     ViewPager mViewPager;
+    @InjectView(R.id.findfriends_submit)
+    Button submitBtn;
+    Bus bus = new Bus();
+    UserContacts localContacts;
+    ProgressDialog progressDialog;
 
     @OnClick(R.id.wall_close)
     public void close() {
         //dismissFade();
         bus.post(new LoginFlowDoneEvent());
     }
-
-    @InjectView(R.id.findfriends_submit)
-    Button submitBtn;
-
-    public ArrayList<UserContact> following = new ArrayList<UserContact>();
-    public ArrayList<UserContact> inviting = new ArrayList<UserContact>();
-    Bus bus = new Bus();
-    UserContacts localContacts;
-    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

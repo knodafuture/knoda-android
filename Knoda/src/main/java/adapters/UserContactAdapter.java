@@ -5,25 +5,15 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
-import com.squareup.otto.Bus;
-
-import javax.inject.Inject;
 
 import helpers.AdapterHelper;
-import managers.UserManager;
-import models.Contest;
 import models.UserContact;
 import views.contacts.FindFriendsListCell;
-import views.contests.ContestListCell;
-import views.core.MainActivity;
 
 public class UserContactAdapter extends PagingAdapter<UserContact> {
-
 
 
     public UserContactAdapter(Context context, PagingAdapterDatasource<UserContact> datasource, ImageLoader imageLoader) {
