@@ -144,8 +144,6 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
                         ContestDetailFragment fragment = ContestDetailFragment.newInstance(contest);
                         ((MainActivity) getActivity()).pushFragment(fragment);
                     }
-
-
                 }
             }
         });

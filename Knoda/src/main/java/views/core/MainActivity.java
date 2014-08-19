@@ -93,6 +93,7 @@ import pubsub.ScreenCaptureEvent;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserFragment;
+import views.contacts.FindFriendsActivity;
 import views.contests.ContestFragment;
 import views.contests.SocialFragment;
 import views.details.CreateCommentFragment;
@@ -655,9 +656,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onSearch() {
-        if (searchFragment == null)
-            searchFragment = new SearchFragment();
-        pushFragment(searchFragment);
+//        if (searchFragment == null)
+//            searchFragment = new SearchFragment();
+//        pushFragment(searchFragment);
+        Intent intent = new Intent(this, FindFriendsActivity.class);
+        intent.putExtra("cancelable", true);
+        startActivity(intent);
     }
 
     private boolean checkPlayServices() {

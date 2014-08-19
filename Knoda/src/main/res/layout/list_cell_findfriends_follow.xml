@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<views.contacts.FindFriendsListCell xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="46dp">
+
+
+    <TextView
+        android:id="@+id/findfriends_listcell_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="User Name"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/findfriends_listcell_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Username"
+        android:textSize="12sp" />
+
+    <CheckBox
+        android:id="@+id/findfriends_listcell_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/findfriends_listcell_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/add_avatar"
+        android:visibility="gone" />
+
+
+</views.contacts.FindFriendsListCell>

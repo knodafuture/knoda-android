@@ -15,6 +15,7 @@ import models.Prediction;
 import models.SettingsCategory;
 import models.Tag;
 import models.User;
+import models.UserContact;
 
 /**
  * Created by nick on 1/27/14.
@@ -73,6 +74,10 @@ public class TypeTokenFactory {
 
     public static TypeToken getContestUserTypeToken() {
         return new TypeToken<ArrayList<ContestUser>>() {
+        };
+    }
+    public static TypeToken getUserContactTypeToken() {
+        return new TypeToken<ArrayList<UserContact>>() {
         };
     }
 }

@@ -16,6 +16,7 @@ import org.apache.http.entity.ContentType;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +52,8 @@ import models.SignUpRequest;
 import models.SocialAccount;
 import models.Tag;
 import models.User;
+import models.UserContact;
+import models.UserContacts;
 import networking.BitmapLruCache;
 import networking.GsonArrayRequest;
 import networking.GsonRequest;
@@ -544,6 +547,12 @@ public class NetworkingManager {
         executeRequest(Request.Method.POST, url, null, LoginResponse.class, callback);
     }
 
+    public void matchPhoneContacts(UserContacts contacts, final NetworkListCallback<UserContact> callback) {
+        String url = buildUrl("contact_matches.json", false, null);
+        executeListRequest(Request.Method.POST, url, contacts.contacts, TypeTokenFactory.getUserContactTypeToken(), callback);
+    }
+
+
     private Map<String, String> getHeaders() {
 
         if (headers == null) {
@@ -613,7 +622,7 @@ public class NetworkingManager {
         executeRequestWithTimeout(httpMethod, url, payload, responseClass, callback, timeout);
     }
 
-    private <T extends BaseModel> void executeListRequest(int httpMethod, final String url, final BaseModel payload, final TypeToken token, final NetworkListCallback<T> callback) {
+    private <T extends BaseModel> void executeListRequest(int httpMethod, final String url, final Object payload, final TypeToken token, final NetworkListCallback<T> callback) {
         Logger.log("Executing request" + url);
 
         Response.Listener<ArrayList<T>> responseListener = new Response.Listener<ArrayList<T>>() {

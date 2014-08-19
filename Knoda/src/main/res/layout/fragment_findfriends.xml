@@ -23,6 +23,7 @@
         android:textSize="20sp"/>
 
     <LinearLayout
+        android:id="@+id/findfriends_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -40,7 +41,7 @@
         android:id="@+id/findfriends_submit"
         style="@style/button_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:text="Follow (4) + Invite (2)" />
 

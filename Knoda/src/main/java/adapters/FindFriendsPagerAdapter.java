@@ -1,21 +1,31 @@
 package adapters;
 
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
 import models.Group;
+import views.contacts.FindFriendsActivity;
+import views.contacts.FindFriendsContactsFragment;
+import views.contacts.FindFriendsFragment;
 
 public class FindFriendsPagerAdapter extends FragmentStatePagerAdapter {
     public Group group;
+    FindFriendsActivity parent;
 
-    public FindFriendsPagerAdapter(FragmentManager fm) {
+    public FindFriendsPagerAdapter(FragmentManager fm, FindFriendsActivity parent) {
         super(fm);
+        this.parent = parent;
     }
 
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = new Fragment();
+        if (position == 0 ) {
+            fragment = FindFriendsContactsFragment.newInstance(parent);
+        } else
+            fragment = new Fragment();
         return fragment;
     }
 

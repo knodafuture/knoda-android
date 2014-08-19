@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by nick on 4/1/14.
  */
-public class Contact {
+public class Contact extends BaseModel {
 
     public String name;
     public ArrayList<String> emailAddress = new ArrayList<String>();

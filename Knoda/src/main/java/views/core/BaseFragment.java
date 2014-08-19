@@ -50,7 +50,8 @@ public class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) getActivity()).inject(this);
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).inject(this);
     }
 
     @Override

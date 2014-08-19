@@ -95,5 +95,21 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+    <style name="Theme.Transparent.NoActionBar" parent="Theme.Apptheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="Theme.NoActionBar" parent="Theme.Apptheme">
+        <item name="android:actionBarSize">0dip</item>
+    </style>
+
+    <style name="Theme.ActionBar" parent="Theme.Apptheme">
+        <item name="android:actionBarSize">48dip</item>
+    </style>
 
 </resources>
