@@ -72,14 +72,14 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
 
     @Override
     public void onItemClicked(int position) {
-        position = position - 1;
-        if (position <= 0) {
-            if (user.avatar != null) {
-                PhotoFragment fragment = PhotoFragment.newInstance(user.avatar.big);
-                pushFragment(fragment);
-            }
-            return;
-        }
+//        position = position - 1;
+//        if (position <= 0) {
+//            if (user.avatar != null) {
+//                PhotoFragment fragment = PhotoFragment.newInstance(user.avatar.big);
+//                pushFragment(fragment);
+//            }
+//            return;
+//        }
 
         super.onItemClicked(position);
     }
