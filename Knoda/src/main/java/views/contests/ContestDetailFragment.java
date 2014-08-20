@@ -120,7 +120,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ContestListCell listItem = (ContestListCell) LayoutInflater.from(getActivity()).inflate(R.layout.list_cell_contest, null);
-        listItem.setContest(contest, (MainActivity) getActivity());
+        listItem.setContest(contest, (MainActivity) getActivity(), false);
         listItem.setHeaderMode();
 
         LinearLayout.LayoutParams title_normal = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

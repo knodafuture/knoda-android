@@ -26,16 +26,18 @@ public class ContestAdapter extends PagingAdapter<Contest> {
     public UserManager userManager;
     public Bus bus;
     public MainActivity mainActivity;
+    boolean explore = false;
 
     LinearLayout.LayoutParams title_normal = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     LinearLayout.LayoutParams title_no_image = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
-    public ContestAdapter(Context context, PagingAdapterDatasource<Contest> datasource, ImageLoader imageLoader) {
+    public ContestAdapter(Context context, PagingAdapterDatasource<Contest> datasource, ImageLoader imageLoader, boolean explore) {
         super(context, datasource, imageLoader);
         final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
         title_no_image.setMargins(onedp * 15, onedp * 15, onedp * 15, 0);
         title_normal.setMargins(onedp * 15, onedp * 5, onedp * 15, 0);
+        this.explore = explore;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ContestAdapter extends PagingAdapter<Contest> {
             listItem = (ContestListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_contest, null);
         final Contest contest = objects.get(position);
         if (contest != null) {
-            listItem.setContest(contest, mainActivity);
+            listItem.setContest(contest, mainActivity, explore);
             if (contest.avatar != null) {
                 listItem.avatarImageView.setImageUrl(contest.avatar.big, imageLoader);
                 listItem.titleTV.setLayoutParams(title_normal);

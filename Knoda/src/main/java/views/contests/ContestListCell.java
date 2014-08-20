@@ -67,7 +67,7 @@ public class ContestListCell extends RelativeLayout {
     }
 
 
-    public void setContest(Contest contest, MainActivity mainActivity1) {
+    public void setContest(Contest contest, MainActivity mainActivity1, boolean explore) {
         this.mainActivity = mainActivity1;
         setTag(contest);
         titleTV.setText(contest.name);
@@ -80,8 +80,13 @@ public class ContestListCell extends RelativeLayout {
         } else if (contest.contestMyInfo == null) {//explore
             placeTV.setText(contest.participants + "");
             overallTV.setText("participants");
-            buttonContainer.setVisibility(VISIBLE);
-            standingsContainer.setVisibility(INVISIBLE);
+            if (explore) {
+                buttonContainer.setVisibility(VISIBLE);
+                standingsContainer.setVisibility(INVISIBLE);
+            }else{
+                buttonContainer.setVisibility(INVISIBLE);
+                standingsContainer.setVisibility(VISIBLE);
+            }
         }
         standingsContainer.setTag(contest);
         standingsContainer.setOnClickListener(new OnClickListener() {

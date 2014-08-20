@@ -103,7 +103,7 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
 
     @Override
     public PagingAdapter getAdapter() {
-        ContestAdapter adapter1 = new ContestAdapter(getActivity(), this, networkingManager.getImageLoader());
+        ContestAdapter adapter1 = new ContestAdapter(getActivity(), this, networkingManager.getImageLoader(), filter.equals("explore") ? true : false);
         adapter1.mainActivity = (MainActivity) getActivity();
 
         String cachedObject = sharedPrefManager.getObjectString(filter + "contests");
