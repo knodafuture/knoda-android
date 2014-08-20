@@ -2,45 +2,30 @@ package views.contacts;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.knoda.knoda.R;
 
-import java.util.ArrayList;
-
-import adapters.ActivityAdapter;
 import adapters.PagingAdapter;
 import adapters.UserContactAdapter;
-import models.ActivityItem;
-import models.ActivityItemType;
-import models.Invitation;
-import models.Prediction;
-import models.ServerError;
 import models.UserContact;
-import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import views.core.BaseListFragment;
-import views.core.MainActivity;
-import views.details.DetailsFragment;
-import views.group.GroupSettingsFragment;
 
-public class FindFriendsFacebookFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<UserContact> {
+public class FindFriendsFacebookTwitterFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<UserContact> {
 
     FindFriendsActivity parent;
     boolean pageLoaded = false;
+    String filter;
 
-    public FindFriendsFacebookFragment() {
+    public FindFriendsFacebookTwitterFragment() {
     }
 
-    public static FindFriendsFacebookFragment newInstance(FindFriendsActivity parent) {
-        FindFriendsFacebookFragment fragment = new FindFriendsFacebookFragment();
+    public static FindFriendsFacebookTwitterFragment newInstance(FindFriendsActivity parent, String filter) {
+        FindFriendsFacebookTwitterFragment fragment = new FindFriendsFacebookTwitterFragment();
         fragment.parent = parent;
+        fragment.filter = filter;
         return fragment;
     }
 
@@ -54,8 +39,21 @@ public class FindFriendsFacebookFragment extends BaseListFragment implements Pag
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FlurryAgent.logEvent("FindFriendsFacebook");
+        FlurryAgent.logEvent("FindFriends" + filter);
         pListView.setMode(PullToRefreshBase.Mode.DISABLED);
+
+        if (filter.equals("facebook")) {
+            if (((FindFriendsActivity) getActivity()).userManager.getUser().getFacebookAccount() == null) {
+
+            }
+        } else if (filter.equals("twitter")) {
+            if (((FindFriendsActivity) getActivity()).userManager.getUser().getTwitterAccount() == null) {
+
+            }
+        } else {
+
+        }
+
     }
 
     @Override
@@ -77,12 +75,17 @@ public class FindFriendsFacebookFragment extends BaseListFragment implements Pag
 
     @Override
     public void getObjectsAfterObject(UserContact userContact, final NetworkListCallback<UserContact> callback) {
-        parent.networkingManager.getFriendsOnKnoda("facebook",callback);
+        parent.networkingManager.getFriendsOnKnoda(filter, callback);
     }
 
     @Override
     public String noContentString() {
         pListView.setBackgroundColor(Color.WHITE);
-        return "No Facebook friends on Knoda";
+        if (filter.equals("facebook"))
+            return "No Facebook friends on Knoda";
+        else if (filter.equals("twitter"))
+            return "No one you follow on twitter is on Knoda.";
+        else
+            return "No friends on Knoda found. Get your friends on Knoda!";
     }
 }

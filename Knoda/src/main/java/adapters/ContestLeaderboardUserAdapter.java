@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,13 @@ public class ContestLeaderboardUserAdapter extends PagingAdapter<ContestUser> {
     @Inject
     public UserManager userManager;
     public Bus bus;
+    public Typeface thin;
+    public Typeface medium;
 
     public ContestLeaderboardUserAdapter(Context context, PagingAdapterDatasource<ContestUser> datasource, ImageLoader imageLoader) {
         super(context, datasource, imageLoader);
+        thin = Typeface.create("sans-serif", Typeface.NORMAL);
+        medium = Typeface.create("sans-serif-medium", Typeface.NORMAL);
     }
 
     @Override
@@ -40,8 +45,11 @@ public class ContestLeaderboardUserAdapter extends PagingAdapter<ContestUser> {
 
 
         ContestUserListCell listItem = (ContestUserListCell) AdapterHelper.getConvertViewSafely(convertView, ContestUserListCell.class);
-        if (listItem == null)
+        if (listItem == null) {
             listItem = (ContestUserListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_contestuser, null);
+            listItem.medium = medium;
+            listItem.thin = thin;
+        }
         if (position == 0) {
             listItem.setHeaderMode();
         } else {

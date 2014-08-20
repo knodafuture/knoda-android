@@ -2,6 +2,7 @@ package views.contests;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -29,6 +30,8 @@ public class ContestUserListCell extends RelativeLayout {
     public TextView winsTV;
     public NetworkImageView avatarImageView;
     public ImageView mask;
+    public Typeface thin;
+    public Typeface medium;
 
     public ContestUserListCell(Context context) {
         super(context);
@@ -55,15 +58,16 @@ public class ContestUserListCell extends RelativeLayout {
         rankTV.setText("RANK");
         rankTV.setTextColor(Color.BLACK);
         rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        rankTV.setTypeface(thin);
         usernameTV.setText("USERNAME");
         usernameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         winsTV.setText("WINS");
         winsTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        winsTV.setTypeface(thin);
         avatarImageView.setBackgroundDrawable(null);
         avatarImageView.setImageDrawable(null);
         mask.setVisibility(INVISIBLE);
         this.setLayoutParams(lp_header);
-
     }
 
     public void setContestUser(ContestUser contestUser) {
@@ -76,12 +80,14 @@ public class ContestUserListCell extends RelativeLayout {
             mask.setImageResource(R.drawable.leaderboard_gray_mask);
         }
         rankTV.setText(contestUser.rank + "");
-        rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        rankTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         rankTV.setTextColor(getResources().getColor(R.color.knodaLightGreen));
+        rankTV.setTypeface(medium);
         usernameTV.setText(contestUser.username);
-        usernameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        usernameTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         winsTV.setText(contestUser.won + "");
-        winsTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        winsTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        winsTV.setTypeface(medium);
         avatarImageView.setBackgroundColor(Color.BLACK);
         mask.setVisibility(VISIBLE);
     }

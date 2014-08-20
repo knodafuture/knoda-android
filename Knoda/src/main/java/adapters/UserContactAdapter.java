@@ -32,7 +32,6 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         if (position >= objects.size())
             return super.getView(position, convertView, parent);
 
-
         FindFriendsListCell listItem = (FindFriendsListCell) AdapterHelper.getConvertViewSafely(convertView, FindFriendsListCell.class);
         if (listItem == null)
             listItem = (FindFriendsListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_findfriends_follow, null);

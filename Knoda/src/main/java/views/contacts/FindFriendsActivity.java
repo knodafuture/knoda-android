@@ -32,6 +32,7 @@ import butterknife.OnClick;
 import helpers.TypefaceSpan;
 import managers.NetworkingManager;
 import managers.SharedPrefManager;
+import managers.UserManager;
 import models.UserContact;
 import models.UserContacts;
 import pubsub.LoginFlowDoneEvent;
@@ -71,6 +72,7 @@ public class FindFriendsActivity extends BaseActivity {
         bus.register(this);
         networkingManager = new NetworkingManager(this);
         networkingManager.sharedPrefManager = new SharedPrefManager(this);
+        userManager = new UserManager(networkingManager, sharedPrefManager);
 
         SpannableString s = new SpannableString("FIND FRIENDS");
         s.setSpan(new TypefaceSpan(this, "KronaOne-Regular.ttf"), 0, s.length(),
