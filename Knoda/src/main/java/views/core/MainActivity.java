@@ -155,6 +155,8 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout.LayoutParams navbarHidden;
     private RelativeLayout.LayoutParams containerFull;
     private RelativeLayout.LayoutParams containerPartial;
+    private AlertDialog connectedDialog;
+
 
     @OnClick(R.id.nav_home)
     void onClickHome() {
@@ -569,6 +571,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (connectedDialog != null) {
+            connectedDialog.dismiss();
+        }
         ((KnodaApplication) getApplication()).setCurrentActivity(null);
         bus.unregister(this);
     }
@@ -820,7 +825,7 @@ public class MainActivity extends BaseActivity {
             if (!userDialogShown) {
                 userDialogShown = true;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Network Connectivity")
+                connectedDialog = builder.setTitle("Network Connectivity")
                         .setMessage("You have lost internet connectivity. Retry connecting?")
                         .setCancelable(false)
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -839,7 +844,8 @@ public class MainActivity extends BaseActivity {
                                 refreshActivities();
                             }
                         })
-                        .create().show();
+                        .create();
+                connectedDialog.show();
             }
 
         }
