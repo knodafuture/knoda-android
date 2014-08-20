@@ -65,6 +65,10 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
         return objects.get(position);
     }
 
+    public void setItem(int position, T object) {
+        objects.set(position, object);
+    }
+
     @Override
     public long getItemId(int position) {
         return position;

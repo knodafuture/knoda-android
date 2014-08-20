@@ -78,15 +78,16 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {
         int lastId = object == null ? 0 : object.id;
-
         networkingManager.getPredictionsAfter(lastId, callback);
-
     }
 
 
     @Override
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
+        Prediction p = (Prediction) adapter.getItem((Integer) cell.getTag());
+        p.challenge.agree = true;
+        adapter.setItem((Integer) cell.getTag(), p);
 
         networkingManager.agreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
@@ -107,6 +108,9 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
+        Prediction p = (Prediction) adapter.getItem((Integer) cell.getTag());
+        p.challenge.agree = false;
+        adapter.setItem((Integer) cell.getTag(), p);
 
         networkingManager.disagreeWithPrediction(cell.prediction.id, new NetworkCallback<Prediction>() {
             @Override
