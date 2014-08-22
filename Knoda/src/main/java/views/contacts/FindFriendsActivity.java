@@ -1,7 +1,9 @@
 package views.contacts;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -13,6 +15,7 @@ import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,8 +36,12 @@ import helpers.TypefaceSpan;
 import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.UserManager;
+import models.GroupInvitation;
+import models.ServerError;
+import models.User;
 import models.UserContact;
 import models.UserContacts;
+import networking.NetworkCallback;
 import pubsub.LoginFlowDoneEvent;
 import unsorted.PagerSlidingTabStrip;
 import views.core.BaseActivity;
@@ -42,8 +49,8 @@ import views.core.BaseActivity;
 public class FindFriendsActivity extends BaseActivity {
 
 
-    public ArrayList<UserContact> following = new ArrayList<UserContact>();
-    public ArrayList<UserContact> inviting = new ArrayList<UserContact>();
+    public ArrayList<GroupInvitation> following = new ArrayList<GroupInvitation>();
+    public ArrayList<GroupInvitation> inviting = new ArrayList<GroupInvitation>();
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
     @InjectView(R.id.findfriends_title)
@@ -73,6 +80,10 @@ public class FindFriendsActivity extends BaseActivity {
         networkingManager = new NetworkingManager(this);
         networkingManager.sharedPrefManager = new SharedPrefManager(this);
         userManager = new UserManager(networkingManager, sharedPrefManager);
+        progressDialog = new ProgressDialog(FindFriendsActivity.this);
+        progressDialog.setMessage("Getting Contacts");
+        progressDialog.show();
+        refreshUser();
 
         SpannableString s = new SpannableString("FIND FRIENDS");
         s.setSpan(new TypefaceSpan(this, "KronaOne-Regular.ttf"), 0, s.length(),
@@ -92,15 +103,52 @@ public class FindFriendsActivity extends BaseActivity {
         tabs.setBackgroundColor(0xE0E0E0);
         tabs.setTabWidth((int) (size.x * 1.0f / 3));
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Getting Contacts");
-        progressDialog.show();
-        getContactsTask task = new getContactsTask();
-        task.execute();
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(FindFriendsActivity.this);
+                builder.setTitle("Contact Submission")
+                        .setMessage("Are you ready to submit " + inviting.size() + " invitations and " + following.size() + " follow requests?")
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-        //setupUI();
+                            }
+                        })
+                        .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //submit invitations and follow requests here
+
+                            }
+                        })
+                        .show();
+            }
+        });
 
     }
+
+    private void refreshUser() {
+        userManager.refreshUser(new NetworkCallback<User>() {
+            @Override
+            public void completionHandler(User object, ServerError error) {
+                if (error == null) {
+                    getContactsTask task = new getContactsTask();
+                    task.execute();
+                } else {
+                    refreshUser();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null)
+            progressDialog.dismiss();
+    }
+
 
     public void setSubmitBtnText() {
         submitBtn.setText("Follow (" + following.size() + ") + Invite (" + inviting.size() + ")");
@@ -171,21 +219,6 @@ public class FindFriendsActivity extends BaseActivity {
                 localContacts.put(id, userContact);
             }
         }
-
-//        for (Long l : localContacts.keySet()) {
-//            UserContact userContact = localContacts.get(l);
-//            System.out.print(userContact.contact_id + ", ");
-//            if (userContact.phones.size() > 0) {
-//                for (String s : userContact.phones)
-//                    System.out.print(s + ", ");
-//            }
-//            if (userContact.emails.size() > 0) {
-//                for (String s : userContact.emails)
-//                    System.out.print(s + ", ");
-//            }
-//            System.out.println();
-//        }
-
         return localContacts;
     }
 

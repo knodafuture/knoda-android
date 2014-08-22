@@ -33,6 +33,7 @@ import models.Challenge;
 import models.Comment;
 import models.Contest;
 import models.ContestUser;
+import models.FollowUser;
 import models.ForgotPasswordRequest;
 import models.Group;
 import models.GroupInvitation;
@@ -560,7 +561,12 @@ public class NetworkingManager {
                 builder.add("twitter", "true");
         }
         String url = buildUrl("contact_matches.json", true, builder);
-        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserContactTypeToken(), callback);
+        executeListRequest(Request.Method.POST, url, null, TypeTokenFactory.getUserContactTypeToken(), callback);
+    }
+
+    public void followUsers(ArrayList<FollowUser> following, final NetworkListCallback<FollowUser> callback) {
+        String url = buildUrl("followings.json", true, null);
+        executeListRequest(Request.Method.POST, url, following, null, callback);
     }
 
 
