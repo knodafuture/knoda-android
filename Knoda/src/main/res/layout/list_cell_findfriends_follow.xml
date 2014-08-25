@@ -33,21 +33,21 @@
 
     <CheckBox
         android:id="@+id/findfriends_listcell_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:visibility="visible" />
-
+        android:visibility="visible"
+        android:button="@drawable/checkbox_selector"/>
     <Button
         android:id="@+id/findfriends_listcell_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:background="@drawable/add_avatar"
+        android:background="@drawable/ic_invite_active"
         android:visibility="gone" />
 
 

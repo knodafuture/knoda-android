@@ -7,7 +7,7 @@
 
     <Button
         android:id="@+id/wall_close"
-        style="@style/xButton"
+        style="@style/xButtonWhite"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentLeft="false"

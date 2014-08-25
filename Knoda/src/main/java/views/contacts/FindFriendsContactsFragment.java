@@ -2,9 +2,11 @@ package views.contacts;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
@@ -18,6 +20,7 @@ import models.GroupInvitation;
 import models.UserContact;
 import networking.NetworkListCallback;
 import views.core.BaseListFragment;
+import views.core.MainActivity;
 
 public class FindFriendsContactsFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<UserContact> {
     boolean pageLoaded = false;
@@ -125,6 +128,11 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
     @Override
     public String noContentString() {
         return "There are no contacts";
+    }
+
+    @Override
+    public void onLoadFinished() {
+        ((UserContactAdapter)adapter).followAll(true);
     }
 
 

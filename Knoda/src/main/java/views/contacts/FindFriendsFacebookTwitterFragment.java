@@ -2,17 +2,22 @@ package views.contacts;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.knoda.knoda.R;
 
 import adapters.PagingAdapter;
 import adapters.UserContactAdapter;
-import models.KnodaInfo;
+import butterknife.OnClick;
+import models.ServerError;
+import models.SocialAccount;
+import models.User;
 import models.UserContact;
+import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import unsorted.Logger;
 import views.core.BaseListFragment;
 
 public class FindFriendsFacebookTwitterFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<UserContact> {
@@ -20,6 +25,7 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
     FindFriendsActivity parent;
     boolean pageLoaded = false;
     String filter;
+    boolean folllowedAll = false;
 
     public FindFriendsFacebookTwitterFragment() {
     }
@@ -30,6 +36,16 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
         fragment.filter = filter;
         return fragment;
     }
+
+//    @OnClick(R.id.no_content_twitter_btn)
+//    public void goTwitter() {
+//        addTwitterAccount();
+//    }
+//
+//    @OnClick(R.id.no_content_facebook_btn)
+//    public void goFacebook() {
+//        addFBAccount();
+//    }
 
 
     @Override
@@ -90,7 +106,6 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
     }
 
 
-
     @Override
     public void getObjectsAfterObject(UserContact userContact, final NetworkListCallback<UserContact> callback) {
         parent.networkingManager.getFriendsOnKnoda(filter, callback);
@@ -106,5 +121,16 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
         else
             return "No friends on Knoda found. Get your friends on Knoda!";
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!folllowedAll && isVisibleToUser)
+            if (adapter != null) {
+                ((UserContactAdapter) adapter).followAll(true);
+                folllowedAll = true;
+            }
+    }
+
 
 }

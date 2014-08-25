@@ -12,9 +12,9 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:text="Your Contacts on Knoda"
+        android:textColor="@color/knodaDarkGreen"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/knodaDarkGreen"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/findfriendsheader_listcell_selectall"
@@ -24,17 +24,18 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="40dp"
         android:text="Select All"
+        android:textColor="@color/knodaDarkGreen"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/knodaDarkGreen" />
+        android:textStyle="bold" />
 
     <CheckBox
         android:id="@+id/findfriendsheader_listcell_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
+        android:button="@drawable/checkbox_selector"
         android:visibility="visible" />
 
 </views.contacts.FindFriendsListCellHeader>

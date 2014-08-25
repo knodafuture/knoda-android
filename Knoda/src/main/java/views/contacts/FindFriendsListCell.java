@@ -15,9 +15,11 @@ import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
+import adapters.UserContactAdapter;
 import models.GroupInvitation;
+import models.KnodaInfo;
 import models.UserContact;
 
 /**
@@ -50,21 +52,28 @@ public class FindFriendsListCell extends RelativeLayout {
         plusBtn = (Button) findViewById(R.id.findfriends_listcell_btn);
     }
 
-    public void setUser(final UserContact userContact, ArrayList<UserContact> userContacts, final FindFriendsActivity parent) {
+    public void setUser(final UserContact userContact, UserContactAdapter adapter, final FindFriendsActivity parent) {
         title.setText(userContact.contact_id);
+        final HashMap<String, KnodaInfo> followingSet;
+        if (adapter.type == FindFriendsListCellHeader.FACEBOOK)
+            followingSet = parent.followingFacebook;
+        else if (adapter.type == FindFriendsListCellHeader.TWITTER)
+            followingSet = parent.followingTwitter;
+        else
+            followingSet = parent.following;
         if (userContact.knodaInfo != null) {
             //follow
             description.setText(userContact.knodaInfo.username);
             checkBox.setVisibility(VISIBLE);
             plusBtn.setVisibility(GONE);
-            checkBox.setChecked(parent.following.containsKey(userContact.contact_id));
+            checkBox.setChecked(followingSet.containsKey(userContact.contact_id));
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        parent.following.put(userContact.contact_id, userContact.knodaInfo);
+                        followingSet.put(userContact.contact_id, userContact.knodaInfo);
                     } else {
-                        parent.following.remove(userContact.contact_id);
+                        followingSet.remove(userContact.contact_id);
                     }
                     parent.setSubmitBtnText();
                 }
@@ -87,15 +96,15 @@ public class FindFriendsListCell extends RelativeLayout {
             }
             description.setText(d.substring(0, d.length() - 2));
             if (parent.inviting.containsKey(userContact.contact_id))
-                plusBtn.setBackgroundColor(Color.BLACK);
+                plusBtn.setBackgroundResource(R.drawable.ic_invite);
             else
-                plusBtn.setBackgroundColor(Color.WHITE);
+                plusBtn.setBackgroundResource(R.drawable.ic_invite_active);
             plusBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (parent.inviting.containsKey(userContact.contact_id)) {
                         parent.inviting.remove(userContact.contact_id);
-                        v.setBackgroundColor(Color.WHITE);
+                        plusBtn.setBackgroundResource(R.drawable.ic_invite_active);
                         parent.setSubmitBtnText();
                     } else {
                         GroupInvitation groupInvitation = new GroupInvitation();
@@ -104,7 +113,7 @@ public class FindFriendsListCell extends RelativeLayout {
                         if (userContact.phones != null && userContact.phones.size() > 0)
                             groupInvitation.phoneNumber = (String) userContact.phones.toArray()[0];
                         parent.inviting.put(userContact.contact_id, groupInvitation);
-                        v.setBackgroundColor(Color.BLACK);
+                        plusBtn.setBackgroundResource(R.drawable.ic_invite);
                         parent.setSubmitBtnText();
                     }
                 }

@@ -33,17 +33,21 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import helpers.TypefaceSpan;
+import managers.FacebookManager;
 import managers.NetworkingManager;
 import managers.SharedPrefManager;
+import managers.TwitterManager;
 import managers.UserManager;
 import models.GroupInvitation;
 import models.KnodaInfo;
 import models.ServerError;
+import models.SocialAccount;
 import models.User;
 import models.UserContact;
 import models.UserContacts;
 import networking.NetworkCallback;
 import pubsub.LoginFlowDoneEvent;
+import unsorted.Logger;
 import unsorted.PagerSlidingTabStrip;
 import views.core.BaseActivity;
 
@@ -51,7 +55,10 @@ public class FindFriendsActivity extends BaseActivity {
 
 
     public HashMap<String, KnodaInfo> following = new HashMap<String, KnodaInfo>();
+    public HashMap<String, KnodaInfo> followingFacebook = new HashMap<String, KnodaInfo>();
+    public HashMap<String, KnodaInfo> followingTwitter = new HashMap<String, KnodaInfo>();
     public HashMap<String, GroupInvitation> inviting = new HashMap<String, GroupInvitation>();
+
 
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
@@ -65,6 +72,8 @@ public class FindFriendsActivity extends BaseActivity {
     Bus bus = new Bus();
     UserContacts localContacts;
     ProgressDialog progressDialog;
+    public FacebookManager facebookManager;
+    public TwitterManager twitterManager;
 
     @OnClick(R.id.wall_close)
     public void close() {
@@ -82,6 +91,10 @@ public class FindFriendsActivity extends BaseActivity {
         networkingManager = new NetworkingManager(this);
         networkingManager.sharedPrefManager = new SharedPrefManager(this);
         userManager = new UserManager(networkingManager, sharedPrefManager);
+
+        facebookManager = new FacebookManager(userManager, networkingManager);
+        twitterManager = new TwitterManager();
+
         progressDialog = new ProgressDialog(FindFriendsActivity.this);
         progressDialog.setMessage("Getting Contacts");
         progressDialog.show();
@@ -110,7 +123,7 @@ public class FindFriendsActivity extends BaseActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(FindFriendsActivity.this);
                 builder.setTitle("Contact Submission")
-                        .setMessage("Are you ready to submit " + inviting.size() + " invitations and " + following.size() + " follow requests?")
+                        .setMessage("Are you ready to submit " + inviting.size() + " invitations and " + (following.size() + followingFacebook.size() + followingTwitter.size()) + " follow requests?")
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -122,6 +135,12 @@ public class FindFriendsActivity extends BaseActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 System.out.println("Following:");
                                 for (String s : following.keySet()) {
+                                    System.out.println(s);
+                                }
+                                for (String s : followingFacebook.keySet()) {
+                                    System.out.println(s);
+                                }
+                                for (String s : followingTwitter.keySet()) {
                                     System.out.println(s);
                                 }
                                 System.out.println("Inviting:");
@@ -174,7 +193,7 @@ public class FindFriendsActivity extends BaseActivity {
 
 
     public void setSubmitBtnText() {
-        submitBtn.setText("Follow (" + following.size() + ") + Invite (" + inviting.size() + ")");
+        submitBtn.setText("Follow (" + (following.size() + followingFacebook.size() + followingTwitter.size()) + ") + Invite (" + inviting.size() + ")");
     }
 
     public void setupUI() {
@@ -264,6 +283,70 @@ public class FindFriendsActivity extends BaseActivity {
             setupUI();
         }
     }
+
+
+    public void addFBAccount() {
+        spinner.show();
+        facebookManager.openSession(this, new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    spinner.hide();
+                    errorReporter.showError(error);
+                    return;
+                }
+
+                userManager.addSocialAccount(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User user, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            //parent.errorReporter.showError(error);
+                            return;
+                        }
+                        //updateUser(user);
+                    }
+                });
+            }
+        });
+    }
+
+    public void addTwitterAccount() {
+        if (twitterManager.hasAuthInfo()) {
+            finishAddingTwitterAccount();
+        }
+        spinner.show();
+        sharedPrefManager.setTwitterAuthScreen("profile");
+        twitterManager.openSession(this);
+    }
+
+    public void finishAddingTwitterAccount() {
+        Logger.log("FINISHING TWITTER -------");
+        spinner.show();
+        twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
+            @Override
+            public void completionHandler(SocialAccount object, ServerError error) {
+                if (error != null) {
+                    //errorReporter.showError(error);
+                    spinner.hide();
+                    return;
+                }
+
+                userManager.addSocialAccount(object, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User user, ServerError error) {
+                        spinner.hide();
+                        if (error != null) {
+                            errorReporter.showError(error);
+                            return;
+                        }
+                        //updateUser(user);
+                    }
+                });
+            }
+        });
+    }
+
 
 
 }

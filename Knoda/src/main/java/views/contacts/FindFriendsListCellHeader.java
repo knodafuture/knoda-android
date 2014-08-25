@@ -3,8 +3,6 @@ package views.contacts;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
@@ -12,10 +10,7 @@ import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
-import java.util.ArrayList;
-
 import adapters.UserContactAdapter;
-import models.UserContact;
 
 /**
  * Created by jeff on 7/31/2014.
@@ -56,6 +51,7 @@ public class FindFriendsListCellHeader extends RelativeLayout {
                 title.setText("Your Contacts on Knoda");
                 selectall.setVisibility(VISIBLE);
                 checkBox.setVisibility(VISIBLE);
+                checkBox.setChecked(adapter.followAll(CONTACTS));
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -72,6 +68,7 @@ public class FindFriendsListCellHeader extends RelativeLayout {
                 title.setText("Facebook Friends on Knoda");
                 selectall.setVisibility(VISIBLE);
                 checkBox.setVisibility(VISIBLE);
+                checkBox.setChecked(adapter.followAll(FACEBOOK));
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -83,6 +80,7 @@ public class FindFriendsListCellHeader extends RelativeLayout {
                 title.setText("Twitter Followers on Knoda");
                 selectall.setVisibility(VISIBLE);
                 checkBox.setVisibility(VISIBLE);
+                checkBox.setChecked(adapter.followAll(TWITTER));
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
