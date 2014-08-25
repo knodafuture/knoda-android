@@ -46,6 +46,7 @@ public class FindFriendsFragment extends BaseFragment {
     ViewPager mViewPager;
     @InjectView(R.id.findfriends_submit)
     Button submitBtn;
+
     public FindFriendsFragment() {
     }
 

@@ -15,7 +15,6 @@ public class UserContact extends BaseModel {
     public HashSet<String> emails = new HashSet<String>();
     @SerializedName("phones")
     public HashSet<String> phones = new HashSet<String>();
-    @SerializedName("Knoda_info")
+    @SerializedName("knoda_info")
     public KnodaInfo knodaInfo = null;
-
 }

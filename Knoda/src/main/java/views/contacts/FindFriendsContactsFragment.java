@@ -32,6 +32,9 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
         return fragment;
     }
 
+    public static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -43,12 +46,11 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
     @Override
     public void onPause() {
         super.onPause();
-        adapter.reset();
     }
 
     @Override
     public PagingAdapter getAdapter() {
-        UserContactAdapter adapter1 = new UserContactAdapter(getActivity(), this, parent.networkingManager.getImageLoader());
+        UserContactAdapter adapter1 = new UserContactAdapter(FindFriendsListCellHeader.CONTACTS, getActivity(), this, parent.networkingManager.getImageLoader(), parent);
         return adapter1;
 
     }
@@ -62,67 +64,63 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
 
     @Override
     public void onListViewCreated(ListView listView) {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //final Contest contest = (Contest) adapter.getItem(i - 1);
-                //i needs to be greater than list of known knoda friends +1 because of headers
-                final UserContact userContact = (UserContact) adapter.getItem(i - 1);
-                if (userContact.knodaInfo == null) {
-                    //if they have multiple forms of id
-                    ArrayList<String> contactTypes = new ArrayList<String>();
-                    if (userContact.emails != null)
-                        for (String s : userContact.emails) {
-                            contactTypes.add(s);
-                        }
-                    if (userContact.phones != null)
-                        for (String s : userContact.phones) {
-                            contactTypes.add(s);
-                        }
-
-                    if (contactTypes.size() > 1) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        final CharSequence[] array = contactTypes.toArray(new CharSequence[0]);
-                        builder.setTitle("Choose a contact method for " + userContact.contact_id);
-                        builder.setItems(array, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                addInvitation(array[which].toString());
-                            }
-                        });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                        builder.show();
-                    } else if (contactTypes.size() == 1) {
-                        addInvitation(contactTypes.get(0));
-                    }
-                }
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                //final Contest contest = (Contest) adapter.getItem(i - 1);
+//                //i needs to be greater than list of known knoda friends +1 because of headers
+//                final UserContact userContact = (UserContact) adapter.getItem(i - 2);
+//                userContact.selected = true;
+//                adapter.setItem(i - 2, userContact);
+//                if (userContact.knodaInfo == null) {
+//                    //if they have multiple forms of id
+//                    ArrayList<String> contactTypes = new ArrayList<String>();
+//                    if (userContact.emails != null)
+//                        for (String s : userContact.emails) {
+//                            contactTypes.add(s);
+//                        }
+//                    if (userContact.phones != null)
+//                        for (String s : userContact.phones) {
+//                            contactTypes.add(s);
+//                        }
+//
+//                    if (contactTypes.size() > 1) {
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                        final CharSequence[] array = contactTypes.toArray(new CharSequence[0]);
+//                        builder.setTitle("Choose a contact method for " + userContact.contact_id);
+//                        builder.setItems(array, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                addInvitation(array[which].toString());
+//                            }
+//                        });
+//                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//
+//                            }
+//                        });
+//                        builder.show();
+//                    } else if (contactTypes.size() == 1) {
+//                        addInvitation(contactTypes.get(0));
+//                    }
+//                }
+//            }
+//        });
     }
 
-    private void addInvitation(String s) {
-        GroupInvitation invitation = new GroupInvitation();
-        if (s.indexOf("@") != -1) {
-            invitation.email = s;
-            parent.inviting.add(invitation);
-        } else if (isNumeric(s)) {
-            invitation.phoneNumber = s;
-            parent.inviting.add(invitation);
-        }
-        parent.setSubmitBtnText();
-        System.out.println("Inviting " + s);
-    }
-
-
-    public static boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
-    }
-
+//    private void addInvitation(String s) {
+//        GroupInvitation invitation = new GroupInvitation();
+//        if (s.indexOf("@") != -1) {
+//            invitation.email = s;
+//            parent.inviting.add(invitation);
+//        } else if (isNumeric(s)) {
+//            invitation.phoneNumber = s;
+//            parent.inviting.add(invitation);
+//        }
+//        parent.setSubmitBtnText();
+//        System.out.println("Inviting " + s);
+//    }
 
     @Override
     public String noContentString() {

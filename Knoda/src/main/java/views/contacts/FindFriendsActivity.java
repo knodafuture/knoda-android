@@ -37,6 +37,7 @@ import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.UserManager;
 import models.GroupInvitation;
+import models.KnodaInfo;
 import models.ServerError;
 import models.User;
 import models.UserContact;
@@ -49,8 +50,9 @@ import views.core.BaseActivity;
 public class FindFriendsActivity extends BaseActivity {
 
 
-    public ArrayList<GroupInvitation> following = new ArrayList<GroupInvitation>();
-    public ArrayList<GroupInvitation> inviting = new ArrayList<GroupInvitation>();
+    public HashMap<String, KnodaInfo> following = new HashMap<String, KnodaInfo>();
+    public HashMap<String, GroupInvitation> inviting = new HashMap<String, GroupInvitation>();
+
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
     @InjectView(R.id.findfriends_title)
@@ -100,7 +102,7 @@ public class FindFriendsActivity extends BaseActivity {
         display.getSize(size);
         tabs.setIndicatorHeight(onedp * 4);
         tabs.setTextSize(onesp * 16);
-        tabs.setBackgroundColor(0xE0E0E0);
+        tabs.setBackgroundColor(getResources().getColor(R.color.knodaLightGreen));
         tabs.setTabWidth((int) (size.x * 1.0f / 3));
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +120,28 @@ public class FindFriendsActivity extends BaseActivity {
                         .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                System.out.println("Following:");
+                                for (String s : following.keySet()) {
+                                    System.out.println(s);
+                                }
+                                System.out.println("Inviting:");
+                                for (String s : inviting.keySet()) {
+                                    System.out.println(s);
+                                }
                                 //submit invitations and follow requests here
+
+//                                networkingManager.followUsers(following,new NetworkListCallback<FollowUser>() {
+//                                    @Override
+//                                    public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
+//
+//                                    }
+//                                });
+//                                networkingManager.sendInvitations(inviting, new NetworkCallback<GroupInvitation>() {
+//                                    @Override
+//                                    public void completionHandler(GroupInvitation object, ServerError error) {
+//
+//                                    }
+//                                });
 
                             }
                         })
@@ -164,7 +187,6 @@ public class FindFriendsActivity extends BaseActivity {
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override

@@ -83,7 +83,7 @@ public class ContestListCell extends RelativeLayout {
             if (explore) {
                 buttonContainer.setVisibility(VISIBLE);
                 standingsContainer.setVisibility(INVISIBLE);
-            }else{
+            } else {
                 buttonContainer.setVisibility(INVISIBLE);
                 standingsContainer.setVisibility(VISIBLE);
             }

@@ -1,17 +1,23 @@
 package views.contacts;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
+import java.util.ArrayList;
+
+import models.GroupInvitation;
 import models.UserContact;
 
 /**
@@ -26,7 +32,7 @@ public class FindFriendsListCell extends RelativeLayout {
     public TextView title;
     public TextView description;
     public CheckBox checkBox;
-    public ImageView plusBtn;
+    public Button plusBtn;
 
     public FindFriendsListCell(Context context) {
         super(context);
@@ -41,38 +47,68 @@ public class FindFriendsListCell extends RelativeLayout {
         title = (TextView) findViewById(R.id.findfriends_listcell_title);
         description = (TextView) findViewById(R.id.findfriends_listcell_description);
         checkBox = (CheckBox) findViewById(R.id.findfriends_listcell_check);
-        plusBtn = (ImageView) findViewById(R.id.findfriends_listcell_btn);
+        plusBtn = (Button) findViewById(R.id.findfriends_listcell_btn);
     }
 
-    public void setUser(UserContact userContact) {
+    public void setUser(final UserContact userContact, ArrayList<UserContact> userContacts, final FindFriendsActivity parent) {
         title.setText(userContact.contact_id);
         if (userContact.knodaInfo != null) {
+            //follow
             description.setText(userContact.knodaInfo.username);
             checkBox.setVisibility(VISIBLE);
             plusBtn.setVisibility(GONE);
+            checkBox.setChecked(parent.following.containsKey(userContact.contact_id));
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        parent.following.put(userContact.contact_id, userContact.knodaInfo);
+                    } else {
+                        parent.following.remove(userContact.contact_id);
+                    }
+                    parent.setSubmitBtnText();
+                }
+            });
         } else {
+            //invite
             checkBox.setVisibility(GONE);
             plusBtn.setVisibility(VISIBLE);
-            if (userContact.phones.size() > 0) {
-                int x = 0;
+            String d = "";
+            if (userContact.phones != null && userContact.phones.size() > 0) {
                 for (String s : userContact.phones) {
-                    if (x == 0) {
-                        description.setText(s);
-                        break;
-                    }
-                }
-            } else {
-                if (userContact.emails.size() > 0) {
-                    int x = 0;
-                    for (String s : userContact.emails) {
-                        if (x == 0) {
-                            description.setText(s);
-                            break;
-                        }
-                    }
-                    //description.setText(userContact.emails.get(0));
+                    String phone = "(" + s.substring(0, 3) + ") " + s.substring(3, 6) + "-" + s.substring(6);
+                    d += phone + ", ";
                 }
             }
+            if (userContact.emails != null && userContact.emails.size() > 0) {
+                for (String s : userContact.emails) {
+                    d += s + ", ";
+                }
+            }
+            description.setText(d.substring(0, d.length() - 2));
+            if (parent.inviting.containsKey(userContact.contact_id))
+                plusBtn.setBackgroundColor(Color.BLACK);
+            else
+                plusBtn.setBackgroundColor(Color.WHITE);
+            plusBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (parent.inviting.containsKey(userContact.contact_id)) {
+                        parent.inviting.remove(userContact.contact_id);
+                        v.setBackgroundColor(Color.WHITE);
+                        parent.setSubmitBtnText();
+                    } else {
+                        GroupInvitation groupInvitation = new GroupInvitation();
+                        if (userContact.emails != null && userContact.emails.size() > 0)
+                            groupInvitation.email = (String) userContact.emails.toArray()[0];
+                        if (userContact.phones != null && userContact.phones.size() > 0)
+                            groupInvitation.phoneNumber = (String) userContact.phones.toArray()[0];
+                        parent.inviting.put(userContact.contact_id, groupInvitation);
+                        v.setBackgroundColor(Color.BLACK);
+                        parent.setSubmitBtnText();
+                    }
+                }
+            });
 
         }
     }

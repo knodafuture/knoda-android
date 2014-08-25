@@ -1,14 +1,16 @@
 package views.contacts;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 import adapters.PagingAdapter;
 import adapters.UserContactAdapter;
+import models.KnodaInfo;
 import models.UserContact;
 import networking.NetworkListCallback;
 import views.core.BaseListFragment;
@@ -70,8 +72,24 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
 
     @Override
     public PagingAdapter getAdapter() {
-        return new UserContactAdapter(getActivity(), this, parent.networkingManager.getImageLoader());
+        int type = 0;
+        if (filter.equals("facebook"))
+            type = FindFriendsListCellHeader.FACEBOOK;
+        else if (filter.equals("twitter"))
+            type = FindFriendsListCellHeader.TWITTER;
+        return new UserContactAdapter(type, getActivity(), this, parent.networkingManager.getImageLoader(), parent);
     }
+
+    @Override
+    public void onListViewCreated(ListView listView) {
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//            }
+//        });
+    }
+
+
 
     @Override
     public void getObjectsAfterObject(UserContact userContact, final NetworkListCallback<UserContact> callback) {
@@ -80,12 +98,13 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
 
     @Override
     public String noContentString() {
-        pListView.setBackgroundColor(Color.WHITE);
+        //pListView.setBackgroundColor(Color.WHITE);
         if (filter.equals("facebook"))
-            return "No Facebook friends on Knoda";
+            return "No Facebook friends on Knoda. Get your friends on Knoda!";
         else if (filter.equals("twitter"))
-            return "No one you follow on twitter is on Knoda.";
+            return "No one you follow on twitter is on Knoda. Get your friends on Knoda!";
         else
             return "No friends on Knoda found. Get your friends on Knoda!";
     }
+
 }

@@ -435,11 +435,11 @@ public class WebDialog extends Dialog {
             }
 
             return new WebDialog(context, action, parameters, theme, listener);
-        }        private int theme = DEFAULT_THEME;
+        }
 
         protected String getApplicationId() {
             return applicationId;
-        }
+        }        private int theme = DEFAULT_THEME;
 
         protected Context getContext() {
             return context;

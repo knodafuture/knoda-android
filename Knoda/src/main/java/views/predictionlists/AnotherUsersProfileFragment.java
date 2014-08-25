@@ -14,7 +14,6 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import views.profile.PhotoFragment;
 
 public class AnotherUsersProfileFragment extends BasePredictionListFragment {
 

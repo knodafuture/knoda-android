@@ -62,6 +62,10 @@ public class BaseActivity extends Activity {
     protected void onDestroy() {
         activityGraph = null;
         System.gc();
+        if (spinner != null) {
+            spinner.hide();
+            spinner = null;
+        }
         super.onDestroy();
     }
 }

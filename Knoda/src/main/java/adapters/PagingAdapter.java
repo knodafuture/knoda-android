@@ -108,7 +108,7 @@ public class PagingAdapter<T extends BaseModel> extends BaseAdapter {
                 if (error != null || objectsToAdd == null) {
                     if (onLoadFinished != null)
                         onLoadFinished.adapterFinishedLoadingPage(page);
-                    if (error.underlyingError instanceof TimeoutError) {
+                    if (error != null && error.underlyingError instanceof TimeoutError) {
                         try {
                             Log.e("Timeout", error.getDescription());
                         } catch (Exception e) {

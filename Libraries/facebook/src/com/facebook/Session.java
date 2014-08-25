@@ -1579,8 +1579,8 @@ public class Session implements Serializable {
         private boolean isLegacy = false;
         private List<String> permissions = Collections.emptyList();
         private SessionDefaultAudience defaultAudience = SessionDefaultAudience.FRIENDS;
-        private String applicationId;        private int requestCode = DEFAULT_AUTHORIZE_ACTIVITY_CODE;
-        private String validateSameFbidAsToken;
+        private String applicationId;
+        private String validateSameFbidAsToken;        private int requestCode = DEFAULT_AUTHORIZE_ACTIVITY_CODE;
         AuthorizationRequest(final Activity activity) {
             startActivityDelegate = new StartActivityDelegate() {
                 @Override

@@ -710,6 +710,7 @@ public class MainActivity extends BaseActivity {
         FlurryAgent.onEndSession(this);
     }
 
+
     public void setActionBarEnabled(boolean enabled) {
         actionBarEnabled = enabled;
     }

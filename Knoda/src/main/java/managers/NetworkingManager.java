@@ -33,12 +33,12 @@ import models.Challenge;
 import models.Comment;
 import models.Contest;
 import models.ContestUser;
-import models.FollowUser;
 import models.ForgotPasswordRequest;
 import models.Group;
 import models.GroupInvitation;
 import models.Invitation;
 import models.JoinGroupRequest;
+import models.KnodaInfo;
 import models.Leader;
 import models.LoginRequest;
 import models.LoginResponse;
@@ -70,10 +70,10 @@ public class NetworkingManager {
     public static Integer PAGE_LIMIT = 50;
     public static String baseUrl = "http://captaincold.knoda.com/api/";
     private static RequestQueue mRequestQueue;
-    Context context;
-    String api_version = "5";
     @Inject
     public SharedPrefManager sharedPrefManager;
+    Context context;
+    String api_version = "5";
     @Inject
     Bus bus;
     int timeout = 15;//timeout in seconds
@@ -548,7 +548,7 @@ public class NetworkingManager {
     }
 
     public void matchPhoneContacts(UserContacts contacts, final NetworkListCallback<UserContact> callback) {
-        String url = buildUrl("contact_matches.json", false, null);
+        String url = buildUrl("contact_matches.json", true, null);
         executeListRequest(Request.Method.POST, url, contacts.contacts, TypeTokenFactory.getUserContactTypeToken(), callback);
     }
 
@@ -564,7 +564,7 @@ public class NetworkingManager {
         executeListRequest(Request.Method.POST, url, null, TypeTokenFactory.getUserContactTypeToken(), callback);
     }
 
-    public void followUsers(ArrayList<FollowUser> following, final NetworkListCallback<FollowUser> callback) {
+    public void followUsers(ArrayList<KnodaInfo> following, final NetworkListCallback<KnodaInfo> callback) {
         String url = buildUrl("followings.json", true, null);
         executeListRequest(Request.Method.POST, url, following, null, callback);
     }
