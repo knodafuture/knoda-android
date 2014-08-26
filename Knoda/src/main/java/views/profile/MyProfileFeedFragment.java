@@ -170,13 +170,11 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
             final ExpandAnimation expandAnimation = new ExpandAnimation(0);
             parentFragment.topContainer.startAnimation(expandAnimation);
         }
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        adapter.reset();
         pageLoaded = false;
     }
 

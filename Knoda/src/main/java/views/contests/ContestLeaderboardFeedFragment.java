@@ -57,7 +57,6 @@ public class ContestLeaderboardFeedFragment extends BaseListFragment implements 
     @Override
     public void onPause() {
         super.onPause();
-        adapter.reset();
         pageLoaded = false;
     }
 

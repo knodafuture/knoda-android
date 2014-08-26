@@ -97,7 +97,6 @@ public class ContestFragment extends BaseListFragment implements PagingAdapter.P
     @Override
     public void onPause() {
         super.onPause();
-        adapter.reset();
         pageLoaded = false;
     }
 

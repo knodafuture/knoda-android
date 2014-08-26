@@ -1,7 +1,6 @@
 package views.contacts;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
 import java.util.HashMap;
@@ -35,6 +35,7 @@ public class FindFriendsListCell extends RelativeLayout {
     public TextView description;
     public CheckBox checkBox;
     public Button plusBtn;
+    public NetworkImageView avatar;
 
     public FindFriendsListCell(Context context) {
         super(context);
@@ -50,6 +51,7 @@ public class FindFriendsListCell extends RelativeLayout {
         description = (TextView) findViewById(R.id.findfriends_listcell_description);
         checkBox = (CheckBox) findViewById(R.id.findfriends_listcell_check);
         plusBtn = (Button) findViewById(R.id.findfriends_listcell_btn);
+        avatar = (NetworkImageView) findViewById(R.id.findfriends_listcell_avatar_imageview);
     }
 
     public void setUser(final UserContact userContact, UserContactAdapter adapter, final FindFriendsActivity parent) {
@@ -66,6 +68,8 @@ public class FindFriendsListCell extends RelativeLayout {
             description.setText(userContact.knodaInfo.username);
             checkBox.setVisibility(VISIBLE);
             plusBtn.setVisibility(GONE);
+            avatar.setVisibility(VISIBLE);
+            avatar.setImageUrl(userContact.knodaInfo.avatar.small, parent.networkingManager.getImageLoader());
             checkBox.setChecked(followingSet.containsKey(userContact.contact_id));
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -82,6 +86,7 @@ public class FindFriendsListCell extends RelativeLayout {
             //invite
             checkBox.setVisibility(GONE);
             plusBtn.setVisibility(VISIBLE);
+            avatar.setVisibility(GONE);
             String d = "";
             if (userContact.phones != null && userContact.phones.size() > 0) {
                 for (String s : userContact.phones) {

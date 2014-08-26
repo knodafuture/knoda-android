@@ -120,7 +120,6 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     @Override
     public void onPause() {
         super.onPause();
-        adapter.reset();
         pageLoaded = false;
     }
 

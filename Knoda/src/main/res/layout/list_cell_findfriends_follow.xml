@@ -4,28 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="46dp">
 
-    <TextView
-        android:id="@+id/findfriends_listcell_title"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:text="User Name"
-        android:textSize="16sp"
-        android:textColor="@color/knodaDarkGreen"/>
+        android:layout_height="46dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/findfriends_listcell_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="Username"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:textColor="@color/knodaDarkGreen"/>
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/findfriends_listcell_avatar_imageview"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@color/black"
+            android:layout_marginLeft="10dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/findfriends_listcell_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="User Name"
+                android:textColor="@color/knodaDarkGreen"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/findfriends_listcell_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textColor="@color/knodaDarkGreen"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <View
         android:layout_width="fill_parent"
@@ -38,8 +56,9 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:visibility="visible"
-        android:button="@drawable/checkbox_selector"/>
+        android:button="@drawable/checkbox_selector"
+        android:visibility="visible" />
+
     <Button
         android:id="@+id/findfriends_listcell_btn"
         android:layout_width="26dp"
