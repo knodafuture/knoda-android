@@ -49,6 +49,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 import com.tapjoy.TapjoyConnect;
+import com.tjeannin.apprate.AppRater;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -521,8 +522,22 @@ public class MainActivity extends BaseActivity {
         } else {
             if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
                 onProfile();
-            } else
+            }else if(sharedPrefManager.getTwitterAuthScreen().equals("findfriends")) {
+                sharedPrefManager.setTwitterAuthScreen("");
                 onHome();
+                onFindFriends();
+            }else {
+                onHome();
+
+                AppRater appRater=new AppRater(this);
+                appRater.setMinDaysUntilPrompt(3);
+                appRater.setMinLaunchesUntilPrompt(3);
+                appRater.setMessage("Are you enjoying Knoda? If so, we'd love for you to leave a review!");
+                appRater.setRateButtonText("Yes, I'd love to!");
+                appRater.setDismissButtonText("No, I'd rather not");
+                appRater.setRemindLaterButtonText("Not right now");
+                appRater.init();
+            }
         }
 
     }
@@ -664,10 +679,15 @@ public class MainActivity extends BaseActivity {
 //        if (searchFragment == null)
 //            searchFragment = new SearchFragment();
 //        pushFragment(searchFragment);
+        onFindFriends();
+    }
+
+    private void onFindFriends(){
         Intent intent = new Intent(this, FindFriendsActivity.class);
         intent.putExtra("cancelable", true);
         startActivity(intent);
     }
+
 
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);

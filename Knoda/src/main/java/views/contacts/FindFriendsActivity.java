@@ -314,10 +314,11 @@ public class FindFriendsActivity extends BaseActivity {
     public void addTwitterAccount() {
         if (twitterManager.hasAuthInfo()) {
             finishAddingTwitterAccount();
+        } else {
+            spinner.show();
+            sharedPrefManager.setTwitterAuthScreen("findfriends");
+            twitterManager.openSession(this);
         }
-        spinner.show();
-        sharedPrefManager.setTwitterAuthScreen("profile");
-        twitterManager.openSession(this);
     }
 
     public void finishAddingTwitterAccount() {
@@ -346,7 +347,6 @@ public class FindFriendsActivity extends BaseActivity {
             }
         });
     }
-
 
 
 }

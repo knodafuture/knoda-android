@@ -58,6 +58,7 @@ dependencies {
     compile project(':Libraries:PullToRefresh')
     compile files('lib/FlurryAnalytics_3.3.4.jar')
     compile files('lib/tapjoyconnectlibrary.jar')
+    compile files('lib/AppRate_0.5.jar')
     compile project(':Libraries:facebook')
 }
 

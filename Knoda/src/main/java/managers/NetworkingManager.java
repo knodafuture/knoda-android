@@ -155,7 +155,7 @@ public class NetworkingManager {
         if (challenged) {
             builder.add("challenged", "true");
         }
-        url = buildUrl("predictions.json", false, builder);
+        url = buildUrl("predictions.json", true, builder);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
