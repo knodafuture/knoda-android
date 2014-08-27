@@ -33,12 +33,12 @@ import models.Challenge;
 import models.Comment;
 import models.Contest;
 import models.ContestUser;
+import models.FollowUser;
 import models.ForgotPasswordRequest;
 import models.Group;
 import models.GroupInvitation;
 import models.Invitation;
 import models.JoinGroupRequest;
-import models.KnodaInfo;
 import models.Leader;
 import models.LoginRequest;
 import models.LoginResponse;
@@ -564,9 +564,19 @@ public class NetworkingManager {
         executeListRequest(Request.Method.POST, url, null, TypeTokenFactory.getUserContactTypeToken(), callback);
     }
 
-    public void followUsers(ArrayList<KnodaInfo> following, final NetworkListCallback<KnodaInfo> callback) {
+    public void followUsers(ArrayList<FollowUser> following, final NetworkListCallback<FollowUser> callback) {
         String url = buildUrl("followings.json", true, null);
-        executeListRequest(Request.Method.POST, url, following, null, callback);
+        executeListRequest(Request.Method.POST, url, null, null, callback);
+    }
+
+    public void followUser(FollowUser followUser, final NetworkCallback<FollowUser> callback) {
+        String url = buildUrl("followings.json", true, null);
+        executeRequest(Request.Method.POST, url, null, null, callback);
+    }
+
+    public void unfollowUser(FollowUser following, final NetworkCallback<FollowUser> callback) {
+        String url = buildUrl("followings/" + following.leader_id + ".json", true, null);
+        executeRequest(Request.Method.DELETE, url, null, null, callback);
     }
 
 

@@ -6,19 +6,23 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import com.flurry.android.FlurryAgent;
+import com.knoda.knoda.R;
 
 import adapters.AnotherUsersProfileAdapter;
 import adapters.PagingAdapter;
+import models.FollowUser;
 import models.Prediction;
 import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 
-public class AnotherUsersProfileFragment extends BasePredictionListFragment {
+public class AnotherUsersProfileFragment extends BasePredictionListFragment implements FollowButton.FollowButtonCallbacks {
 
     private Integer userId;
     private User user;
+    private Menu menu;
+    private FollowButton followButton;
 
     public static AnotherUsersProfileFragment newInstance(Integer userId) {
         AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment();
@@ -48,8 +52,15 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
                     errorReporter.showError(error);
                 else {
                     user = object;
-                    setTitle(object.username.toUpperCase());
+
                     ((AnotherUsersProfileAdapter) adapter).setUser(object);
+                    if (user.following)
+                        menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
+                    else
+                        menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);
+
+                    setTitle(object.username.toUpperCase());
+
                 }
             }
         });
@@ -68,21 +79,6 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
         networkingManager.getPredictionsForUserAfter(userId, lastId, callback);
     }
 
-
-    @Override
-    public void onItemClicked(int position) {
-//        position = position - 1;
-//        if (position <= 0) {
-//            if (user.avatar != null) {
-//                PhotoFragment fragment = PhotoFragment.newInstance(user.avatar.big);
-//                pushFragment(fragment);
-//            }
-//            return;
-//        }
-
-        super.onItemClicked(position);
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -92,5 +88,53 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
+        inflater.inflate(R.menu.anotherprofile, menu);
+        followButton = (FollowButton) menu.findItem(R.id.action_follow).getActionView();
+        followButton.setCallbacks(this);
+        this.menu = menu;
+    }
+
+    @Override
+    public void onFollowClick() {
+        FollowUser followUser = new FollowUser();
+        followUser.leader_id = user.id;
+
+        if (user.following) {
+            //unfollow
+            spinner.show();
+            networkingManager.unfollowUser(followUser, new NetworkCallback<FollowUser>() {
+                @Override
+                public void completionHandler(FollowUser object, ServerError error) {
+                    spinner.hide();
+                    if (user != null) {
+                        user.following = false;
+                        user.follower_count--;
+                        userManager.getUser().following_count--;
+                        ((AnotherUsersProfileAdapter) adapter).setUser(user);
+                    }
+                    if (menu != null)
+                        menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);
+                }
+            });
+        } else {
+            //follow
+            spinner.show();
+            networkingManager.followUser(followUser, new NetworkCallback<FollowUser>() {
+                @Override
+                public void completionHandler(FollowUser object, ServerError error) {
+                    spinner.hide();
+                    if (user != null) {
+                        user.following = true;
+                        user.follower_count++;
+                        userManager.getUser().following_count++;
+                        ((AnotherUsersProfileAdapter) adapter).setUser(user);
+                    }
+                    if (menu != null)
+                        menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
+
+                }
+            });
+
+        }
     }
 }

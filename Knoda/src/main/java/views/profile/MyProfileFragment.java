@@ -1,6 +1,5 @@
 package views.profile;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,13 +28,10 @@ import managers.FacebookManager;
 import managers.TwitterManager;
 import models.ServerError;
 import models.SettingsCategory;
-import models.SocialAccount;
 import models.User;
-import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.ProfilePagerScrollEvent;
 import unsorted.ErrorReporter;
-import unsorted.Logger;
 import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
 import views.core.MainActivity;
@@ -51,10 +47,6 @@ public class MyProfileFragment extends BaseFragment {
     public LinearLayout.LayoutParams params;
     @InjectView(R.id.topview)
     LinearLayout topview;
-    @InjectView(R.id.profile_twitter)
-    ImageView twitterIcon;
-    @InjectView(R.id.profile_facebook)
-    ImageView facebookIcon;
     @InjectView(R.id.profile_avatar)
     NetworkImageView avatarIcon;
     @InjectView(R.id.profile_points)
@@ -65,6 +57,10 @@ public class MyProfileFragment extends BaseFragment {
     TextView tv_winstreak;
     @InjectView(R.id.profile_winloss)
     TextView tv_winloss;
+    @InjectView(R.id.profile_followers)
+    TextView tv_followers;
+    @InjectView(R.id.profile_following)
+    TextView tv_following;
     TextView selectedFilter;
     View selectedUnderline;
     ProfilePagerAdapter adapter;
@@ -73,6 +69,7 @@ public class MyProfileFragment extends BaseFragment {
     LinearLayout topContainer;
     int topContainerHeight;
     private ViewPager mViewPager;
+
 
     public static MyProfileFragment newInstance() {
         MyProfileFragment fragment = new MyProfileFragment();
@@ -87,16 +84,6 @@ public class MyProfileFragment extends BaseFragment {
     @OnClick(R.id.activity_2)
     void onClickVotes() {
         mViewPager.setCurrentItem(1, true);
-    }
-
-    @OnClick(R.id.profile_facebook)
-    void onClickFacebook() {
-        handleFB();
-    }
-
-    @OnClick(R.id.profile_twitter)
-    void onClickTwitter() {
-        handleTwitter();
     }
 
     @OnClick(R.id.profile_avatar)
@@ -167,11 +154,6 @@ public class MyProfileFragment extends BaseFragment {
             changeFilter(R.id.activity_1);
         if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
             sharedPrefManager.setTwitterAuthScreen("");
-            //twitter update
-            if (twitterManager.hasAuthInfo())
-                finishAddingTwitterAccount();
-            else
-                errorReporter.showError("Error authorizing with Twitter. Please try again later.");
         }
         topContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -274,21 +256,12 @@ public class MyProfileFragment extends BaseFragment {
         if (user.avatar != null)
             avatarIcon.setImageUrl(user.avatar.big, networkingManager.getImageLoader());
 
-        if (user.getFacebookAccount() != null) {
-            facebookIcon.setImageResource(R.drawable.profile_facebook_active);
-        } else {
-            facebookIcon.setImageResource(R.drawable.profile_facebook);
-        }
-        if (user.getTwitterAccount() != null) {
-            twitterIcon.setImageResource(R.drawable.profile_twitter_active);
-        } else {
-            twitterIcon.setImageResource(R.drawable.profile_twitter);
-        }
-
         tv_points.setText(user.points.toString());
         tv_winstreak.setText(setStreak(user.streak));
         tv_winpercent.setText(user.winningPercentage.toString() + "%");
         tv_winloss.setText(user.won.toString() + "-" + user.lost.toString());
+        tv_followers.setText(user.follower_count+"");
+        tv_following.setText(user.following_count+"");
     }
 
     private String setStreak(String s) {
@@ -314,157 +287,4 @@ public class MyProfileFragment extends BaseFragment {
         selectedFilter.setTextColor(Color.WHITE);
         selectedUnderline.setVisibility(View.VISIBLE);
     }
-
-    private void handleFB() {
-        if (userManager.getUser().getFacebookAccount() != null)
-            removeFBAccount();
-        else
-            addFBAccount();
-    }
-
-    private void addFBAccount() {
-        spinner.show();
-        facebookManager.openSession(getActivity(), new NetworkCallback<SocialAccount>() {
-            @Override
-            public void completionHandler(SocialAccount object, ServerError error) {
-                if (error != null) {
-                    spinner.hide();
-                    errorReporter.showError(error);
-                    return;
-                }
-
-                userManager.addSocialAccount(object, new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User user, ServerError error) {
-                        spinner.hide();
-                        if (error != null) {
-                            errorReporter.showError(error);
-                            return;
-                        }
-                        updateUser(user);
-                    }
-                });
-            }
-        });
-    }
-
-    private void removeFBAccount() {
-        if (userManager.getUser().email == null && userManager.getUser().getTwitterAccount() == null) {
-            errorReporter.showError("You must enter an email address before removing your last social account, or your account will be lost forever.");
-            return;
-        }
-
-        final AlertDialog alert = new AlertDialog.Builder(getActivity())
-                .setPositiveButton("Yes", null)
-                .setNegativeButton("No", null)
-                .setTitle("Are you sure you wish to remove your Facebook account?")
-                .create();
-        alert.show();
-        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alert.dismiss();
-                spinner.show();
-                userManager.deleteSocialAccount(userManager.getUser().getFacebookAccount(), new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User object, ServerError error) {
-                        spinner.hide();
-                        if (error != null) {
-                            errorReporter.showError(error);
-                            return;
-                        }
-                        updateUser(object);
-                    }
-                });
-            }
-        });
-        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                alert.dismiss();
-            }
-        });
-    }
-
-
-    private void handleTwitter() {
-        if (userManager.getUser() != null && userManager.getUser().getTwitterAccount() != null)
-            removeTwitterAccount();
-        else
-            addTwitterAccount();
-    }
-
-    private void addTwitterAccount() {
-        if (twitterManager.hasAuthInfo()) {
-            finishAddingTwitterAccount();
-        }
-        spinner.show();
-        sharedPrefManager.setTwitterAuthScreen("profile");
-        twitterManager.openSession(getActivity());
-    }
-
-    private void finishAddingTwitterAccount() {
-        Logger.log("FINISHING TWITTER -------");
-        spinner.show();
-        twitterManager.getSocialAccount(new NetworkCallback<SocialAccount>() {
-            @Override
-            public void completionHandler(SocialAccount object, ServerError error) {
-                if (error != null) {
-                    errorReporter.showError(error);
-                    spinner.hide();
-                    return;
-                }
-
-                userManager.addSocialAccount(object, new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User user, ServerError error) {
-                        spinner.hide();
-                        if (error != null) {
-                            errorReporter.showError(error);
-                            return;
-                        }
-                        updateUser(user);
-                    }
-                });
-            }
-        });
-    }
-
-    private void removeTwitterAccount() {
-        if (userManager.getUser().email == null && userManager.getUser().getFacebookAccount() == null) {
-            errorReporter.showError("You must enter an email address before removing your last social account, or your account will be lost forever.");
-            return;
-        }
-
-        final AlertDialog alert = new AlertDialog.Builder(getActivity())
-                .setPositiveButton("Yes", null)
-                .setNegativeButton("No", null)
-                .setTitle("Are you sure you wish to remove your Twitter account?")
-                .create();
-        alert.show();
-        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alert.dismiss();
-                spinner.show();
-                userManager.deleteSocialAccount(userManager.getUser().getTwitterAccount(), new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User object, ServerError error) {
-                        spinner.hide();
-                        if (error != null) {
-                            errorReporter.showError(error);
-                            return;
-                        }
-                        twitterManager.clearTwitterInfo();
-                        updateUser(object);
-                    }
-                });
-            }
-        });
-        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                alert.dismiss();
-            }
-        });
-    }
-
 }

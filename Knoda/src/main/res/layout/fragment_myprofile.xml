@@ -25,11 +25,28 @@
                 android:layout_weight="1"
                 android:gravity="right">
 
-                <ImageView
-                    android:id="@+id/profile_twitter"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/profile_twitter_active" />
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/profile_followers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10,888"
+                        android:textColor="@color/knodaDarkGreen"
+                        android:textSize="24sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FOLLOWERS"
+                        android:textColor="@color/knodaDarkGreen"
+                        android:textSize="11sp"/>
+                </LinearLayout>
             </RelativeLayout>
 
 
@@ -61,11 +78,28 @@
                 android:layout_weight="1"
                 android:gravity="left">
 
-                <ImageView
-                    android:id="@+id/profile_facebook"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/profile_facebook_active" />
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/profile_following"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="13"
+                        android:textColor="@color/knodaDarkGreen"
+                        android:textSize="24sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FOLLOWING"
+                        android:textColor="@color/knodaDarkGreen"
+                        android:textSize="11sp"/>
+                </LinearLayout>
             </RelativeLayout>
 
         </LinearLayout>

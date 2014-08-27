@@ -20,6 +20,8 @@ public class UserProfileHeaderView extends RelativeLayout {
     public TextView winPercentTextView;
     public TextView streakTextView;
     public TextView winLossTextView;
+    public TextView tv_followers;
+    public TextView tv_following;
 
     public NetworkImageView avatarImageView;
 
@@ -40,6 +42,8 @@ public class UserProfileHeaderView extends RelativeLayout {
         winPercentTextView = (TextView) findViewById(R.id.profile_winpercent);
         streakTextView = (TextView) findViewById(R.id.profile_winstreak);
         winLossTextView = (TextView) findViewById(R.id.profile_winloss);
+        tv_followers = (TextView) findViewById(R.id.profile_followers);
+        tv_following = (TextView) findViewById(R.id.profile_following);
 
         avatarImageView = (NetworkImageView) findViewById(R.id.profile_avatar);
 
@@ -51,6 +55,8 @@ public class UserProfileHeaderView extends RelativeLayout {
         winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
         setStreak(user.streak);
         winPercentTextView.setText(user.winningPercentage.toString() + "%");
+        tv_following.setText(user.following_count + "");
+        tv_followers.setText(user.follower_count + "");
     }
 
     public void setStreak(String streak) {

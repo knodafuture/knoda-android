@@ -1,5 +1,6 @@
 package views.contacts;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -304,6 +305,7 @@ public class FindFriendsActivity extends BaseActivity {
                             //parent.errorReporter.showError(error);
                             return;
                         }
+                        recreate();
                         //updateUser(user);
                     }
                 });

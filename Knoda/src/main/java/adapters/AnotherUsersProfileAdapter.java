@@ -57,8 +57,9 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
             header = new UserProfileHeaderView(context);
 
         header.pointsTextView.setText(user.points.toString());
-
         header.winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
+        header.tv_followers.setText(user.follower_count + "");
+        header.tv_following.setText(user.following_count + "");
 
         header.setStreak(user.streak);
         header.winPercentTextView.setText(user.winningPercentage.toString() + "%");

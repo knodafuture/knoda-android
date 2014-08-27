@@ -44,6 +44,15 @@ public class User extends BaseModel {
     @SerializedName("avatar_image")
     public RemoteImage avatar;
 
+    @SerializedName("follower_count")
+    public int follower_count;
+
+    @SerializedName("following_count")
+    public int following_count;
+
+    @SerializedName("following")
+    public boolean following;
+
     @SerializedName("social_accounts")
     public ArrayList<SocialAccount> socialAccounts;
 
