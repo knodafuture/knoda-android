@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -96,6 +95,19 @@ public class MyProfileFragment extends BaseFragment {
             startActivityForResult(intent, 123123129);
         }
     }
+
+    @OnClick(R.id.profile_following)
+    void onClickFollowing() {
+        FollowFragment followFragment = FollowFragment.newInstance(1, userManager.getUser());
+        pushFragment(followFragment);
+    }
+
+    @OnClick(R.id.profile_followers)
+    void onClickFollowers() {
+        FollowFragment followFragment = FollowFragment.newInstance(0, userManager.getUser());
+        pushFragment(followFragment);
+    }
+
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -260,8 +272,8 @@ public class MyProfileFragment extends BaseFragment {
         tv_winstreak.setText(setStreak(user.streak));
         tv_winpercent.setText(user.winningPercentage.toString() + "%");
         tv_winloss.setText(user.won.toString() + "-" + user.lost.toString());
-        tv_followers.setText(user.follower_count+"");
-        tv_following.setText(user.following_count+"");
+        tv_followers.setText(user.follower_count + "");
+        tv_following.setText(user.following_count + "");
     }
 
     private String setStreak(String s) {

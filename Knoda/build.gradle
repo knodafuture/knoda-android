@@ -28,6 +28,8 @@ android {
         targetSdkVersion 19
         renderscriptTargetApi 19
         renderscriptSupportMode true
+        resConfigs "en"
+        resConfigs "hdpi", "xhdpi", "xxhdpi"
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'

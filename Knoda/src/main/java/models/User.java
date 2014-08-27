@@ -50,8 +50,8 @@ public class User extends BaseModel {
     @SerializedName("following_count")
     public int following_count;
 
-    @SerializedName("following")
-    public boolean following;
+    @SerializedName("following_id")
+    public Integer following_id;
 
     @SerializedName("social_accounts")
     public ArrayList<SocialAccount> socialAccounts;

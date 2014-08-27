@@ -7,21 +7,31 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="46dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/findfriends_listcell_avatar_imageview"
+        <RelativeLayout
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:background="@color/black"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp">
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/findfriends_listcell_avatar_imageview"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@color/black" />
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/avatar_mask" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="46dp"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/findfriends_listcell_title"

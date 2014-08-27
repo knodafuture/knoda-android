@@ -53,6 +53,8 @@ import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
 import views.predictionlists.HomeFragment;
+import views.profile.FollowFeedFragment;
+import views.profile.FollowFragment;
 import views.profile.MyProfileFeedFragment;
 import views.profile.MyProfileFragment;
 import views.profile.PhotoFragment;
@@ -109,7 +111,9 @@ import views.settings.SettingsFragment;
                 FindFriendsFragment.class,
                 FindFriendsContactsFragment.class,
                 FindFriendsActivity.class,
-                FindFriendsFacebookTwitterFragment.class
+                FindFriendsFacebookTwitterFragment.class,
+                FollowFragment.class,
+                FollowFeedFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

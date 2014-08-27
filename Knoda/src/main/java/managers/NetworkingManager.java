@@ -33,6 +33,7 @@ import models.Challenge;
 import models.Comment;
 import models.Contest;
 import models.ContestUser;
+import models.Follow;
 import models.FollowUser;
 import models.ForgotPasswordRequest;
 import models.Group;
@@ -569,14 +570,26 @@ public class NetworkingManager {
         executeListRequest(Request.Method.POST, url, null, null, callback);
     }
 
-    public void followUser(FollowUser followUser, final NetworkCallback<FollowUser> callback) {
+    public void followUser(FollowUser followUser, final NetworkCallback<Follow> callback) {
+        //ParamBuilder builder = ParamBuilder.create();
+        //builder.add("leader_id", followUser.leader_id + "");
         String url = buildUrl("followings.json", true, null);
-        executeRequest(Request.Method.POST, url, null, null, callback);
+        executeRequest(Request.Method.POST, url, followUser, Follow.class, callback);
     }
 
-    public void unfollowUser(FollowUser following, final NetworkCallback<FollowUser> callback) {
-        String url = buildUrl("followings/" + following.leader_id + ".json", true, null);
-        executeRequest(Request.Method.DELETE, url, null, null, callback);
+    public void unfollowUser(int followId, final NetworkCallback<FollowUser> callback) {
+        String url = buildUrl("followings/" + followId + ".json", true, null);
+        executeRequest(Request.Method.DELETE, url, null, FollowUser.class, callback);
+    }
+
+    public void getFollow(User user, boolean following, final NetworkListCallback<User> callback) {
+        String url;
+        if (following)
+            url = buildUrl("users/" + user.id + "/followers.json", true, null);
+        else
+            url = buildUrl("users/" + user.id + "/leaders.json", true, null);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
     }
 
 
