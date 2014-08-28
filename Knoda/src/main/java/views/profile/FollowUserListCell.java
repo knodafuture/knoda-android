@@ -40,7 +40,7 @@ public class FollowUserListCell extends RelativeLayout {
         verified = (ImageView) findViewById(R.id.follow_user_verified_checkmark);
         follow = (Button) findViewById(R.id.follow_user_button);
         avatar = (NetworkImageView) findViewById(R.id.follow_user_avatar_imageview);
-        buttonCover=findViewById(R.id.follow_user_button_cover);
+        buttonCover = findViewById(R.id.follow_user_button_cover);
     }
 
     public void setUser(final User user, ImageLoader imageLoader, final FollowFeedFragment followFeedFragment) {
@@ -50,17 +50,18 @@ public class FollowUserListCell extends RelativeLayout {
             verified.setVisibility(VISIBLE);
         else
             verified.setVisibility(INVISIBLE);
-        if (user.following_id!=null)
+        if (user.following_id != null)
             follow.setBackgroundResource(R.drawable.follow_btn_active);
         else
             follow.setBackgroundResource(R.drawable.follow_btn);
-        avatar.setImageUrl(user.avatar.small, imageLoader);
+        if (user.avatar != null)
+            avatar.setImageUrl(user.avatar.small, imageLoader);
         follow.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 buttonCover.setVisibility(VISIBLE);
                 follow.setEnabled(false);
-                followFeedFragment.followUser(user,follow,buttonCover);
+                followFeedFragment.followUser(user, follow, buttonCover);
             }
         });
 

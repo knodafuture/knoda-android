@@ -571,8 +571,6 @@ public class NetworkingManager {
     }
 
     public void followUser(FollowUser followUser, final NetworkCallback<Follow> callback) {
-        //ParamBuilder builder = ParamBuilder.create();
-        //builder.add("leader_id", followUser.leader_id + "");
         String url = buildUrl("followings.json", true, null);
         executeRequest(Request.Method.POST, url, followUser, Follow.class, callback);
     }
@@ -582,18 +580,13 @@ public class NetworkingManager {
         executeRequest(Request.Method.DELETE, url, null, FollowUser.class, callback);
     }
 
-    public void getFollowers(User user, final NetworkListCallback<User> callback) {
-        String url = buildUrl("users/" + user.userId + "followers.json", false, null);
-        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
-    }
-
-    public void getFollow(User user, boolean following, final NetworkListCallback<User> callback) {
+    public void getFollow(User user, boolean following, boolean needauth, final NetworkListCallback<User> callback) {
 
         String url;
         if (following)
-            url = buildUrl("users/" + user.id + "/followers.json", true, null);
+            url = buildUrl("users/" + user.id + "/followers.json", needauth, null);
         else
-            url = buildUrl("users/" + user.id + "/leaders.json", true, null);
+            url = buildUrl("users/" + user.id + "/leaders.json", needauth, null);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
     }

@@ -54,7 +54,7 @@ public class FollowFeedFragment extends BaseListFragment implements PagingAdapte
     public void getObjectsAfterObject(User object, final NetworkListCallback<User> callback) {
         boolean f = (screenNumber == 1) ? false : true;
         boolean needAuth = user.userId == userManager.getUser().userId;
-        networkingManager.getFollow(user, f, callback);
+        networkingManager.getFollow(user, f, needAuth, callback);
     }
 
     @Override
