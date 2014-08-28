@@ -28,12 +28,15 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
 
     @Override
     public int getCount() {
+        int add = 0;
+        if (type == FindFriendsListCellHeader.FACEBOOK || type == FindFriendsListCellHeader.TWITTER)
+            add = 1;
         if (objects.size() == 0)
             return super.getCount();
         if (objects.get(0).knodaInfo != null && objects.get(objects.size() - 1).knodaInfo == null)
-            return super.getCount() + 2;
+            return super.getCount() + 2 + add;
         else
-            return super.getCount() + 1;
+            return super.getCount() + 1 + add;
     }
 
     @Override
@@ -41,7 +44,18 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         if (objects.size() == 0)
             return super.getView(position, convertView, parent);
 
-        if (position >= objects.size() + 1)
+        if (position == objects.size() + 1) {
+            if (type == FindFriendsListCellHeader.FACEBOOK) {
+                View v = LayoutInflater.from(context).inflate(R.layout.list_cell_share_facebook, null);
+                return v;
+            } else if (type == FindFriendsListCellHeader.TWITTER) {
+                View v = LayoutInflater.from(context).inflate(R.layout.list_cell_share_twitter, null);
+                return v;
+            }
+        }
+
+
+        if (position > objects.size() + 1)
             return super.getView(position, convertView, parent);
 
         //intial header

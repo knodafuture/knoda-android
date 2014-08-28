@@ -3,6 +3,7 @@ package views.profile;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,8 @@ public class UserProfileHeaderView extends RelativeLayout {
     public TextView winLossTextView;
     public TextView tv_followers;
     public TextView tv_following;
+    public View followers_container;
+    public View following_container;
 
     public NetworkImageView avatarImageView;
 
@@ -44,6 +47,8 @@ public class UserProfileHeaderView extends RelativeLayout {
         winLossTextView = (TextView) findViewById(R.id.profile_winloss);
         tv_followers = (TextView) findViewById(R.id.profile_followers);
         tv_following = (TextView) findViewById(R.id.profile_following);
+        followers_container = findViewById(R.id.profile_followers_container);
+        following_container = findViewById(R.id.profile_following_container);
 
         avatarImageView = (NetworkImageView) findViewById(R.id.profile_avatar);
 

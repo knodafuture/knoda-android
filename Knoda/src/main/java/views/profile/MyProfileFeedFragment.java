@@ -135,29 +135,6 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
         };
     }
 
-    public void loadPage(final int page) {
-//        if (pageLoaded) {
-//            return;
-//        }
-//        pageLoaded = true;
-//        boolean challenged = (screenNumber == 1) ? true : false;
-//
-//        networkingManager.getPredictions(challenged, new NetworkListCallback<Prediction>() {
-//            @Override
-//            public void completionHandler(ArrayList<Prediction> object, ServerError error) {
-//                pListView.setShowIndicator(false);
-//                pListView.onRefreshComplete();
-//                if (error != null) {
-//                    Toast.makeText(getActivity(), "Error getting predictions", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    adapter = getAdapter();
-//                    pListView.setAdapter(adapter);
-//                    adapter.loadPage(page);
-//                }
-//            }
-//        });
-    }
-
     public void resizeHeader(int state) {
         if (headerSize == state) {
             return;

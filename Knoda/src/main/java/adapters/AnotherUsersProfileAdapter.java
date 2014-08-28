@@ -10,6 +10,8 @@ import com.squareup.otto.Bus;
 import helpers.AdapterHelper;
 import models.Prediction;
 import models.User;
+import views.core.MainActivity;
+import views.profile.FollowFragment;
 import views.profile.UserProfileHeaderView;
 
 /**
@@ -19,9 +21,11 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
 
 
     public User user;
+    private MainActivity mainActivity;
 
-    public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader) {
+    public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, MainActivity mainActivity) {
         super(context, datasource, imageLoader, new Bus(), true);
+        this.mainActivity=mainActivity;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
         notifyDataSetChanged();
     }
 
-    View getHeaderView(View convertView) {
+    View getHeaderView(final View convertView) {
 
         UserProfileHeaderView header = (UserProfileHeaderView) AdapterHelper.getConvertViewSafely(convertView, UserProfileHeaderView.class);
 
@@ -66,6 +70,22 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
 
         if (header.avatarImageView != null && user.avatar != null && user.avatar.big != null)
             header.avatarImageView.setImageUrl(user.avatar.big, imageLoader);
+
+        header.following_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FollowFragment followFragment = FollowFragment.newInstance(1, user);
+                mainActivity.pushFragment(followFragment);
+            }
+        });
+        header.followers_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FollowFragment followFragment = FollowFragment.newInstance(0, user);
+                mainActivity.pushFragment(followFragment);
+            }
+        });
+
 
         return header;
     }

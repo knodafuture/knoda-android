@@ -582,7 +582,13 @@ public class NetworkingManager {
         executeRequest(Request.Method.DELETE, url, null, FollowUser.class, callback);
     }
 
+    public void getFollowers(User user, final NetworkListCallback<User> callback) {
+        String url = buildUrl("users/" + user.userId + "followers.json", false, null);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
+    }
+
     public void getFollow(User user, boolean following, final NetworkListCallback<User> callback) {
+
         String url;
         if (following)
             url = buildUrl("users/" + user.id + "/followers.json", true, null);

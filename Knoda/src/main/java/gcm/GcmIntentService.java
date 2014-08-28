@@ -28,6 +28,7 @@ import views.core.Spinner;
 import views.core.SplashActivity;
 import views.details.DetailsFragment;
 import views.group.GroupSettingsFragment;
+import views.predictionlists.AnotherUsersProfileFragment;
 
 
 public class GcmIntentService extends IntentService {
@@ -122,46 +123,54 @@ public class GcmIntentService extends IntentService {
                                     if (userManager.isLoggedIn()) {
                                         spinner.show();
                                         userManager.refreshUser(new NetworkCallback<User>() {
-                                            @Override
-                                            public void completionHandler(User object, ServerError error) {
-                                                if (error != null) {
-                                                    spinner.hide();
-                                                    return;
-                                                } else {
-                                                    if (pushNotification.type.equals("p")) {
-                                                        networkingManager.getPrediction(Integer.parseInt(pushNotification.id), new NetworkCallback<Prediction>() {
-                                                            @Override
-                                                            public void completionHandler(Prediction object, ServerError error) {
-                                                                spinner.hide();
-                                                                if (error != null)
-                                                                    mainActivity.onActivity();
-                                                                else {
-                                                                    DetailsFragment fragment = DetailsFragment.newInstance(object);
-                                                                    mainActivity.pushFragment(fragment);
+                                                                    @Override
+                                                                    public void completionHandler(User object, ServerError error) {
+                                                                        if (error != null) {
+                                                                            spinner.hide();
+                                                                            return;
+                                                                        } else {
+                                                                            if (pushNotification.type.equals("p")) {
+                                                                                networkingManager.getPrediction(Integer.parseInt(pushNotification.id), new NetworkCallback<Prediction>() {
+                                                                                    @Override
+                                                                                    public void completionHandler(Prediction object, ServerError error) {
+                                                                                        spinner.hide();
+                                                                                        if (error != null)
+                                                                                            mainActivity.onActivity();
+                                                                                        else {
+                                                                                            DetailsFragment fragment = DetailsFragment.newInstance(object);
+                                                                                            mainActivity.pushFragment(fragment);
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                            } else if (pushNotification.type.equals("gic")) {
+                                                                                networkingManager.getInvitationByCode(pushNotification.id, new NetworkCallback<Invitation>() {
+                                                                                    @Override
+                                                                                    public void completionHandler(Invitation object, ServerError error) {
+                                                                                        spinner.hide();
+                                                                                        if (error != null)
+                                                                                            mainActivity.onActivity();
+                                                                                        else {
+                                                                                            GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
+                                                                                            mainActivity.pushFragment(fragment);
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                            } else if (pushNotification.type.equals("f")) {
+                                                                                spinner.hide();
+                                                                                AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(Integer.parseInt(pushNotification.id));
+                                                                                mainActivity.pushFragment(fragment);
+                                                                            } else{
+                                                                                mainActivity.onActivity();
+                                                                                spinner.hide();
+                                                                            }
+                                                                        }
+                                                                    }
                                                                 }
-                                                            }
-                                                        });
-                                                    } else if (pushNotification.type.equals("gic")) {
-                                                        networkingManager.getInvitationByCode(pushNotification.id, new NetworkCallback<Invitation>() {
-                                                            @Override
-                                                            public void completionHandler(Invitation object, ServerError error) {
-                                                                spinner.hide();
-                                                                if (error != null)
-                                                                    mainActivity.onActivity();
-                                                                else {
-                                                                    GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
-                                                                    mainActivity.pushFragment(fragment);
-                                                                }
-                                                            }
-                                                        });
-                                                    } else {
-                                                        mainActivity.onActivity();
-                                                        spinner.hide();
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    } else {
+
+                                        );
+                                    } else
+
+                                    {
                                         userManager.loginAsGuest(new NetworkCallback<User>() {
                                             @Override
                                             public void completionHandler(User object, ServerError error) {

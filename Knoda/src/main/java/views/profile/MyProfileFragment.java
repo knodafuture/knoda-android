@@ -96,13 +96,13 @@ public class MyProfileFragment extends BaseFragment {
         }
     }
 
-    @OnClick(R.id.profile_following)
+    @OnClick(R.id.profile_following_container)
     void onClickFollowing() {
         FollowFragment followFragment = FollowFragment.newInstance(1, userManager.getUser());
         pushFragment(followFragment);
     }
 
-    @OnClick(R.id.profile_followers)
+    @OnClick(R.id.profile_followers_container)
     void onClickFollowers() {
         FollowFragment followFragment = FollowFragment.newInstance(0, userManager.getUser());
         pushFragment(followFragment);

@@ -17,6 +17,7 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import views.core.MainActivity;
 
 public class AnotherUsersProfileFragment extends BasePredictionListFragment implements FollowButton.FollowButtonCallbacks {
 
@@ -55,7 +56,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
                     user = object;
 
                     ((AnotherUsersProfileAdapter) adapter).setUser(object);
-                    if (user.following_id!=null)
+                    if (user.following_id != null)
                         menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
                     else
                         menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);
@@ -70,7 +71,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
 
     @Override
     public PagingAdapter getAdapter() {
-        return new AnotherUsersProfileAdapter(getActivity(), this, networkingManager.getImageLoader());
+        return new AnotherUsersProfileAdapter(getActivity(), this, networkingManager.getImageLoader(), ((MainActivity) getActivity()));
     }
 
     @Override
@@ -100,7 +101,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
         FollowUser followUser = new FollowUser();
         followUser.leader_id = user.id;
 
-        if (user.following_id!=null) {
+        if (user.following_id != null) {
             //unfollow
             spinner.show();
             networkingManager.unfollowUser(user.following_id, new NetworkCallback<FollowUser>() {

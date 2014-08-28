@@ -66,7 +66,7 @@ public class FollowFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         FlurryAgent.logEvent("Follow Feed");
-        setTitle(user.username);
+        setTitle(user.username.toUpperCase());
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         DisplayMetrics displayMetrics = new DisplayMetrics();

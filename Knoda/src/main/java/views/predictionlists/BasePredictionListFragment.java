@@ -42,7 +42,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
 
     @Override
     public PagingAdapter getAdapter() {
-        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus);
+        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus,null);
     }
 
     @Override

@@ -210,6 +210,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
         setUpCommentBg(commentBackground, false);
         winlossbutton.setOnClickListener(null);
+        v.setVisibility(View.VISIBLE);
 
         if (!activityItem.seen)
             activityDot.setVisibility(View.VISIBLE);
@@ -254,6 +255,8 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             winlossbutton.setTextColor(settlecolor);
             winlossbutton.setBackgroundResource(R.drawable.settle_selector);
             setUpBody(winlosscomment, true);
+        }else{
+            v.setVisibility(View.GONE);
         }
 
         if (activityItem.image_url != null)

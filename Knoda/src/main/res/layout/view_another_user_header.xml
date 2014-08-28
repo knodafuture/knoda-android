@@ -23,6 +23,7 @@
             android:gravity="right">
 
             <LinearLayout
+                android:id="@+id/profile_followers_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -73,6 +74,7 @@
             android:gravity="left">
 
             <LinearLayout
+                android:id="@+id/profile_following_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"

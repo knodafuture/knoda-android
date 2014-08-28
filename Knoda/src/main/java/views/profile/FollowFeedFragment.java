@@ -53,6 +53,7 @@ public class FollowFeedFragment extends BaseListFragment implements PagingAdapte
     @Override
     public void getObjectsAfterObject(User object, final NetworkListCallback<User> callback) {
         boolean f = (screenNumber == 1) ? false : true;
+        boolean needAuth = user.userId == userManager.getUser().userId;
         networkingManager.getFollow(user, f, callback);
     }
 
@@ -65,7 +66,7 @@ public class FollowFeedFragment extends BaseListFragment implements PagingAdapte
     }
 
 
-    public void followUser(final User user, final Button followBtn) {
+    public void followUser(final User user, final Button followBtn, final View cover) {
         if (user.following_id == null) {
             FollowUser followUser = new FollowUser();
             followUser.leader_id = user.id;
@@ -75,7 +76,8 @@ public class FollowFeedFragment extends BaseListFragment implements PagingAdapte
                     userManager.getUser().following_count++;
                     user.following_id = object.id;
                     followBtn.setEnabled(true);
-                    followBtn.setBackgroundResource(R.drawable.follow_btn);
+                    cover.setVisibility(View.GONE);
+                    followBtn.setBackgroundResource(R.drawable.follow_btn_active);
                 }
             });
         } else {
@@ -85,6 +87,7 @@ public class FollowFeedFragment extends BaseListFragment implements PagingAdapte
                     userManager.getUser().following_count--;
                     user.following_id = null;
                     followBtn.setEnabled(true);
+                    cover.setVisibility(View.GONE);
                     followBtn.setBackgroundResource(R.drawable.follow_btn);
                 }
             });

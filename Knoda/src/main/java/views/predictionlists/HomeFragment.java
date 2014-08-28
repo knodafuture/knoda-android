@@ -21,6 +21,8 @@ import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 
+import adapters.PagingAdapter;
+import adapters.PredictionAdapter;
 import models.Prediction;
 import networking.NetworkListCallback;
 import pubsub.HomeNavEvent;
@@ -47,6 +49,11 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
             listView.smoothScrollToPosition(0);
     }
 
+    @Override
+    public PagingAdapter getAdapter() {
+        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, this);
+    }
+
     @Subscribe
     public void refreshList(final ReloadListsEvent event) {
         adapter.loadPage(0);
@@ -66,7 +73,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
 
     @Override
     public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {
-        if (homeActionBar==null || homeActionBar.selected == 0) {
+        if (homeActionBar == null || homeActionBar.selected == 0) {
             int lastId = object == null ? 0 : object.id;
             networkingManager.getPredictionsAfter(lastId, callback);
         } else
@@ -200,8 +207,9 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         getActivity().findViewById(R.id.nav_home).setBackgroundResource(R.drawable.nav_home_active);
         ((TextView) getActivity().findViewById(R.id.nav_home_text)).setTextColor(Color.parseColor("#EFEFEF"));
     }
+
     @Override
-    public void onDestroyView(){
+    public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayShowHomeEnabled(true);
         getActivity().getActionBar().setDisplayUseLogoEnabled(true);
