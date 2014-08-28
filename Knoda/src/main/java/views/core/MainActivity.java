@@ -372,7 +372,7 @@ public class MainActivity extends BaseActivity {
                     onBackPressed();
                 break;
             }
-            case R.id.action_search: {
+            case R.id.home_actionbar: {
                 onSearch();
                 break;
             }
@@ -530,7 +530,7 @@ public class MainActivity extends BaseActivity {
                 onHome();
 
                 AppRater appRater=new AppRater(this);
-                appRater.setMinDaysUntilPrompt(3);
+                appRater .setMinDaysUntilPrompt(3);
                 appRater.setMinLaunchesUntilPrompt(3);
                 appRater.setMessage("Are you enjoying Knoda? If so, we'd love for you to leave a review!");
                 appRater.setRateButtonText("Yes, I'd love to!");

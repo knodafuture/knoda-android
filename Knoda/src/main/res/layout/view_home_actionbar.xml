@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="@color/knodaLightGreen">
+
+
+        <ImageView
+            android:id="@+id/home_actionbar_addfriends"
+            android:layout_width="38dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_find_friends" />
+
+        <TextView
+            android:id="@+id/home_actionbar_viewall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/home_actionbar_centerbar"
+            android:text="View All"
+            android:textColor="@color/knodaDarkGreen"
+            android:textSize="20sp" />
+
+        <View
+            android:id="@+id/home_actionbar_centerbar"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@color/knodaDarkGreen" />
+
+        <TextView
+            android:id="@+id/home_actionbar_following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/home_actionbar_centerbar"
+            android:text="Following"
+            android:textColor="@color/knodaDarkGreen"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/home_actionbar_search"
+            android:layout_width="38dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/nav_search" />
+
+    </RelativeLayout>
+</RelativeLayout>

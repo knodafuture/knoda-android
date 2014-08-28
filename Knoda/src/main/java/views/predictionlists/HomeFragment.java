@@ -1,6 +1,7 @@
 package views.predictionlists;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,9 +24,12 @@ import com.squareup.otto.Subscribe;
 import pubsub.HomeNavEvent;
 import pubsub.LoginFlowDoneEvent;
 import pubsub.ReloadListsEvent;
+import views.contacts.FindFriendsActivity;
 import views.core.MainActivity;
+import views.search.SearchFragment;
 
-public class HomeFragment extends BasePredictionListFragment {
+public class HomeFragment extends BasePredictionListFragment implements HomeActionBar.HomeActionBarCallbacks {
+    HomeActionBar homeActionBar;
 
     public HomeFragment() {
     }
@@ -62,7 +66,12 @@ public class HomeFragment extends BasePredictionListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem menuItem = menu.findItem(R.id.home_actionbar);
+        homeActionBar = (HomeActionBar) menuItem.getActionView();
+        getActivity().getActionBar().setDisplayShowHomeEnabled(false);
+        getActivity().getActionBar().setDisplayUseLogoEnabled(false);
+        getActivity().getActionBar().setDisplayShowTitleEnabled(false);
+        homeActionBar.setCallbacks(this);
     }
 
     @Override
@@ -178,8 +187,23 @@ public class HomeFragment extends BasePredictionListFragment {
         ((MainActivity) getActivity()).resetNavIcons();
         getActivity().findViewById(R.id.nav_home).setBackgroundResource(R.drawable.nav_home_active);
         ((TextView) getActivity().findViewById(R.id.nav_home_text)).setTextColor(Color.parseColor("#EFEFEF"));
-
     }
 
 
+    @Override
+    public void onSearchClick() {
+        pushFragment(new SearchFragment());
+    }
+
+    @Override
+    public void onAddFriendsClick() {
+        Intent intent = new Intent(getActivity(), FindFriendsActivity.class);
+        intent.putExtra("cancelable", true);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSwitchFeed(int number) {
+
+    }
 }

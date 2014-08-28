@@ -5,10 +5,10 @@
         android:id="@+id/default_menu_group"
         android:visible="true">
         <item
-            android:id="@+id/action_search"
-            android:icon="@drawable/nav_search"
+            android:id="@+id/home_actionbar"
+            android:actionViewClass="views.predictionlists.HomeActionBar"
             android:orderInCategory="0"
-            android:showAsAction="ifRoom"
+            android:showAsAction="always"
             android:title="Search" />
     </group>
 </menu>

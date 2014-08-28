@@ -212,7 +212,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.global, menu);
         menu.clear();
-        menu.removeItem(R.id.action_search);
+        menu.removeItem(R.id.home_actionbar);
         ((MainActivity) getActivity()).setActionBarTitle("PROFILE SETTINGS");
         super.onCreateOptionsMenu(menu, inflater);
     }

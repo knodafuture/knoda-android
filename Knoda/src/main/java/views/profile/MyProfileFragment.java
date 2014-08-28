@@ -248,7 +248,7 @@ public class MyProfileFragment extends BaseFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         if (mainActivity.userManager.getUser() != null && mainActivity.userManager.getUser().guestMode == false) {
-            menu.removeItem(R.id.action_search);
+            menu.removeItem(R.id.home_actionbar);
             if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings) != null)
                 menu.findItem(R.id.action_settings).setVisible(true);
         } else {

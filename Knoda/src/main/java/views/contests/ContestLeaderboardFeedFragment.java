@@ -68,7 +68,8 @@ public class ContestLeaderboardFeedFragment extends BaseListFragment implements 
     @Override
     public void getObjectsAfterObject(ContestUser contestuser, NetworkListCallback<ContestUser> callback) {
         pageLoaded = true;
-        networkingManager.getContestLeaderboard(contestStage.contest_id, (contestStage.id == -1) ? null : contestStage.id, callback);
+        if (contestStage != null)
+            networkingManager.getContestLeaderboard(contestStage.contest_id, (contestStage.id == -1) ? null : contestStage.id, callback);
     }
 
     @Override
