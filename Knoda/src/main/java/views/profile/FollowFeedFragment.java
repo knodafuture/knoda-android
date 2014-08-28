@@ -92,8 +92,6 @@ public class FollowFeedFragment extends BaseListFragment implements PagingAdapte
                 }
             });
         }
-
-
     }
 
 }

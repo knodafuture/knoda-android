@@ -16,9 +16,13 @@ import adapters.PagingAdapter;
 import adapters.SearchAdapter;
 import adapters.TagAdapter;
 import butterknife.InjectView;
+import models.Follow;
+import models.FollowUser;
 import models.Prediction;
+import models.ServerError;
 import models.Tag;
 import models.User;
+import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import views.core.BaseFragment;
 import views.details.DetailsFragment;
@@ -180,6 +184,40 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
     public void onUserSelected(User user) {
         AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(user.id);
         pushFragment(fragment);
+    }
+
+    @Override
+    public void onUserFollow(final User user, final View v) {
+        v.setEnabled(false);
+        final SearchUserCell searchUserCell = (SearchUserCell) v.getTag();
+        searchUserCell.cover.setVisibility(View.VISIBLE);
+
+        if (user.following_id == null) {
+            FollowUser followUser = new FollowUser();
+            followUser.leader_id = user.id;
+            networkingManager.followUser(followUser, new NetworkCallback<Follow>() {
+                @Override
+                public void completionHandler(Follow object, ServerError error) {
+                    userManager.getUser().following_count++;
+                    user.following_id = object.id;
+                    v.setEnabled(true);
+                    searchUserCell.cover.setVisibility(View.GONE);
+                    searchUserCell.follow.setBackgroundResource(R.drawable.follow_btn_active);
+                }
+            });
+        } else {
+            networkingManager.unfollowUser(user.following_id, new NetworkCallback<FollowUser>() {
+                @Override
+                public void completionHandler(FollowUser object, ServerError error) {
+                    userManager.getUser().following_count--;
+                    user.following_id = null;
+                    v.setEnabled(true);
+                    searchUserCell.cover.setVisibility(View.GONE);
+                    searchUserCell.follow.setBackgroundResource(R.drawable.follow_btn);
+                }
+            });
+        }
+
     }
 
     @Override

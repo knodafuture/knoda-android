@@ -101,12 +101,25 @@ public class SearchAdapter extends BaseAdapter {
         return view;
     }
 
-    private View getUserView(User user) {
+    private View getUserView(final User user) {
         SearchUserCell view = new SearchUserCell(context);
         view.textView.setText(user.username);
 
         if (user.avatar != null)
             view.imageView.setImageUrl(user.avatar.small, imageLoader);
+        view.follow.setTag(view);
+        if (user.following_id != null)
+            view.follow.setBackgroundResource(R.drawable.follow_btn_active);
+        else
+            view.follow.setBackgroundResource(R.drawable.follow_btn);
+
+        view.follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callbacks.onUserFollow(user, v);
+            }
+        });
+
         return view;
     }
 
@@ -205,6 +218,8 @@ public class SearchAdapter extends BaseAdapter {
 
     public interface SearchAdapterCallbacks {
         void onUserSelected(User user);
+
+        void onUserFollow(User user, View v);
 
         void onPredictionSelected(Prediction prediciton);
     }

@@ -21,4 +21,33 @@
         android:layout_toRightOf="@id/user_cell_avatar_imageview"
         android:text="test layout text" />
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center_vertical">
+
+
+        <Button
+            android:id="@+id/follow_user_button"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/follow_btn"
+            android:clickable="true" />
+        <View
+            android:id="@+id/follow_user_button_cover"
+            android:layout_width="38dp"
+            android:layout_height="28dp"
+            android:background="#d8d8d8"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="11dp"
+            android:layout_centerVertical="true"
+            android:visibility="visible"
+            />
+
+    </RelativeLayout>
+
+
 </merge>
