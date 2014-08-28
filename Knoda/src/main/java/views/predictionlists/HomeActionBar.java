@@ -19,7 +19,7 @@ public class HomeActionBar extends RelativeLayout {
     public TextView viewAllTV;
     public TextView followingTV;
 
-    private int selected = 0;
+    public int selected = 0;
 
     public HomeActionBar(Context context) {
         super(context);

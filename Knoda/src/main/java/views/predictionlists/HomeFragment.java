@@ -21,6 +21,8 @@ import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
 
+import models.Prediction;
+import networking.NetworkListCallback;
 import pubsub.HomeNavEvent;
 import pubsub.LoginFlowDoneEvent;
 import pubsub.ReloadListsEvent;
@@ -61,6 +63,16 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         setHasOptionsMenu(true);
         bus.register(this);
     }
+
+    @Override
+    public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {
+        if (homeActionBar==null || homeActionBar.selected == 0) {
+            int lastId = object == null ? 0 : object.id;
+            networkingManager.getPredictionsAfter(lastId, callback);
+        } else
+            networkingManager.getFollowFeed(callback);
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -188,6 +200,18 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         getActivity().findViewById(R.id.nav_home).setBackgroundResource(R.drawable.nav_home_active);
         ((TextView) getActivity().findViewById(R.id.nav_home_text)).setTextColor(Color.parseColor("#EFEFEF"));
     }
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayShowHomeEnabled(true);
+        getActivity().getActionBar().setDisplayUseLogoEnabled(true);
+        getActivity().getActionBar().setDisplayShowTitleEnabled(true);
+    }
+
+    @Override
+    public String noContentString() {
+        return "No Predictions.";
+    }
 
 
     @Override
@@ -204,6 +228,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
 
     @Override
     public void onSwitchFeed(int number) {
-
+        pListView.setRefreshing(true);
+        adapter.loadPage(0);
     }
 }

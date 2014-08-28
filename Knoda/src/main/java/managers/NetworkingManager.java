@@ -592,6 +592,14 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
     }
 
+    public void getFollowFeed(NetworkListCallback<Prediction> callback) {
+        ParamBuilder builder = ParamBuilder.create();
+        builder.add("social", "true");
+        String url = buildUrl("predictions.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
+    }
+
 
     private Map<String, String> getHeaders() {
 
