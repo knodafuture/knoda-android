@@ -29,6 +29,7 @@ import models.Invitation;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
+import views.activity.ActivityListFollowCell;
 import views.activity.ActivityListWinLossCell;
 import views.core.MainActivity;
 import views.details.DetailsFragment;
@@ -198,8 +199,10 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
 
     }
 
-    private void update(View v, ActivityItem activityItem) {
+    private void updateFollows(ActivityListFollowCell cell, ActivityItem activityItem){
+    }
 
+    private void update(View v, ActivityItem activityItem) {
         NetworkImageView iconImageView = (NetworkImageView) v.findViewById(R.id.winloss_imageview);
         TextView winlosstitle = (TextView) v.findViewById(R.id.winloss_title);
         TextView winlosscomment = (TextView) v.findViewById(R.id.winloss_comment);

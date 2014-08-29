@@ -1,29 +1,22 @@
 package views.contacts;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-
-import java.util.ArrayList;
+import com.knoda.knoda.R;
 
 import adapters.PagingAdapter;
 import adapters.UserContactAdapter;
-import models.GroupInvitation;
 import models.UserContact;
 import networking.NetworkListCallback;
 import views.core.BaseListFragment;
-import views.core.MainActivity;
 
 public class FindFriendsContactsFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<UserContact> {
-    boolean pageLoaded = false;
     FindFriendsActivity parent;
 
     public FindFriendsContactsFragment() {
@@ -35,8 +28,11 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
         return fragment;
     }
 
-    public static boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+        return view;
     }
 
     @Override
@@ -53,9 +49,7 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
 
     @Override
     public PagingAdapter getAdapter() {
-        UserContactAdapter adapter1 = new UserContactAdapter(FindFriendsListCellHeader.CONTACTS, getActivity(), this, parent.networkingManager.getImageLoader(), parent);
-        return adapter1;
-
+        return new UserContactAdapter(FindFriendsListCellHeader.CONTACTS, getActivity(), this, parent.networkingManager.getImageLoader(), parent);
     }
 
     @Override
@@ -112,19 +106,6 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
 //        });
     }
 
-//    private void addInvitation(String s) {
-//        GroupInvitation invitation = new GroupInvitation();
-//        if (s.indexOf("@") != -1) {
-//            invitation.email = s;
-//            parent.inviting.add(invitation);
-//        } else if (isNumeric(s)) {
-//            invitation.phoneNumber = s;
-//            parent.inviting.add(invitation);
-//        }
-//        parent.setSubmitBtnText();
-//        System.out.println("Inviting " + s);
-//    }
-
     @Override
     public String noContentString() {
         return "There are no contacts";
@@ -132,7 +113,7 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
 
     @Override
     public void onLoadFinished() {
-        ((UserContactAdapter)adapter).followAll(true);
+        ((UserContactAdapter) adapter).followAll(true);
     }
 
 

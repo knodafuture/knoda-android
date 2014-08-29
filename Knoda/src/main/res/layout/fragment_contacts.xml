@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_topview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="views.unsorted.BaseListFragment">
+
+    <RelativeLayout
+        android:id="@+id/contacts_search_container"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/knodaDarkGreen">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/search_icon" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="40dp"
+            android:hint="Search Contacts..."
+            android:textColor="@color/knodaLightGreen"
+            android:textColorHint="@color/knodaLightGreen" />
+
+    </RelativeLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/base_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/contacts_search_container"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
+
+</RelativeLayout>
