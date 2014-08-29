@@ -19,7 +19,7 @@ public class HomeActionBar extends RelativeLayout {
     public TextView viewAllTV;
     public TextView followingTV;
 
-    public int selected = 0;
+    public int selected;
 
     public HomeActionBar(Context context) {
         super(context);
@@ -52,30 +52,20 @@ public class HomeActionBar extends RelativeLayout {
         });
         viewAllTV = ((TextView) findViewById(R.id.home_actionbar_viewall));
         followingTV = ((TextView) findViewById(R.id.home_actionbar_following));
-        viewAllTV.setTextColor(context.getResources().getColor(R.color.knodaDarkGreen));
+        viewAllTV.setTextColor(context.getResources().getColor(R.color.lightGray));
         followingTV.setTextColor(context.getResources().getColor(R.color.lightGray));
 
         viewAllTV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selected == 0)
-                    return;
-                selected = 0;
-                viewAllTV.setTextColor(v.getContext().getResources().getColor(R.color.knodaDarkGreen));
-                followingTV.setTextColor(v.getContext().getResources().getColor(R.color.lightGray));
-                callbacks.onSwitchFeed(0);
+                setFilter(0);
 
             }
         });
         followingTV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selected == 1)
-                    return;
-                selected = 1;
-                viewAllTV.setTextColor(v.getContext().getResources().getColor(R.color.lightGray));
-                followingTV.setTextColor(v.getContext().getResources().getColor(R.color.knodaDarkGreen));
-                callbacks.onSwitchFeed(1);
+                setFilter(1);
 
             }
         });
@@ -89,7 +79,21 @@ public class HomeActionBar extends RelativeLayout {
         void onSearchClick();
 
         void onAddFriendsClick();
+
         void onSwitchFeed(int number);
     }
+
+    public void setFilter(int number) {
+        selected = number;
+        if (number == 0) {
+            viewAllTV.setTextColor(getContext().getResources().getColor(R.color.knodaDarkGreen));
+            followingTV.setTextColor(getContext().getResources().getColor(R.color.lightGray));
+        } else if (number == 1) {
+            viewAllTV.setTextColor(getContext().getResources().getColor(R.color.lightGray));
+            followingTV.setTextColor(getContext().getResources().getColor(R.color.knodaDarkGreen));
+        }
+        callbacks.onSwitchFeed(number);
+    }
+
 
 }

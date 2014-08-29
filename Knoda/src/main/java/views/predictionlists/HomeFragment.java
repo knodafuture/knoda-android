@@ -23,6 +23,7 @@ import com.squareup.otto.Subscribe;
 
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
+import managers.SharedPrefManager;
 import models.Prediction;
 import networking.NetworkListCallback;
 import pubsub.HomeNavEvent;
@@ -69,6 +70,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         bus.register(this);
+        sharedPrefManager.saveObjectString(0, SharedPrefManager.SAVED_HOMESCREEN_SELECTED);
     }
 
     @Override
@@ -80,7 +82,6 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
             networkingManager.getFollowFeed(callback);
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
@@ -91,6 +92,9 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         getActivity().getActionBar().setDisplayUseLogoEnabled(false);
         getActivity().getActionBar().setDisplayShowTitleEnabled(false);
         homeActionBar.setCallbacks(this);
+        homeActionBar.selected = Integer.parseInt(sharedPrefManager.getObjectString(SharedPrefManager.SAVED_HOMESCREEN_SELECTED));
+        homeActionBar.setFilter(homeActionBar.selected);
+        adapter.reset();
     }
 
     @Override
@@ -236,6 +240,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
 
     @Override
     public void onSwitchFeed(int number) {
+        sharedPrefManager.saveObjectString(number, SharedPrefManager.SAVED_HOMESCREEN_SELECTED);
         pListView.setRefreshing(true);
         adapter.loadPage(0);
     }

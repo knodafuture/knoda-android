@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:id="@+id/findfriends_listcell_avatar_container"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginLeft="10dp">
@@ -22,6 +23,7 @@
                 android:background="@color/black" />
 
             <ImageView
+                android:id="@+id/findfriends_listcell_avatar_mask"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/avatar_mask" />

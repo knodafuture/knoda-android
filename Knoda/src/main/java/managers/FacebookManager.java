@@ -1,14 +1,18 @@
 package managers;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.widget.Toast;
 
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionDefaultAudience;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
+import com.facebook.widget.WebDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +39,6 @@ public class FacebookManager {
     private UserManager userManager;
     private NetworkingManager networkingManager;
 
-
     @Inject
     public FacebookManager(UserManager userManager, NetworkingManager networkingManager) {
         this.userManager = userManager;
@@ -61,6 +64,10 @@ public class FacebookManager {
         callbacks.add(callback);
 
         openActiveSession(activity, true, getCallback(), Arrays.asList("email"));
+    }
+
+    public Session openSessionNoLogin(Activity activity) {
+        return openActiveSession(activity, false, getCallback(), Arrays.asList("email", "publish_actions"));
     }
 
     public void share(final Prediction prediction, final Activity activity, final NetworkCallback<BaseModel> callback) {
@@ -163,5 +170,59 @@ public class FacebookManager {
         return account;
     }
 
+    public void postOnWall(final String msg, final Activity activity) {
+
+        Session.OpenRequest openRequest = new Session.OpenRequest(activity).setPermissions(Arrays.asList("publish_actions")).setCallback(new Session.StatusCallback() {
+            @Override
+            public void call(Session session, SessionState state, Exception exception) {
+
+                if (session.isOpened()) {
+                    Bundle params = new Bundle();
+                    // params.putString("name", title);
+                    // params.putString("caption", caption);
+                    //params.putString("description", description);
+                    //params.putString("link", link);
+                    //params.putString("picture", pictureUrl);
+
+                    WebDialog feedDialog = (new WebDialog.FeedDialogBuilder(
+                            activity, Session.getActiveSession(), params))
+                            .setOnCompleteListener(new WebDialog.OnCompleteListener() {
+
+                                @Override
+                                public void onComplete(Bundle values,
+                                                       FacebookException error) {
+                                    if (error == null) {
+                                        // When the story is posted, echo the
+                                        // success
+                                        // and the post Id.
+                                        final String postId = values
+                                                .getString("post_id");
+                                        if (postId != null) {
+                                            System.out.println("Posted");
+                                        } else {
+                                            // User clicked the Cancel button
+                                            System.out.println("Publish cancelled");
+                                        }
+                                    } else if (error instanceof FacebookOperationCanceledException) {
+                                        // User clicked the "x" button
+                                        System.out.println("Publish cancelled");
+                                    } else {
+                                        // Generic, ex: network error
+                                        System.out.println("Error posting story");
+                                    }
+                                }
+
+                            }).build();
+                    feedDialog.show();
+                }
+
+
+            }
+        });
+        Session session = new Session.Builder(activity).build();
+        Session.setActiveSession(session);
+        session.openForPublish(openRequest);
+
+    }
 
 }

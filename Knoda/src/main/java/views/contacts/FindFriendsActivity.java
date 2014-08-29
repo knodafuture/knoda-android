@@ -92,7 +92,6 @@ public class FindFriendsActivity extends BaseActivity {
         networkingManager = new NetworkingManager(this);
         networkingManager.sharedPrefManager = new SharedPrefManager(this);
         userManager = new UserManager(networkingManager, sharedPrefManager);
-
         facebookManager = new FacebookManager(userManager, networkingManager);
         twitterManager = new TwitterManager();
 

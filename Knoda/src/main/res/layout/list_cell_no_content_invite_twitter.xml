@@ -59,6 +59,7 @@
             android:src="@drawable/ic_login_twitter" />
 
         <TextView
+            android:id="@+id/no_content_twitter_btn_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

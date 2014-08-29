@@ -58,6 +58,7 @@
             android:src="@drawable/ic_login_facebook" />
 
         <TextView
+            android:id="@+id/no_content_facebook_btn_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

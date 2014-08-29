@@ -9,6 +9,7 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,10 +27,6 @@ import models.UserContact;
  * Created by jeff on 7/31/2014.
  */
 public class FindFriendsListCell extends RelativeLayout {
-
-    final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
-    AbsListView.LayoutParams lp_header = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 20);
-    AbsListView.LayoutParams lp_normal = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, onedp * 40);
 
     public TextView title;
     public TextView description;
@@ -69,6 +66,7 @@ public class FindFriendsListCell extends RelativeLayout {
             checkBox.setVisibility(VISIBLE);
             plusBtn.setVisibility(GONE);
             avatar.setVisibility(VISIBLE);
+            findViewById(R.id.findfriends_listcell_avatar_container).setVisibility(VISIBLE);
             avatar.setImageUrl(userContact.knodaInfo.avatar.small, parent.networkingManager.getImageLoader());
             checkBox.setChecked(followingSet.containsKey(userContact.contact_id));
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -87,6 +85,7 @@ public class FindFriendsListCell extends RelativeLayout {
             checkBox.setVisibility(GONE);
             plusBtn.setVisibility(VISIBLE);
             avatar.setVisibility(GONE);
+            findViewById(R.id.findfriends_listcell_avatar_container).setVisibility(GONE);
             String d = "";
             if (userContact.phones != null && userContact.phones.size() > 0) {
                 for (String s : userContact.phones) {

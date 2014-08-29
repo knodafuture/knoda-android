@@ -1,9 +1,12 @@
 package adapters;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
@@ -18,12 +21,12 @@ import views.contacts.FindFriendsListCellHeader;
 public class UserContactAdapter extends PagingAdapter<UserContact> {
 
     public int type;
-    FindFriendsActivity parent;
+    FindFriendsActivity findFriendsActivity;
 
     public UserContactAdapter(int type, Context context, PagingAdapterDatasource<UserContact> datasource, ImageLoader imageLoader, FindFriendsActivity activity) {
         super(context, datasource, imageLoader);
         this.type = type;
-        this.parent = activity;
+        this.findFriendsActivity = activity;
     }
 
     @Override
@@ -40,13 +43,19 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         if (objects.size() == 0)
             return super.getView(position, convertView, parent);
 
         if (position == objects.size() + 1) {
             if (type == FindFriendsListCellHeader.FACEBOOK) {
                 View v = LayoutInflater.from(context).inflate(R.layout.list_cell_share_facebook, null);
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        findFriendsActivity.facebookManager.postOnWall("Testing!!!!!", findFriendsActivity);
+                    }
+                });
                 return v;
             } else if (type == FindFriendsListCellHeader.TWITTER) {
                 View v = LayoutInflater.from(context).inflate(R.layout.list_cell_share_twitter, null);
@@ -86,7 +95,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                 listItem = (FindFriendsListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_findfriends_follow, null);
             final UserContact userContact = objects.get(offset(position));
             if (userContact != null)
-                listItem.setUser(userContact, this, this.parent);
+                listItem.setUser(userContact, this, this.findFriendsActivity);
             return listItem;
         }
     }
@@ -98,36 +107,36 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
 
     public void followAll(boolean checked) {
         if (type == FindFriendsListCellHeader.CONTACTS)
-            parent.following.clear();
+            findFriendsActivity.following.clear();
         else if (type == FindFriendsListCellHeader.FACEBOOK)
-            parent.followingFacebook.clear();
+            findFriendsActivity.followingFacebook.clear();
         else if (type == FindFriendsListCellHeader.TWITTER)
-            parent.followingTwitter.clear();
+            findFriendsActivity.followingTwitter.clear();
 
         if (!checked) {
             notifyDataSetChanged();
-            parent.setSubmitBtnText();
+            findFriendsActivity.setSubmitBtnText();
             return;
         }
         for (int i = 0; i != objects.size(); i++) {
             if (objects.get(i).knodaInfo != null) {
                 if (type == FindFriendsListCellHeader.CONTACTS)
-                    parent.following.put(objects.get(i).contact_id, objects.get(i).knodaInfo);
+                    findFriendsActivity.following.put(objects.get(i).contact_id, objects.get(i).knodaInfo);
                 else if (type == FindFriendsListCellHeader.FACEBOOK)
-                    parent.followingFacebook.put(objects.get(i).contact_id, objects.get(i).knodaInfo);
+                    findFriendsActivity.followingFacebook.put(objects.get(i).contact_id, objects.get(i).knodaInfo);
                 else if (type == FindFriendsListCellHeader.TWITTER)
-                    parent.followingTwitter.put(objects.get(i).contact_id, objects.get(i).knodaInfo);
+                    findFriendsActivity.followingTwitter.put(objects.get(i).contact_id, objects.get(i).knodaInfo);
             }
         }
         notifyDataSetChanged();
-        parent.setSubmitBtnText();
+        findFriendsActivity.setSubmitBtnText();
     }
 
     public void inviteAll(boolean checked) {
-        parent.inviting.clear();
+        findFriendsActivity.inviting.clear();
         if (!checked) {
             notifyDataSetChanged();
-            parent.setSubmitBtnText();
+            findFriendsActivity.setSubmitBtnText();
             return;
         }
         for (int i = 0; i != objects.size(); i++) {
@@ -138,11 +147,11 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                     groupInvitation.email = (String) userContact.emails.toArray()[0];
                 if (userContact.phones != null && userContact.phones.size() > 0)
                     groupInvitation.phoneNumber = (String) userContact.phones.toArray()[0];
-                parent.inviting.put(userContact.contact_id, groupInvitation);
+                findFriendsActivity.inviting.put(userContact.contact_id, groupInvitation);
             }
         }
         notifyDataSetChanged();
-        parent.setSubmitBtnText();
+        findFriendsActivity.setSubmitBtnText();
     }
 
     public int offset(int position) {
@@ -159,11 +168,11 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
     }
 
     public boolean followAll(int type) {
-        if (type == FindFriendsListCellHeader.CONTACTS && objects.size() == parent.following.size())
+        if (type == FindFriendsListCellHeader.CONTACTS && objects.size() == findFriendsActivity.following.size())
             return true;
-        if (type == FindFriendsListCellHeader.FACEBOOK && objects.size() == parent.followingFacebook.size())
+        if (type == FindFriendsListCellHeader.FACEBOOK && objects.size() == findFriendsActivity.followingFacebook.size())
             return true;
-        if (type == FindFriendsListCellHeader.TWITTER && objects.size() == parent.followingTwitter.size())
+        if (type == FindFriendsListCellHeader.TWITTER && objects.size() == findFriendsActivity.followingTwitter.size())
             return true;
         return false;
     }
@@ -173,22 +182,41 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         View view;
         if (type == FindFriendsListCellHeader.FACEBOOK) {
             view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content_invite_facebook, null);
-            view.findViewById(R.id.no_content_facebook_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    parent.addFBAccount();
-                }
-            });
+
+            if (findFriendsActivity.userManager.getUser().getFacebookAccount() != null) {
+                ((TextView) view.findViewById(R.id.no_content_textview2)).setText(datasource.noContentString());
+                ((TextView) view.findViewById(R.id.no_content_facebook_btn_text)).setText("Share on Facebook");
+                view.findViewById(R.id.no_content_facebook_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        findFriendsActivity.facebookManager.postOnWall("Testing", findFriendsActivity);
+                    }
+                });
+            } else {
+                view.findViewById(R.id.no_content_facebook_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        findFriendsActivity.addFBAccount();
+                    }
+                });
+            }
         } else if (type == FindFriendsListCellHeader.TWITTER) {
             view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content_invite_twitter, null);
-            view.findViewById(R.id.no_content_twitter_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    parent.addTwitterAccount();
-                }
-            });
-        } else
+
+            if (findFriendsActivity.userManager.getUser().getTwitterAccount() != null) {
+                ((TextView) view.findViewById(R.id.no_content_textview2)).setText(datasource.noContentString());
+                ((TextView) view.findViewById(R.id.no_content_facebook_btn_text)).setText("Share on Twitter");
+            } else {
+                view.findViewById(R.id.no_content_twitter_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        findFriendsActivity.addTwitterAccount();
+                    }
+                });
+            }
+        } else {
             view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content, null);
+        }
         return view;
     }
 

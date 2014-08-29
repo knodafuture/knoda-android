@@ -37,6 +37,7 @@ public class SharedPrefManager {
     private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
     private static final String TWITTER_AUTH_SCREEN = "TWITTER_AUTH_SCREEN";
     private static final String SAVED_PREDICT_DATE_WALKTHROUGH_KEY = "SAVED_PREDICT_DATE_WALKTHROUGH_KEY";
+    public static final String SAVED_HOMESCREEN_SELECTED = "SAVED_HOMESCREEN_SELECTED";
     private static final String API_URL = "API_URL";
     private Context context;
 
@@ -285,6 +286,17 @@ public class SharedPrefManager {
     public String getObjectString(String name) {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getString(name, null);
+    }
+
+    public void saveBoolean(boolean object, String name) {
+        SharedPreferences sharedPreferences = getSP();
+        Gson gson = GsonF.actory();
+        sharedPreferences.edit().putBoolean(name, object).commit();
+    }
+
+    public boolean getBoolean(String name) {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getBoolean(name, false);
     }
 
 }
