@@ -13,9 +13,11 @@ import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Bus;
 
 import org.apache.http.entity.ContentType;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +42,7 @@ import models.Group;
 import models.GroupInvitation;
 import models.Invitation;
 import models.JoinGroupRequest;
+import models.KnodaInfo;
 import models.Leader;
 import models.LoginRequest;
 import models.LoginResponse;
@@ -469,7 +472,7 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
     }
 
-    public void sendInvitations(final ArrayList<GroupInvitation> invitations, final NetworkCallback<GroupInvitation> callback) {
+    public void sendInvitations(final Collection<GroupInvitation> invitations, final NetworkCallback<GroupInvitation> callback) {
         String url = buildUrl("invitations.json", true, null);
         executeRequest(Request.Method.POST, url, invitations, GroupInvitation.class, callback);
     }
@@ -486,18 +489,25 @@ public class NetworkingManager {
         ParamBuilder builder = ParamBuilder.create();
         builder.add("prediction_id", prediction.id.toString());
         String url = buildUrl("facebook.json", true, builder);
-
         executeRequest(Request.Method.POST, url, null, BaseModel.class, callback);
     }
 
     public void postFacebook(final String message, final NetworkCallback<BaseModel> callback) {
         String url = buildUrl("facebook.json", true, null);
-        executeRequest(Request.Method.POST, url, message, BaseModel.class, callback);
+        JSONObject object= new JSONObject();
+        try {
+            object.put("message", message);
+        }catch (Exception e){}
+        executeRequest(Request.Method.POST, url, object, BaseModel.class, callback);
     }
 
     public void postTwitter(final String message, final NetworkCallback<BaseModel> callback) {
         String url = buildUrl("twitter.json", true, null);
-        executeRequest(Request.Method.POST, url, message, BaseModel.class, callback);
+        JSONObject object= new JSONObject();
+        try {
+            object.put("message", message);
+        }catch (Exception e){}
+        executeRequest(Request.Method.POST, url, object, BaseModel.class, callback);
     }
 
 
@@ -581,9 +591,9 @@ public class NetworkingManager {
         executeListRequest(Request.Method.POST, url, null, TypeTokenFactory.getUserContactTypeToken(), callback);
     }
 
-    public void followUsers(ArrayList<FollowUser> following, final NetworkListCallback<FollowUser> callback) {
+    public void followUsers(Collection<KnodaInfo> following, final NetworkListCallback<FollowUser> callback) {
         String url = buildUrl("followings.json", true, null);
-        executeListRequest(Request.Method.POST, url, null, null, callback);
+        executeListRequest(Request.Method.POST, url, following, null, callback);
     }
 
     public void followUser(FollowUser followUser, final NetworkCallback<Follow> callback) {

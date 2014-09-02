@@ -19,12 +19,14 @@
             android:src="@drawable/search_icon" />
 
         <EditText
+            android:id="@+id/contacts_searchbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="40dp"
             android:hint="Search Contacts..."
             android:textColor="@color/knodaLightGreen"
+            android:singleLine="true"
             android:textColorHint="@color/knodaLightGreen" />
 
     </RelativeLayout>

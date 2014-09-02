@@ -119,7 +119,8 @@ public class MyProfileFragment extends BaseFragment {
             public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
                 if (error == null) {
                     for (SettingsCategory s : object) {
-                        ((MainActivity) getActivity()).settings.put(s.name, s.settings);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).settings.put(s.name, s.settings);
                     }
                 }
             }

@@ -1,10 +1,13 @@
 package views.contacts;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -12,12 +15,15 @@ import com.knoda.knoda.R;
 
 import adapters.PagingAdapter;
 import adapters.UserContactAdapter;
+import butterknife.InjectView;
 import models.UserContact;
 import networking.NetworkListCallback;
 import views.core.BaseListFragment;
 
 public class FindFriendsContactsFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<UserContact> {
     FindFriendsActivity parent;
+    @InjectView(R.id.contacts_searchbar)
+    EditText searchbar;
 
     public FindFriendsContactsFragment() {
     }
@@ -40,6 +46,17 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("FindFriendsContacts");
         pListView.setMode(PullToRefreshBase.Mode.DISABLED);
+        searchbar.setImeActionLabel("Search", KeyEvent.KEYCODE_ENTER);
+        searchbar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event!=null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    System.out.println(v.getText());
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -104,6 +121,8 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
 //                }
 //            }
 //        });
+
+
     }
 
     @Override

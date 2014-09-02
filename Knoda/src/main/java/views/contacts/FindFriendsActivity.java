@@ -39,6 +39,7 @@ import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.TwitterManager;
 import managers.UserManager;
+import models.FollowUser;
 import models.GroupInvitation;
 import models.KnodaInfo;
 import models.ServerError;
@@ -47,6 +48,7 @@ import models.User;
 import models.UserContact;
 import models.UserContacts;
 import networking.NetworkCallback;
+import networking.NetworkListCallback;
 import pubsub.LoginFlowDoneEvent;
 import unsorted.Logger;
 import unsorted.PagerSlidingTabStrip;
@@ -147,20 +149,25 @@ public class FindFriendsActivity extends BaseActivity {
                                 for (String s : inviting.keySet()) {
                                     System.out.println(s);
                                 }
-                                //submit invitations and follow requests here
 
-//                                networkingManager.followUsers(following,new NetworkListCallback<FollowUser>() {
-//                                    @Override
-//                                    public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
-//
-//                                    }
-//                                });
-//                                networkingManager.sendInvitations(inviting, new NetworkCallback<GroupInvitation>() {
-//                                    @Override
-//                                    public void completionHandler(GroupInvitation object, ServerError error) {
-//
-//                                    }
-//                                });
+                                //combine all hashsets
+                                following.putAll(followingFacebook);
+                                following.putAll(followingTwitter);
+
+                                //submit invitations and follow requests here
+                                networkingManager.followUsers(following.values(),new NetworkListCallback<FollowUser>() {
+                                    @Override
+                                    public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
+
+                                    }
+                                });
+
+                                networkingManager.sendInvitations(inviting.values(), new NetworkCallback<GroupInvitation>() {
+                                    @Override
+                                    public void completionHandler(GroupInvitation object, ServerError error) {
+
+                                    }
+                                });
 
                             }
                         })
