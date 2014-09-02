@@ -35,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -74,6 +75,8 @@ import helpers.blur.RenderScriptGaussianBlur;
 import managers.AppOutdatedManager;
 import managers.GcmManager;
 import models.ActivityItem;
+import models.Follow;
+import models.FollowUser;
 import models.Group;
 import models.Invitation;
 import models.Notification;
@@ -134,6 +137,7 @@ public class MainActivity extends BaseActivity {
     private Notification pushNotification;
     private Handler handler = new Handler();
     private boolean userDialogShown = false;
+    public ArrayList<Follow> myfollowing = new ArrayList<Follow>();
     private Runnable userRefreshRunnable = new Runnable() {
         @Override
         public void run() {
@@ -144,6 +148,12 @@ public class MainActivity extends BaseActivity {
         @Override
         public void run() {
             refreshActivities();
+        }
+    };
+    private Runnable followingRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            refreshFollowing();
         }
     };
     private HomeFragment homeFragment = null;
@@ -244,6 +254,7 @@ public class MainActivity extends BaseActivity {
 
         refreshUser();
         refreshActivities();
+        refreshFollowing();
 
         initializeFragmentBackStack();
         //setUpNavigation();
@@ -522,15 +533,15 @@ public class MainActivity extends BaseActivity {
         } else {
             if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
                 onProfile();
-            }else if(sharedPrefManager.getTwitterAuthScreen().equals("findfriends")) {
+            } else if (sharedPrefManager.getTwitterAuthScreen().equals("findfriends")) {
                 sharedPrefManager.setTwitterAuthScreen("");
                 onHome();
                 onFindFriends();
-            }else {
+            } else {
                 onHome();
 
-                AppRater appRater=new AppRater(this);
-                appRater .setMinDaysUntilPrompt(3);
+                AppRater appRater = new AppRater(this);
+                appRater.setMinDaysUntilPrompt(3);
                 appRater.setMinLaunchesUntilPrompt(3);
                 appRater.setMessage("Are you enjoying Knoda? If so, we'd love for you to leave a review!");
                 appRater.setRateButtonText("Yes, I'd love to!");
@@ -682,7 +693,7 @@ public class MainActivity extends BaseActivity {
         onFindFriends();
     }
 
-    private void onFindFriends(){
+    private void onFindFriends() {
         Intent intent = new Intent(this, FindFriendsActivity.class);
         intent.putExtra("cancelable", true);
         startActivity(intent);
@@ -855,6 +866,7 @@ public class MainActivity extends BaseActivity {
                                 userDialogShown = false;
                                 handler.postDelayed(userRefreshRunnable, userRefreshInterval);
                                 handler.postDelayed(activitiesRefreshRunnable, userRefreshInterval);
+                                handler.postDelayed(followingRefreshRunnable, userRefreshInterval);
                             }
                         })
                         .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -863,15 +875,41 @@ public class MainActivity extends BaseActivity {
                                 userDialogShown = false;
                                 refreshUser();
                                 refreshActivities();
+                                refreshFollowing();
                             }
                         })
                         .create();
                 connectedDialog.show();
             }
-
         }
-
     }
+
+    public void refreshFollowing() {
+        if (connectivityManager == null)
+            return;
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            networkingManager.getFollowing(new NetworkListCallback<Follow>() {
+                @Override
+                public void completionHandler(ArrayList<Follow> object, ServerError error) {
+                    if (error != null) {
+                    } else {
+                        myfollowing = object;
+                        handler.postDelayed(followingRefreshRunnable, userRefreshInterval);
+                    }
+                }
+            });
+        }
+    }
+
+    public Follow checkIfFollowingUser(int userid) {
+        for (Follow f : myfollowing) {
+            if (f.leader_id == userid)
+                return f;
+        }
+        return null;
+    }
+
 
     public void refreshActivities() {
         if (connectivityManager == null)
@@ -896,7 +934,6 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
-
     }
 
     public void setActivitiesDot(boolean seen, boolean fromActivity) {
@@ -929,8 +966,6 @@ public class MainActivity extends BaseActivity {
         else {
             return getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
         }
-
-
     }
 
     private void createTransparentBackground() {
@@ -971,6 +1006,47 @@ public class MainActivity extends BaseActivity {
             //debuggable variable will remain false
         }
         return debuggable;
+    }
+
+
+    public void followUser(final Button followBtn, final View cover) {
+        boolean following = (Boolean) cover.getTag();
+        final int id = Integer.parseInt((String) followBtn.getTag());
+
+        if (!following) {
+            FollowUser followUser = new FollowUser();
+            followUser.leader_id = id;
+            networkingManager.followUser(followUser, new NetworkCallback<Follow>() {
+                @Override
+                public void completionHandler(Follow object, ServerError error) {
+                    myfollowing.add(object);
+                    userManager.getUser().following_count++;
+                    cover.setTag(true);
+                    followBtn.setTag(object.id + "");
+                    followBtn.setEnabled(true);
+                    cover.setVisibility(View.GONE);
+                    followBtn.setBackgroundResource(R.drawable.follow_btn_active);
+                }
+            });
+        } else {
+            networkingManager.unfollowUser(id, new NetworkCallback<FollowUser>() {
+                @Override
+                public void completionHandler(FollowUser object, ServerError error) {
+                    for (Follow f : myfollowing) {
+                        if (f.id == id) {
+                            myfollowing.remove(f);
+                            break;
+                        }
+                    }
+                    userManager.getUser().following_count--;
+                    cover.setTag(false);
+                    followBtn.setTag(id + "");
+                    followBtn.setEnabled(true);
+                    cover.setVisibility(View.GONE);
+                    followBtn.setBackgroundResource(R.drawable.follow_btn);
+                }
+            });
+        }
     }
 
 

@@ -1,6 +1,5 @@
 package adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -25,6 +24,7 @@ import com.knoda.knoda.R;
 import helpers.AdapterHelper;
 import models.ActivityItem;
 import models.ActivityItemType;
+import models.Follow;
 import models.Invitation;
 import models.Prediction;
 import models.ServerError;
@@ -43,7 +43,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     static ColorStateList bragcolor;
     static ColorStateList settlecolor;
     static ColorStateList groupcolor;
-    final Activity activity;
+    final MainActivity activity;
     BitmapDrawable userPic;
     String filter = "all";
     int pixelToDP = 1;
@@ -57,7 +57,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     View.OnClickListener settleClick;
     View.OnClickListener groupClick;
 
-    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, final Activity activity) {
+    public ActivityAdapter(Context context, PagingAdapterDatasource<ActivityItem> datasource, ImageLoader imageLoader, final MainActivity activity) {
         super(context, datasource, imageLoader);
         this.activity = activity;
         userPic = (BitmapDrawable) activity.getResources().getDrawable(R.drawable.ic_notification_avatar);
@@ -208,8 +208,9 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         }
     }
 
-    private void updateFollows(ActivityListFollowCell cell, ActivityItem activityItem) {
-        cell.username.setText(activityItem.title);
+    private void updateFollows(final ActivityListFollowCell cell, ActivityItem activityItem) {
+        cell.username.setText(activityItem.body);
+        cell.title.setText(activityItem.title);
         setImageUrl(cell.iconImageView, activityItem.image_url);
         cell.followbutton.setTag(activityItem.target);
         cell.cover.setVisibility(View.GONE);
@@ -219,6 +220,26 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             activityDot.setVisibility(View.VISIBLE);
         else
             activityDot.setVisibility(View.INVISIBLE);
+
+        Follow f = activity.checkIfFollowingUser(Integer.parseInt(activityItem.target));
+        if (f != null) {
+            cell.followbutton.setBackgroundResource(R.drawable.follow_btn_active);
+            cell.cover.setTag(true);
+            cell.followbutton.setTag(f.id+"");
+        } else {
+            cell.followbutton.setBackgroundResource(R.drawable.follow_btn);
+            cell.cover.setTag(true);
+            cell.followbutton.setTag(activityItem.target+"");
+        }
+
+        cell.followbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cell.cover.setVisibility(View.VISIBLE);
+                cell.followbutton.setEnabled(false);
+                activity.followUser(cell.followbutton,cell.cover);
+            }
+        });
 
     }
 
@@ -352,6 +373,4 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         else
             return "Sorry, you don't have any activity to view.";
     }
-
-
 }

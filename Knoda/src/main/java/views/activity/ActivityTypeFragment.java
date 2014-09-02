@@ -125,7 +125,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 
     @Override
     public PagingAdapter getAdapter() {
-        ActivityAdapter adapter1 = new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader(), getActivity());
+        ActivityAdapter adapter1 = new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader(), (MainActivity) getActivity());
         String cachedObject = sharedPrefManager.getObjectString(screenNumber + "activity");
         if (cachedObject != null) {
             Gson gson = GsonF.actory();

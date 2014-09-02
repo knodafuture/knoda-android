@@ -8,6 +8,7 @@ import models.ActivityItem;
 import models.Comment;
 import models.Contest;
 import models.ContestUser;
+import models.Follow;
 import models.Group;
 import models.Leader;
 import models.Member;
@@ -79,6 +80,10 @@ public class TypeTokenFactory {
 
     public static TypeToken getUserContactTypeToken() {
         return new TypeToken<ArrayList<UserContact>>() {
+        };
+    }
+    public static TypeToken getFollowTypeToken() {
+        return new TypeToken<ArrayList<Follow>>() {
         };
     }
 }

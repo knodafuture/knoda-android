@@ -516,6 +516,12 @@ public class NetworkingManager {
         executeRequest(Request.Method.GET, url, null, Contest.class, callback);
     }
 
+    public void getFollowing(final NetworkListCallback<Follow> callback) {
+        String url = buildUrl("followings.json", true, null);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getFollowTypeToken(), callback);
+    }
+
+
     public void getContests(String filter, final NetworkListCallback<Contest> callback) {
         ParamBuilder builder = ParamBuilder.create();
         if (filter != null)
