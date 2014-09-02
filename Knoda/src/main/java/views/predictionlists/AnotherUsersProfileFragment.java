@@ -56,12 +56,14 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
                     user = object;
 
                     ((AnotherUsersProfileAdapter) adapter).setUser(object);
-                    if (user.following_id != null)
-                        menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
-                    else
-                        menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);
+                    if (menu != null && menu.findItem(R.id.action_follow) != null && menu.findItem(R.id.action_follow).getActionView() != null) {
+                        if (user.following_id != null)
+                            menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
+                        else
+                            menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);
 
-                    setTitle(object.username.toUpperCase());
+                        setTitle(object.username.toUpperCase());
+                    }
 
                 }
             }

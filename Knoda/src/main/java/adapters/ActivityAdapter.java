@@ -187,19 +187,39 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             return super.getView(position, convertView, parent);
         ActivityItem item = getItem(position);
 
-        ActivityListWinLossCell listItem = (ActivityListWinLossCell) AdapterHelper.getConvertViewSafely(convertView, ActivityListWinLossCell.class);
-        if (listItem == null)
-            listItem = (ActivityListWinLossCell) LayoutInflater.from(context).inflate(R.layout.list_cell_activity_winloss, null);
+        if (item.type == ActivityItemType.FOLLOWING) {
+            ActivityListFollowCell listItem = (ActivityListFollowCell) AdapterHelper.getConvertViewSafely(convertView, ActivityListFollowCell.class);
+            if (listItem == null)
+                listItem = (ActivityListFollowCell) LayoutInflater.from(context).inflate(R.layout.list_cell_activity_follows, null);
 
-        listItem.setTag(item);
-        listItem.winlossbutton.setTag(item);
+            listItem.setTag(item);
+            updateFollows(listItem, item);
+            return listItem;
 
-        update(listItem, item);
-        return listItem;
+        } else {
+            ActivityListWinLossCell listItem = (ActivityListWinLossCell) AdapterHelper.getConvertViewSafely(convertView, ActivityListWinLossCell.class);
+            if (listItem == null)
+                listItem = (ActivityListWinLossCell) LayoutInflater.from(context).inflate(R.layout.list_cell_activity_winloss, null);
 
+            listItem.setTag(item);
+            listItem.winlossbutton.setTag(item);
+            update(listItem, item);
+            return listItem;
+        }
     }
 
-    private void updateFollows(ActivityListFollowCell cell, ActivityItem activityItem){
+    private void updateFollows(ActivityListFollowCell cell, ActivityItem activityItem) {
+        cell.username.setText(activityItem.title);
+        setImageUrl(cell.iconImageView, activityItem.image_url);
+        cell.followbutton.setTag(activityItem.target);
+        cell.cover.setVisibility(View.GONE);
+
+        ImageView activityDot = (ImageView) cell.findViewById(R.id.activity_dot);
+        if (!activityItem.seen)
+            activityDot.setVisibility(View.VISIBLE);
+        else
+            activityDot.setVisibility(View.INVISIBLE);
+
     }
 
     private void update(View v, ActivityItem activityItem) {
@@ -258,7 +278,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             winlossbutton.setTextColor(settlecolor);
             winlossbutton.setBackgroundResource(R.drawable.settle_selector);
             setUpBody(winlosscomment, true);
-        }else{
+        } else {
             v.setVisibility(View.GONE);
         }
 
