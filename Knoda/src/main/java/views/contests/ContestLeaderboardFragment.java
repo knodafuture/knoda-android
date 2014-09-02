@@ -71,7 +71,7 @@ public class ContestLeaderboardFragment extends BaseFragment {
         final int onesp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 1, getActivity().getResources().getDisplayMetrics());
         Point size = new Point();
         display.getSize(size);
-        int screenwidth = size.x;
+        //int screenwidth = size.x;
 
         tabs.setIndicatorHeight(onedp * 4);
         tabs.setTextSize(onesp * 16);
@@ -88,11 +88,12 @@ public class ContestLeaderboardFragment extends BaseFragment {
             contest.contestStages.add(0, overall);
         }
 
-        if (contest.contestStages.size() > 2) {
-            tabs.setTabWidth((int) (screenwidth * 1.0f / 3));
-        } else {
-            tabs.setTabWidth((int) (screenwidth * 1.0f) / contest.contestStages.size());
-        }
+//        if (contest.contestStages.size() > 2) {
+//            tabs.setTabWidth((int) (screenwidth * 1.0f / 3));
+//        } else {
+//            tabs.setTabWidth((int) (screenwidth * 1.0f) / contest.contestStages.size());
+//        }
+
         if (contest.contestStages.size() == 1)
             tabs.setVisibility(View.GONE);
     }
