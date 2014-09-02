@@ -159,7 +159,7 @@ public class GcmIntentService extends IntentService {
                                                                                 spinner.hide();
                                                                                 AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(Integer.parseInt(pushNotification.id));
                                                                                 mainActivity.pushFragment(fragment);
-                                                                            } else{
+                                                                            } else {
                                                                                 mainActivity.onActivity();
                                                                                 spinner.hide();
                                                                             }
@@ -168,9 +168,7 @@ public class GcmIntentService extends IntentService {
                                                                 }
 
                                         );
-                                    } else
-
-                                    {
+                                    } else{
                                         userManager.loginAsGuest(new NetworkCallback<User>() {
                                             @Override
                                             public void completionHandler(User object, ServerError error) {

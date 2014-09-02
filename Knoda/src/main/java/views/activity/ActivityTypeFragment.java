@@ -138,7 +138,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 
     @Override
     public void getObjectsAfterObject(ActivityItem object, final NetworkListCallback<ActivityItem> callback) {
-        int lastId = object == null ? 0 : object.id;
+        final int lastId = object == null ? 0 : object.id;
         String filter = null;
         if (screenNumber == 1)
             filter = "expired";
@@ -151,7 +151,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
             @Override
             public void completionHandler(ArrayList<ActivityItem> object, ServerError error) {
                 callback.completionHandler(object, error);
-                if (error == null) {
+                if (error == null && lastId == 0) {
                     sharedPrefManager.saveObjectString(object, screenNumber + "activity");
                 }
             }

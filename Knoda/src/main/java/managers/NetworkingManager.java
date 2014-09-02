@@ -74,7 +74,7 @@ public class NetworkingManager {
     @Inject
     public SharedPrefManager sharedPrefManager;
     Context context;
-    String api_version = "5";
+    String api_version = "6";
     @Inject
     Bus bus;
     int timeout = 15;//timeout in seconds
@@ -241,6 +241,7 @@ public class NetworkingManager {
     }
 
     public void getActivityItemsAfter(final Integer lastId, String filter, NetworkListCallback<ActivityItem> callback) {
+        //ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit().add("challenged", "true");
 
         ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit();
         if (filter != null)
