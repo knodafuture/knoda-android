@@ -1,19 +1,23 @@
 package adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.util.TypedValue;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
 
 import helpers.AdapterHelper;
+import models.BaseModel;
 import models.GroupInvitation;
+import models.ServerError;
 import models.UserContact;
+import networking.NetworkCallback;
 import views.contacts.FindFriendsActivity;
 import views.contacts.FindFriendsListCell;
 import views.contacts.FindFriendsListCellHeader;
@@ -53,12 +57,18 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        findFriendsActivity.facebookManager.postOnWall("Testing!!!!!", findFriendsActivity);
+                        shareFacebook();
                     }
                 });
                 return v;
             } else if (type == FindFriendsListCellHeader.TWITTER) {
                 View v = LayoutInflater.from(context).inflate(R.layout.list_cell_share_twitter, null);
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shareTwitter();
+                    }
+                });
                 return v;
             }
         }
@@ -189,7 +199,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                 view.findViewById(R.id.no_content_facebook_btn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        findFriendsActivity.facebookManager.postOnWall("Testing", findFriendsActivity);
+                        shareFacebook();
                     }
                 });
             } else {
@@ -205,7 +215,13 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
 
             if (findFriendsActivity.userManager.getUser().getTwitterAccount() != null) {
                 ((TextView) view.findViewById(R.id.no_content_textview2)).setText(datasource.noContentString());
-                ((TextView) view.findViewById(R.id.no_content_facebook_btn_text)).setText("Share on Twitter");
+                ((TextView) view.findViewById(R.id.no_content_twitter_btn_text)).setText("Share on Twitter");
+                view.findViewById(R.id.no_content_twitter_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shareTwitter();
+                    }
+                });
             } else {
                 view.findViewById(R.id.no_content_twitter_btn).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -220,5 +236,53 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         return view;
     }
 
-}
 
+    private void shareFacebook() {
+        LayoutInflater li = findFriendsActivity.getLayoutInflater();
+        final View postView = li.inflate(R.layout.dialog_post, null);
+        final EditText msg = (EditText) postView.findViewById(R.id.message);
+
+        final AlertDialog alert = new AlertDialog.Builder(findFriendsActivity)
+                .setPositiveButton("Post", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        findFriendsActivity.networkingManager.postFacebook(msg.getText().toString(), new NetworkCallback<BaseModel>() {
+                            @Override
+                            public void completionHandler(BaseModel object, ServerError error) {
+
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .setView(postView)
+                .setTitle("Share on Facebook")
+                .create();
+        alert.show();
+    }
+
+    private void shareTwitter() {
+        LayoutInflater li = findFriendsActivity.getLayoutInflater();
+        final View postView = li.inflate(R.layout.dialog_post, null);
+        final EditText msg = (EditText) postView.findViewById(R.id.message);
+
+        final AlertDialog alert = new AlertDialog.Builder(findFriendsActivity)
+                .setPositiveButton("Tweet", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        findFriendsActivity.networkingManager.postTwitter(msg.getText().toString(), new NetworkCallback<BaseModel>() {
+                            @Override
+                            public void completionHandler(BaseModel object, ServerError error) {
+
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .setView(postView)
+                .setTitle("Share on Twitter")
+                .create();
+        alert.show();
+    }
+
+}

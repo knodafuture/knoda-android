@@ -241,8 +241,6 @@ public class NetworkingManager {
     }
 
     public void getActivityItemsAfter(final Integer lastId, String filter, NetworkListCallback<ActivityItem> callback) {
-        //ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit().add("challenged", "true");
-
         ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit();
         if (filter != null)
             builder.add("filter", filter);
@@ -491,6 +489,17 @@ public class NetworkingManager {
 
         executeRequest(Request.Method.POST, url, null, BaseModel.class, callback);
     }
+
+    public void postFacebook(final String message, final NetworkCallback<BaseModel> callback) {
+        String url = buildUrl("facebook.json", true, null);
+        executeRequest(Request.Method.POST, url, message, BaseModel.class, callback);
+    }
+
+    public void postTwitter(final String message, final NetworkCallback<BaseModel> callback) {
+        String url = buildUrl("twitter.json", true, null);
+        executeRequest(Request.Method.POST, url, message, BaseModel.class, callback);
+    }
+
 
     public void sharePredictionOnTwitter(final Prediction prediction, final NetworkCallback<BaseModel> callback) {
         ParamBuilder builder = ParamBuilder.create();
