@@ -146,7 +146,7 @@ public class NetworkingManager {
         if (tag != null)
             builder.add("tag", tag);
 
-        String url = buildUrl("predictions.json", false, builder);
+        String url = buildUrl("predictions.json", true, builder);
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
