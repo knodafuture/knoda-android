@@ -13,6 +13,7 @@ import com.flurry.android.FlurryAgent;
 import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
 import listeners.PredictionSwipeListener;
+import models.Challenge;
 import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
@@ -42,7 +43,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
 
     @Override
     public PagingAdapter getAdapter() {
-        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus,null);
+        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, null);
     }
 
     @Override
@@ -86,6 +87,9 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPredictionAgreed(final PredictionListCell cell) {
         cell.setAgree(true);
         Prediction p = (Prediction) adapter.getItem((Integer) cell.getTag());
+        if (p.challenge == null) {
+            p.challenge = new Challenge();
+        }
         p.challenge.agree = true;
         adapter.setItem((Integer) cell.getTag(), p);
 
@@ -109,6 +113,9 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     public void onPredictionDisagreed(final PredictionListCell cell) {
         cell.setAgree(false);
         Prediction p = (Prediction) adapter.getItem((Integer) cell.getTag());
+        if (p.challenge == null) {
+            p.challenge = new Challenge();
+        }
         p.challenge.agree = false;
         adapter.setItem((Integer) cell.getTag(), p);
 
