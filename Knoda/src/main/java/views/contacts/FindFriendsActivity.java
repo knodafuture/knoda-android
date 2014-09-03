@@ -15,8 +15,10 @@ import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -79,9 +81,15 @@ public class FindFriendsActivity extends BaseActivity {
 
     @OnClick(R.id.wall_close)
     public void close() {
+
+        LayoutInflater li = getLayoutInflater();
+        final View postView = li.inflate(R.layout.dialog_upload_phone, null);
+        final EditText msg = (EditText) postView.findViewById(R.id.message);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Phone Number")
-                .setMessage("Make it easier for friends to find you on Knoda by allowing us to have your number. We promise not to call after midnight (or ever).")
+                .setView(postView)
+                .setCancelable(false)
                 .setNegativeButton("Nope", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

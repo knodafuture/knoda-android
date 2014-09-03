@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/social_post"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make it easier for friends to find you on Knoda by allowing us to have your number. We promise not to call after midnight (or ever)." />
+
+    <EditText
+        android:id="@+id/message"
+        style="@style/knoda_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="(XXX)-XXX-XXX"
+        android:inputType="phone"
+        android:text="">
+
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>
