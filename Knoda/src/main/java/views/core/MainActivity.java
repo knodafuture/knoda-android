@@ -693,7 +693,7 @@ public class MainActivity extends BaseActivity {
         onFindFriends();
     }
 
-    private void onFindFriends() {
+    public void onFindFriends() {
         Intent intent = new Intent(this, FindFriendsActivity.class);
         intent.putExtra("cancelable", true);
         startActivity(intent);

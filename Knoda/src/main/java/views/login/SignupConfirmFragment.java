@@ -17,6 +17,7 @@ import helpers.TypefaceSpan;
 import models.User;
 import views.contacts.FindFriendsFragment;
 import views.core.BaseDialogFragment;
+import views.core.MainActivity;
 
 /**
  * Created by nick on 6/11/14.
@@ -41,10 +42,8 @@ public class SignupConfirmFragment extends BaseDialogFragment {
     void onClick() {
         try {
             sharedPrefManager.setShouldShowVotingWalkthrough(true);
-            //bus.post(new LoginFlowDoneEvent());
-            //BEGIN CONTACT IMPORT
-            FindFriendsFragment fragment = FindFriendsFragment.newInstance();
-            pushFragment(fragment);
+
+            ((MainActivity)getActivity()).onFindFriends();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
