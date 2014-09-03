@@ -3,6 +3,7 @@ package adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,7 +247,6 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         LayoutInflater li = findFriendsActivity.getLayoutInflater();
         final View postView = li.inflate(R.layout.dialog_post, null);
         final EditText msg = (EditText) postView.findViewById(R.id.message);
-
         final AlertDialog alert = new AlertDialog.Builder(findFriendsActivity)
                 .setPositiveButton("Post", new DialogInterface.OnClickListener() {
                     @Override
@@ -271,7 +271,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         LayoutInflater li = findFriendsActivity.getLayoutInflater();
         final View postView = li.inflate(R.layout.dialog_post, null);
         final EditText msg = (EditText) postView.findViewById(R.id.message);
-
+        msg.setFilters(new InputFilter[]{new InputFilter.LengthFilter(140)});
         final AlertDialog alert = new AlertDialog.Builder(findFriendsActivity)
                 .setPositiveButton("Tweet", new DialogInterface.OnClickListener() {
                     @Override

@@ -66,7 +66,8 @@ public class FindFriendsListCell extends RelativeLayout {
             plusBtn.setVisibility(GONE);
             avatar.setVisibility(VISIBLE);
             findViewById(R.id.findfriends_listcell_avatar_container).setVisibility(VISIBLE);
-            avatar.setImageUrl(userContact.knodaInfo.avatar.small, parent.networkingManager.getImageLoader());
+            if (userContact.knodaInfo != null && userContact.knodaInfo.avatar != null && userContact.knodaInfo.avatar.small != null)
+                avatar.setImageUrl(userContact.knodaInfo.avatar.small, parent.networkingManager.getImageLoader());
             checkBox.setChecked(followingSet.containsKey(userContact.contact_id));
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -88,8 +89,10 @@ public class FindFriendsListCell extends RelativeLayout {
             String d = "";
             if (userContact.phones != null && userContact.phones.size() > 0) {
                 for (String s : userContact.phones) {
-                    String phone = "(" + s.substring(0, 3) + ") " + s.substring(3, 6) + "-" + s.substring(6);
-                    d += phone + ", ";
+                    if (s.length() > 6) {
+                        String phone = "(" + s.substring(0, 3) + ") " + s.substring(3, 6) + "-" + s.substring(6);
+                        d += phone + ", ";
+                    }
                 }
             }
             if (userContact.emails != null && userContact.emails.size() > 0) {
@@ -97,7 +100,8 @@ public class FindFriendsListCell extends RelativeLayout {
                     d += s + ", ";
                 }
             }
-            description.setText(d.substring(0, d.length() - 2));
+            if (d.length() > 2)
+                description.setText(d.substring(0, d.length() - 2));
             if (parent.inviting.containsKey(userContact.contact_id))
                 plusBtn.setBackgroundResource(R.drawable.ic_invite);
             else
