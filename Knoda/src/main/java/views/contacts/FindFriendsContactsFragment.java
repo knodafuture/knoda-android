@@ -1,12 +1,13 @@
 package views.contacts;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -24,6 +25,7 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
     FindFriendsActivity parent;
     @InjectView(R.id.contacts_searchbar)
     EditText searchbar;
+    UserContactAdapter adapter;
 
     public FindFriendsContactsFragment() {
     }
@@ -50,11 +52,31 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
         searchbar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event!=null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    System.out.println(v.getText());
+                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    //System.out.println(v.getText());
+                    String searchterm = v.getText().toString();
+                    adapter.searchFor(searchterm);
                     return true;
                 }
                 return false;
+            }
+        });
+        searchbar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()==0){
+                    adapter.resetSearch();
+                }
             }
         });
     }
@@ -66,7 +88,8 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
 
     @Override
     public PagingAdapter getAdapter() {
-        return new UserContactAdapter(FindFriendsListCellHeader.CONTACTS, getActivity(), this, parent.networkingManager.getImageLoader(), parent);
+        adapter = new UserContactAdapter(FindFriendsListCellHeader.CONTACTS, getActivity(), this, parent.networkingManager.getImageLoader(), parent);
+        return adapter;
     }
 
     @Override
@@ -74,55 +97,6 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
         if (parent.localContacts == null)
             return;
         parent.networkingManager.matchPhoneContacts(parent.localContacts, callback);
-    }
-
-    @Override
-    public void onListViewCreated(ListView listView) {
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                //final Contest contest = (Contest) adapter.getItem(i - 1);
-//                //i needs to be greater than list of known knoda friends +1 because of headers
-//                final UserContact userContact = (UserContact) adapter.getItem(i - 2);
-//                userContact.selected = true;
-//                adapter.setItem(i - 2, userContact);
-//                if (userContact.knodaInfo == null) {
-//                    //if they have multiple forms of id
-//                    ArrayList<String> contactTypes = new ArrayList<String>();
-//                    if (userContact.emails != null)
-//                        for (String s : userContact.emails) {
-//                            contactTypes.add(s);
-//                        }
-//                    if (userContact.phones != null)
-//                        for (String s : userContact.phones) {
-//                            contactTypes.add(s);
-//                        }
-//
-//                    if (contactTypes.size() > 1) {
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                        final CharSequence[] array = contactTypes.toArray(new CharSequence[0]);
-//                        builder.setTitle("Choose a contact method for " + userContact.contact_id);
-//                        builder.setItems(array, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                addInvitation(array[which].toString());
-//                            }
-//                        });
-//                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-//                            }
-//                        });
-//                        builder.show();
-//                    } else if (contactTypes.size() == 1) {
-//                        addInvitation(contactTypes.get(0));
-//                    }
-//                }
-//            }
-//        });
-
-
     }
 
     @Override

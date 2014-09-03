@@ -25,8 +25,8 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="40dp"
             android:hint="Search Contacts..."
-            android:textColor="@color/knodaLightGreen"
             android:singleLine="true"
+            android:textColor="@color/knodaLightGreen"
             android:textColorHint="@color/knodaLightGreen" />
 
     </RelativeLayout>
@@ -37,6 +37,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/contacts_search_container"
         android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp"
+        android:isScrollContainer="false" />
 
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package views.contacts;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -80,8 +79,27 @@ public class FindFriendsActivity extends BaseActivity {
 
     @OnClick(R.id.wall_close)
     public void close() {
-        finish();
-        bus.post(new LoginFlowDoneEvent());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Phone Number")
+                .setMessage("Make it easier for friends to find you on Knoda by allowing us to have your number. We promise not to call after midnight (or ever).")
+                .setNegativeButton("Nope", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        bus.post(new LoginFlowDoneEvent());
+                    }
+                })
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //Upload number here
+
+                        finish();
+                        bus.post(new LoginFlowDoneEvent());
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -155,7 +173,7 @@ public class FindFriendsActivity extends BaseActivity {
                                 following.putAll(followingTwitter);
 
                                 //submit invitations and follow requests here
-                                networkingManager.followUsers(following.values(),new NetworkListCallback<FollowUser>() {
+                                networkingManager.followUsers(following.values(), new NetworkListCallback<FollowUser>() {
                                     @Override
                                     public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
 

@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
 
+import java.util.ArrayList;
+
 import helpers.AdapterHelper;
 import models.BaseModel;
 import models.GroupInvitation;
@@ -27,6 +29,8 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
 
     public int type;
     FindFriendsActivity findFriendsActivity;
+    ArrayList<UserContact> searchedContacts = new ArrayList<UserContact>();
+    ArrayList<UserContact> allContacts;
 
     public UserContactAdapter(int type, Context context, PagingAdapterDatasource<UserContact> datasource, ImageLoader imageLoader, FindFriendsActivity activity) {
         super(context, datasource, imageLoader);
@@ -250,7 +254,8 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                         findFriendsActivity.networkingManager.postFacebook(msg.getText().toString(), new NetworkCallback<BaseModel>() {
                             @Override
                             public void completionHandler(BaseModel object, ServerError error) {
-                                Toast.makeText(findFriendsActivity,"Facebook post sucessful", Toast.LENGTH_SHORT).show();
+                                if (error == null)
+                                    Toast.makeText(findFriendsActivity, "Facebook post successful!", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -275,7 +280,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                             @Override
                             public void completionHandler(BaseModel object, ServerError error) {
                                 if (error == null)
-                                    Toast.makeText(findFriendsActivity,"Tweet sucessful", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(findFriendsActivity, "Tweet successful!", Toast.LENGTH_SHORT).show();
 
                             }
                         });
@@ -287,5 +292,32 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                 .create();
         alert.show();
     }
+
+    public void searchFor(String searchterm) {
+        if (allContacts == null) {
+            allContacts = objects;
+        } else
+            objects = allContacts;
+        if(searchterm.length()==0) {
+            resetSearch();
+            return;
+        }
+
+        searchedContacts.clear();
+        for (UserContact u : objects) {
+            if (u.contact_id.toLowerCase().indexOf(searchterm.toLowerCase()) != -1) {
+                searchedContacts.add(u);
+            }
+        }
+        objects = searchedContacts;
+        notifyDataSetChanged();
+    }
+
+    public void resetSearch() {
+        searchedContacts.clear();
+        objects=allContacts;
+        notifyDataSetChanged();
+    }
+
 
 }

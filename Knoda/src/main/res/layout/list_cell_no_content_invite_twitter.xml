@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/no_content_imageview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/invite_twitter_placeholder" />
 
@@ -35,7 +35,8 @@
         android:text="Find more friends by connecting to Twitter"
         android:textAlignment="center"
         android:textColor="@color/darkGray"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        android:lines="2"/>
 
     <LinearLayout
         android:id="@+id/no_content_twitter_btn"
