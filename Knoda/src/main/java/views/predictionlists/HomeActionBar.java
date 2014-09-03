@@ -15,11 +15,10 @@ import com.knoda.knoda.R;
  */
 public class HomeActionBar extends RelativeLayout {
 
-    private HomeActionBarCallbacks callbacks;
     public TextView viewAllTV;
     public TextView followingTV;
-
     public int selected;
+    private HomeActionBarCallbacks callbacks;
 
     public HomeActionBar(Context context) {
         super(context);
@@ -75,14 +74,6 @@ public class HomeActionBar extends RelativeLayout {
         this.callbacks = callbacks;
     }
 
-    public interface HomeActionBarCallbacks {
-        void onSearchClick();
-
-        void onAddFriendsClick();
-
-        void onSwitchFeed(int number);
-    }
-
     public void setFilter(int number) {
         selected = number;
         if (number == 0) {
@@ -93,6 +84,14 @@ public class HomeActionBar extends RelativeLayout {
             followingTV.setTextColor(getContext().getResources().getColor(R.color.knodaDarkGreen));
         }
         callbacks.onSwitchFeed(number);
+    }
+
+    public interface HomeActionBarCallbacks {
+        void onSearchClick();
+
+        void onAddFriendsClick();
+
+        void onSwitchFeed(int number);
     }
 
 

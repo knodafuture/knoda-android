@@ -21,7 +21,7 @@ public class FollowUserAdapter extends PagingAdapter<User> {
     public FollowUserAdapter(Context context, PagingAdapterDatasource<User> datasource, ImageLoader imageLoader, FollowFeedFragment followFeedFragment) {
         super(context, datasource, imageLoader);
         this.imageLoader = imageLoader;
-        this.followFeedFragment=followFeedFragment;
+        this.followFeedFragment = followFeedFragment;
     }
 
     @Override
@@ -33,14 +33,14 @@ public class FollowUserAdapter extends PagingAdapter<User> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
 
-        if (position >= objects.size() + 1 || objects.size()==0)
+        if (position >= objects.size() + 1 || objects.size() == 0)
             return super.getView(position, convertView, parent);
 
         FollowUserListCell listCell = (FollowUserListCell) AdapterHelper.getConvertViewSafely(convertView, FollowUserListCell.class);
         if (listCell == null) {
             listCell = (FollowUserListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_follow_user, null);
         }
-        listCell.setUser(objects.get(position),imageLoader,followFeedFragment);
+        listCell.setUser(objects.get(position), imageLoader, followFeedFragment);
 
         return listCell;
     }

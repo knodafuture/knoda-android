@@ -82,6 +82,7 @@ public class TypeTokenFactory {
         return new TypeToken<ArrayList<UserContact>>() {
         };
     }
+
     public static TypeToken getFollowTypeToken() {
         return new TypeToken<ArrayList<Follow>>() {
         };

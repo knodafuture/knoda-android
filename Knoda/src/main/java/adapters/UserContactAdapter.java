@@ -298,7 +298,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
             allContacts = objects;
         } else
             objects = allContacts;
-        if(searchterm.length()==0) {
+        if (searchterm.length() == 0) {
             resetSearch();
             return;
         }
@@ -314,8 +314,10 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
     }
 
     public void resetSearch() {
-        searchedContacts.clear();
-        objects=allContacts;
+        if (searchedContacts != null)
+            searchedContacts.clear();
+        if (allContacts != null)
+            objects = allContacts;
         notifyDataSetChanged();
     }
 

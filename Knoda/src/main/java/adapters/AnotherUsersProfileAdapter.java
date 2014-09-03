@@ -25,7 +25,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
 
     public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, MainActivity mainActivity) {
         super(context, datasource, imageLoader, new Bus(), true);
-        this.mainActivity=mainActivity;
+        this.mainActivity = mainActivity;
     }
 
     @Override

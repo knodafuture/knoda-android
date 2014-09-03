@@ -22,6 +22,7 @@ import models.SocialAccount;
 @Singleton
 public class SharedPrefManager {
 
+    public static final String SAVED_HOMESCREEN_SELECTED = "SAVED_HOMESCREEN_SELECTED";
     private static final String SAVED_USERNAME_KEY = "SAVEDUSERNAME";
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
@@ -37,7 +38,6 @@ public class SharedPrefManager {
     private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
     private static final String TWITTER_AUTH_SCREEN = "TWITTER_AUTH_SCREEN";
     private static final String SAVED_PREDICT_DATE_WALKTHROUGH_KEY = "SAVED_PREDICT_DATE_WALKTHROUGH_KEY";
-    public static final String SAVED_HOMESCREEN_SELECTED = "SAVED_HOMESCREEN_SELECTED";
     private static final String API_URL = "API_URL";
     private Context context;
 

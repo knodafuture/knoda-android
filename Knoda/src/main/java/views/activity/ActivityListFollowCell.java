@@ -10,8 +10,6 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
-import models.ActivityItem;
-
 /**
  * Created by nick on 2/1/14.
  */
@@ -34,7 +32,7 @@ public class ActivityListFollowCell extends RelativeLayout {
     public void onFinishInflate() {
         iconImageView = (NetworkImageView) findViewById(R.id.winloss_imageview);
         username = (TextView) findViewById(R.id.winloss_comment);
-        title=(TextView)findViewById(R.id.winloss_title);
+        title = (TextView) findViewById(R.id.winloss_title);
         followbutton = (Button) findViewById(R.id.follow_user_button);
         cover = findViewById(R.id.follow_user_button_cover);
         divider = findViewById(R.id.divider);

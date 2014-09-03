@@ -50,35 +50,42 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
         pListView.setMode(PullToRefreshBase.Mode.DISABLED);
         searchbar.setImeActionLabel("Search", KeyEvent.KEYCODE_ENTER);
         searchbar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    //System.out.println(v.getText());
-                    String searchterm = v.getText().toString();
-                    adapter.searchFor(searchterm);
-                    return true;
-                }
-                return false;
-            }
-        });
+                                                @Override
+                                                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                                                    if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                                                        //System.out.println(v.getText());
+                                                        if (v.getText() != null) {
+                                                            String searchterm = v.getText().toString();
+                                                            adapter.searchFor(searchterm);
+                                                        }
+                                                        return true;
+                                                    }
+                                                    return false;
+
+                                                }
+                                            }
+
+        );
         searchbar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                             @Override
+                                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                                             }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                             @Override
+                                             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            }
+                                             }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.length()==0){
-                    adapter.resetSearch();
-                }
-            }
-        });
+                                             @Override
+                                             public void afterTextChanged(Editable s) {
+                                                 if (s.length() == 0) {
+                                                     adapter.resetSearch();
+                                                 }
+                                             }
+                                         }
+
+        );
     }
 
     @Override
@@ -93,7 +100,8 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
     }
 
     @Override
-    public void getObjectsAfterObject(UserContact object, final NetworkListCallback<UserContact> callback) {
+    public void getObjectsAfterObject(UserContact object,
+                                      final NetworkListCallback<UserContact> callback) {
         if (parent.localContacts == null)
             return;
         parent.networkingManager.matchPhoneContacts(parent.localContacts, callback);

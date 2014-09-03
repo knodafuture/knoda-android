@@ -225,11 +225,11 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         if (f != null) {
             cell.followbutton.setBackgroundResource(R.drawable.follow_btn_active);
             cell.cover.setTag(true);
-            cell.followbutton.setTag(f.id+"");
+            cell.followbutton.setTag(f.id + "");
         } else {
             cell.followbutton.setBackgroundResource(R.drawable.follow_btn);
             cell.cover.setTag(true);
-            cell.followbutton.setTag(activityItem.target+"");
+            cell.followbutton.setTag(activityItem.target + "");
         }
 
         cell.followbutton.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +237,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             public void onClick(View v) {
                 cell.cover.setVisibility(View.VISIBLE);
                 cell.followbutton.setEnabled(false);
-                activity.followUser(cell.followbutton,cell.cover);
+                activity.followUser(cell.followbutton, cell.cover);
             }
         });
 

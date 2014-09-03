@@ -3,6 +3,7 @@ package views.contacts;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Point;
@@ -10,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager;
+import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
@@ -62,8 +64,8 @@ public class FindFriendsActivity extends BaseActivity {
     public HashMap<String, KnodaInfo> followingFacebook = new HashMap<String, KnodaInfo>();
     public HashMap<String, KnodaInfo> followingTwitter = new HashMap<String, KnodaInfo>();
     public HashMap<String, GroupInvitation> inviting = new HashMap<String, GroupInvitation>();
-
-
+    public FacebookManager facebookManager;
+    public TwitterManager twitterManager;
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
     @InjectView(R.id.findfriends_title)
@@ -76,15 +78,18 @@ public class FindFriendsActivity extends BaseActivity {
     Bus bus = new Bus();
     UserContacts localContacts;
     ProgressDialog progressDialog;
-    public FacebookManager facebookManager;
-    public TwitterManager twitterManager;
 
     @OnClick(R.id.wall_close)
     public void close() {
 
+        TelephonyManager manager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+        String phone = manager.getLine1Number();
+
         LayoutInflater li = getLayoutInflater();
         final View postView = li.inflate(R.layout.dialog_upload_phone, null);
         final EditText msg = (EditText) postView.findViewById(R.id.message);
+        if (phone.length() > 0)
+            msg.setText(phone);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Phone Number")
@@ -300,24 +305,6 @@ public class FindFriendsActivity extends BaseActivity {
         return s.replaceAll("[^\\d]", "");
     }
 
-    private class getContactsTask extends AsyncTask<Void, Void, Collection<UserContact>> {
-        public ArrayList<UserContact> contacts;
-
-        @Override
-        protected Collection<UserContact> doInBackground(Void... params) {
-            return getContacts().values();
-        }
-
-        @Override
-        protected void onPostExecute(Collection<UserContact> contacts1) {
-            localContacts = new UserContacts();
-            localContacts.contacts = contacts1;
-            progressDialog.hide();
-            setupUI();
-        }
-    }
-
-
     public void addFBAccount() {
         spinner.show();
         facebookManager.openSession(this, new NetworkCallback<SocialAccount>() {
@@ -380,6 +367,23 @@ public class FindFriendsActivity extends BaseActivity {
                 });
             }
         });
+    }
+
+    private class getContactsTask extends AsyncTask<Void, Void, Collection<UserContact>> {
+        public ArrayList<UserContact> contacts;
+
+        @Override
+        protected Collection<UserContact> doInBackground(Void... params) {
+            return getContacts().values();
+        }
+
+        @Override
+        protected void onPostExecute(Collection<UserContact> contacts1) {
+            localContacts = new UserContacts();
+            localContacts.contacts = contacts1;
+            progressDialog.hide();
+            setupUI();
+        }
     }
 
 

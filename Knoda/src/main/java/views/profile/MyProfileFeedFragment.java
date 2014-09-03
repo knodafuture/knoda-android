@@ -46,7 +46,7 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
 
     boolean resizing = false;
     android.os.Handler h;
-    int visible, scroll_state=0, headerSize = 0;
+    int visible, scroll_state = 0, headerSize = 0;
 
     public MyProfileFeedFragment() {
     }
@@ -111,7 +111,7 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (parentFragment==null || !parentFragment.loaded || resizing == true || scroll_state == SCROLL_STATE_IDLE)
+                if (parentFragment == null || !parentFragment.loaded || resizing == true || scroll_state == SCROLL_STATE_IDLE)
                     return;
                 resizing = true;
                 if (visible == 0)

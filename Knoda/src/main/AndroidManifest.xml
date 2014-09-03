@@ -68,8 +68,8 @@
             android:label="@string/app_name"
             android:parentActivityName="views.core.MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:theme="@style/Theme.Transparent.NoActionBar"></activity>
+            android:theme="@style/Theme.Transparent.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name="com.android.camera.CropImage"
             android:label="@string/app_name"

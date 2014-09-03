@@ -102,6 +102,12 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
             return view;
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content_follow_feed, null);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    homeFragment.onAddFriendsClick();
+                }
+            });
             return view;
         }
     }

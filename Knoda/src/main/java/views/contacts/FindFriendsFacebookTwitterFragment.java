@@ -2,22 +2,14 @@ package views.contacts;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.knoda.knoda.R;
 
 import adapters.PagingAdapter;
 import adapters.UserContactAdapter;
-import butterknife.OnClick;
-import models.ServerError;
-import models.SocialAccount;
-import models.User;
 import models.UserContact;
-import networking.NetworkCallback;
 import networking.NetworkListCallback;
-import unsorted.Logger;
 import views.core.BaseListFragment;
 
 public class FindFriendsFacebookTwitterFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<UserContact> {

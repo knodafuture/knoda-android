@@ -29,8 +29,8 @@
                     android:id="@+id/profile_followers_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/profile_followers"
@@ -38,15 +38,14 @@
                         android:layout_height="wrap_content"
                         android:text="10,888"
                         android:textColor="@color/knodaDarkGreen"
-                        android:textSize="24sp"
-                        />
+                        android:textSize="24sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="FOLLOWERS"
                         android:textColor="@color/knodaDarkGreen"
-                        android:textSize="11sp"/>
+                        android:textSize="11sp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -83,8 +82,8 @@
                     android:id="@+id/profile_following_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/profile_following"
@@ -92,15 +91,14 @@
                         android:layout_height="wrap_content"
                         android:text="13"
                         android:textColor="@color/knodaDarkGreen"
-                        android:textSize="24sp"
-                        />
+                        android:textSize="24sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="FOLLOWING"
                         android:textColor="@color/knodaDarkGreen"
-                        android:textSize="11sp"/>
+                        android:textSize="11sp" />
                 </LinearLayout>
             </RelativeLayout>
 

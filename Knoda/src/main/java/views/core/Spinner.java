@@ -21,7 +21,7 @@ public class Spinner {
     public void show() {
         //spinnerFragment.show(mActivity.getFragmentManager().beginTransaction().addToBackStack("spinner"), "spinner");
         //progressDialog = new ProgressDialog(mActivity);
-        progressDialog=progressDialog.show(mActivity, null, null, true, false);
+        progressDialog = progressDialog.show(mActivity, null, null, true, false);
         progressDialog.setContentView(new ProgressBar(mActivity));
     }
 

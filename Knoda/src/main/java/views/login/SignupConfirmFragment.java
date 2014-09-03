@@ -15,7 +15,6 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import helpers.TypefaceSpan;
 import models.User;
-import views.contacts.FindFriendsFragment;
 import views.core.BaseDialogFragment;
 import views.core.MainActivity;
 
@@ -43,7 +42,7 @@ public class SignupConfirmFragment extends BaseDialogFragment {
         try {
             sharedPrefManager.setShouldShowVotingWalkthrough(true);
 
-            ((MainActivity)getActivity()).onFindFriends();
+            ((MainActivity) getActivity()).onFindFriends();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

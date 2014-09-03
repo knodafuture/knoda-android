@@ -24,7 +24,7 @@ public class GroupPredictionAdapter extends PredictionAdapter {
     public GroupPredictionListHeader.GroupPredictionListHeaderDelegate delegate;
 
     public GroupPredictionAdapter(Context context, PagingAdapter.PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus) {
-        super(context, datasource, imageLoader, bus,null);
+        super(context, datasource, imageLoader, bus, null);
         bus.register(this);
     }
 

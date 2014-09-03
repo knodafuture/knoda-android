@@ -124,6 +124,7 @@ public class MainActivity extends BaseActivity {
     public BitmapDrawable blurredBackground;
     public String mCurrentPhotoPath = null;
     public Uri mCapturedImageURI = null;
+    public ArrayList<Follow> myfollowing = new ArrayList<Follow>();
     @Inject
     AppOutdatedManager appOutdatedManager;
     @InjectView(R.id.navbar)
@@ -137,7 +138,6 @@ public class MainActivity extends BaseActivity {
     private Notification pushNotification;
     private Handler handler = new Handler();
     private boolean userDialogShown = false;
-    public ArrayList<Follow> myfollowing = new ArrayList<Follow>();
     private Runnable userRefreshRunnable = new Runnable() {
         @Override
         public void run() {

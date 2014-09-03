@@ -494,19 +494,21 @@ public class NetworkingManager {
 
     public void postFacebook(final String message, final NetworkCallback<BaseModel> callback) {
         String url = buildUrl("facebook.json", true, null);
-        JSONObject object= new JSONObject();
+        JSONObject object = new JSONObject();
         try {
             object.put("message", message);
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
         executeRequest(Request.Method.POST, url, object, BaseModel.class, callback);
     }
 
     public void postTwitter(final String message, final NetworkCallback<BaseModel> callback) {
         String url = buildUrl("twitter.json", true, null);
-        JSONObject object= new JSONObject();
+        JSONObject object = new JSONObject();
         try {
             object.put("message", message);
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
         executeRequest(Request.Method.POST, url, object, BaseModel.class, callback);
     }
 

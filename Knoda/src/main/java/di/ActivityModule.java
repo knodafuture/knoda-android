@@ -24,7 +24,6 @@ import views.avatar.UserAvatarChooserFragment;
 import views.contacts.FindFriendsActivity;
 import views.contacts.FindFriendsContactsFragment;
 import views.contacts.FindFriendsFacebookTwitterFragment;
-import views.contacts.FindFriendsFragment;
 import views.contests.ContestDetailFragment;
 import views.contests.ContestFragment;
 import views.contests.ContestLeaderboardFeedFragment;
@@ -108,7 +107,6 @@ import views.settings.SettingsFragment;
                 ContestDetailFragment.class,
                 ContestLeaderboardFragment.class,
                 ContestLeaderboardFeedFragment.class,
-                FindFriendsFragment.class,
                 FindFriendsContactsFragment.class,
                 FindFriendsActivity.class,
                 FindFriendsFacebookTwitterFragment.class,

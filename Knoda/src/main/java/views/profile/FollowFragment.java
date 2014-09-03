@@ -33,8 +33,8 @@ public class FollowFragment extends BaseFragment {
     User user;
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
-    private ViewPager mViewPager;
     int startTab = 0;
+    private ViewPager mViewPager;
 
     public FollowFragment() {
     }

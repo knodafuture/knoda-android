@@ -24,7 +24,7 @@
         android:text="Let's Party."
         android:textAlignment="center"
         android:textColor="@color/darkGray"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/no_content_textview2"
@@ -32,11 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:lines="2"
         android:text="Find more friends by connecting to Twitter"
         android:textAlignment="center"
         android:textColor="@color/darkGray"
-        android:textSize="14sp"
-        android:lines="2"/>
+        android:textSize="14sp" />
 
     <LinearLayout
         android:id="@+id/no_content_twitter_btn"
@@ -49,8 +49,8 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/twitter_button_background"
         android:clickable="true"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"

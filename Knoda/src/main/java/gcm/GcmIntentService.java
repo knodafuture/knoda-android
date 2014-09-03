@@ -168,7 +168,7 @@ public class GcmIntentService extends IntentService {
                                                                 }
 
                                         );
-                                    } else{
+                                    } else {
                                         userManager.loginAsGuest(new NetworkCallback<User>() {
                                             @Override
                                             public void completionHandler(User object, ServerError error) {

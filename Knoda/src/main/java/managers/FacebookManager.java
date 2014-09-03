@@ -1,18 +1,14 @@
 package managers;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.widget.Toast;
 
-import com.facebook.FacebookException;
-import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionDefaultAudience;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
-import com.facebook.widget.WebDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
