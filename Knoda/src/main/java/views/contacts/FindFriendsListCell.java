@@ -1,15 +1,13 @@
 package views.contacts;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +15,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import adapters.UserContactAdapter;
 import models.GroupInvitation;
@@ -111,18 +110,63 @@ public class FindFriendsListCell extends RelativeLayout {
                         plusBtn.setBackgroundResource(R.drawable.ic_invite_active);
                         parent.setSubmitBtnText();
                     } else {
-                        GroupInvitation groupInvitation = new GroupInvitation();
-                        if (userContact.emails != null && userContact.emails.size() > 0)
-                            groupInvitation.email = (String) userContact.emails.toArray()[0];
-                        if (userContact.phones != null && userContact.phones.size() > 0)
-                            groupInvitation.phoneNumber = (String) userContact.phones.toArray()[0];
-                        parent.inviting.put(userContact.contact_id, groupInvitation);
-                        plusBtn.setBackgroundResource(R.drawable.ic_invite);
-                        parent.setSubmitBtnText();
+
+                        final HashSet<String> options = new HashSet<String>();
+                        if (userContact.emails != null) {
+                            for (String s : userContact.emails) {
+                                options.add(s);
+                            }
+                        }
+                        if (userContact.phones != null) {
+                            for (String s : userContact.phones) {
+                                options.add(s);
+                            }
+                        }
+
+
+                        if (options.size() == 0) {
+                            return;
+                        } else if (options.size() == 1) {
+                            GroupInvitation groupInvitation = new GroupInvitation();
+                            String temp = (String) options.toArray()[0];
+                            if (temp.indexOf("@") != -1)
+                                groupInvitation.email = temp;
+                            else
+                                groupInvitation.phoneNumber = temp;
+                            parent.inviting.put(userContact.contact_id, groupInvitation);
+                            plusBtn.setBackgroundResource(R.drawable.ic_invite);
+                            parent.setSubmitBtnText();
+
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(parent);
+                            final CharSequence[] array = options.toArray(new CharSequence[0]);
+                            builder.setTitle("Choose a contact method for " + userContact.contact_id);
+                            builder.setItems(array, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    GroupInvitation groupInvitation = new GroupInvitation();
+                                    String temp = (String) options.toArray()[which];
+                                    if (temp.indexOf("@") != -1)
+                                        groupInvitation.email = temp;
+                                    else
+                                        groupInvitation.phoneNumber = temp;
+                                    parent.inviting.put(userContact.contact_id, groupInvitation);
+                                    plusBtn.setBackgroundResource(R.drawable.ic_invite);
+                                    parent.setSubmitBtnText();
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            builder.show();
+
+                        }
                     }
                 }
             });
-
         }
     }
 }

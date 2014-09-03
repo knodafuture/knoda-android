@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
@@ -249,7 +250,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                         findFriendsActivity.networkingManager.postFacebook(msg.getText().toString(), new NetworkCallback<BaseModel>() {
                             @Override
                             public void completionHandler(BaseModel object, ServerError error) {
-
+                                Toast.makeText(findFriendsActivity,"Facebook post sucessful", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -273,6 +274,8 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                         findFriendsActivity.networkingManager.postTwitter(msg.getText().toString(), new NetworkCallback<BaseModel>() {
                             @Override
                             public void completionHandler(BaseModel object, ServerError error) {
+                                if (error == null)
+                                    Toast.makeText(findFriendsActivity,"Tweet sucessful", Toast.LENGTH_SHORT).show();
 
                             }
                         });
