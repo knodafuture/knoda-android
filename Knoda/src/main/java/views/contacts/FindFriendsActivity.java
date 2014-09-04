@@ -82,6 +82,8 @@ public class FindFriendsActivity extends BaseActivity {
     UserContacts localContacts;
     ProgressDialog progressDialog;
 
+    int invitesubmits=0;
+
     @OnClick(R.id.wall_close)
     public void close() {
 
@@ -189,20 +191,30 @@ public class FindFriendsActivity extends BaseActivity {
                                 following.putAll(followingFacebook);
                                 following.putAll(followingTwitter);
 
+                                spinner.show();
                                 //submit invitations and follow requests here
                                 networkingManager.followUsers(following.values(), new NetworkListCallback<FollowUser>() {
                                     @Override
                                     public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
-
+                                        invitesubmits++;
+                                        if(invitesubmits==2){
+                                            spinner.hide();
+                                            close();
+                                        }
                                     }
                                 });
 
                                 networkingManager.sendInvitations(inviting.values(), new NetworkCallback<GroupInvitation>() {
                                     @Override
                                     public void completionHandler(GroupInvitation object, ServerError error) {
-
+                                        invitesubmits++;
+                                        if(invitesubmits==2){
+                                            spinner.hide();
+                                            close();
+                                        }
                                     }
                                 });
+
 
                             }
                         })
