@@ -55,15 +55,11 @@ public class FacebookManager {
         return null;
     }
 
-    public void openSession(Activity activity, final NetworkCallback<SocialAccount> callback) {
+    public Session openSession(Activity activity, final NetworkCallback<SocialAccount> callback) {
 
         callbacks.add(callback);
 
-        openActiveSession(activity, true, getCallback(), Arrays.asList("email"));
-    }
-
-    public Session openSessionNoLogin(Activity activity) {
-        return openActiveSession(activity, false, getCallback(), Arrays.asList("email", "publish_actions"));
+        return openActiveSession(activity, true, getCallback(), Arrays.asList("email"));
     }
 
     public void share(final Prediction prediction, final Activity activity, final NetworkCallback<BaseModel> callback) {

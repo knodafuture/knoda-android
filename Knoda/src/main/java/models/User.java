@@ -53,6 +53,9 @@ public class User extends BaseModel {
     @SerializedName("following_id")
     public Integer following_id;
 
+    @SerializedName("phone")
+    String phoneNumber;
+
     @SerializedName("social_accounts")
     public ArrayList<SocialAccount> socialAccounts;
 

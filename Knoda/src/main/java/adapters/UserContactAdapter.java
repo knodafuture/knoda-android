@@ -66,10 +66,22 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                         shareFacebook();
                     }
                 });
+                v.findViewById(R.id.no_content_facebook_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shareFacebook();
+                    }
+                });
                 return v;
             } else if (type == FindFriendsListCellHeader.TWITTER) {
                 View v = LayoutInflater.from(context).inflate(R.layout.list_cell_share_twitter, null);
                 v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shareTwitter();
+                    }
+                });
+                v.findViewById(R.id.no_content_facebook_btn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         shareTwitter();
@@ -247,6 +259,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         LayoutInflater li = findFriendsActivity.getLayoutInflater();
         final View postView = li.inflate(R.layout.dialog_post, null);
         final EditText msg = (EditText) postView.findViewById(R.id.message);
+        msg.setHint("Facebook post");
         final AlertDialog alert = new AlertDialog.Builder(findFriendsActivity)
                 .setPositiveButton("Post", new DialogInterface.OnClickListener() {
                     @Override
@@ -271,6 +284,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         LayoutInflater li = findFriendsActivity.getLayoutInflater();
         final View postView = li.inflate(R.layout.dialog_post, null);
         final EditText msg = (EditText) postView.findViewById(R.id.message);
+        msg.setHint("Tweet");
         msg.setFilters(new InputFilter[]{new InputFilter.LengthFilter(140)});
         final AlertDialog alert = new AlertDialog.Builder(findFriendsActivity)
                 .setPositiveButton("Tweet", new DialogInterface.OnClickListener() {

@@ -13,7 +13,6 @@ import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Bus;
 
 import org.apache.http.entity.ContentType;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -494,22 +493,16 @@ public class NetworkingManager {
 
     public void postFacebook(final String message, final NetworkCallback<BaseModel> callback) {
         String url = buildUrl("facebook.json", true, null);
-        JSONObject object = new JSONObject();
-        try {
-            object.put("message", message);
-        } catch (Exception e) {
-        }
-        executeRequest(Request.Method.POST, url, object, BaseModel.class, callback);
+        Message m = new Message();
+        m.message = message;
+        executeRequest(Request.Method.POST, url, m, BaseModel.class, callback);
     }
 
     public void postTwitter(final String message, final NetworkCallback<BaseModel> callback) {
         String url = buildUrl("twitter.json", true, null);
-        JSONObject object = new JSONObject();
-        try {
-            object.put("message", message);
-        } catch (Exception e) {
-        }
-        executeRequest(Request.Method.POST, url, object, BaseModel.class, callback);
+        Message m = new Message();
+        m.message = message;
+        executeRequest(Request.Method.POST, url, m, BaseModel.class, callback);
     }
 
 
@@ -664,7 +657,9 @@ public class NetworkingManager {
     }
 
     private <T extends BaseModel> void executeRequestWithTimeout(int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback, Integer timeout) {
-        Logger.log("Executing request" + url);
+        Logger.log("Executing request " + url);
+        if (payload != null)
+            Logger.log("Payload " + payload.toString());
         Response.Listener<T> responseListener = new Response.Listener<T>() {
             @Override
             public void onResponse(T t) {
@@ -689,6 +684,7 @@ public class NetworkingManager {
 
         if (payload != null)
             request.setPayload(payload);
+
 
         mRequestQueue.add(request);
     }
@@ -737,4 +733,13 @@ public class NetworkingManager {
 
         return false;
     }
+
+    public class Message {
+        public Message() {
+        }
+
+        ;
+        public String message;
+    }
+
 }

@@ -13,6 +13,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
 import models.User;
+import views.core.MainActivity;
+import views.predictionlists.AnotherUsersProfileFragment;
 
 /**
  * Created by jeff on 7/31/2014.
@@ -25,6 +27,8 @@ public class FollowUserListCell extends RelativeLayout {
     public Button follow;
     public NetworkImageView avatar;
     public View buttonCover;
+    public View imageContainer;
+    public View nameContainer;
 
     public FollowUserListCell(Context context) {
         super(context);
@@ -41,6 +45,8 @@ public class FollowUserListCell extends RelativeLayout {
         follow = (Button) findViewById(R.id.follow_user_button);
         avatar = (NetworkImageView) findViewById(R.id.follow_user_avatar_imageview);
         buttonCover = findViewById(R.id.follow_user_button_cover);
+        imageContainer = findViewById(R.id.follow_user_avatar_container);
+        nameContainer = findViewById(R.id.follow_user_username_container);
     }
 
     public void setUser(final User user, ImageLoader imageLoader, final FollowFeedFragment followFeedFragment) {
@@ -64,6 +70,14 @@ public class FollowUserListCell extends RelativeLayout {
                 followFeedFragment.followUser(user, follow, buttonCover);
             }
         });
-
+        OnClickListener ocl = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(user.id);
+                ((MainActivity) followFeedFragment.getActivity()).pushFragment(fragment);
+            }
+        };
+        imageContainer.setOnClickListener(ocl);
+        nameContainer.setOnClickListener(ocl);
     }
 }

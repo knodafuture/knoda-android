@@ -23,12 +23,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.knoda.knoda.R;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -313,19 +316,20 @@ public class FindFriendsActivity extends BaseActivity {
                 if (error != null) {
                     spinner.hide();
                     errorReporter.showError(error);
+                    Toast.makeText(FindFriendsActivity.this, "Error connecting to Facebook", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                System.out.println("account:" + object + " " + object.providerName);
 
                 userManager.addSocialAccount(object, new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User user, ServerError error) {
                         spinner.hide();
                         if (error != null) {
-                            //parent.errorReporter.showError(error);
+                            Toast.makeText(FindFriendsActivity.this, "Error connecting to Facebook", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         recreate();
-                        //updateUser(user);
                     }
                 });
             }
@@ -342,6 +346,12 @@ public class FindFriendsActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        spinner.hide();
+    }
+
     public void finishAddingTwitterAccount() {
         Logger.log("FINISHING TWITTER -------");
         spinner.show();
@@ -349,7 +359,7 @@ public class FindFriendsActivity extends BaseActivity {
             @Override
             public void completionHandler(SocialAccount object, ServerError error) {
                 if (error != null) {
-                    //errorReporter.showError(error);
+                    Toast.makeText(FindFriendsActivity.this, "Error connecting to Twitter", Toast.LENGTH_SHORT).show();
                     spinner.hide();
                     return;
                 }
@@ -359,10 +369,11 @@ public class FindFriendsActivity extends BaseActivity {
                     public void completionHandler(User user, ServerError error) {
                         spinner.hide();
                         if (error != null) {
+                            Toast.makeText(FindFriendsActivity.this, "Error connecting to Twitter", Toast.LENGTH_SHORT).show();
                             errorReporter.showError(error);
                             return;
                         }
-                        //updateUser(user);
+                        FindFriendsActivity.this.recreate();
                     }
                 });
             }
@@ -380,7 +391,14 @@ public class FindFriendsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Collection<UserContact> contacts1) {
             localContacts = new UserContacts();
-            localContacts.contacts = contacts1;
+            ArrayList<UserContact> sortList = new ArrayList<UserContact>(contacts1);
+            Collections.sort(sortList, new Comparator<UserContact>() {
+                @Override
+                public int compare(UserContact lhs, UserContact rhs) {
+                    return lhs.contact_id.toLowerCase().compareTo(rhs.contact_id.toLowerCase());
+                }
+            });
+            localContacts.contacts = sortList;
             progressDialog.hide();
             setupUI();
         }
