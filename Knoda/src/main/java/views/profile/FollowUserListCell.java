@@ -60,6 +60,13 @@ public class FollowUserListCell extends RelativeLayout {
             follow.setBackgroundResource(R.drawable.follow_btn_active);
         else
             follow.setBackgroundResource(R.drawable.follow_btn);
+
+        //if yourself
+        if (((MainActivity) followFeedFragment.getActivity()).userManager.getUser().id == user.id) {
+            follow.setVisibility(GONE);
+            follow.setEnabled(false);
+        }
+
         if (user.avatar != null)
             avatar.setImageUrl(user.avatar.small, imageLoader);
         follow.setOnClickListener(new OnClickListener() {

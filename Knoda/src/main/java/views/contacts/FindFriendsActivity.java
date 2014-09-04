@@ -120,11 +120,12 @@ public class FindFriendsActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        bus.register(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_findfriends);
         ButterKnife.inject(this);
-        bus.register(this);
+
         networkingManager = new NetworkingManager(this);
         networkingManager.sharedPrefManager = new SharedPrefManager(this);
         userManager = new UserManager(networkingManager, sharedPrefManager);
@@ -373,7 +374,7 @@ public class FindFriendsActivity extends BaseActivity {
                             errorReporter.showError(error);
                             return;
                         }
-                        FindFriendsActivity.this.recreate();
+                        recreate();
                     }
                 });
             }
