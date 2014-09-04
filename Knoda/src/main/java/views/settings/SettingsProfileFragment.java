@@ -74,6 +74,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
         }
     };
     private PreferenceScreen preferenceScreen;
+    boolean addingTwitter=false;
 
     public static SettingsProfileFragment newInstance() {
         SettingsProfileFragment fragment = new SettingsProfileFragment();
@@ -105,14 +106,14 @@ public class SettingsProfileFragment extends PreferenceFragment {
 
     public void buildPage() {
         preferenceScreen.removeAll();
-        userPic = (BitmapDrawable) getActivity().getResources().getDrawable(R.drawable.ic_notification_avatar);
+        //userPic = getActivity().getResources().getDrawable(R.drawable.ic_notification_avatar);
 
         Context c = getActivity();
         Preference p1 = new Preference(c);
         p1.setTitle("Profile photo");
         p1.setSummary("Keep it fresh, tap to update your mugshot");
         p1.setKey("photo");
-        p1.setIcon(userPic);
+        //p1.setIcon(userPic);
         p1.setOnPreferenceClickListener(clickListener);
         preferenceScreen.addPreference(p1);
 
@@ -198,7 +199,11 @@ public class SettingsProfileFragment extends PreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        buildPage();
+
+        if(addingTwitter){
+            finishAddingTwitterAccount();
+        }else
+            buildPage();
     }
 
 
@@ -243,7 +248,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
                             errorReporter.showError(error);
                             return;
                         }
-                        updateUser(user);
+                        updateUser();
                     }
                 });
             }
@@ -275,7 +280,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
                             errorReporter.showError(error);
                             return;
                         }
-                        updateUser(object);
+                        updateUser();
                     }
                 });
             }
@@ -297,11 +302,12 @@ public class SettingsProfileFragment extends PreferenceFragment {
     private void addTwitterAccount() {
         if (twitterManager.hasAuthInfo()) {
             finishAddingTwitterAccount();
+        }else{
+            spinner.show();
+            addingTwitter=true;
+            sharedPrefManager.setTwitterAuthScreen("profile");
+            twitterManager.openSession(getActivity());
         }
-
-        spinner.show();
-        sharedPrefManager.setTwitterAuthScreen("profile");
-        twitterManager.openSession(getActivity());
     }
 
     private void finishAddingTwitterAccount() {
@@ -311,6 +317,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
             @Override
             public void completionHandler(SocialAccount object, ServerError error) {
                 if (error != null) {
+                    addingTwitter=false;
                     errorReporter.showError(error);
                     spinner.hide();
                     return;
@@ -319,12 +326,13 @@ public class SettingsProfileFragment extends PreferenceFragment {
                 userManager.addSocialAccount(object, new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User user, ServerError error) {
+                        addingTwitter=false;
                         spinner.hide();
                         if (error != null) {
                             errorReporter.showError(error);
                             return;
                         }
-                        updateUser(user);
+                        updateUser();
                     }
                 });
             }
@@ -357,7 +365,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
                             return;
                         }
                         twitterManager.clearTwitterInfo();
-                        updateUser(object);
+                        updateUser();
                     }
                 });
             }
@@ -369,17 +377,14 @@ public class SettingsProfileFragment extends PreferenceFragment {
         });
     }
 
-    private void updateUser(User user) {
-
-        if (user == null)
-            return;
-
-        userManager.refreshUser(new NetworkCallback<User>() {
-            @Override
-            public void completionHandler(User object, ServerError error) {
-                buildPage();
-            }
-        });
+    private void updateUser() {
+        buildPage();
+//        userManager.refreshUser(new NetworkCallback<User>() {
+//            @Override
+//            public void completionHandler(User object, ServerError error) {
+//                buildPage();
+//            }
+//        });
     }
 
     private boolean validateChangePassword(final View changePasswordView) {
@@ -459,7 +464,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
                     @Override
                     public void completionHandler(User u, ServerError error) {
                         if (error == null) {
-                            updateUser(u);
+                            updateUser();
                             dialog.dismiss();
                             hideKeyboard();
                         } else {
@@ -516,7 +521,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
                     @Override
                     public void completionHandler(User u, ServerError error) {
                         if (error == null) {
-                            updateUser(u);
+                            updateUser();
                             dialog.dismiss();
                             hideKeyboard();
                         } else {

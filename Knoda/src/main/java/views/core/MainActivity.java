@@ -532,7 +532,12 @@ public class MainActivity extends BaseActivity {
             f.show(getFragmentManager(), "avatar");
         } else {
             if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
-                onProfile();
+                userManager.refreshUser(new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        onProfile();
+                    }
+                });
             } else if (sharedPrefManager.getTwitterAuthScreen().equals("findfriends")) {
                 sharedPrefManager.setTwitterAuthScreen("");
                 onHome();
@@ -901,6 +906,22 @@ public class MainActivity extends BaseActivity {
             });
         }
     }
+    public void refreshFollowing2() {
+        if (connectivityManager == null)
+            return;
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            networkingManager.getFollowing(new NetworkListCallback<Follow>() {
+                @Override
+                public void completionHandler(ArrayList<Follow> object, ServerError error) {
+                    if (error != null) {
+                    } else {
+                        myfollowing = object;
+                    }
+                }
+            });
+        }
+    }
 
     public Follow checkIfFollowingUser(int userid) {
         for (Follow f : myfollowing) {
@@ -1019,31 +1040,36 @@ public class MainActivity extends BaseActivity {
             networkingManager.followUser(followUser, new NetworkCallback<Follow>() {
                 @Override
                 public void completionHandler(Follow object, ServerError error) {
-                    myfollowing.add(object);
-                    userManager.getUser().following_count++;
-                    cover.setTag(true);
-                    followBtn.setTag(object.id + "");
-                    followBtn.setEnabled(true);
-                    cover.setVisibility(View.GONE);
-                    followBtn.setBackgroundResource(R.drawable.follow_btn_active);
+                    if (error == null) {
+                        myfollowing.add(object);
+                        userManager.getUser().following_count++;
+                        cover.setTag(true);
+                        followBtn.setTag(object.id + "");
+                        followBtn.setEnabled(true);
+                        cover.setVisibility(View.GONE);
+                        followBtn.setBackgroundResource(R.drawable.follow_btn_active);
+                    }
                 }
             });
         } else {
             networkingManager.unfollowUser(id, new NetworkCallback<FollowUser>() {
                 @Override
                 public void completionHandler(FollowUser object, ServerError error) {
-                    for (Follow f : myfollowing) {
-                        if (f.id == id) {
-                            myfollowing.remove(f);
-                            break;
+                    if (error == null) {
+                        for (Follow f : myfollowing) {
+                            if (f.id == id) {
+                                myfollowing.remove(f);
+                                break;
+                            }
                         }
+                        userManager.getUser().following_count--;
+                        cover.setTag(false);
+                        followBtn.setTag(id + "");
+                        followBtn.setEnabled(true);
+                        cover.setVisibility(View.GONE);
+                        followBtn.setBackgroundResource(R.drawable.follow_btn);
                     }
-                    userManager.getUser().following_count--;
-                    cover.setTag(false);
-                    followBtn.setTag(id + "");
-                    followBtn.setEnabled(true);
-                    cover.setVisibility(View.GONE);
-                    followBtn.setBackgroundResource(R.drawable.follow_btn);
+
                 }
             });
         }

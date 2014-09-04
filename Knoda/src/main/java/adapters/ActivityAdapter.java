@@ -228,7 +228,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             cell.followbutton.setTag(f.id + "");
         } else {
             cell.followbutton.setBackgroundResource(R.drawable.follow_btn);
-            cell.cover.setTag(true);
+            cell.cover.setTag(false);
             cell.followbutton.setTag(activityItem.target + "");
         }
 

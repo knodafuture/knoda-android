@@ -91,7 +91,7 @@ public class FindFriendsActivity extends BaseActivity {
         LayoutInflater li = getLayoutInflater();
         final View postView = li.inflate(R.layout.dialog_upload_phone, null);
         final EditText msg = (EditText) postView.findViewById(R.id.message);
-        if (phone.length() > 0)
+        if (phone != null && phone.length() > 0)
             msg.setText(phone);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

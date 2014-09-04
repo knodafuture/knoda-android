@@ -26,6 +26,7 @@ import models.User;
 import unsorted.Logger;
 import unsorted.PagerSlidingTabStrip;
 import views.core.BaseFragment;
+import views.core.MainActivity;
 
 public class FollowFragment extends BaseFragment {
     View topview;
@@ -125,6 +126,8 @@ public class FollowFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        ((MainActivity) getActivity()).refreshFollowing2();
+
     }
 
 
