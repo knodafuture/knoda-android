@@ -3,6 +3,7 @@ package views.settings;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -69,6 +72,8 @@ public class SettingsProfileFragment extends PreferenceFragment {
                 handleFB();
             } else if (preference.getKey().equals("twitter")) {
                 handleTwitter();
+            } else if (preference.getKey().equals("phone")) {
+                handlePhone();
             }
             return false;
         }
@@ -136,6 +141,15 @@ public class SettingsProfileFragment extends PreferenceFragment {
         p4.setKey("password");
         p4.setOnPreferenceClickListener(clickListener);
         preferenceScreen.addPreference(p4);
+
+
+        Preference p7 = new Preference(c);
+        p7.setTitle(userManager.getUser().phoneNumber != null ? userManager.getUser().phoneNumber : "Phone Number");
+        p7.setSummary(userManager.getUser().phoneNumber != null ? "Phone Number" : "Add your number to help friends on Knoda find you");
+        p7.setKey("phone");
+        p7.setOnPreferenceClickListener(clickListener);
+        preferenceScreen.addPreference(p7);
+
 
         Preference p5 = new Preference(c);
         if (userManager.getUser().getFacebookAccount() != null) {
@@ -375,12 +389,6 @@ public class SettingsProfileFragment extends PreferenceFragment {
 
     private void updateUser() {
         buildPage();
-//        userManager.refreshUser(new NetworkCallback<User>() {
-//            @Override
-//            public void completionHandler(User object, ServerError error) {
-//                buildPage();
-//            }
-//        });
     }
 
     private boolean validateChangePassword(final View changePasswordView) {
@@ -554,6 +562,62 @@ public class SettingsProfileFragment extends PreferenceFragment {
             }
         });
     }
+
+    void handlePhone() {
+        TelephonyManager manager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+        String phone = manager.getLine1Number();
+
+        LayoutInflater li = getActivity().getLayoutInflater();
+        final View postView = li.inflate(R.layout.dialog_upload_phone, null);
+        final EditText msg = (EditText) postView.findViewById(R.id.message);
+        if (phone != null && phone.length() > 0)
+            msg.setText(phone);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Phone Number")
+                .setView(postView)
+                .setCancelable(false)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String phone = msg.getText().toString();
+                        User u = userManager.getUser();
+                        u.phoneNumber = stripChars(phone);
+                        spinner.show();
+                        Toast.makeText(getActivity(), "Setting " + u.phoneNumber, Toast.LENGTH_SHORT).show();
+                        userManager.updateUser(u, new NetworkCallback<User>() {
+                            @Override
+                            public void completionHandler(User object, ServerError error) {
+                                if (error == null) {
+                                    userManager.refreshUser(new NetworkCallback<User>() {
+                                        @Override
+                                        public void completionHandler(User object, ServerError error) {
+                                            spinner.hide();
+                                            buildPage();
+                                        }
+                                    });
+                                    buildPage();
+                                } else {
+                                    spinner.hide();
+                                    Toast.makeText(getActivity(), "Failed to set phone number", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                })
+                .show();
+    }
+
+    public String stripChars(String s) {
+        return s.replaceAll("[^\\d]", "");
+    }
+
 
     @Override
     public void onViewCreated(View v, Bundle b) {

@@ -82,7 +82,7 @@ public class FindFriendsActivity extends BaseActivity {
     UserContacts localContacts;
     ProgressDialog progressDialog;
 
-    int invitesubmits=0;
+    int invitesubmits = 0;
 
     @OnClick(R.id.wall_close)
     public void close() {
@@ -110,11 +110,30 @@ public class FindFriendsActivity extends BaseActivity {
                 .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        //Upload number here
-
-                        finish();
-                        bus.post(new LoginFlowDoneEvent());
+                        String phone = msg.getText().toString();
+                        User u = userManager.getUser();
+                        u.phoneNumber = stripChars(phone);
+                        spinner.show();
+                        Toast.makeText(FindFriendsActivity.this, "Setting " + u.phoneNumber, Toast.LENGTH_SHORT).show();
+                        userManager.updateUser(u, new NetworkCallback<User>() {
+                            @Override
+                            public void completionHandler(User object, ServerError error) {
+                                if (error == null) {
+                                    userManager.refreshUser(new NetworkCallback<User>() {
+                                        @Override
+                                        public void completionHandler(User object, ServerError error) {
+                                            spinner.hide();
+                                            finish();
+                                            bus.post(new LoginFlowDoneEvent());
+                                        }
+                                    });
+                                } else {
+                                    spinner.hide();
+                                    finish();
+                                    bus.post(new LoginFlowDoneEvent());
+                                }
+                            }
+                        });
                     }
                 })
                 .show();
@@ -197,7 +216,7 @@ public class FindFriendsActivity extends BaseActivity {
                                     @Override
                                     public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
                                         invitesubmits++;
-                                        if(invitesubmits==2){
+                                        if (invitesubmits == 2) {
                                             spinner.hide();
                                             close();
                                         }
@@ -208,7 +227,7 @@ public class FindFriendsActivity extends BaseActivity {
                                     @Override
                                     public void completionHandler(GroupInvitation object, ServerError error) {
                                         invitesubmits++;
-                                        if(invitesubmits==2){
+                                        if (invitesubmits == 2) {
                                             spinner.hide();
                                             close();
                                         }

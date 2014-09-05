@@ -54,7 +54,7 @@ public class User extends BaseModel {
     public Integer following_id;
 
     @SerializedName("phone")
-    String phoneNumber;
+    public String phoneNumber;
 
     @SerializedName("social_accounts")
     public ArrayList<SocialAccount> socialAccounts;
