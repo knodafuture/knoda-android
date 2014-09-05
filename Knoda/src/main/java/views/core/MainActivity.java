@@ -542,7 +542,6 @@ public class MainActivity extends BaseActivity {
                     }
                 });
             } else if (sharedPrefManager.getTwitterAuthScreen().equals("findfriends")) {
-                sharedPrefManager.setTwitterAuthScreen("");
                 onHome();
                 onFindFriends();
             } else {

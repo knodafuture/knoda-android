@@ -363,6 +363,12 @@ public class FindFriendsActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         spinner.hide();
+
+        if (sharedPrefManager.getTwitterAuthScreen().equals("findfriends")) {
+            sharedPrefManager.setTwitterAuthScreen("");
+            finishAddingTwitterAccount();
+        }
+
     }
 
     public void finishAddingTwitterAccount() {
@@ -386,7 +392,7 @@ public class FindFriendsActivity extends BaseActivity {
                             errorReporter.showError(error);
                             return;
                         }
-                        recreate();
+                        //recreate();
                     }
                 });
             }
