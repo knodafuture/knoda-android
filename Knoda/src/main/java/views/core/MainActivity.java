@@ -110,6 +110,7 @@ import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
 import views.search.SearchFragment;
 import views.settings.SettingsFragment;
+import views.settings.SettingsProfileFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -536,6 +537,8 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void completionHandler(User object, ServerError error) {
                         onProfile();
+                        SettingsProfileFragment fragment=new SettingsProfileFragment();
+                        pushFragment(fragment);
                     }
                 });
             } else if (sharedPrefManager.getTwitterAuthScreen().equals("findfriends")) {

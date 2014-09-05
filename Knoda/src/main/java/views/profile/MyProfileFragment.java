@@ -165,9 +165,7 @@ public class MyProfileFragment extends BaseFragment {
             changeFilter(R.id.activity_2);
         else
             changeFilter(R.id.activity_1);
-        if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
-            sharedPrefManager.setTwitterAuthScreen("");
-        }
+
         topContainer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {

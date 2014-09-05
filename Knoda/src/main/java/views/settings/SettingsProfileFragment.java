@@ -74,7 +74,6 @@ public class SettingsProfileFragment extends PreferenceFragment {
         }
     };
     private PreferenceScreen preferenceScreen;
-    boolean addingTwitter=false;
 
     public static SettingsProfileFragment newInstance() {
         SettingsProfileFragment fragment = new SettingsProfileFragment();
@@ -199,10 +198,10 @@ public class SettingsProfileFragment extends PreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        if(addingTwitter){
+        if (sharedPrefManager.getTwitterAuthScreen().equals("profile")) {
+            sharedPrefManager.setTwitterAuthScreen("");
             finishAddingTwitterAccount();
-        }else
+        } else
             buildPage();
     }
 
@@ -302,9 +301,8 @@ public class SettingsProfileFragment extends PreferenceFragment {
     private void addTwitterAccount() {
         if (twitterManager.hasAuthInfo()) {
             finishAddingTwitterAccount();
-        }else{
+        } else {
             spinner.show();
-            addingTwitter=true;
             sharedPrefManager.setTwitterAuthScreen("profile");
             twitterManager.openSession(getActivity());
         }
@@ -317,7 +315,6 @@ public class SettingsProfileFragment extends PreferenceFragment {
             @Override
             public void completionHandler(SocialAccount object, ServerError error) {
                 if (error != null) {
-                    addingTwitter=false;
                     errorReporter.showError(error);
                     spinner.hide();
                     return;
@@ -326,7 +323,6 @@ public class SettingsProfileFragment extends PreferenceFragment {
                 userManager.addSocialAccount(object, new NetworkCallback<User>() {
                     @Override
                     public void completionHandler(User user, ServerError error) {
-                        addingTwitter=false;
                         spinner.hide();
                         if (error != null) {
                             errorReporter.showError(error);
