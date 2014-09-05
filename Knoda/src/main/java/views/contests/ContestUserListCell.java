@@ -64,7 +64,7 @@ public class ContestUserListCell extends RelativeLayout {
         winsTV.setText("WINS");
         winsTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         winsTV.setTypeface(thin);
-        avatarImageView.setBackgroundDrawable(null);
+        //avatarImageView.setBackgroundDrawable(null);
         avatarImageView.setImageDrawable(null);
         mask.setVisibility(INVISIBLE);
         this.setLayoutParams(lp_header);
@@ -88,7 +88,7 @@ public class ContestUserListCell extends RelativeLayout {
         winsTV.setText(contestUser.won + "");
         winsTV.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         winsTV.setTypeface(medium);
-        avatarImageView.setBackgroundColor(Color.BLACK);
+        //avatarImageView.setBackgroundColor(Color.BLACK);
         mask.setVisibility(VISIBLE);
     }
 }
