@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="46dp"
+        android:layout_height="66dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -14,7 +14,7 @@
             android:id="@+id/findfriends_listcell_avatar_container"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="15dp">
 
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/findfriends_listcell_avatar_imageview"
@@ -31,18 +31,17 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/findfriends_listcell_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:text="User Name"
                 android:textColor="@color/knodaDarkGreen"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/findfriends_listcell_description"
@@ -50,8 +49,8 @@
                 android:layout_height="wrap_content"
                 android:text="Username"
                 android:textColor="@color/knodaDarkGreen"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
     </LinearLayout>
@@ -59,27 +58,37 @@
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="46dp" />
+        android:layout_height="66dp" />
 
     <CheckBox
         android:id="@+id/findfriends_listcell_check"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="15dp"
         android:button="@drawable/checkbox_selector"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        android:text=""
+        android:textSize="0sp"/>
 
     <Button
         android:id="@+id/findfriends_listcell_btn"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/ic_invite_active"
         android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="#EFEFEF"
+        android:layout_alignParentBottom="true"/>
 
 
 </views.contacts.FindFriendsListCell>

@@ -10,7 +10,7 @@
         android:id="@+id/contacts_search_container"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/knodaDarkGreen">
+        android:background="@color/white">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -26,8 +26,8 @@
             android:layout_marginLeft="40dp"
             android:hint="Search Contacts..."
             android:singleLine="true"
-            android:textColor="@color/knodaLightGreen"
-            android:textColorHint="@color/knodaLightGreen" />
+            android:textColor="@color/knodaDarkGreen"
+            android:textColorHint="@color/knodaDarkGreen" />
 
     </RelativeLayout>
 

@@ -8,8 +8,8 @@
     <Button
         android:id="@+id/wall_close"
         style="@style/xButtonWhite"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_alignParentLeft="false"
         android:layout_alignParentRight="true" />
 
@@ -20,7 +20,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="Find Friends"
-        android:textSize="20sp" />
+        android:textSize="18sp"
+        android:textColor="@color/knodaDarkGreen"/>
 
     <LinearLayout
         android:id="@+id/findfriends_container"
@@ -44,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:text="Follow (4) + Invite (2)" />
+        android:text="Follow (4) + Invite (2)"
+        android:textSize="20sp"/>
 
 </RelativeLayout>

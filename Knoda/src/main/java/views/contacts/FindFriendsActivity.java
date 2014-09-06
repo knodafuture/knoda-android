@@ -174,6 +174,7 @@ public class FindFriendsActivity extends BaseActivity {
         tabs.setIndicatorHeight(onedp * 4);
         tabs.setTextSize(onesp * 16);
         tabs.setBackgroundColor(getResources().getColor(R.color.knodaLightGreen));
+        tabs.setIndicatorColorResource(R.color.knodaDarkGreen);
         tabs.setTabWidth((int) (size.x * 1.0f / 3));
 
         submitBtn.setOnClickListener(new View.OnClickListener() {

@@ -17,24 +17,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="100dp"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_marginTop="25dp">
 
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/confirm_imageview"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/add_avatar" />
-
+<!--
             <ImageView
                 android:id="@+id/confirm_imageview_mask"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/profile_mask" />
+                android:src="@drawable/profile_mask" />-->
 
         </RelativeLayout>
 
@@ -53,9 +54,11 @@
             android:id="@+id/confirm_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_centerHorizontal="true"
-            android:text="Follow your friends on Knoda and invite others to join!"
-            android:textColor="@color/white" />
+            android:text="Follow your friends on Knoda \nand invite others to join!"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
 
         <Button
             android:id="@+id/confirm_start_predicting_button"

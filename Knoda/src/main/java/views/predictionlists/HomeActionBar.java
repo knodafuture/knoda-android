@@ -1,6 +1,7 @@
 package views.predictionlists;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,9 +79,9 @@ public class HomeActionBar extends RelativeLayout {
         selected = number;
         if (number == 0) {
             viewAllTV.setTextColor(getContext().getResources().getColor(R.color.knodaDarkGreen));
-            followingTV.setTextColor(getContext().getResources().getColor(R.color.lightGray));
+            followingTV.setTextColor(Color.parseColor("#62A325"));//#62A325
         } else if (number == 1) {
-            viewAllTV.setTextColor(getContext().getResources().getColor(R.color.lightGray));
+            viewAllTV.setTextColor(Color.parseColor("#62A325"));
             followingTV.setTextColor(getContext().getResources().getColor(R.color.knodaDarkGreen));
         }
         callbacks.onSwitchFeed(number);
