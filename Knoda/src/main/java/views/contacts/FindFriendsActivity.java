@@ -94,7 +94,7 @@ public class FindFriendsActivity extends BaseActivity {
 
             LayoutInflater li = getLayoutInflater();
             final View postView = li.inflate(R.layout.dialog_upload_phone, null);
-            ((TextView) postView.findViewById(R.id.dialog_phone_tv)).setText("Now that you've connected with some friends, make it easier for them to find you on Knoda by allowing us to have your number. We promise not to call after midnight (or ever)." + ((phoneMode == 0) ? "" : " You can always add your phone number later in Profile Settings."));
+            ((TextView) postView.findViewById(R.id.dialog_phone_tv)).setText("Make it easier for friends to find you on Knoda by entering your phone number. You can always add or remove your number in Profile Settings.");
             final EditText msg = (EditText) postView.findViewById(R.id.message);
             if (phone != null && phone.length() > 0)
                 msg.setText(phone);
@@ -111,7 +111,7 @@ public class FindFriendsActivity extends BaseActivity {
                             bus.post(new LoginFlowDoneEvent());
                         }
                     })
-                    .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String phone = msg.getText().toString();

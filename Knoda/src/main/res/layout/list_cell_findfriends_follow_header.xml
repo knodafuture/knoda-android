@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="45dp"
         android:text="Select All"
         android:textColor="@color/knodaDarkGreen"
         android:textSize="18sp"/>
@@ -33,7 +33,7 @@
         android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="15dp"
         android:button="@drawable/checkbox_selector"
         android:scaleY="1.2"
         android:scaleX="1.2"

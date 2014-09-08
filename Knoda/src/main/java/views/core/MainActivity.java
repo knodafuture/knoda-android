@@ -550,10 +550,11 @@ public class MainActivity extends BaseActivity {
                 AppRater appRater = new AppRater(this);
                 appRater.setMinDaysUntilPrompt(3);
                 appRater.setMinLaunchesUntilPrompt(3);
-                appRater.setMessage("Are you enjoying Knoda? If so, we'd love for you to leave a review!");
-                appRater.setRateButtonText("Yes, I'd love to!");
-                appRater.setDismissButtonText("No, I'd rather not");
-                appRater.setRemindLaterButtonText("Not right now");
+                appRater.setTitle("Rate Knoda");
+                appRater.setMessage("Enjoying Knoda? Take a quick sec and give us a review. Thanks for your support!");
+                appRater.setRateButtonText("Yes, Review Now!");
+                appRater.setDismissButtonText("Remind Me Later");
+                appRater.setRemindLaterButtonText("No Thanks");
                 appRater.init();
             }
         }
