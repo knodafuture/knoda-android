@@ -81,7 +81,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
-        android:background="@drawable/ic_invite_active"
+        android:background="@drawable/ic_invite"
         android:visibility="gone" />
 
     <View

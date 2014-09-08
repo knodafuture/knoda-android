@@ -103,15 +103,15 @@ public class FindFriendsListCell extends RelativeLayout {
             if (d.length() > 2)
                 description.setText(d.substring(0, d.length() - 2));
             if (parent.inviting.containsKey(userContact.contact_id))
-                plusBtn.setBackgroundResource(R.drawable.ic_invite);
-            else
                 plusBtn.setBackgroundResource(R.drawable.ic_invite_active);
+            else
+                plusBtn.setBackgroundResource(R.drawable.ic_invite);
             plusBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (parent.inviting.containsKey(userContact.contact_id)) {
                         parent.inviting.remove(userContact.contact_id);
-                        plusBtn.setBackgroundResource(R.drawable.ic_invite_active);
+                        plusBtn.setBackgroundResource(R.drawable.ic_invite);
                         parent.setSubmitBtnText();
                     } else {
 
@@ -138,7 +138,7 @@ public class FindFriendsListCell extends RelativeLayout {
                             else
                                 groupInvitation.phoneNumber = temp;
                             parent.inviting.put(userContact.contact_id, groupInvitation);
-                            plusBtn.setBackgroundResource(R.drawable.ic_invite);
+                            plusBtn.setBackgroundResource(R.drawable.ic_invite_active);
                             parent.setSubmitBtnText();
 
                         } else {

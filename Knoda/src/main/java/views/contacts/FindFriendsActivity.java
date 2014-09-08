@@ -86,57 +86,64 @@ public class FindFriendsActivity extends BaseActivity {
 
     @OnClick(R.id.wall_close)
     public void close() {
+        if (userManager.getUser().phoneNumber == null || userManager.getUser().phoneNumber.length() == 0) {
+            TelephonyManager manager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+            String phone = manager.getLine1Number();
 
-        TelephonyManager manager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-        String phone = manager.getLine1Number();
+            LayoutInflater li = getLayoutInflater();
+            final View postView = li.inflate(R.layout.dialog_upload_phone, null);
+            ((TextView) postView.findViewById(R.id.dialog_phone_tv)).setText("Now that you've connected with some friends, make it easier for them to find you on Knoda by allowing us to have your number. We promise not to call after midnight (or ever).");
+            final EditText msg = (EditText) postView.findViewById(R.id.message);
+            if (phone != null && phone.length() > 0)
+                msg.setText(phone);
 
-        LayoutInflater li = getLayoutInflater();
-        final View postView = li.inflate(R.layout.dialog_upload_phone, null);
-        final EditText msg = (EditText) postView.findViewById(R.id.message);
-        if (phone != null && phone.length() > 0)
-            msg.setText(phone);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Phone Number")
-                .setView(postView)
-                .setCancelable(false)
-                .setNegativeButton("Nope", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        bus.post(new LoginFlowDoneEvent());
-                    }
-                })
-                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String phone = msg.getText().toString();
-                        User u = userManager.getUser();
-                        u.phoneNumber = stripChars(phone);
-                        spinner.show();
-                        Toast.makeText(FindFriendsActivity.this, "Setting " + u.phoneNumber, Toast.LENGTH_SHORT).show();
-                        userManager.updateUser(u, new NetworkCallback<User>() {
-                            @Override
-                            public void completionHandler(User object, ServerError error) {
-                                if (error == null) {
-                                    userManager.refreshUser(new NetworkCallback<User>() {
-                                        @Override
-                                        public void completionHandler(User object, ServerError error) {
-                                            spinner.hide();
-                                            finish();
-                                            bus.post(new LoginFlowDoneEvent());
-                                        }
-                                    });
-                                } else {
-                                    spinner.hide();
-                                    finish();
-                                    bus.post(new LoginFlowDoneEvent());
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Phone Number")
+                    .setView(postView)
+                    .setCancelable(false)
+                    .setNegativeButton("Nope", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                            bus.post(new LoginFlowDoneEvent());
+                        }
+                    })
+                    .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String phone = msg.getText().toString();
+                            User u = userManager.getUser();
+                            u.phoneNumber = stripChars(phone);
+                            spinner.show();
+                            Toast.makeText(FindFriendsActivity.this, "Setting " + u.phoneNumber, Toast.LENGTH_SHORT).show();
+                            userManager.updateUser(u, new NetworkCallback<User>() {
+                                @Override
+                                public void completionHandler(User object, ServerError error) {
+                                    if (error == null) {
+                                        userManager.refreshUser(new NetworkCallback<User>() {
+                                            @Override
+                                            public void completionHandler(User object, ServerError error) {
+                                                spinner.hide();
+                                                finish();
+                                                bus.post(new LoginFlowDoneEvent());
+                                            }
+                                        });
+                                    } else {
+                                        spinner.hide();
+                                        finish();
+                                        bus.post(new LoginFlowDoneEvent());
+                                    }
                                 }
-                            }
-                        });
-                    }
-                })
-                .show();
+                            });
+                        }
+                    })
+                    .show();
+        } else {
+            spinner.hide();
+            finish();
+            bus.post(new LoginFlowDoneEvent());
+        }
+
     }
 
     @Override
@@ -218,6 +225,9 @@ public class FindFriendsActivity extends BaseActivity {
                                     public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
                                         invitesubmits++;
                                         if (invitesubmits == 2) {
+                                            if (error == null) {
+                                                Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
+                                            }
                                             spinner.hide();
                                             close();
                                         }
@@ -229,6 +239,9 @@ public class FindFriendsActivity extends BaseActivity {
                                     public void completionHandler(GroupInvitation object, ServerError error) {
                                         invitesubmits++;
                                         if (invitesubmits == 2) {
+                                            if (error == null) {
+                                                Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
+                                            }
                                             spinner.hide();
                                             close();
                                         }

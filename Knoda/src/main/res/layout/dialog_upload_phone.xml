@@ -7,6 +7,7 @@
     android:padding="10dp">
 
     <TextView
+        android:id="@+id/dialog_phone_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Make it easier for friends to find you on Knoda by allowing us to have your number. We promise not to call after midnight (or ever)." />

@@ -250,6 +250,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
             }
         } else {
             view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content, null);
+            ((TextView) view.findViewById(R.id.no_content_textview)).setText(datasource.noContentString());
         }
         return view;
     }

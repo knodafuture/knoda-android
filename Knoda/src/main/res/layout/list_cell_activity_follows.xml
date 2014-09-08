@@ -72,7 +72,7 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical">
 
@@ -82,7 +82,6 @@
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
                         android:background="@drawable/follow_btn"
                         android:clickable="true" />
 
@@ -91,7 +90,7 @@
                         style="@style/followButtonCover"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="11dp"
+                        android:layout_marginRight="1dp"
                         android:visibility="visible" />
 
                 </RelativeLayout>

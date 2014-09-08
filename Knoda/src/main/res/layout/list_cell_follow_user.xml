@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             android:text="UserNameHere"
             android:textColor="@color/knodaDarkGreen"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/follow_user_verified_checkmark"
