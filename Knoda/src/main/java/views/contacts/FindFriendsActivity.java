@@ -86,22 +86,25 @@ public class FindFriendsActivity extends BaseActivity {
 
     @OnClick(R.id.wall_close)
     public void close() {
-        if (userManager.getUser().phoneNumber == null || userManager.getUser().phoneNumber.length() == 0) {
+        int phoneMode = sharedPrefManager.getShowPhonePopup();
+
+        if (phoneMode != 2 && (userManager.getUser().phoneNumber == null || userManager.getUser().phoneNumber.length() == 0)) {
             TelephonyManager manager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
             String phone = manager.getLine1Number();
 
             LayoutInflater li = getLayoutInflater();
             final View postView = li.inflate(R.layout.dialog_upload_phone, null);
-            ((TextView) postView.findViewById(R.id.dialog_phone_tv)).setText("Now that you've connected with some friends, make it easier for them to find you on Knoda by allowing us to have your number. We promise not to call after midnight (or ever).");
+            ((TextView) postView.findViewById(R.id.dialog_phone_tv)).setText("Now that you've connected with some friends, make it easier for them to find you on Knoda by allowing us to have your number. We promise not to call after midnight (or ever)." + ((phoneMode == 0) ? "" : " You can always add your phone number later in Profile Settings."));
             final EditText msg = (EditText) postView.findViewById(R.id.message);
             if (phone != null && phone.length() > 0)
                 msg.setText(phone);
 
+            sharedPrefManager.setShowPhonePopup(phoneMode + 1);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Phone Number")
                     .setView(postView)
                     .setCancelable(false)
-                    .setNegativeButton("Nope", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(phoneMode == 0 ? "No Thanks" : "Never", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();

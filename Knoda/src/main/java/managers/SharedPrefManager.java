@@ -38,6 +38,7 @@ public class SharedPrefManager {
     private static final String SAVED_ACTIVITY_FILTER = "SAVED_ACTIVITY_FILTER";
     private static final String TWITTER_AUTH_SCREEN = "TWITTER_AUTH_SCREEN";
     private static final String SAVED_PREDICT_DATE_WALKTHROUGH_KEY = "SAVED_PREDICT_DATE_WALKTHROUGH_KEY";
+    private static final String ADD_PHONE_KEY = "ADD_PHONE_KEY";
     private static final String API_URL = "API_URL";
     private Context context;
 
@@ -266,6 +267,17 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = getSP();
         sharedPreferences.edit().putBoolean(SAVED_PREDICT_DATE_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
     }
+
+    public void setShowPhonePopup(int value) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putInt(ADD_PHONE_KEY, value).commit();
+    }
+
+    public int getShowPhonePopup() {
+        SharedPreferences sharedPreferences = getSP();
+        return sharedPreferences.getInt(ADD_PHONE_KEY, 0);
+    }
+
 
     public String getAPIurl() {
         SharedPreferences sharedPreferences = getSP();

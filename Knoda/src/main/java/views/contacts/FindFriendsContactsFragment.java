@@ -14,9 +14,12 @@ import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.knoda.knoda.R;
 
+import java.util.ArrayList;
+
 import adapters.PagingAdapter;
 import adapters.UserContactAdapter;
 import butterknife.InjectView;
+import models.ServerError;
 import models.UserContact;
 import networking.NetworkListCallback;
 import views.core.BaseListFragment;
@@ -26,6 +29,7 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
     @InjectView(R.id.contacts_searchbar)
     EditText searchbar;
     UserContactAdapter adapter;
+    boolean folllowedAll = false;
 
     public FindFriendsContactsFragment() {
     }
@@ -104,7 +108,27 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
                                       final NetworkListCallback<UserContact> callback) {
         if (parent.localContacts == null)
             return;
-        parent.networkingManager.matchPhoneContacts(parent.localContacts, callback);
+        parent.networkingManager.matchPhoneContacts(parent.localContacts, new NetworkListCallback<UserContact>() {
+            @Override
+            public void completionHandler(ArrayList<UserContact> object, ServerError error) {
+//                for (UserContact u : object) {
+//                    System.out.println(u.contact_id + ": " + u.knodaInfo);
+//                }
+                ArrayList<UserContact> toFollow = new ArrayList<UserContact>();
+                for (int x = 0; x != object.size(); x++) {
+                    UserContact u = object.get(x);
+                    if (u.knodaInfo != null) {
+                        toFollow.add(u);
+                        object.remove(x);
+                    }
+                }
+                for (int x = toFollow.size() - 1; x != -1; x--) {
+                    object.add(0, toFollow.get(x));
+                }
+                adapter.followSize = toFollow.size();
+                callback.completionHandler(object, error);
+            }
+        });
     }
 
     @Override
@@ -114,8 +138,10 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
 
     @Override
     public void onLoadFinished() {
-        ((UserContactAdapter) adapter).followAll(true);
+        if (!folllowedAll)
+            if (adapter != null) {
+                ((UserContactAdapter) adapter).followAll(true);
+                folllowedAll = true;
+            }
     }
-
-
 }
