@@ -48,7 +48,7 @@
             android:text="Predicting is more fun with friends."
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-medium" />
 
         <TextView
             android:id="@+id/confirm_copy"

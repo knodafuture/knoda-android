@@ -35,7 +35,7 @@
             android:text="Welcome!"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-medium" />
 
         <TextView
             android:id="@+id/wall_prompt"
@@ -177,7 +177,7 @@
             android:paddingTop="5dp"
             android:text="Sign Up Later"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-medium"/>
 
         <Button
             android:id="@+id/wall_login"
@@ -253,7 +253,7 @@
                     android:paddingTop="5dp"
                     android:text="@string/privacypolicy"
                     android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:fontFamily="sans-serif-medium"/>
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

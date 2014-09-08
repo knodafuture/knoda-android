@@ -43,7 +43,7 @@
             android:text="Contest Title"
             android:textColor="@color/knodaDarkGreen"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-medium" />
 
         <TextView
             android:id="@+id/contest_description"
@@ -59,7 +59,7 @@
             android:text="This will show the first 2 lines of Contest description, if longer it will truncate. Vote each week"
             android:textColor="@color/knodaDarkGreen"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-medium" />
 
         <View
             android:layout_width="match_parent"
