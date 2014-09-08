@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -144,8 +145,9 @@ public class SettingsProfileFragment extends PreferenceFragment {
 
 
         Preference p7 = new Preference(c);
-        p7.setTitle(userManager.getUser().phoneNumber != null ? userManager.getUser().phoneNumber : "Phone Number");
-        p7.setSummary(userManager.getUser().phoneNumber != null ? "Phone Number" : "Add your number to help friends on Knoda find you");
+        boolean noPhone = userManager.getUser().phoneNumber == null || userManager.getUser().phoneNumber.length() == 0;
+        p7.setTitle(!noPhone ? formatPhoneNumber(userManager.getUser().phoneNumber) : "Phone Number");
+        p7.setSummary(!noPhone ? "Phone Number" : "Allows your friends to find you easier on Knoda");
         p7.setKey("phone");
         p7.setOnPreferenceClickListener(clickListener);
         preferenceScreen.addPreference(p7);
@@ -566,9 +568,12 @@ public class SettingsProfileFragment extends PreferenceFragment {
     void handlePhone() {
         TelephonyManager manager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
         String phone = manager.getLine1Number();
+        if (userManager.getUser().phoneNumber != null)
+            phone = userManager.getUser().phoneNumber;
 
         LayoutInflater li = getActivity().getLayoutInflater();
         final View postView = li.inflate(R.layout.dialog_upload_phone, null);
+        ((TextView) postView.findViewById(R.id.dialog_phone_tv)).setText("Make it easier for friends to find you on Knoda by entering your phone number.");
         final EditText msg = (EditText) postView.findViewById(R.id.message);
         if (phone != null && phone.length() > 0)
             msg.setText(phone);
@@ -590,7 +595,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
                         User u = userManager.getUser();
                         u.phoneNumber = stripChars(phone);
                         spinner.show();
-                        Toast.makeText(getActivity(), "Setting " + u.phoneNumber, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "Setting " + u.phoneNumber, Toast.LENGTH_SHORT).show();
                         userManager.updateUser(u, new NetworkCallback<User>() {
                             @Override
                             public void completionHandler(User object, ServerError error) {
@@ -616,6 +621,13 @@ public class SettingsProfileFragment extends PreferenceFragment {
 
     public String stripChars(String s) {
         return s.replaceAll("[^\\d]", "");
+    }
+
+    public String formatPhoneNumber(String original) {
+        if (original.length() >= 10) {
+            return  "(" + original.substring(0, 3) + ") " + original.substring(3, 6) + "-" + original.substring(6, 10);
+        } else
+            return original;
     }
 
 

@@ -119,6 +119,18 @@ public class SearchAdapter extends BaseAdapter {
                 callbacks.onUserFollow(user, v);
             }
         });
+        view.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callbacks.onUserSelected(user);
+            }
+        });
+        view.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callbacks.onUserSelected(user);
+            }
+        });
 
         return view;
     }

@@ -34,6 +34,7 @@ import views.activity.ActivityListWinLossCell;
 import views.core.MainActivity;
 import views.details.DetailsFragment;
 import views.group.GroupSettingsFragment;
+import views.predictionlists.AnotherUsersProfileFragment;
 
 /**
  * Created by nick on 2/1/14.
@@ -208,7 +209,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         }
     }
 
-    private void updateFollows(final ActivityListFollowCell cell, ActivityItem activityItem) {
+    private void updateFollows(final ActivityListFollowCell cell, final ActivityItem activityItem) {
         cell.username.setText(activityItem.body);
         cell.title.setText(activityItem.title);
         setImageUrl(cell.iconImageView, activityItem.image_url);
@@ -238,6 +239,20 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
                 cell.cover.setVisibility(View.VISIBLE);
                 cell.followbutton.setEnabled(false);
                 activity.followUser(cell.followbutton, cell.cover);
+            }
+        });
+
+        cell.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onUserSelected(Integer.parseInt(activityItem.target));
+            }
+        });
+
+        cell.iconImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onUserSelected(Integer.parseInt(activityItem.target));
             }
         });
 
@@ -372,5 +387,10 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             return "Sorry, you don't have any invitations to view.";
         else
             return "Sorry, you don't have any activity to view.";
+    }
+
+    public void onUserSelected(int userid) {
+        AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(userid);
+        activity.pushFragment(fragment);
     }
 }

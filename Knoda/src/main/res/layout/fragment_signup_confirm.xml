@@ -60,7 +60,7 @@
             android:gravity="center"
             android:text="Follow your friends on Knoda \nand invite others to join!"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/confirm_start_predicting_button"
