@@ -78,6 +78,7 @@ public class FindFriendsListCell extends RelativeLayout {
                         followingSet.remove(userContact.contact_id);
                     }
                     parent.setSubmitBtnText();
+                    adapter.notifyDataSetChanged();
                 }
             });
         } else {

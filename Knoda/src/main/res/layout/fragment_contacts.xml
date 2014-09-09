@@ -24,10 +24,21 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
             android:hint="Search Contacts..."
             android:singleLine="true"
             android:textColor="@color/knodaDarkGreen"
             android:textColorHint="@color/knodaDarkGreen" />
+
+        <ImageView
+            android:id="@+id/search_view_clear"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:src="@drawable/search_clear_icon" />
 
     </RelativeLayout>
 

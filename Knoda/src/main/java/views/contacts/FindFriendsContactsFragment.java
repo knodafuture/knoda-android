@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -15,6 +16,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.knoda.knoda.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import adapters.PagingAdapter;
 import adapters.UserContactAdapter;
@@ -31,6 +33,9 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
     UserContactAdapter adapter;
     boolean folllowedAll = false;
 
+    @InjectView(R.id.search_view_clear)
+    ImageView searchClear;
+
     public FindFriendsContactsFragment() {
     }
 
@@ -44,6 +49,17 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+        parent.setOnBackPressedListener(new FindFriendsActivity.OnBackPressedListener() {
+            @Override
+            public void doBack() {
+                if (searchbar.getText().length() > 0) {
+                    searchbar.setText("");
+                    searchbar.clearFocus();
+                } else {
+                    //show prompt
+                }
+            }
+        });
         return view;
     }
 
@@ -84,12 +100,24 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
                                              @Override
                                              public void afterTextChanged(Editable s) {
                                                  if (s.length() == 0) {
+                                                     searchClear.setVisibility(View.INVISIBLE);
                                                      adapter.resetSearch();
+                                                 } else if (s.length() > 0) {
+                                                     searchClear.setVisibility(View.VISIBLE);
                                                  }
                                              }
                                          }
 
         );
+        searchClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchbar.setText("");
+                searchbar.clearFocus();
+            }
+        });
+        searchClear.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
@@ -111,15 +139,13 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
         parent.networkingManager.matchPhoneContacts(parent.localContacts, new NetworkListCallback<UserContact>() {
             @Override
             public void completionHandler(ArrayList<UserContact> object, ServerError error) {
-//                for (UserContact u : object) {
-//                    System.out.println(u.contact_id + ": " + u.knodaInfo);
-//                }
+                Iterator<UserContact> iterator = object.iterator();
                 ArrayList<UserContact> toFollow = new ArrayList<UserContact>();
-                for (int x = 0; x != object.size(); x++) {
-                    UserContact u = object.get(x);
+                while (iterator.hasNext()) {
+                    UserContact u = iterator.next();
                     if (u.knodaInfo != null) {
                         toFollow.add(u);
-                        object.remove(x);
+                        iterator.remove();
                     }
                 }
                 for (int x = toFollow.size() - 1; x != -1; x--) {

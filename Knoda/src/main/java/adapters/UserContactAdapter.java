@@ -32,7 +32,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
     FindFriendsActivity findFriendsActivity;
     ArrayList<UserContact> searchedContacts = new ArrayList<UserContact>();
     ArrayList<UserContact> allContacts;
-    public int followSize=-1;
+    public int followSize = -1;
 
     public UserContactAdapter(int type, Context context, PagingAdapterDatasource<UserContact> datasource, ImageLoader imageLoader, FindFriendsActivity activity) {
         super(context, datasource, imageLoader);
@@ -110,7 +110,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                 listCellHeader.setMode(type, this);
             return listCellHeader;
             //potential second header
-        } else if (position < objects.size() && (objects.get(position - 1).knodaInfo == null && position - 2 >= 0 &&
+        } else if (position - 1 < objects.size() && (objects.get(position - 1).knodaInfo == null && position - 2 >= 0 &&
                 objects.get(position - 2).knodaInfo != null)) {
             FindFriendsListCellHeader listCellHeader = (FindFriendsListCellHeader) AdapterHelper.getConvertViewSafely(convertView, FindFriendsListCellHeader.class);
             if (listCellHeader == null)
@@ -187,7 +187,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
         if (objects.size() == 0)
             return position - 0;
         if (objects.get(0).knodaInfo != null && objects.get(objects.size() - 1).knodaInfo == null) {
-            if (position-1>=objects.size() || objects.get(position - 1).knodaInfo == null)
+            if (position - 1 >= objects.size() || objects.get(position - 1).knodaInfo == null)
                 return position - 2;
             else
                 return position - 1;

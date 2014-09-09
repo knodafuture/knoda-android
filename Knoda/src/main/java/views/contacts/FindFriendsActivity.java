@@ -81,6 +81,7 @@ public class FindFriendsActivity extends BaseActivity {
     Bus bus = new Bus();
     UserContacts localContacts;
     ProgressDialog progressDialog;
+    protected OnBackPressedListener onBackPressedListener;
 
     int invitesubmits = 0;
 
@@ -147,6 +148,18 @@ public class FindFriendsActivity extends BaseActivity {
             bus.post(new LoginFlowDoneEvent());
         }
 
+    }
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (onBackPressedListener != null)
+            onBackPressedListener.doBack();
+        else
+            super.onBackPressed();
     }
 
     @Override
@@ -442,6 +455,10 @@ public class FindFriendsActivity extends BaseActivity {
             progressDialog.hide();
             setupUI();
         }
+    }
+
+    public interface OnBackPressedListener {
+        public void doBack();
     }
 
 
