@@ -17,6 +17,7 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
     FindFriendsActivity parent;
     String filter;
     boolean folllowedAll = false;
+    public UserContactAdapter adapter;
 
     public FindFriendsFacebookTwitterFragment() {
     }
@@ -25,6 +26,10 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
         FindFriendsFacebookTwitterFragment fragment = new FindFriendsFacebookTwitterFragment();
         fragment.parent = parent;
         fragment.filter = filter;
+        if (filter.equals("facebook"))
+            fragment.parent.facebookFragment = fragment;
+        else if (filter.equals("twitter"))
+            fragment.parent.twitterFragment = fragment;
         return fragment;
     }
 
@@ -59,7 +64,8 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
             type = FindFriendsListCellHeader.FACEBOOK;
         else if (filter.equals("twitter"))
             type = FindFriendsListCellHeader.TWITTER;
-        return new UserContactAdapter(type, getActivity(), this, parent.networkingManager.getImageLoader(), parent);
+        adapter = new UserContactAdapter(type, getActivity(), this, parent.networkingManager.getImageLoader(), parent);
+        return adapter;
     }
 
     @Override

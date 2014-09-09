@@ -70,7 +70,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         bus.register(this);
-        sharedPrefManager.saveObjectString(0, SharedPrefManager.SAVED_HOMESCREEN_SELECTED);
+        //sharedPrefManager.saveObjectString(0, SharedPrefManager.SAVED_HOMESCREEN_SELECTED);
     }
 
     @Override
@@ -92,9 +92,11 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         getActivity().getActionBar().setDisplayUseLogoEnabled(false);
         getActivity().getActionBar().setDisplayShowTitleEnabled(false);
         homeActionBar.setCallbacks(this);
-        homeActionBar.selected = Integer.parseInt(sharedPrefManager.getObjectString(SharedPrefManager.SAVED_HOMESCREEN_SELECTED));
+        String s = sharedPrefManager.getObjectString(SharedPrefManager.SAVED_HOMESCREEN_SELECTED);
+        if (s == null)
+            s = "0";
+        homeActionBar.selected = Integer.parseInt(s);
         homeActionBar.setFilter(homeActionBar.selected);
-        adapter.reset();
     }
 
     @Override
@@ -242,6 +244,14 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
     public void onSwitchFeed(int number) {
         sharedPrefManager.saveObjectString(number, SharedPrefManager.SAVED_HOMESCREEN_SELECTED);
         pListView.setRefreshing(true);
+        adapter.loadPage(0);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        adapter.reset();
+        pListView.setRefreshing();
         adapter.loadPage(0);
     }
 }

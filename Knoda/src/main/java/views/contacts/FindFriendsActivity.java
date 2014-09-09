@@ -59,6 +59,7 @@ import pubsub.LoginFlowDoneEvent;
 import unsorted.Logger;
 import unsorted.PagerSlidingTabStrip;
 import views.core.BaseActivity;
+import views.core.Spinner;
 
 public class FindFriendsActivity extends BaseActivity {
 
@@ -82,10 +83,20 @@ public class FindFriendsActivity extends BaseActivity {
     UserContacts localContacts;
     ProgressDialog progressDialog;
     protected OnBackPressedListener onBackPressedListener;
+    FindFriendsFacebookTwitterFragment facebookFragment = null;
+    FindFriendsFacebookTwitterFragment twitterFragment = null;
+
+
+    public boolean addingFacebook = false;
 
     int invitesubmits = 0;
 
     @OnClick(R.id.wall_close)
+    public void wallClose() {
+        onExit();
+    }
+
+
     public void close() {
         int phoneMode = sharedPrefManager.getShowPhonePopup();
 
@@ -176,9 +187,11 @@ public class FindFriendsActivity extends BaseActivity {
         facebookManager = new FacebookManager(userManager, networkingManager);
         twitterManager = new TwitterManager();
 
+
         progressDialog = new ProgressDialog(FindFriendsActivity.this);
         progressDialog.setMessage("Getting Contacts");
         progressDialog.show();
+        spinner = new Spinner(this);
         refreshUser();
 
         SpannableString s = new SpannableString("FIND FRIENDS");
@@ -203,59 +216,11 @@ public class FindFriendsActivity extends BaseActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                System.out.println("Following:");
-                for (String s : following.keySet()) {
-                    System.out.println(s);
-                }
-                for (String s : followingFacebook.keySet()) {
-                    System.out.println(s);
-                }
-                for (String s : followingTwitter.keySet()) {
-                    System.out.println(s);
-                }
-                System.out.println("Inviting:");
-                for (String s : inviting.keySet()) {
-                    System.out.println(s);
-                }
-
-                //combine all hashsets
-                following.putAll(followingFacebook);
-                following.putAll(followingTwitter);
-
-                spinner.show();
-                //submit invitations and follow requests here
-                networkingManager.followUsers(following.values(), new NetworkListCallback<FollowUser>() {
-                    @Override
-                    public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
-                        invitesubmits++;
-                        if (invitesubmits == 2) {
-                            if (error == null) {
-                                Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
-                            }
-                            spinner.hide();
-                            close();
-                        }
-                    }
-                });
-
-                networkingManager.sendInvitations(inviting.values(), new NetworkCallback<GroupInvitation>() {
-                    @Override
-                    public void completionHandler(GroupInvitation object, ServerError error) {
-                        invitesubmits++;
-                        if (invitesubmits == 2) {
-                            if (error == null) {
-                                Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
-                            }
-                            spinner.hide();
-                            close();
-                        }
-                    }
-                });
-
-
+                submitAll();
             }
         });
+
+
     }
 
     private void refreshUser() {
@@ -309,6 +274,15 @@ public class FindFriendsActivity extends BaseActivity {
         FindFriendsPagerAdapter adapter = new FindFriendsPagerAdapter(getFragmentManager(), this);
         mViewPager.setAdapter(adapter);
         tabs.setViewPager(mViewPager);
+
+        Bundle b = getIntent().getExtras();
+        String from = b.getString("from");
+        if (from != null && from.equals("twitter")) {
+            mViewPager.setCurrentItem(2, true);
+        } else if (from != null && from.equals("facebook")) {
+            mViewPager.setCurrentItem(1, true);
+        }
+
     }
 
 
@@ -363,7 +337,7 @@ public class FindFriendsActivity extends BaseActivity {
                 if (error != null) {
                     spinner.hide();
                     errorReporter.showError(error);
-                    Toast.makeText(FindFriendsActivity.this, "Error connecting to Facebook", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(FindFriendsActivity.this, "Error connecting to Facebook", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 System.out.println("account:" + object + " " + object.providerName);
@@ -373,10 +347,13 @@ public class FindFriendsActivity extends BaseActivity {
                     public void completionHandler(User user, ServerError error) {
                         spinner.hide();
                         if (error != null) {
-                            Toast.makeText(FindFriendsActivity.this, "Error connecting to Facebook", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(FindFriendsActivity.this, "Error adding Facebook", Toast.LENGTH_SHORT).show();
+                            errorReporter.showError(error);
                             return;
                         }
-                        recreate();
+                        if (facebookFragment != null) {
+                            facebookFragment.adapter.reset();
+                        }
                     }
                 });
             }
@@ -459,6 +436,78 @@ public class FindFriendsActivity extends BaseActivity {
 
     public interface OnBackPressedListener {
         public void doBack();
+    }
+
+    public void onExit() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Hold Up!")
+                .setMessage("You have " + inviting.size() + " & " + (following.size() + followingTwitter.size() + followingFacebook.size()) + " follows, would you like to send these now?")
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        close();
+                    }
+                })
+                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        submitAll();
+                    }
+                })
+                .show();
+    }
+
+
+    private void submitAll() {
+
+        System.out.println("Following:");
+        for (String s : following.keySet()) {
+            System.out.println(s);
+        }
+        for (String s : followingFacebook.keySet()) {
+            System.out.println(s);
+        }
+        for (String s : followingTwitter.keySet()) {
+            System.out.println(s);
+        }
+        System.out.println("Inviting:");
+        for (String s : inviting.keySet()) {
+            System.out.println(s);
+        }
+
+        //combine all hashsets
+        following.putAll(followingFacebook);
+        following.putAll(followingTwitter);
+
+        spinner.show();
+        //submit invitations and follow requests here
+        networkingManager.followUsers(following.values(), new NetworkListCallback<FollowUser>() {
+            @Override
+            public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
+                invitesubmits++;
+                if (invitesubmits == 2) {
+                    if (error == null) {
+                        Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
+                    }
+                    spinner.hide();
+                    close();
+                }
+            }
+        });
+
+        networkingManager.sendInvitations(inviting.values(), new NetworkCallback<GroupInvitation>() {
+            @Override
+            public void completionHandler(GroupInvitation object, ServerError error) {
+                invitesubmits++;
+                if (invitesubmits == 2) {
+                    if (error == null) {
+                        Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
+                    }
+                    spinner.hide();
+                    close();
+                }
+            }
+        });
     }
 
 

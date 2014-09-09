@@ -57,6 +57,7 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
                     searchbar.clearFocus();
                 } else {
                     //show prompt
+                    parent.onExit();
                 }
             }
         });

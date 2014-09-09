@@ -42,7 +42,7 @@ public class SignupConfirmFragment extends BaseDialogFragment {
         try {
             sharedPrefManager.setShouldShowVotingWalkthrough(true);
 
-            ((MainActivity) getActivity()).onFindFriends();
+            ((MainActivity) getActivity()).onFindFriends("");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

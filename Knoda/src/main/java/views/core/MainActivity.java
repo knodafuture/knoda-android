@@ -385,7 +385,7 @@ public class MainActivity extends BaseActivity {
                 break;
             }
             case R.id.home_actionbar: {
-                onSearch();
+                //onSearch();
                 break;
             }
             case R.id.action_settings: {
@@ -543,7 +543,7 @@ public class MainActivity extends BaseActivity {
                 });
             } else if (sharedPrefManager.getTwitterAuthScreen().equals("findfriends")) {
                 onHome();
-                onFindFriends();
+                onFindFriends("twitter");
             } else {
                 onHome();
 
@@ -694,16 +694,17 @@ public class MainActivity extends BaseActivity {
         pushFragment(fragment);
     }
 
-    private void onSearch() {
-//        if (searchFragment == null)
-//            searchFragment = new SearchFragment();
-//        pushFragment(searchFragment);
-        onFindFriends();
-    }
+//    private void onSearch() {
+////        if (searchFragment == null)
+////            searchFragment = new SearchFragment();
+////        pushFragment(searchFragment);
+//        onFindFriends();
+//    }
 
-    public void onFindFriends() {
+    public void onFindFriends(String from) {
         Intent intent = new Intent(this, FindFriendsActivity.class);
         intent.putExtra("cancelable", true);
+        intent.putExtra("from", from);
         startActivity(intent);
     }
 
