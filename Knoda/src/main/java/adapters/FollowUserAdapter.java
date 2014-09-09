@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.knoda.knoda.R;
@@ -48,6 +49,27 @@ public class FollowUserAdapter extends PagingAdapter<User> {
     @Override
     public boolean canLoadNextPage() {
         return false;
+    }
+
+    @Override
+    protected View getNoContentView() {
+        View view;
+
+        if (followFeedFragment.screenNumber == 1 && followFeedFragment.user.id == followFeedFragment.userManager.getUser().id) {
+            view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content_follow_feed, null);
+            ((TextView) view.findViewById(R.id.no_content_textview2)).setText(datasource.noContentString());
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    followFeedFragment.onAddFriendsClick();
+                }
+            });
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content, null);
+            ((TextView) view.findViewById(R.id.no_content_textview)).setText(datasource.noContentString());
+        }
+
+        return view;
     }
 
 }

@@ -50,7 +50,7 @@ public class FindFriendsListCell extends RelativeLayout {
         avatar = (NetworkImageView) findViewById(R.id.findfriends_listcell_avatar_imageview);
     }
 
-    public void setUser(final UserContact userContact, UserContactAdapter adapter, final FindFriendsActivity parent) {
+    public void setUser(final UserContact userContact, final UserContactAdapter adapter, final FindFriendsActivity parent) {
         title.setText(userContact.contact_id);
         final HashMap<String, KnodaInfo> followingSet;
         if (adapter.type == FindFriendsListCellHeader.FACEBOOK)
@@ -102,9 +102,14 @@ public class FindFriendsListCell extends RelativeLayout {
             }
             if (d.length() > 2)
                 description.setText(d.substring(0, d.length() - 2));
-            if (parent.inviting.containsKey(userContact.contact_id))
+            if (parent.inviting.containsKey(userContact.contact_id)) {
                 plusBtn.setBackgroundResource(R.drawable.ic_invite_active);
-            else
+                GroupInvitation g = parent.inviting.get(userContact.contact_id);
+                if (g.phoneNumber != null)
+                    description.setText(g.phoneNumber);
+                else if (g.email != null)
+                    description.setText(g.email);
+            } else
                 plusBtn.setBackgroundResource(R.drawable.ic_invite);
             plusBtn.setOnClickListener(new OnClickListener() {
                 @Override
@@ -113,6 +118,7 @@ public class FindFriendsListCell extends RelativeLayout {
                         parent.inviting.remove(userContact.contact_id);
                         plusBtn.setBackgroundResource(R.drawable.ic_invite);
                         parent.setSubmitBtnText();
+                        adapter.notifyDataSetChanged();
                     } else {
 
                         final HashSet<String> options = new HashSet<String>();
@@ -155,8 +161,9 @@ public class FindFriendsListCell extends RelativeLayout {
                                     else
                                         groupInvitation.phoneNumber = temp;
                                     parent.inviting.put(userContact.contact_id, groupInvitation);
-                                    plusBtn.setBackgroundResource(R.drawable.ic_invite);
+                                    plusBtn.setBackgroundResource(R.drawable.ic_invite_active);
                                     parent.setSubmitBtnText();
+                                    adapter.notifyDataSetChanged();
                                 }
                             });
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

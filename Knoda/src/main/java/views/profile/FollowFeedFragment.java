@@ -1,5 +1,6 @@
 package views.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,11 +16,12 @@ import models.ServerError;
 import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import views.contacts.FindFriendsActivity;
 import views.core.BaseListFragment;
 
 public class FollowFeedFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<User> {
-    int screenNumber;
-    User user;
+    public int screenNumber;
+    public User user;
 
     public FollowFeedFragment() {
     }
@@ -59,10 +61,17 @@ public class FollowFeedFragment extends BaseListFragment implements PagingAdapte
 
     @Override
     public String noContentString() {
-        if (screenNumber == 0)
-            return "No Followers";
-        else
-            return "No Following";
+        if (screenNumber == 0) {
+            if (userManager.getUser().id == user.id)
+                return "You don't have any followers yet, but we know they're coming soon!";
+            else
+                return "Be a sport and follow " + user.username + " so this list is no longer empty!";
+        } else {
+            if (userManager.getUser().id == user.id)
+                return "Predicting is more fun with friends. Tap here to Find Friends on Knoda & invite others to join.";
+            else
+                return user.username + " isn't following anyone yet. Maybe you'll be the first!";
+        }
     }
 
 
@@ -92,6 +101,12 @@ public class FollowFeedFragment extends BaseListFragment implements PagingAdapte
                 }
             });
         }
+    }
+
+    public void onAddFriendsClick() {
+        Intent intent = new Intent(getActivity(), FindFriendsActivity.class);
+        intent.putExtra("cancelable", true);
+        startActivity(intent);
     }
 
 }
