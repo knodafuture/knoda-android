@@ -479,35 +479,49 @@ public class FindFriendsActivity extends BaseActivity {
         following.putAll(followingFacebook);
         following.putAll(followingTwitter);
 
-        spinner.show();
-        //submit invitations and follow requests here
-        networkingManager.followUsers(following.values(), new NetworkListCallback<FollowUser>() {
-            @Override
-            public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
-                invitesubmits++;
-                if (invitesubmits == 2) {
-                    if (error == null) {
-                        Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
-                    }
-                    spinner.hide();
-                    close();
-                }
-            }
-        });
 
-        networkingManager.sendInvitations(inviting.values(), new NetworkCallback<GroupInvitation>() {
-            @Override
-            public void completionHandler(GroupInvitation object, ServerError error) {
-                invitesubmits++;
-                if (invitesubmits == 2) {
-                    if (error == null) {
-                        Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
+        if (following.size() + inviting.size() == 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Exit")
+                    .setMessage("You haven't selected anyone to follow or invite yet.")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            close();
+                        }
+                    })
+                    .show();
+        } else {
+            spinner.show();
+            //submit invitations and follow requests here
+            networkingManager.followUsers(following.values(), new NetworkListCallback<FollowUser>() {
+                @Override
+                public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
+                    invitesubmits++;
+                    if (invitesubmits == 2) {
+                        if (error == null) {
+                            Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                        spinner.hide();
+                        close();
                     }
-                    spinner.hide();
-                    close();
                 }
-            }
-        });
+            });
+
+            networkingManager.sendInvitations(inviting.values(), new NetworkCallback<GroupInvitation>() {
+                @Override
+                public void completionHandler(GroupInvitation object, ServerError error) {
+                    invitesubmits++;
+                    if (invitesubmits == 2) {
+                        if (error == null) {
+                            Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                        spinner.hide();
+                        close();
+                    }
+                }
+            });
+        }
     }
 
 
