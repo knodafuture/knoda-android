@@ -12,6 +12,7 @@ import com.facebook.model.GraphUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,7 +49,7 @@ public class FacebookManager {
         Session session = Session.getActiveSession();
         Session.OpenRequest openRequest = new Session.OpenRequest(activity).setPermissions(permissions).setCallback(callback);
 
-        if (session == null) {
+        if (session == null || session.getExpirationDate().before(new Date())) {
             session = new Session.Builder(activity).build();
         }
         if (SessionState.CREATED_TOKEN_LOADED.equals(session.getState()) || allowLoginUI) {
