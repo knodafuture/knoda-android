@@ -537,7 +537,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void completionHandler(User object, ServerError error) {
                         onProfile();
-                        SettingsProfileFragment fragment=new SettingsProfileFragment();
+                        SettingsProfileFragment fragment = new SettingsProfileFragment();
                         pushFragment(fragment);
                     }
                 });
@@ -592,6 +592,19 @@ public class MainActivity extends BaseActivity {
         KnodaApplication.activityResumed();
         ((KnodaApplication) getApplication()).setCurrentActivity(this);
         com.facebook.AppEventsLogger.activateApp(getApplicationContext(), "455514421245892");
+
+        refreshFollowing2();
+
+        if (connectivityManager == null)
+            return;
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            userManager.refreshUser(new NetworkCallback<User>() {
+                @Override
+                public void completionHandler(User object, ServerError error) {
+                }
+            });
+        }
     }
 
     @Override
@@ -910,6 +923,7 @@ public class MainActivity extends BaseActivity {
             });
         }
     }
+
     public void refreshFollowing2() {
         if (connectivityManager == null)
             return;

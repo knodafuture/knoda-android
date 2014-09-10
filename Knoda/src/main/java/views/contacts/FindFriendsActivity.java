@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -45,6 +46,7 @@ import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.TwitterManager;
 import managers.UserManager;
+import models.BaseModel;
 import models.FollowUser;
 import models.GroupInvitation;
 import models.KnodaInfo;
@@ -85,9 +87,6 @@ public class FindFriendsActivity extends BaseActivity {
     protected OnBackPressedListener onBackPressedListener;
     FindFriendsFacebookTwitterFragment facebookFragment = null;
     FindFriendsFacebookTwitterFragment twitterFragment = null;
-
-
-    public boolean addingFacebook = false;
 
     int invitesubmits = 0;
 
@@ -351,9 +350,16 @@ public class FindFriendsActivity extends BaseActivity {
                             errorReporter.showError(error);
                             return;
                         }
-                        if (facebookFragment != null) {
-                            facebookFragment.adapter.reset();
-                        }
+//                        if (facebookFragment != null) {
+//                            facebookFragment.adapter.reset();
+//                        }
+
+                        Intent intent = new Intent(FindFriendsActivity.this, FindFriendsActivity.class);
+                        intent.putExtra("cancelable", true);
+                        intent.putExtra("from", "facebook");
+                        startActivity(intent);
+                        finish();
+
                     }
                 });
             }
@@ -439,6 +445,10 @@ public class FindFriendsActivity extends BaseActivity {
     }
 
     public void onExit() {
+        if (following.size() + followingTwitter.size() + followingFacebook.size() + inviting.size() == 0) {
+            close();
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Hold Up!")
                 .setMessage("You have " + inviting.size() + " & " + (following.size() + followingTwitter.size() + followingFacebook.size()) + " follows, would you like to send these now?")
@@ -479,6 +489,15 @@ public class FindFriendsActivity extends BaseActivity {
         following.putAll(followingFacebook);
         following.putAll(followingTwitter);
 
+        //need to convert following to leader_info
+        ArrayList<FollowUser> formattedFollowing = new ArrayList<FollowUser>();
+
+        for (String s : following.keySet()) {
+            FollowUser f = new FollowUser();
+            f.leader_id = following.get(s).user_id;
+            formattedFollowing.add(f);
+        }
+
 
         if (following.size() + inviting.size() == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -494,9 +513,9 @@ public class FindFriendsActivity extends BaseActivity {
         } else {
             spinner.show();
             //submit invitations and follow requests here
-            networkingManager.followUsers(following.values(), new NetworkListCallback<FollowUser>() {
+            networkingManager.followUsers(formattedFollowing, new NetworkCallback<FollowUser>() {
                 @Override
-                public void completionHandler(ArrayList<FollowUser> object, ServerError error) {
+                public void completionHandler(FollowUser followUser, ServerError error) {
                     invitesubmits++;
                     if (invitesubmits == 2) {
                         if (error == null) {
@@ -504,6 +523,7 @@ public class FindFriendsActivity extends BaseActivity {
                         }
                         spinner.hide();
                         close();
+
                     }
                 }
             });

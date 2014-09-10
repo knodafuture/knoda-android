@@ -41,7 +41,6 @@ import models.Group;
 import models.GroupInvitation;
 import models.Invitation;
 import models.JoinGroupRequest;
-import models.KnodaInfo;
 import models.Leader;
 import models.LoginRequest;
 import models.LoginResponse;
@@ -586,9 +585,9 @@ public class NetworkingManager {
         executeListRequest(Request.Method.POST, url, null, TypeTokenFactory.getUserContactTypeToken(), callback);
     }
 
-    public void followUsers(Collection<KnodaInfo> following, final NetworkListCallback<FollowUser> callback) {
+    public void followUsers(ArrayList<FollowUser> following, final NetworkCallback<FollowUser> callback) {
         String url = buildUrl("followings.json", true, null);
-        executeListRequest(Request.Method.POST, url, following, null, callback);
+        executeRequest(Request.Method.POST, url, following, BaseModel.class, callback);
     }
 
     public void followUser(FollowUser followUser, final NetworkCallback<Follow> callback) {
