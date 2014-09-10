@@ -20,6 +20,7 @@ import helpers.AdapterHelper;
 import models.BaseModel;
 import models.GroupInvitation;
 import models.ServerError;
+import models.SocialAccount;
 import models.UserContact;
 import networking.NetworkCallback;
 import views.contacts.FindFriendsActivity;
@@ -266,11 +267,16 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
                 .setPositiveButton("Post", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        findFriendsActivity.networkingManager.postFacebook(msg.getText().toString(), new NetworkCallback<BaseModel>() {
+                        findFriendsActivity.facebookManager.reauthorizeWithPublishPermissions(findFriendsActivity, new NetworkCallback<SocialAccount>() {
                             @Override
-                            public void completionHandler(BaseModel object, ServerError error) {
-                                if (error == null)
-                                    Toast.makeText(findFriendsActivity, "Facebook post successful!", Toast.LENGTH_SHORT).show();
+                            public void completionHandler(SocialAccount object, ServerError error) {
+                                findFriendsActivity.networkingManager.postFacebook(msg.getText().toString(), new NetworkCallback<BaseModel>() {
+                                    @Override
+                                    public void completionHandler(BaseModel object, ServerError error) {
+                                        if (error == null)
+                                            Toast.makeText(findFriendsActivity, "Facebook post successful!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
                     }
