@@ -16,6 +16,7 @@ import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Session;
 import com.knoda.knoda.R;
 import com.squareup.otto.Bus;
 
@@ -46,7 +48,6 @@ import managers.NetworkingManager;
 import managers.SharedPrefManager;
 import managers.TwitterManager;
 import managers.UserManager;
-import models.BaseModel;
 import models.FollowUser;
 import models.GroupInvitation;
 import models.KnodaInfo;
@@ -56,7 +57,6 @@ import models.User;
 import models.UserContact;
 import models.UserContacts;
 import networking.NetworkCallback;
-import networking.NetworkListCallback;
 import pubsub.LoginFlowDoneEvent;
 import unsorted.Logger;
 import unsorted.PagerSlidingTabStrip;
@@ -87,6 +87,7 @@ public class FindFriendsActivity extends BaseActivity {
     protected OnBackPressedListener onBackPressedListener;
     FindFriendsFacebookTwitterFragment facebookFragment = null;
     FindFriendsFacebookTwitterFragment twitterFragment = null;
+    Session facebookSession;
 
     int invitesubmits = 0;
 
@@ -330,11 +331,11 @@ public class FindFriendsActivity extends BaseActivity {
 
     public void addFBAccount() {
         spinner.show();
-        facebookManager.openSession(this, new NetworkCallback<SocialAccount>() {
+        facebookSession = facebookManager.openSession(this, new NetworkCallback<SocialAccount>() {
             @Override
             public void completionHandler(SocialAccount object, ServerError error) {
                 if (error != null) {
-                    spinner.hide();
+                    FindFriendsActivity.this.spinner.hide();
                     errorReporter.showError(error);
                     //Toast.makeText(FindFriendsActivity.this, "Error connecting to Facebook", Toast.LENGTH_SHORT).show();
                     return;
@@ -513,35 +514,47 @@ public class FindFriendsActivity extends BaseActivity {
         } else {
             spinner.show();
             //submit invitations and follow requests here
-            networkingManager.followUsers(formattedFollowing, new NetworkCallback<FollowUser>() {
-                @Override
-                public void completionHandler(FollowUser followUser, ServerError error) {
-                    invitesubmits++;
-                    if (invitesubmits == 2) {
-                        if (error == null) {
-                            Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
-                        }
-                        spinner.hide();
-                        close();
+            if (formattedFollowing.size() > 0) {
+                networkingManager.followUsers(formattedFollowing, new NetworkCallback<FollowUser>() {
+                    @Override
+                    public void completionHandler(FollowUser followUser, ServerError error) {
+                        invitesubmits++;
+                        if (invitesubmits == 2) {
+                            if (error == null) {
+                                Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_LONG).show();
+                            }
+                            spinner.hide();
+                            close();
 
-                    }
-                }
-            });
-
-            networkingManager.sendInvitations(inviting.values(), new NetworkCallback<GroupInvitation>() {
-                @Override
-                public void completionHandler(GroupInvitation object, ServerError error) {
-                    invitesubmits++;
-                    if (invitesubmits == 2) {
-                        if (error == null) {
-                            Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_SHORT).show();
                         }
-                        spinner.hide();
-                        close();
                     }
-                }
-            });
+                });
+            } else
+                invitesubmits++;
+
+            if (inviting.size() > 0) {
+                networkingManager.sendInvitations(inviting.values(), new NetworkCallback<GroupInvitation>() {
+                    @Override
+                    public void completionHandler(GroupInvitation object, ServerError error) {
+                        invitesubmits++;
+                        if (invitesubmits == 2) {
+                            if (error == null) {
+                                Toast.makeText(FindFriendsActivity.this, "Invitations and follow requests sent successfully!", Toast.LENGTH_LONG).show();
+                            }
+                            spinner.hide();
+                            close();
+                        }
+                    }
+                });
+            } else
+                invitesubmits++;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("FindFriends", "onActivityResult");
+        facebookSession.onActivityResult(this, requestCode, resultCode, data);
     }
 
 

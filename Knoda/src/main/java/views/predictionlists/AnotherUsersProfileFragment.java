@@ -72,6 +72,16 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
     }
 
     @Override
+    public void onItemClicked(int position){
+        position--;
+        if(position<=0){
+            return;
+        }
+
+        super.onItemClicked(position);
+    }
+
+    @Override
     public PagingAdapter getAdapter() {
         return new AnotherUsersProfileAdapter(getActivity(), this, networkingManager.getImageLoader(), ((MainActivity) getActivity()));
     }
@@ -141,4 +151,10 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
 
         }
     }
+
+    @Override
+    public String noContentString() {
+        return "No Predictions";
+    }
+
 }

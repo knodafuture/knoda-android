@@ -76,10 +76,13 @@ public class FindFriendsFacebookTwitterFragment extends BaseListFragment impleme
     @Override
     public String noContentString() {
         if (filter.equals("facebook"))
-            return "No new Facebook friends on Knoda.\nInvite them to join Knoda!";
+            return "We didn’t find any new Facebook " +
+                    "friends using Knoda.\nInvite some friends " +
+                    "from the Contacts tab instead!";
         else if (filter.equals("twitter"))
-            return "No one you follow on twitter is new on Knoda. \n" +
-                    "Invite them to join Knoda!";
+            return "We didn’t find any new Twitter " +
+                    "friends using Knoda.\nInvite some friends " +
+                    "from the Contacts tab instead!";
         else
             return "No new friends on Knoda found. Get your friends on Knoda!";
     }

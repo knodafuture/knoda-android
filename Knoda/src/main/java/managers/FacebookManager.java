@@ -45,21 +45,26 @@ public class FacebookManager {
     }
 
     private static Session openActiveSession(Activity activity, boolean allowLoginUI, Session.StatusCallback callback, List<String> permissions) {
+        Session session = Session.getActiveSession();
         Session.OpenRequest openRequest = new Session.OpenRequest(activity).setPermissions(permissions).setCallback(callback);
-        Session session = new Session.Builder(activity).build();
-        if (SessionState.CREATED_TOKEN_LOADED.equals(session.getState()) || allowLoginUI) {
-            Session.setActiveSession(session);
-            session.openForRead(openRequest);
-            return session;
+
+        if (session == null) {
+            session = new Session.Builder(activity).build();
         }
+        if (SessionState.CREATED_TOKEN_LOADED.equals(session.getState()) || allowLoginUI) {
+                Session.setActiveSession(session);
+                session.openForRead(openRequest);
+                //session.onActivityResult(activity,openRequest)
+                return session;
+            }
+
         return null;
     }
 
     public Session openSession(Activity activity, final NetworkCallback<SocialAccount> callback) {
-
+        callbacks.clear();
         callbacks.add(callback);
-
-        Session session=openActiveSession(activity, true, getCallback(), Arrays.asList("email"));
+        Session session = openActiveSession(activity, true, getCallback(), Arrays.asList("email"));
 
         return session;
     }

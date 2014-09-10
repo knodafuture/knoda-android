@@ -553,8 +553,8 @@ public class MainActivity extends BaseActivity {
                 appRater.setTitle("Rate Knoda");
                 appRater.setMessage("Enjoying Knoda? Take a quick sec and give us a review. Thanks for your support!");
                 appRater.setRateButtonText("Yes, Review Now!");
-                appRater.setDismissButtonText("Remind Me Later");
-                appRater.setRemindLaterButtonText("No Thanks");
+                appRater.setDismissButtonText("No Thanks");
+                appRater.setRemindLaterButtonText("Remind Me Later");
                 appRater.init();
             }
         }
