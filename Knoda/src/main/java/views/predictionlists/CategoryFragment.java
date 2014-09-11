@@ -1,9 +1,12 @@
 package views.predictionlists;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import com.flurry.android.FlurryAgent;
+import com.knoda.knoda.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +43,12 @@ public class CategoryFragment extends BasePredictionListFragment {
         if (getArguments() != null && getArguments().containsKey("TAG")) {
             tag = getArguments().getString("TAG");
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
