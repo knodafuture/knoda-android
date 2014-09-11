@@ -452,7 +452,7 @@ public class FindFriendsActivity extends BaseActivity {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Hold Up!")
-                .setMessage("You have " + inviting.size() + "invitations & " + (following.size() + followingTwitter.size() + followingFacebook.size()) + " follows, would you like to send these now?")
+                .setMessage("You have " + inviting.size() + " invitations & " + (following.size() + followingTwitter.size() + followingFacebook.size()) + " follows, would you like to send these now?")
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
