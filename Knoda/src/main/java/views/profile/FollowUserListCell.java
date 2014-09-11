@@ -62,7 +62,7 @@ public class FollowUserListCell extends RelativeLayout {
             follow.setBackgroundResource(R.drawable.follow_btn);
 
         //if yourself
-        if (((MainActivity) followFeedFragment.getActivity()).userManager.getUser().id == user.id) {
+        if (((MainActivity) followFeedFragment.getActivity()).userManager.getUser().id.intValue() == user.id.intValue()) {
             follow.setVisibility(GONE);
             follow.setEnabled(false);
         }
@@ -80,8 +80,12 @@ public class FollowUserListCell extends RelativeLayout {
         OnClickListener ocl = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(user.id);
-                ((MainActivity) followFeedFragment.getActivity()).pushFragment(fragment);
+                if (user.id.intValue() == followFeedFragment.userManager.getUser().id.intValue()) {
+                    ((MainActivity) followFeedFragment.getActivity()).onProfile();
+                } else {
+                    AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(user.id);
+                    ((MainActivity) followFeedFragment.getActivity()).pushFragment(fragment);
+                }
             }
         };
         imageContainer.setOnClickListener(ocl);

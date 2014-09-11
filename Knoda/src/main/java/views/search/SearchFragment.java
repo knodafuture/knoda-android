@@ -25,6 +25,7 @@ import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import views.core.BaseFragment;
+import views.core.MainActivity;
 import views.details.DetailsFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
@@ -109,10 +110,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         if (tagAdapter == null)
             tagAdapter = new TagAdapter(getActivity(), this, null);
 
-        searchAdapter = new SearchAdapter(getActivity(), this, this, networkingManager.getImageLoader());
-//        if (searchAdapter == null)
-//            searchAdapter = new SearchAdapter(getActivity(), this, this, networkingManager.getImageLoader());
-//
+        searchAdapter = new SearchAdapter((MainActivity) getActivity(), this, this, networkingManager.getImageLoader());
         if (searchAdapter.items.size() > 0)
             listview.setAdapter(searchAdapter);
         else
@@ -182,8 +180,12 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
 
     @Override
     public void onUserSelected(User user) {
-        AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(user.id);
-        pushFragment(fragment);
+        if (user.id.intValue() == userManager.getUser().id.intValue()) {
+            ((MainActivity) getActivity()).onProfile();
+        } else {
+            AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(user.id);
+            pushFragment(fragment);
+        }
     }
 
     @Override

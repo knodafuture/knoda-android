@@ -18,6 +18,7 @@ import models.Prediction;
 import models.ServerError;
 import models.User;
 import networking.NetworkListCallback;
+import views.core.MainActivity;
 import views.predictionlists.PredictionListCell;
 import views.search.SearchUserCell;
 
@@ -32,17 +33,19 @@ public class SearchAdapter extends BaseAdapter {
     private ImageLoader imageLoader;
     private SearchAdapterDatasource datasource;
     private SearchAdapterCallbacks callbacks;
+    private MainActivity mainActivity;
 
     private ArrayList<Prediction> predictions = new ArrayList<Prediction>();
     private ArrayList<User> users = new ArrayList<User>();
     private String searchTerm;
 
-    public SearchAdapter(Context context, SearchAdapterDatasource datasource, SearchAdapterCallbacks callbacks, ImageLoader imageLoader) {
-        this.context = context;
+    public SearchAdapter(MainActivity activity, SearchAdapterDatasource datasource, SearchAdapterCallbacks callbacks, ImageLoader imageLoader) {
+        this.context = activity.getBaseContext();
         this.imageLoader = imageLoader;
         this.datasource = datasource;
         this.callbacks = callbacks;
         this.loading = true;
+        this.mainActivity = activity;
     }
 
     @Override
@@ -108,7 +111,10 @@ public class SearchAdapter extends BaseAdapter {
         if (user.avatar != null)
             view.imageView.setImageUrl(user.avatar.small, imageLoader);
         view.follow.setTag(view);
-        if (user.following_id != null)
+
+        if (mainActivity.userManager.getUser().id.intValue() == user.id.intValue()) {
+            view.follow.setVisibility(View.GONE);
+        } else if (user.following_id != null)
             view.follow.setBackgroundResource(R.drawable.follow_btn_active);
         else
             view.follow.setBackgroundResource(R.drawable.follow_btn);
