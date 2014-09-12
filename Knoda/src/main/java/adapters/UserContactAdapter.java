@@ -34,6 +34,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
     ArrayList<UserContact> searchedContacts = new ArrayList<UserContact>();
     ArrayList<UserContact> allContacts;
     public int followSize = -1;
+    public boolean unchecking=false;
 
     public UserContactAdapter(int type, Context context, PagingAdapterDatasource<UserContact> datasource, ImageLoader imageLoader, FindFriendsActivity activity) {
         super(context, datasource, imageLoader);
@@ -136,6 +137,12 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
     }
 
     public void followAll(boolean checked) {
+
+        if(unchecking && !checked){
+            unchecking=false;
+            return;
+        }
+
         if (type == FindFriendsListCellHeader.CONTACTS)
             findFriendsActivity.following.clear();
         else if (type == FindFriendsListCellHeader.FACEBOOK)
