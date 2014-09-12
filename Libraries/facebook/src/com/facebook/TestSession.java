@@ -20,22 +20,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.facebook.internal.Logger;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
+import com.facebook.model.GraphUser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Implements an subclass of Session that knows about test users for a particular
@@ -69,18 +61,27 @@ import java.util.Map;
  */
 public class TestSession extends Session {
     private static final long serialVersionUID = 1L;
+
+    private enum Mode {
+        PRIVATE, SHARED
+    }
+
     private static final String LOG_TAG = Logger.LOG_TAG_BASE + "TestSession";
+
     private static Map<String, TestAccount> appTestAccounts;
     private static String testApplicationSecret;
     private static String testApplicationId;
+
     private final String sessionUniqueUserTag;
     private final List<String> requestedPermissions;
     private final Mode mode;
     private String testAccountId;
+    private String testAccountUserName;
+
     private boolean wasAskedToExtendAccessToken;
 
     TestSession(Activity activity, List<String> permissions, TokenCachingStrategy tokenCachingStrategy,
-                String sessionUniqueUserTag, Mode mode) {
+            String sessionUniqueUserTag, Mode mode) {
         super(activity, TestSession.testApplicationId, tokenCachingStrategy);
 
         Validate.notNull(permissions, "permissions");
@@ -142,7 +143,7 @@ public class TestSession extends Session {
      * @return a new TestSession that is in the CREATED state, ready to be opened
      */
     public static TestSession createSessionWithSharedUser(Activity activity, List<String> permissions,
-                                                          String sessionUniqueUserTag) {
+            String sessionUniqueUserTag) {
         return createTestSession(activity, permissions, Mode.SHARED, sessionUniqueUserTag);
     }
 
@@ -190,8 +191,27 @@ public class TestSession extends Session {
         testApplicationSecret = applicationSecret;
     }
 
+    /**
+     * Gets the ID of the test user that this TestSession is authenticated as.
+     *
+     * @return the Facebook user ID of the test user
+     */
+    public final String getTestUserId() {
+        return testAccountId;
+    }
+
+    /**
+     * Gets the name of the test user that this TestSession is authenticated as.
+     *
+     * @return the name of the test user
+     */
+    public final String getTestUserName() {
+        return testAccountUserName;
+    }
+
+
     private static synchronized TestSession createTestSession(Activity activity, List<String> permissions, Mode mode,
-                                                              String sessionUniqueUserTag) {
+            String sessionUniqueUserTag) {
         if (Utility.isNullOrEmpty(testApplicationId) || Utility.isNullOrEmpty(testApplicationSecret)) {
             throw new FacebookException("Must provide app ID and secret");
         }
@@ -211,69 +231,47 @@ public class TestSession extends Session {
 
         appTestAccounts = new HashMap<String, TestAccount>();
 
-        // The data we need is split across two different FQL tables. We construct two queries, submit them
+        // The data we need is split across two different graph API queries. We construct two queries, submit them
         // together (the second one refers to the first one), then cross-reference the results.
 
-        // Get the test accounts for this app.
-        String testAccountQuery = String.format("SELECT id,access_token FROM test_account WHERE app_id = %s",
-                testApplicationId);
-        // Get the user names for those accounts.
-        String userQuery = "SELECT uid,name FROM user WHERE uid IN (SELECT id FROM #test_accounts)";
+        Request.setDefaultBatchApplicationId(testApplicationId);
 
         Bundle parameters = new Bundle();
-
-        // Build a JSON string that contains our queries and pass it as the 'q' parameter of the query.
-        JSONObject multiquery;
-        try {
-            multiquery = new JSONObject();
-            multiquery.put("test_accounts", testAccountQuery);
-            multiquery.put("users", userQuery);
-        } catch (JSONException exception) {
-            throw new FacebookException(exception);
-        }
-        parameters.putString("q", multiquery.toString());
-
-        // We need to authenticate as this app.
         parameters.putString("access_token", getAppAccessToken());
 
-        Request request = new Request(null, "fql", parameters, null);
-        Response response = request.executeAndWait();
+        Request requestTestUsers = new Request(null, "app/accounts/test-users", parameters, null);
+        requestTestUsers.setBatchEntryName("testUsers");
+        requestTestUsers.setBatchEntryOmitResultOnSuccess(false);
 
-        if (response.getError() != null) {
-            throw response.getError().getException();
+        Bundle testUserNamesParam = new Bundle();
+        testUserNamesParam.putString("access_token", getAppAccessToken());
+        testUserNamesParam.putString("ids", "{result=testUsers:$.data.*.id}");
+        testUserNamesParam.putString("fields", "name");
+
+        Request requestTestUserNames = new Request(null, "", testUserNamesParam, null);
+        requestTestUserNames.setBatchEntryDependsOn("testUsers");
+
+        List<Response> responses = Request.executeBatchAndWait(requestTestUsers, requestTestUserNames);
+        if (responses == null || responses.size() != 2) {
+            throw new FacebookException("Unexpected number of results from TestUsers batch query");
         }
 
-        FqlResponse fqlResponse = response.getGraphObjectAs(FqlResponse.class);
+        TestAccountsResponse testAccountsResponse  = responses.get(0).getGraphObjectAs(TestAccountsResponse.class);
+        GraphObjectList<TestAccount> testAccounts = testAccountsResponse.getData();
 
-        GraphObjectList<FqlResult> fqlResults = fqlResponse.getData();
-        if (fqlResults == null || fqlResults.size() != 2) {
-            throw new FacebookException("Unexpected number of results from FQL query");
-        }
+        // Response should contain a map of test accounts: { id's => { GraphUser } }
+        GraphObject userAccountsMap = responses.get(1).getGraphObject();
 
-        // We get back two sets of results. The first is from the test_accounts query, the second from the users query.
-        Collection<TestAccount> testAccounts = fqlResults.get(0).getFqlResultSet().castToListOf(TestAccount.class);
-        Collection<UserAccount> userAccounts = fqlResults.get(1).getFqlResultSet().castToListOf(UserAccount.class);
-
-        // Use both sets of results to populate our static array of accounts.
-        populateTestAccounts(testAccounts, userAccounts);
-
+        populateTestAccounts(testAccounts, userAccountsMap);
         return;
     }
 
     private static synchronized void populateTestAccounts(Collection<TestAccount> testAccounts,
-                                                          Collection<UserAccount> userAccounts) {
-        // We get different sets of data from each of these queries. We want to combine them into a single data
-        // structure. We have added a Name property to the TestAccount interface, even though we don't really get
-        // a name back from the service from that query. We stick the Name from the corresponding UserAccount in it.
+                                                          GraphObject userAccountsMap) {
         for (TestAccount testAccount : testAccounts) {
+            GraphUser testUser = userAccountsMap.getPropertyAs(testAccount.getId(), GraphUser.class);
+            testAccount.setName(testUser.getName());
             storeTestAccount(testAccount);
-        }
-
-        for (UserAccount userAccount : userAccounts) {
-            TestAccount testAccount = appTestAccounts.get(userAccount.getUid());
-            if (testAccount != null) {
-                testAccount.setName(userAccount.getName());
-            }
         }
     }
 
@@ -290,19 +288,6 @@ public class TestSession extends Session {
             }
         }
         return null;
-    }
-
-    static final String getAppAccessToken() {
-        return testApplicationId + "|" + testApplicationSecret;
-    }
-
-    /**
-     * Gets the ID of the test user that this TestSession is authenticated as.
-     *
-     * @return the Facebook user ID of the test user
-     */
-    public final String getTestUserId() {
-        return testAccountId;
     }
 
     @Override
@@ -342,8 +327,7 @@ public class TestSession extends Session {
         AccessToken currentToken = getTokenInfo();
         setTokenInfo(
                 new AccessToken(currentToken.getToken(), new Date(), currentToken.getPermissions(),
-                        AccessTokenSource.TEST_USER, new Date(0))
-        );
+                        currentToken.getDeclinedPermissions(), AccessTokenSource.TEST_USER, new Date(0)));
         setLastAttemptedTokenExtendDate(new Date(0));
     }
 
@@ -364,6 +348,10 @@ public class TestSession extends Session {
         setCurrentTokenRefreshRequest(new TokenRefreshRequest());
     }
 
+    static final String getAppAccessToken() {
+        return testApplicationId + "|" + testApplicationSecret;
+    }
+
     private void findOrCreateSharedTestAccount() {
         TestAccount testAccount = findTestAccountMatchingIdentifier(getSharedTestAccountIdentifier());
         if (testAccount != null) {
@@ -375,6 +363,7 @@ public class TestSession extends Session {
 
     private void finishAuthWithTestAccount(TestAccount testAccount) {
         testAccountId = testAccount.getId();
+        testAccountUserName = testAccount.getName();
 
         AccessToken accessToken = AccessToken.createFromString(testAccount.getAccessToken(), requestedPermissions,
                 AccessTokenSource.TEST_USER);
@@ -430,7 +419,8 @@ public class TestSession extends Session {
         GraphObject graphObject = response.getGraphObject();
         if (error != null) {
             Log.w(LOG_TAG, String.format("Could not delete test account %s: %s", testAccountId, error.getException().toString()));
-        } else if (graphObject.getProperty(Response.NON_JSON_RESPONSE_PROPERTY) == (Boolean) false) {
+        } else if (graphObject.getProperty(Response.NON_JSON_RESPONSE_PROPERTY) == (Boolean) false
+                   || graphObject.getProperty(Response.SUCCESS_KEY) == (Boolean) false) {
             Log.w(LOG_TAG, String.format("Could not delete test account %s: unknown reason", testAccountId));
         }
     }
@@ -467,36 +457,19 @@ public class TestSession extends Session {
         return result.toString();
     }
 
-    private enum Mode {
-        PRIVATE, SHARED
-    }
-
     private interface TestAccount extends GraphObject {
         String getId();
 
         String getAccessToken();
 
-        // Note: We don't actually get Name from our FQL query. We fill it in by correlating with UserAccounts.
+        // Note: We don't actually get Name from our accounts/test-users query. We fill it in by correlating with GraphUser.
         String getName();
 
         void setName(String name);
     }
 
-    private interface UserAccount extends GraphObject {
-        String getUid();
-
-        String getName();
-
-        void setName(String name);
-    }
-
-    private interface FqlResult extends GraphObject {
-        GraphObjectList<GraphObject> getFqlResultSet();
-
-    }
-
-    private interface FqlResponse extends GraphObject {
-        GraphObjectList<FqlResult> getData();
+    private interface TestAccountsResponse extends GraphObject {
+        GraphObjectList<TestAccount> getData();
     }
 
     private static final class TestTokenCachingStrategy extends TokenCachingStrategy {

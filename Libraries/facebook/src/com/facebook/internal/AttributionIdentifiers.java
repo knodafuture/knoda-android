@@ -19,7 +19,10 @@ package com.facebook.internal;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Looper;
 import android.util.Log;
+
+import com.facebook.FacebookException;
 
 import java.lang.reflect.Method;
 
@@ -40,15 +43,22 @@ public class AttributionIdentifiers {
     private static final int CONNECTION_RESULT_SUCCESS = 0;
 
     private static final long IDENTIFIER_REFRESH_INTERVAL_MILLIS = 3600 * 1000;
-    private static AttributionIdentifiers recentlyFetchedIdentifiers;
+
     private String attributionId;
     private String androidAdvertiserId;
     private boolean limitTracking;
     private long fetchTime;
 
+    private static AttributionIdentifiers recentlyFetchedIdentifiers;
+
     private static AttributionIdentifiers getAndroidId(Context context) {
         AttributionIdentifiers identifiers = new AttributionIdentifiers();
         try {
+            // We can't call getAdvertisingIdInfo on the main thread or the app will potentially
+            // freeze, if this is the case throw:
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+              throw new FacebookException("getAndroidId cannot be called on the main thread.");
+            }
             Method isGooglePlayServicesAvailable = Utility.getMethodQuietly(
                     "com.google.android.gms.common.GooglePlayServicesUtil",
                     "isGooglePlayServicesAvailable",
@@ -93,14 +103,14 @@ public class AttributionIdentifiers {
 
     public static AttributionIdentifiers getAttributionIdentifiers(Context context) {
         if (recentlyFetchedIdentifiers != null &&
-                System.currentTimeMillis() - recentlyFetchedIdentifiers.fetchTime < IDENTIFIER_REFRESH_INTERVAL_MILLIS) {
+            System.currentTimeMillis() - recentlyFetchedIdentifiers.fetchTime < IDENTIFIER_REFRESH_INTERVAL_MILLIS) {
             return recentlyFetchedIdentifiers;
         }
 
         AttributionIdentifiers identifiers = getAndroidId(context);
 
         try {
-            String[] projection = {ATTRIBUTION_ID_COLUMN_NAME, ANDROID_ID_COLUMN_NAME, LIMIT_TRACKING_COLUMN_NAME};
+            String [] projection = {ATTRIBUTION_ID_COLUMN_NAME, ANDROID_ID_COLUMN_NAME, LIMIT_TRACKING_COLUMN_NAME};
             Cursor c = context.getContentResolver().query(ATTRIBUTION_ID_CONTENT_URI, projection, null, null, null);
             if (c == null || !c.moveToFirst()) {
                 return null;
