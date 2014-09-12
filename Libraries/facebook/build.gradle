@@ -1,16 +1,30 @@
 apply plugin: 'android-library'
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.+'
+    }
+}
+
 dependencies {
-    compile 'com.android.support:support-v4:13.0.+'
+    compile 'com.android.support:support-v4:20.0.+'
+    compile files('libs/bolts-android-1.1.2.jar')
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    buildToolsVersion '19.1.0'
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 15
         targetSdkVersion 19
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     sourceSets {
@@ -19,14 +33,5 @@ android {
             java.srcDirs = ['src']
             res.srcDirs = ['res']
         }
-    }
-}
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }

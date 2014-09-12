@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
     Copyright 2010-present Facebook.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +15,11 @@
     limitations under the License.
 -->
 
-<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+<CheckBox
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/com_facebook_picker_checkbox"
     android:layout_width="23dip"
     android:layout_height="23dip"
-    android:button="@drawable/com_facebook_button_check"
+    android:focusable="false"
     android:clickable="false"
-    android:focusable="false" />
+    android:button="@drawable/com_facebook_button_check" />
