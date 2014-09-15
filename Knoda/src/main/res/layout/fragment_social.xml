@@ -19,7 +19,7 @@
             <TextView
                 android:id="@+id/activity_1"
                 style="@style/tabText"
-                android:text="Contests"
+                android:text="My Contests"
                 android:textColor="@color/white" />
 
             <View
@@ -36,7 +36,7 @@
             <TextView
                 android:id="@+id/activity_2"
                 style="@style/tabText"
-                android:text="Groups" />
+                android:text="My Groups" />
 
             <View
                 android:id="@+id/underline_2"
