@@ -619,6 +619,11 @@ public class NetworkingManager {
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
 
+    public void getRivals(int userid, NetworkListCallback<User> callback) {
+        String url = buildUrl("users/" + userid + "/rivals.json", true, null);
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
+    }
+
 
     private Map<String, String> getHeaders() {
 

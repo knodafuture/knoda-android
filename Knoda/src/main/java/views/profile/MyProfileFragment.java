@@ -268,9 +268,6 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
         getActivity().getActionBar().setDisplayShowTitleEnabled(true);
     }
 
-
-
-
     private void updateUser(User user) {
         if (user == null)
             return;
@@ -319,6 +316,6 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
 
     @Override
     public void onVersusClick() {
-        //
+        pushFragment(new HeadToHeadFragment());
     }
 }
