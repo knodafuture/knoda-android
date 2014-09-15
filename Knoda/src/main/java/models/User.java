@@ -56,6 +56,9 @@ public class User extends BaseModel {
     @SerializedName("phone")
     public String phoneNumber;
 
+    @SerializedName("rivalry")
+    public Rivalry rivalry;
+
     @SerializedName("social_accounts")
     public ArrayList<SocialAccount> socialAccounts;
 

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="105dp"
+    android:background="@color/knodaLightGreen">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Head-to-Head Wins"
+        android:textColor="@color/knodaDarkGreen" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:background="@color/knodaDarkGreen" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_alignParentLeft="true"
+                android:background="@color/knodaDarkGreen" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/head_to_head_win1"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="right"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true">
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/profile_avatar1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/knodaLightGreen"
+                android:src="@drawable/ic_notification_avatar" />
+
+            <ImageView
+                android:id="@+id/profile_avatar_mask1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/profile_mask" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@color/knodaLightGreen"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="vs."
+            android:textColor="@color/knodaDarkGreen" />
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true">
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/profile_avatar2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/knodaLightGreen"
+                android:src="@drawable/ic_notification_avatar" />
+
+            <ImageView
+                android:id="@+id/profile_avatar_mask2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/profile_mask" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/head_to_head_win2"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="left"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

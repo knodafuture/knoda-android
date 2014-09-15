@@ -1,11 +1,19 @@
 package adapters;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.knoda.knoda.R;
 import com.squareup.otto.Bus;
+
+import java.util.Random;
 
 import helpers.AdapterHelper;
 import models.Prediction;
@@ -22,6 +30,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
 
     public User user;
     private MainActivity mainActivity;
+    private ViewPager mViewPager;
 
     public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, MainActivity mainActivity) {
         super(context, datasource, imageLoader, new Bus(), true);
@@ -60,32 +69,67 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
         if (header == null)
             header = new UserProfileHeaderView(context);
 
-        header.pointsTextView.setText(user.points.toString());
-        header.winLossTextView.setText(user.won.toString() + "-" + user.lost.toString());
-        header.tv_followers.setText(user.follower_count + "");
-        header.tv_following.setText(user.following_count + "");
+        TextView tv_followers = (TextView) header.findViewById(R.id.profile_followers);
+        TextView tv_following = (TextView) header.findViewById(R.id.profile_following);
+        View followers_container = header.findViewById(R.id.profile_followers_container);
+        View following_container = header.findViewById(R.id.profile_following_container);
+        NetworkImageView avatarImageView = (NetworkImageView) header.findViewById(R.id.profile_avatar);
 
-        header.setStreak(user.streak);
-        header.winPercentTextView.setText(user.winningPercentage.toString() + "%");
+        final ImageView whitedot1 = (ImageView) header.findViewById(R.id.whitedot1);
+        final ImageView whitedot2 = (ImageView) header.findViewById(R.id.whitedot2);
 
-        if (header.avatarImageView != null && user.avatar != null && user.avatar.big != null)
-            header.avatarImageView.setImageUrl(user.avatar.big, imageLoader);
+        tv_followers.setText(user.follower_count + "");
+        tv_following.setText(user.following_count + "");
 
-        header.following_container.setOnClickListener(new View.OnClickListener() {
+        if (mViewPager != null) {
+            header.removeView(mViewPager);
+        }
+        mViewPager = new ViewPager(context);
+        mViewPager.setId(2000 + new Random().nextInt(100));
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mViewPager.setCurrentItem(position, true);
+                if (position == 0) {
+                    whitedot1.setAlpha(1f);
+                    whitedot2.setAlpha(.5f);
+                } else {
+                    whitedot1.setAlpha(.5f);
+                    whitedot2.setAlpha(1f);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mViewPager.setAdapter(new AnotherProfilePagerAdapter(mainActivity, user, context));
+        ((LinearLayout) header.findViewById(R.id.pagerContainer)).addView(mViewPager);
+        mViewPager.setCurrentItem(0);
+
+        if (avatarImageView != null && user.avatar != null && user.avatar.big != null)
+            avatarImageView.setImageUrl(user.avatar.big, imageLoader);
+
+        following_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FollowFragment followFragment = FollowFragment.newInstance(1, user);
                 mainActivity.pushFragment(followFragment);
             }
         });
-        header.followers_container.setOnClickListener(new View.OnClickListener() {
+        followers_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FollowFragment followFragment = FollowFragment.newInstance(0, user);
                 mainActivity.pushFragment(followFragment);
             }
         });
-
 
         return header;
     }

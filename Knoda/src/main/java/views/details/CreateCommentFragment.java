@@ -60,6 +60,7 @@ public class CreateCommentFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.submit, menu);
         menu.removeGroup(R.id.default_menu_group);
     }
