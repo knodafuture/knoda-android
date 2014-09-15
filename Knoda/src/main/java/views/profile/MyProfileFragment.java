@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -23,6 +26,7 @@ import adapters.ProfilePagerAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import helpers.TypefaceSpan;
 import managers.FacebookManager;
 import managers.TwitterManager;
 import models.ServerError;
@@ -35,8 +39,9 @@ import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 import views.core.Spinner;
+import views.predictionlists.HomeActionBar;
 
-public class MyProfileFragment extends BaseFragment {
+public class MyProfileFragment extends BaseFragment implements MyProfileActionBar.MyProfileActionBarCallbacks {
 
     public FacebookManager facebookManager;
     public TwitterManager twitterManager;
@@ -68,6 +73,8 @@ public class MyProfileFragment extends BaseFragment {
     LinearLayout topContainer;
     int topContainerHeight;
     private ViewPager mViewPager;
+
+    MyProfileActionBar actionbar;
 
 
     public static MyProfileFragment newInstance() {
@@ -236,26 +243,32 @@ public class MyProfileFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        if (mainActivity.userManager.getUser() != null && mainActivity.userManager.getUser().guestMode == false)
-            inflater.inflate(R.menu.profile, menu);
-        else
-            inflater.inflate(R.menu.profile_guest, menu);
+        inflater.inflate(R.menu.profile, menu);
+        MenuItem menuItem = menu.findItem(R.id.myprofile_actionbar);
+        actionbar = (MyProfileActionBar) menuItem.getActionView();
+        getActivity().getActionBar().setDisplayShowHomeEnabled(false);
+        getActivity().getActionBar().setDisplayUseLogoEnabled(false);
+        getActivity().getActionBar().setDisplayShowTitleEnabled(false);
+        actionbar.setCallbacks(this);
+
+
+        SpannableString s = new SpannableString(userManager.getUser().username.toUpperCase());
+        s.setSpan(new TypefaceSpan(getActivity(), "KronaOne-Regular.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        actionbar.titleTV.setText(s);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        if (mainActivity.userManager.getUser() != null && mainActivity.userManager.getUser().guestMode == false) {
-            menu.removeItem(R.id.home_actionbar);
-            if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings) != null)
-                menu.findItem(R.id.action_settings).setVisible(true);
-        } else {
-            if (((MainActivity) getActivity()).currentFragment.equals(this.getClass().getSimpleName()) && menu.findItem(R.id.action_settings) != null)
-                menu.findItem(R.id.action_settings).setVisible(false);
-        }
-        super.onPrepareOptionsMenu(menu);
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().setDisplayShowHomeEnabled(true);
+        getActivity().getActionBar().setDisplayUseLogoEnabled(true);
+        getActivity().getActionBar().setDisplayShowTitleEnabled(true);
     }
+
+
 
 
     private void updateUser(User user) {
@@ -297,5 +310,15 @@ public class MyProfileFragment extends BaseFragment {
         selectedFilter = ((TextView) topview.findViewById(id));
         selectedFilter.setTextColor(Color.WHITE);
         selectedUnderline.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onSettingsClick() {
+        ((MainActivity)getActivity()).onSettings();
+    }
+
+    @Override
+    public void onVersusClick() {
+        //
     }
 }

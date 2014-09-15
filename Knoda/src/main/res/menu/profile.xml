@@ -1,10 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings"
-        android:orderInCategory="0"
-        android:showAsAction="always"
-        android:title="Settings" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <group
+        android:id="@+id/default_menu_group"
+        android:visible="true">
+        <item
+            android:id="@+id/myprofile_actionbar"
+            android:actionViewClass="views.profile.MyProfileActionBar"
+            android:orderInCategory="0"
+            android:showAsAction="always"
+            android:title="Search" />
+    </group>
 </menu>
