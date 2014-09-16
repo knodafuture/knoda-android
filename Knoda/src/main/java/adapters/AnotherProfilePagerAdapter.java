@@ -132,8 +132,6 @@ public class AnotherProfilePagerAdapter extends FragmentStatePagerAdapter {
             }
             return v;
         }
-
-
     }
 
     private void loadUserPic(final String url, final ImageView imageView) {

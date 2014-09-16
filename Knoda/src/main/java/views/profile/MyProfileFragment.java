@@ -256,8 +256,6 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
         s.setSpan(new TypefaceSpan(getActivity(), "KronaOne-Regular.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         actionbar.titleTV.setText(s);
-
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

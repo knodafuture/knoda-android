@@ -80,7 +80,8 @@
             <ImageView
                 android:id="@+id/profile_avatar1"
                 android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:src="@drawable/ic_notification_avatar"/>
 
             <!--<ImageView-->
                 <!--android:id="@+id/profile_avatar_mask1"-->
@@ -108,7 +109,8 @@
             <ImageView
                 android:id="@+id/profile_avatar2"
                 android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:src="@drawable/ic_notification_avatar"/>
 
             <!--<ImageView-->
                 <!--android:id="@+id/profile_avatar_mask2"-->

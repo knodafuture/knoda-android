@@ -26,12 +26,13 @@ public class HeadToHeadAdapter extends PagingAdapter<User> {
 
     int maxBarPixels = 0;
     int barHeight = 0;
+    int onedp;
 
 
     public HeadToHeadAdapter(Context context, PagingAdapterDatasource<User> datasource, ImageLoader imageLoader, MainActivity mainActivity) {
         super(context, datasource, imageLoader);
         this.mainActivity = mainActivity;
-        final int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
+        onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, context.getResources().getDisplayMetrics());
         title_no_image.setMargins(onedp * 15, onedp * 15, onedp * 15, 0);
         title_normal.setMargins(onedp * 15, onedp * 5, onedp * 15, 0);
 
@@ -63,7 +64,7 @@ public class HeadToHeadAdapter extends PagingAdapter<User> {
             listItem = (HeadToHeadListCell) LayoutInflater.from(context).inflate(R.layout.list_cell_head_to_head, null);
         final User user = objects.get(position);
         if (user != null) {
-            listItem.setUsers(mainActivity.userManager.getUser(), user, mainActivity, maxBarPixels, barHeight);
+            listItem.setUsers(mainActivity.userManager.getUser(), user, mainActivity, maxBarPixels, barHeight, onedp);
         }
 
         return listItem;
