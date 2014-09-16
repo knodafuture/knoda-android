@@ -90,17 +90,17 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true">
 
-                <com.android.volley.toolbox.NetworkImageView
+                <ImageView
                     android:id="@+id/head_to_head_avatar1"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_notification_avatar" />
 
-                <ImageView
-                    android:id="@+id/profile_avatar_mask1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/avatar_mask" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/profile_avatar_mask1"-->
+                    <!--android:layout_width="50dp"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:src="@drawable/avatar_mask" />-->
             </RelativeLayout>
 
 
@@ -116,17 +116,17 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true">
 
-                <com.android.volley.toolbox.NetworkImageView
+                <ImageView
                     android:id="@+id/head_to_head_avatar2"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_notification_avatar" />
 
-                <ImageView
-                    android:id="@+id/profile_avatar_mask2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/avatar_mask" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/profile_avatar_mask2"-->
+                    <!--android:layout_width="50dp"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:src="@drawable/avatar_mask" />-->
 
             </RelativeLayout>
 

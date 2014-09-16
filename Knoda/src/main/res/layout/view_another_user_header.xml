@@ -111,18 +111,18 @@
 
         <ImageView
             android:id="@+id/whitedot1"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
             android:background="@drawable/whitecircle" />
 
         <View
-            android:layout_width="10dp"
+            android:layout_width="5dp"
             android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/whitedot2"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
             android:background="@drawable/whitecircle"
             android:alpha=".5"/>
     </LinearLayout>

@@ -23,26 +23,32 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_marginRight="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="right">
 
             <View
+                android:id="@+id/greenBar1"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="70dp"
                 android:background="@color/knodaDarkGreen" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="10dp"
+            android:gravity="left">
 
             <View
+                android:id="@+id/greenBar2"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="70dp"
                 android:background="@color/knodaDarkGreen" />
         </RelativeLayout>
 
@@ -71,18 +77,16 @@
             android:layout_height="50dp"
             android:layout_centerVertical="true">
 
-            <com.android.volley.toolbox.NetworkImageView
+            <ImageView
                 android:id="@+id/profile_avatar1"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@color/knodaLightGreen"
-                android:src="@drawable/ic_notification_avatar" />
+                android:layout_height="50dp" />
 
-            <ImageView
-                android:id="@+id/profile_avatar_mask1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/profile_mask" />
+            <!--<ImageView-->
+                <!--android:id="@+id/profile_avatar_mask1"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:src="@drawable/profile_mask" />-->
         </RelativeLayout>
 
 
@@ -101,18 +105,16 @@
             android:layout_height="50dp"
             android:layout_centerVertical="true">
 
-            <com.android.volley.toolbox.NetworkImageView
+            <ImageView
                 android:id="@+id/profile_avatar2"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@color/knodaLightGreen"
-                android:src="@drawable/ic_notification_avatar" />
+                android:layout_height="50dp" />
 
-            <ImageView
-                android:id="@+id/profile_avatar_mask2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/profile_mask" />
+            <!--<ImageView-->
+                <!--android:id="@+id/profile_avatar_mask2"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:src="@drawable/profile_mask" />-->
 
         </RelativeLayout>
 
