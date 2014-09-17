@@ -24,8 +24,6 @@ import views.core.MainActivity;
 public class HeadToHeadFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<User> {
     @InjectView(R.id.base_listview)
     public PullToRefreshListView pListView;
-    View topview;
-    boolean pageLoaded = false;
 
     public HeadToHeadFragment() {
     }
@@ -45,7 +43,6 @@ public class HeadToHeadFragment extends BaseListFragment implements PagingAdapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        topview = getView();
         getActivity().invalidateOptionsMenu();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -72,17 +69,7 @@ public class HeadToHeadFragment extends BaseListFragment implements PagingAdapte
 
     @Override
     public void getObjectsAfterObject(User user, final NetworkListCallback<User> callback) {
-        pageLoaded = true;
         networkingManager.getRivals(userManager.getUser().id, callback);
-//        networkingManager.getContests(filter, new NetworkListCallback<Contest>() {
-//            @Override
-//            public void completionHandler(ArrayList<Contest> object, ServerError error) {
-//                callback.completionHandler(object, error);
-//                if (error == null) {
-//                    sharedPrefManager.saveObjectString(object, filter + "contests");
-//                }
-//            }
-//        });
     }
 
     @Override
