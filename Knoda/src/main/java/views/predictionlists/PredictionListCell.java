@@ -1,8 +1,13 @@
 package views.predictionlists;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.text.SpannableString;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -10,6 +15,10 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import models.Prediction;
 
@@ -115,7 +124,15 @@ public class PredictionListCell extends RelativeLayout {
 
 
     public void update() {
-        bodyTextView.setText(prediction.body);
+
+        SpannableString spannableString =
+                new SpannableString(prediction.body);
+        bodyTextView.setText(spannableString);
+        Pattern tagMatcher = Pattern.compile("[#]+[A-Za-z0-9-_]+\\b");
+        String newActivityURL = "content://com.knoda.knoda.hashtag/";
+        Linkify.addLinks(bodyTextView, tagMatcher, newActivityURL);
+
+
         usernameTextView.setText(prediction.username);
         timeStampsTextView.setText(prediction.getMetdataString());
 
@@ -193,6 +210,24 @@ public class PredictionListCell extends RelativeLayout {
             return R.drawable.disagree_marker;
 
         return 0;
+    }
+
+
+    public ArrayList<int[]> getSpans(String body, char prefix) {
+        ArrayList<int[]> spans = new ArrayList<int[]>();
+
+        Pattern pattern = Pattern.compile(prefix + "\\w+");
+        Matcher matcher = pattern.matcher(body);
+
+        // Check all occurrences
+        while (matcher.find()) {
+            int[] currentSpan = new int[2];
+            currentSpan[0] = matcher.start();
+            currentSpan[1] = matcher.end();
+            spans.add(currentSpan);
+        }
+
+        return spans;
     }
 
 }

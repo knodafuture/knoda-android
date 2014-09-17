@@ -48,6 +48,7 @@ import views.login.LoginFragment;
 import views.login.SignUpFragment;
 import views.login.SignupConfirmFragment;
 import views.login.WelcomeFragment;
+import views.other.TagActivity;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
 import views.predictionlists.GroupPredictionListFragment;
@@ -113,7 +114,8 @@ import views.settings.SettingsFragment;
                 FindFriendsFacebookTwitterFragment.class,
                 FollowFragment.class,
                 FollowFeedFragment.class,
-                HeadToHeadFragment.class
+                HeadToHeadFragment.class,
+                TagActivity.class
         },
         addsTo = KnodaModule.class,
         library = true

@@ -34,6 +34,10 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
+        <provider
+            android:name="unsorted.TagProvider"
+            android:authorities="com.knoda.knoda.hashtag" />
+
         <activity
             android:name="views.core.MainActivity"
             android:label="@string/app_name"
@@ -50,6 +54,14 @@
                     android:host="knoda"
                     android:scheme="knodaoauth" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.cc.tag" />
+            </intent-filter>
+
+
         </activity>
         <activity
             android:name="views.avatar.UserAvatarChooserActivity"
@@ -88,6 +100,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="views.other.TagActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<data android:mimeType="vnd.android.cursor.item/vnd.cc.tag" />-->
+            <!--</intent-filter>-->
+        </activity>
+
         <activity
             android:name="com.tapjoy.TJCOffersWebView"
             android:configChanges="orientation|keyboardHidden|screenSize" />
@@ -108,6 +129,7 @@
         <activity
             android:name="com.tapjoy.mraid.view.Browser"
             android:configChanges="orientation|keyboardHidden|screenSize" />
+
 
         <receiver
             android:name="gcm.GcmBroadcastReceiver"

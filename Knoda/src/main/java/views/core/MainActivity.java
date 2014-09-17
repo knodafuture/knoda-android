@@ -601,6 +601,17 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
+
+        if(getIntent().getData()!=null){
+            Uri uri = getIntent().getData();
+            //strip off hashtag from the URI
+            String tag = uri.toString().split("/")[3];
+            if(tag.indexOf("#")!=-1){
+                //Toast.makeText(this, tag, Toast.LENGTH_SHORT).show();
+                tag=tag.replace("#","");
+                pushFragment(SearchFragment.newInstance(tag));
+            }
+        }
     }
 
     @Override
@@ -783,6 +794,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+
     }
 
     public void doLogin() {
