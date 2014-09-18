@@ -56,7 +56,8 @@
                 style="@style/smallWhiteText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Points" />
+                android:text="POINTS"
+                android:fontFamily="sans-serif-medium"/>
 
         </LinearLayout>
 
@@ -79,7 +80,8 @@
                 style="@style/smallWhiteText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Win %" />
+                android:text="WIN %"
+                android:fontFamily="sans-serif-medium"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -111,7 +113,8 @@
                 style="@style/smallWhiteText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Streak" />
+                android:text="STREAK"
+                android:fontFamily="sans-serif-medium"/>
 
         </LinearLayout>
 
@@ -134,7 +137,8 @@
                 style="@style/smallWhiteText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="W-L" />
+                android:text="W-L"
+                android:fontFamily="sans-serif-medium"/>
 
         </LinearLayout>
 

@@ -1,6 +1,7 @@
 package views.profile;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -95,8 +96,44 @@ public class HeadToHeadListCell extends RelativeLayout {
         }
         findViewById(R.id.greenBar2).setLayoutParams(new RelativeLayout.LayoutParams(barwidth, barHeight));
 
-
         username.setText(user2.username);
+
+        String temp = null;
+        Typeface medium = Typeface.create(temp, Typeface.BOLD);
+        Typeface normal = Typeface.create("sans-serif-light", Typeface.NORMAL);
+
+        //set bold of higher fields
+        if (user1.winningPercentage > user2.winningPercentage) {
+            wl1.setTypeface(medium);
+            wp1.setTypeface(medium);
+            wl2.setTypeface(normal);
+            wp2.setTypeface(normal);
+        } else if (user1.winningPercentage < user2.winningPercentage) {
+            wl1.setTypeface(normal);
+            wp1.setTypeface(normal);
+            wl2.setTypeface(medium);
+            wp2.setTypeface(medium);
+        } else {
+            wl1.setTypeface(normal);
+            wp1.setTypeface(normal);
+            wl2.setTypeface(normal);
+            wp2.setTypeface(normal);
+        }
+
+        switch (streakCompare(user1.streak, user2.streak)) {
+            case 0:
+                streak1.setTypeface(normal);
+                streak2.setTypeface(normal);
+                break;
+            case 1:
+                streak1.setTypeface(medium);
+                streak2.setTypeface(normal);
+                break;
+            case 2:
+                streak1.setTypeface(normal);
+                streak2.setTypeface(medium);
+                break;
+        }
 
     }
 
@@ -107,6 +144,38 @@ public class HeadToHeadListCell extends RelativeLayout {
             streakTV.setText(streak);
         }
     }
+
+    //0 means equal, 1 means 1 is better, 2 means 2 is better
+    public int streakCompare(String streak1, String streak2) {
+        if (streak1.charAt(0) == 'W' && streak2.charAt(0) == 'L')
+            return 1;
+        if (streak1.charAt(0) == 'L' && streak2.charAt(0) == 'W')
+            return 2;
+
+        if (streak1.charAt(0) == 'W' && streak2.charAt(0) == 'W') {
+            int x1 = Integer.parseInt(streak1.substring(1));
+            int x2 = Integer.parseInt(streak2.substring(1));
+            if (x1 > x2)
+                return 1;
+            else if (x1 < x2)
+                return 2;
+            else
+                return 0;
+        }
+
+        if (streak1.charAt(0) == 'L' && streak2.charAt(0) == 'L') {
+            int x1 = Integer.parseInt(streak1.substring(1));
+            int x2 = Integer.parseInt(streak2.substring(1));
+            if (x1 < x2)
+                return 1;
+            else if (x1 > x2)
+                return 2;
+            else
+                return 0;
+        }
+        return 0;
+    }
+
 
     public void changeExpanded() {
         if (expanded) {
