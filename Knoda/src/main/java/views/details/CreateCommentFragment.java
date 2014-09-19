@@ -131,8 +131,8 @@ public class CreateCommentFragment extends BaseFragment {
                 if (error != null)
                     errorReporter.showError(error);
                 else {
-                    bus.post(new NewCommentEvent(object));
                     FlurryAgent.logEvent("CREATE_COMMENT");
+                    bus.post(new NewCommentEvent(object));
                     popFragment();
                 }
             }
@@ -146,6 +146,8 @@ public class CreateCommentFragment extends BaseFragment {
         }
         return true;
     }
+
+
 
     @Override
     public void onDestroyView() {

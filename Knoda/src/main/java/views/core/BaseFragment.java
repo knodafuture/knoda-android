@@ -103,4 +103,9 @@ public class BaseFragment extends Fragment {
         ((MainActivity) getActivity()).setActionBarTitle(title);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        
+    }
+
 }
