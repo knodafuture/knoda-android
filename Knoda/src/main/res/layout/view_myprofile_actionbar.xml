@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="@color/knodaLightGreen">
+
+
+        <ImageView
+            android:id="@+id/myprofile_actionbar_vs"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_headtohead" />
+
+
+        <TextView
+            android:id="@+id/myprofile_actionbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="sans-serif-medium"
+            android:layout_centerInParent="true"
+            android:text="USERNAME"
+            android:textColor="@color/knodaDarkGreen"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/myprofile_actionbar_settings"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_settings" />
+
+    </RelativeLayout>
+</RelativeLayout>

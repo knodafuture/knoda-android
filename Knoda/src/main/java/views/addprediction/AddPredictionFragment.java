@@ -260,7 +260,7 @@ public class AddPredictionFragment extends BaseFragment {
     }
 
     private void buildGroupsDialog() {
-        if (!userManager.groups.isEmpty()) {
+        if (userManager != null && userManager.groups != null && !userManager.groups.isEmpty()) {
             String[] items = new String[userManager.groups.size() + 1];
             items[0] = "Public";
             for (int i = 0; i < userManager.groups.size(); i++) {

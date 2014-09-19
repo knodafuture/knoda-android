@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="105dp"
+    android:background="@color/knodaLightGreen">
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="85dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#A0CE71" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#A0CE71" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/knodaLightGreen"
+        android:padding="5dp"
+        android:src="@drawable/ic_stats" />
+
+
+    <LinearLayout
+        android:id="@+id/above_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_points"
+                style="@style/smallWhiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="28,075"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/smallWhiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="POINTS"
+                android:fontFamily="sans-serif-medium"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_winpercent"
+                style="@style/smallWhiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="62.27%"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/smallWhiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WIN %"
+                android:fontFamily="sans-serif-medium"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/above_container"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_winstreak"
+                style="@style/smallWhiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="W22"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/smallWhiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="STREAK"
+                android:fontFamily="sans-serif-medium"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_winloss"
+                style="@style/smallWhiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1426-864"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/smallWhiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="W-L"
+                android:fontFamily="sans-serif-medium"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

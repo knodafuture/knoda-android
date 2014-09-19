@@ -60,6 +60,7 @@ public class CreateCommentFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.submit, menu);
         menu.removeGroup(R.id.default_menu_group);
     }
@@ -130,8 +131,8 @@ public class CreateCommentFragment extends BaseFragment {
                 if (error != null)
                     errorReporter.showError(error);
                 else {
-                    bus.post(new NewCommentEvent(object));
                     FlurryAgent.logEvent("CREATE_COMMENT");
+                    bus.post(new NewCommentEvent(object));
                     popFragment();
                 }
             }
@@ -145,6 +146,8 @@ public class CreateCommentFragment extends BaseFragment {
         }
         return true;
     }
+
+
 
     @Override
     public void onDestroyView() {

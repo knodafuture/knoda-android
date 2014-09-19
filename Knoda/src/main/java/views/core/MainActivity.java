@@ -388,10 +388,6 @@ public class MainActivity extends BaseActivity {
                 //onSearch();
                 break;
             }
-            case R.id.action_settings: {
-                onSettings();
-                break;
-            }
             case R.id.action_create_group: {
                 onCreateGroup();
                 break;
@@ -684,7 +680,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void onSettings() {
+    public void onSettings() {
         if (settingsFragment == null)
             settingsFragment = new SettingsFragment();
         pushFragment(settingsFragment);
