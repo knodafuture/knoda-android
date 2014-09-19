@@ -3,7 +3,13 @@ package views.profile;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,8 +39,20 @@ public class HeadToHeadListCell extends RelativeLayout {
     public ImageView avatar2;
     public TextView username;
 
+    int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getContext().getResources().getDisplayMetrics());
+    int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
 
-    public boolean expanded = true;
+    final Animation animationSlideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slidein);
+    final Animation animationSlideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slideout);
+
+    final ResizeAnimation resizeUp = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 105 * onedp, screenWidth, 253 * onedp);
+    final ResizeAnimation resizeDown = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 253 * onedp, screenWidth, 105 * onedp);
+
+    final ResizeAnimation resizeUp2 = new ResizeAnimation(this, screenWidth, 105 * onedp, screenWidth, 253 * onedp);
+    final ResizeAnimation resizeDown2 = new ResizeAnimation(this, screenWidth, 253 * onedp, screenWidth, 105 * onedp);
+
+
+    public boolean expanded = false;
 
     public HeadToHeadListCell(Context context) {
         super(context);
@@ -64,7 +82,9 @@ public class HeadToHeadListCell extends RelativeLayout {
                 changeExpanded();
             }
         });
-        changeExpanded();
+        //findViewById(R.id.head_to_head_stats_container).setLayoutParams(new RelativeLayout.LayoutParams(screenWidth, 105 * onedp));
+        //this.setLayoutParams(new ViewGroup.LayoutParams(screenWidth, 105 * onedp));
+
     }
 
     public void setUsers(User user1, User user2, MainActivity mainActivity, int maxBarPixels, int barHeight, int onedp) {
@@ -178,11 +198,19 @@ public class HeadToHeadListCell extends RelativeLayout {
 
 
     public void changeExpanded() {
+
         if (expanded) {
-            findViewById(R.id.head_to_head_stats_container).setVisibility(GONE);
+            this.startAnimation(resizeDown2);
+            View v = findViewById(R.id.head_to_head_stats_container);
+            v.startAnimation(resizeDown);
+            v.startAnimation(animationSlideOut);
             expanded = false;
         } else {
-            findViewById(R.id.head_to_head_stats_container).setVisibility(VISIBLE);
+            this.startAnimation(resizeUp2);
+            View v = findViewById(R.id.head_to_head_stats_container);
+            v.setVisibility(VISIBLE);
+            v.startAnimation(resizeUp);
+            v.startAnimation(animationSlideIn);
             expanded = true;
         }
     }
@@ -210,6 +238,35 @@ public class HeadToHeadListCell extends RelativeLayout {
 
             }
         });
+    }
+
+    public class ResizeAnimation extends Animation {
+        private View mView;
+        private float mToHeight;
+        private float mFromHeight;
+
+        private float mToWidth;
+        private float mFromWidth;
+
+        public ResizeAnimation(View v, float fromWidth, float fromHeight, float toWidth, float toHeight) {
+            mToHeight = toHeight;
+            mToWidth = toWidth;
+            mFromHeight = fromHeight;
+            mFromWidth = fromWidth;
+            mView = v;
+            setDuration(500);
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime, Transformation t) {
+            float height =
+                    (mToHeight - mFromHeight) * interpolatedTime + mFromHeight;
+            float width = (mToWidth - mFromWidth) * interpolatedTime + mFromWidth;
+            ViewGroup.LayoutParams p = mView.getLayoutParams();
+            p.height = (int) height;
+            p.width = (int) width;
+            mView.requestLayout();
+        }
     }
 
 }

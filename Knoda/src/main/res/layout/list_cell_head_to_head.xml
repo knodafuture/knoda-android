@@ -2,12 +2,168 @@
 
 <views.profile.HeadToHeadListCell xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="105dp">
+
+    <LinearLayout
+        android:id="@+id/head_to_head_stats_container"
+        android:layout_width="match_parent"
+        android:layout_height="253dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#EFEFEF"
+            android:layout_marginTop="105dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="Overall Stats"
+            android:textColor="@color/knodaDarkGreen"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:background="#EFEFEF">
+
+            <TextView
+                android:id="@+id/head_to_head_wl1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/head_to_head_wl_middle"
+                android:gravity="center_vertical"
+                android:text="1500-550"
+                android:textColor="@color/knodaLightGreen"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/head_to_head_wl_middle"
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="W-L"
+                android:textColor="@color/knodaDarkGreen"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/head_to_head_wl2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/head_to_head_wl_middle"
+                android:gravity="center_vertical"
+                android:text="469-123"
+                android:textColor="@color/knodaLightGreen"
+                android:textSize="20sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:background="#FFF">
+
+            <TextView
+                android:id="@+id/head_to_head_winp1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/head_to_head_winp_middle"
+                android:gravity="center_vertical"
+                android:text="75.77%"
+                android:textColor="@color/knodaLightGreen"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/head_to_head_winp_middle"
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="WIN %"
+                android:textColor="@color/knodaDarkGreen"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/head_to_head_winp2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/head_to_head_winp_middle"
+                android:gravity="center_vertical"
+                android:text="78.22%"
+                android:textColor="@color/knodaLightGreen"
+                android:textSize="20sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:background="#EFEFEF">
+
+            <TextView
+                android:id="@+id/head_to_head_streak1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/head_to_head_streak_middle"
+                android:gravity="center_vertical"
+                android:text="W34"
+                android:textColor="@color/knodaLightGreen"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/head_to_head_streak_middle"
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="STREAK"
+                android:textColor="@color/knodaDarkGreen"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/head_to_head_streak2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/head_to_head_streak_middle"
+                android:gravity="center_vertical"
+                android:text="W8"
+                android:textColor="@color/knodaLightGreen"
+                android:textSize="20sp" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/head_to_head_container"
         android:layout_width="match_parent"
-        android:layout_height="105dp">
+        android:layout_height="105dp"
+        android:background="@color/white">
 
 
         <LinearLayout
@@ -146,12 +302,6 @@
                     android:layout_height="50dp"
                     android:src="@drawable/ic_notification_avatar" />
 
-                <!--<ImageView-->
-                <!--android:id="@+id/profile_avatar_mask2"-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:src="@drawable/avatar_mask" />-->
-
             </RelativeLayout>
 
             <TextView
@@ -170,163 +320,11 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/head_to_head_stats_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/head_to_head_container"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="#EFEFEF" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:text="Overall Stats"
-            android:textColor="@color/knodaDarkGreen"
-            android:textSize="16sp" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="34dp"
-            android:background="#EFEFEF">
-
-            <TextView
-                android:id="@+id/head_to_head_wl1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="15dp"
-                android:layout_toLeftOf="@+id/head_to_head_wl_middle"
-                android:gravity="center_vertical"
-                android:text="1500-550"
-                android:textColor="@color/knodaLightGreen"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/head_to_head_wl_middle"
-                android:layout_width="55dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="W-L"
-                android:paddingTop="5dp"
-                android:textColor="@color/knodaDarkGreen"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/head_to_head_wl2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/head_to_head_wl_middle"
-                android:gravity="center_vertical"
-                android:text="469-123"
-                android:textColor="@color/knodaLightGreen"
-                android:textSize="20sp" />
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="34dp"
-            android:background="#FFF">
-
-            <TextView
-                android:id="@+id/head_to_head_winp1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="15dp"
-                android:layout_toLeftOf="@+id/head_to_head_winp_middle"
-                android:gravity="center_vertical"
-                android:text="75.77%"
-                android:textColor="@color/knodaLightGreen"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/head_to_head_winp_middle"
-                android:layout_width="55dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="WIN %"
-                android:textColor="@color/knodaDarkGreen"
-                android:textSize="12sp"
-                android:paddingTop="5dp"/>
-
-            <TextView
-                android:id="@+id/head_to_head_winp2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/head_to_head_winp_middle"
-                android:gravity="center_vertical"
-                android:text="78.22%"
-                android:textColor="@color/knodaLightGreen"
-                android:textSize="20sp" />
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="34dp"
-            android:background="#EFEFEF">
-
-            <TextView
-                android:id="@+id/head_to_head_streak1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="15dp"
-                android:layout_toLeftOf="@+id/head_to_head_streak_middle"
-                android:gravity="center_vertical"
-                android:text="W34"
-                android:textColor="@color/knodaLightGreen"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/head_to_head_streak_middle"
-                android:layout_width="55dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="STREAK"
-                android:paddingTop="5dp"
-                android:textColor="@color/knodaDarkGreen"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/head_to_head_streak2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/head_to_head_streak_middle"
-                android:gravity="center_vertical"
-                android:text="W8"
-                android:textColor="@color/knodaLightGreen"
-                android:textSize="20sp" />
-
-
-        </RelativeLayout>
-
-
-    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2px"
+        android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:background="#EFEFEF" />
 
