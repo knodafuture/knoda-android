@@ -34,14 +34,16 @@
                     android:layout_height="wrap_content"
                     android:text="10,888"
                     android:textColor="@color/knodaDarkGreen"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="FOLLOWERS"
                     android:textColor="@color/knodaDarkGreen"
-                    android:textSize="11sp" />
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-medium"/>
             </LinearLayout>
         </RelativeLayout>
 
@@ -92,7 +94,8 @@
                     android:layout_height="wrap_content"
                     android:text="FOLLOWING"
                     android:textColor="@color/knodaDarkGreen"
-                    android:textSize="11sp" />
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-medium"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

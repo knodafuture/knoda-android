@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="105dp"
+    android:translationY="12dp"
     android:background="@color/knodaLightGreen">
 
     <TextView
@@ -10,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Head-to-Head Wins"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="16sp"
         android:textColor="@color/knodaDarkGreen" />
 
 
@@ -99,6 +102,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="vs."
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
             android:textColor="@color/knodaDarkGreen" />
 
         <RelativeLayout
