@@ -111,7 +111,10 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
         });
         mViewPager.setAdapter(new AnotherProfilePagerAdapter(mainActivity, user, context));
         ((LinearLayout) header.findViewById(R.id.pagerContainer)).addView(mViewPager);
-        mViewPager.setCurrentItem(0);
+        if (user.rivalry.user_won == 0 && user.rivalry.opponent_won == 0)
+            mViewPager.setCurrentItem(1);
+        else
+            mViewPager.setCurrentItem(0);
 
         if (avatarImageView != null && user.avatar != null && user.avatar.big != null)
             avatarImageView.setImageUrl(user.avatar.big, imageLoader);

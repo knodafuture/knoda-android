@@ -47,7 +47,7 @@ public class AnotherProfilePageFragment extends Fragment {
 
         View v = new View(getActivity());
 
-        if (x == 0) {
+        if (x == 1) {
             v = inflater.inflate(R.layout.view_profile_stats, container, false);
             TextView pointsTextView = (TextView) v.findViewById(R.id.profile_points);
             TextView winPercentTextView = (TextView) v.findViewById(R.id.profile_winpercent);
@@ -59,7 +59,7 @@ public class AnotherProfilePageFragment extends Fragment {
             setStreak(user.streak, streakTextView);
             winPercentTextView.setText(user.winningPercentage.toString() + "%");
 
-        } else if (x == 1) {
+        } else if (x == 0) {
             v = inflater.inflate(R.layout.view_profile_head_to_head, container, false);
             ImageView avatar1 = (ImageView) v.findViewById(R.id.profile_avatar1);
             ImageView avatar2 = (ImageView) v.findViewById(R.id.profile_avatar2);

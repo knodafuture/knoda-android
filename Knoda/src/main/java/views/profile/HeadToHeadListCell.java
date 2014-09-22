@@ -111,7 +111,7 @@ public class HeadToHeadListCell extends RelativeLayout {
         barwidth = 0;
         if (user2.rivalry.opponent_won + user2.rivalry.user_won != 0) {
             barwidth = maxBarPixels * user2.rivalry.user_won / (user2.rivalry.opponent_won + user2.rivalry.user_won);
-            if (user2.rivalry.opponent_won != 0)
+            if (user2.rivalry.user_won != 0)
                 barwidth += 25 * onedp;
         }
         findViewById(R.id.greenBar2).setLayoutParams(new RelativeLayout.LayoutParams(barwidth, barHeight));
