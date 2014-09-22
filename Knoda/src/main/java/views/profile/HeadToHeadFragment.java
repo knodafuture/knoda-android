@@ -52,7 +52,7 @@ public class HeadToHeadFragment extends BaseListFragment implements PagingAdapte
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("HeadToHeadFragment");
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("HEAD-TO-HEAD WINS");
+        setTitle("RIVALS");
 
     }
 
