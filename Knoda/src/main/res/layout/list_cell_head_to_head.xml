@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/head_to_head_stats_container"
         android:layout_width="match_parent"
-        android:layout_height="253dp"
+        android:layout_height="238dp"
         android:layout_marginBottom="12dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="2px"
             android:background="#EFEFEF"
-            android:layout_marginTop="105dp"/>
+            android:layout_marginTop="90dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -162,7 +162,7 @@
     <RelativeLayout
         android:id="@+id/head_to_head_container"
         android:layout_width="match_parent"
-        android:layout_height="105dp"
+        android:layout_height="90dp"
         android:background="@color/white">
 
 
@@ -220,7 +220,20 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="right">
+                <TextView
+                    android:id="@+id/head_to_head_your_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="45dp"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="1"
+                    android:text="TheLukeBarb"
+                    android:textColor="@color/knodaDarkGreen"
+                    android:textSize="14sp" />
+                </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"

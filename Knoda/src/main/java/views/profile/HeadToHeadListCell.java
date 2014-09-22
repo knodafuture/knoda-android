@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -38,6 +37,7 @@ public class HeadToHeadListCell extends RelativeLayout {
     public TextView streak2;
     public ImageView avatar2;
     public TextView username;
+    public TextView yourname;
 
     int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getContext().getResources().getDisplayMetrics());
     int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
@@ -45,11 +45,11 @@ public class HeadToHeadListCell extends RelativeLayout {
     final Animation animationSlideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slidein);
     final Animation animationSlideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slideout);
 
-    final ResizeAnimation resizeUp = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 105 * onedp, screenWidth, 253 * onedp);
-    final ResizeAnimation resizeDown = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 253 * onedp, screenWidth, 105 * onedp);
+    final ResizeAnimation resizeUp = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 90 * onedp, screenWidth, 238 * onedp);
+    final ResizeAnimation resizeDown = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 238 * onedp, screenWidth, 90 * onedp);
 
-    final ResizeAnimation resizeUp2 = new ResizeAnimation(this, screenWidth, 105 * onedp, screenWidth, 253 * onedp);
-    final ResizeAnimation resizeDown2 = new ResizeAnimation(this, screenWidth, 253 * onedp, screenWidth, 105 * onedp);
+    final ResizeAnimation resizeUp2 = new ResizeAnimation(this, screenWidth, 90 * onedp, screenWidth, 238 * onedp);
+    final ResizeAnimation resizeDown2 = new ResizeAnimation(this, screenWidth, 238 * onedp, screenWidth, 90 * onedp);
 
 
     public boolean expanded = false;
@@ -76,6 +76,7 @@ public class HeadToHeadListCell extends RelativeLayout {
         avatar2 = (ImageView) findViewById(R.id.head_to_head_avatar2);
 
         username = (TextView) findViewById(R.id.head_to_head_username);
+        yourname = (TextView) findViewById(R.id.head_to_head_your_name);
         findViewById(R.id.head_to_head_container).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +116,7 @@ public class HeadToHeadListCell extends RelativeLayout {
         findViewById(R.id.greenBar2).setLayoutParams(new RelativeLayout.LayoutParams(barwidth, barHeight));
 
         username.setText(user2.username);
+        yourname.setText(user1.username);
 
         String temp = null;
         Typeface medium = Typeface.create(temp, Typeface.BOLD);
