@@ -82,8 +82,6 @@ public class HeadToHeadListCell extends RelativeLayout {
                 changeExpanded();
             }
         });
-        //findViewById(R.id.head_to_head_stats_container).setLayoutParams(new RelativeLayout.LayoutParams(screenWidth, 105 * onedp));
-        //this.setLayoutParams(new ViewGroup.LayoutParams(screenWidth, 105 * onedp));
 
     }
 

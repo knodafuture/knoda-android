@@ -154,6 +154,9 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
                 }
                 adapter.followSize = toFollow.size();
                 callback.completionHandler(object, error);
+                if (object.size() == 0)
+                    getView().findViewById(R.id.contacts_search_container).setVisibility(View.GONE);
+
             }
         });
     }
@@ -169,6 +172,7 @@ public class FindFriendsContactsFragment extends BaseListFragment implements Pag
             if (adapter != null) {
                 ((UserContactAdapter) adapter).followAll(true);
                 folllowedAll = true;
+
             }
     }
 }

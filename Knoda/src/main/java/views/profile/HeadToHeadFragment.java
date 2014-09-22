@@ -73,25 +73,6 @@ public class HeadToHeadFragment extends BaseListFragment implements PagingAdapte
     }
 
     @Override
-    public void onListViewCreated(ListView listView) {
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                final Contest contest = (Contest) adapter.getItem(i - 1);
-//                if (contest != null) {
-//                    if (view.getId() == R.id.contest_standings_container) {
-//                        ContestLeaderboardFragment fragment = ContestLeaderboardFragment.newInstance(contest);
-//                        ((MainActivity) getActivity()).pushFragment(fragment);
-//                    } else {
-//                        ContestDetailFragment fragment = ContestDetailFragment.newInstance(contest);
-//                        ((MainActivity) getActivity()).pushFragment(fragment);
-//                    }
-//                }
-//            }
-//        });
-    }
-
-    @Override
     public String noContentString() {
         pListView.setBackgroundColor(Color.WHITE);
         return "No Head to Head matchups";
