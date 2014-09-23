@@ -23,7 +23,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v8.renderscript.RenderScript;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
@@ -71,7 +70,6 @@ import butterknife.OnClick;
 import di.KnodaApplication;
 import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
-import helpers.blur.RenderScriptGaussianBlur;
 import managers.AppOutdatedManager;
 import managers.GcmManager;
 import models.ActivityItem;
@@ -119,7 +117,6 @@ public class MainActivity extends BaseActivity {
     private final static String CAPTURED_PHOTO_PATH_KEY = "mCurrentPhotoPath";
     private final static String CAPTURED_PHOTO_URI_KEY = "mCapturedImageURI";
     private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
-    public String currentFragment = "";
     public HashMap<String, ArrayList<Setting>> settings;
     public Menu menu;
     public BitmapDrawable blurredBackground;
@@ -338,6 +335,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         restoreActionBar();
+        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -1014,7 +1012,7 @@ public class MainActivity extends BaseActivity {
         Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent2));
 
-        RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(this));
+        //RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(this));
         //bitmap = blur.blur(15, bitmap);
         blurredBackground = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
     }

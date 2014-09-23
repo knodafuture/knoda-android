@@ -34,7 +34,7 @@ import views.core.MainActivity;
 import views.search.SearchFragment;
 
 public class HomeFragment extends BasePredictionListFragment implements HomeActionBar.HomeActionBarCallbacks {
-    HomeActionBar homeActionBar;
+    public HomeActionBar homeActionBar;
 
     public HomeFragment() {
     }
