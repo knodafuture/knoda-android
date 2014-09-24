@@ -1,2 +1,2 @@
 ./gradlew --stop
-./gradlew clean test
+./gradlew test

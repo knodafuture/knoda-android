@@ -48,7 +48,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.knoda.knoda.R;
 import com.squareup.otto.Subscribe;
-import com.tapjoy.TapjoyConnect;
 import com.tjeannin.apprate.AppRater;
 
 import java.io.ByteArrayInputStream;
@@ -68,7 +67,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import di.KnodaApplication;
-import helpers.TapjoyPPA;
 import helpers.TypefaceSpan;
 import managers.AppOutdatedManager;
 import managers.GcmManager;
@@ -325,11 +323,8 @@ public class MainActivity extends BaseActivity {
                 });
             }
 
-        } else {
-            //launch();
         }
-        new ImagePreloader(networkingManager).invoke();
-        TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
+        //TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
     }
 
     @Override
@@ -757,11 +752,6 @@ public class MainActivity extends BaseActivity {
         FlurryAgent.onEndSession(this);
     }
 
-
-    public void setActionBarEnabled(boolean enabled) {
-        actionBarEnabled = enabled;
-    }
-
     public void setActionBarTitle(String title) {
         if (title == "" || title == null) {
             title = "KNODA";
@@ -935,15 +925,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public Follow checkIfFollowingUser(int userid) {
-        for (Follow f : myfollowing) {
-            if (f.leader_id == userid)
-                return f;
-        }
-        return null;
-    }
-
-
     public void refreshActivities() {
         if (connectivityManager == null)
             return;
@@ -1010,7 +991,10 @@ public class MainActivity extends BaseActivity {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
-        bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent2));
+        try {
+            bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent2));
+        } catch (IllegalStateException e) {
+        }
 
         //RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(this));
         //bitmap = blur.blur(15, bitmap);
@@ -1084,6 +1068,16 @@ public class MainActivity extends BaseActivity {
 
                 }
             });
+        }
+    }
+
+    public static class Helper {
+        static public Follow checkIfFollowingUser(int userid, ArrayList<Follow> myfollowing) {
+            for (Follow f : myfollowing) {
+                if (f.leader_id == userid)
+                    return f;
+            }
+            return null;
         }
     }
 
