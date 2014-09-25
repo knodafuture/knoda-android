@@ -25,6 +25,7 @@ import adapters.PagingAdapter;
 import adapters.PredictionAdapter;
 import managers.SharedPrefManager;
 import models.Prediction;
+import models.User;
 import networking.NetworkListCallback;
 import pubsub.HomeNavEvent;
 import pubsub.LoginFlowDoneEvent;
@@ -35,6 +36,7 @@ import views.search.SearchFragment;
 
 public class HomeFragment extends BasePredictionListFragment implements HomeActionBar.HomeActionBarCallbacks {
     public HomeActionBar homeActionBar;
+    public Helper helper;
 
     public HomeFragment() {
     }
@@ -70,6 +72,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         bus.register(this);
+        helper = new Helper();
         //sharedPrefManager.saveObjectString(0, SharedPrefManager.SAVED_HOMESCREEN_SELECTED);
     }
 
@@ -121,8 +124,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
 
     @Override
     protected void onLoadFinished() {
-        if (adapter.currentPage == 0 && !sharedPrefManager.getFirstLaunch() && !sharedPrefManager.haveShownPredictionWalkthrough() && !userManager.getUser().guestMode && userManager.getUser().points > 0)
-            showPredictionWalkthrough();
+        helper.checkWalkthrough(userManager.getUser());
     }
 
     @Override
@@ -139,12 +141,12 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
 
     private void showPredictionWalkthrough() {
         final Handler animHandler = new Handler();
+        sharedPrefManager.setHaveShownPredictionWalkthrough(true);
         animHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (getActivity() == null || getView() == null)
                     return;
-                sharedPrefManager.setHaveShownPredictionWalkthrough(true);
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService
                         (Context.LAYOUT_INFLATER_SERVICE);
                 View v = inflater.inflate(R.layout.view_predict_walkthrough, null);
@@ -254,4 +256,19 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         pListView.setRefreshing();
         adapter.loadPage(0);
     }
+
+    public PagingAdapter accessAdapter() {
+        return adapter;
+    }
+
+    public class Helper {
+        public Helper() {
+        }
+
+        public void checkWalkthrough(User user) {
+            if (adapter.currentPage == 0 && !sharedPrefManager.getFirstLaunch() && !sharedPrefManager.haveShownPredictionWalkthrough() && user != null && !user.guestMode && user.points > 0)
+                showPredictionWalkthrough();
+        }
+    }
+
 }
