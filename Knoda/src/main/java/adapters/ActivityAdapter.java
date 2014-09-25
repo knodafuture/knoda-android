@@ -222,7 +222,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         else
             activityDot.setVisibility(View.INVISIBLE);
 
-        Follow f = MainActivity.Helper.checkIfFollowingUser(Integer.parseInt(activityItem.target), activity.myfollowing);
+        Follow f = activity.helper.checkIfFollowingUser(Integer.parseInt(activityItem.target), activity.myfollowing);
         if (f != null) {
             cell.followbutton.setBackgroundResource(R.drawable.follow_btn_active);
             cell.cover.setTag(true);

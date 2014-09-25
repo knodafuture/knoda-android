@@ -3,10 +3,15 @@ package managers;
 import android.content.Context;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.ExecutorDelivery;
+import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ResponseDelivery;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -61,6 +67,7 @@ import networking.GsonArrayRequest;
 import networking.GsonRequest;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import networking.OkHttpStack;
 import unsorted.Logger;
 
 @Singleton
@@ -86,6 +93,32 @@ public class NetworkingManager {
     public NetworkingManager(Context applicationContext) {
         this.context = applicationContext;
         mRequestQueue = Volley.newRequestQueue(context);
+    }
+
+    public NetworkingManager(Context applicationContext, boolean test) {
+        this.context = applicationContext;
+        if (test)
+            mRequestQueue = newRequestQueueForTest(applicationContext);
+        else
+            mRequestQueue = Volley.newRequestQueue(context);
+    }
+
+    public static RequestQueue newRequestQueueForTest(final Context context) {
+        final File cacheDir = new File(context.getCacheDir(), "volley");
+
+        final Network network = new BasicNetwork(new OkHttpStack());
+
+        final ResponseDelivery responseDelivery = new ExecutorDelivery(Executors.newSingleThreadExecutor());
+
+        final RequestQueue queue =
+                new RequestQueue(
+                        new DiskBasedCache(cacheDir),
+                        network,
+                        4,
+                        responseDelivery);
+
+        queue.start();
+        return queue;
     }
 
     public ImageLoader getImageLoader() {

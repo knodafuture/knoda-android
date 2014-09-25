@@ -1,6 +1,7 @@
 package views.core;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.widget.ProgressBar;
 
 /**
@@ -10,21 +11,21 @@ import android.widget.ProgressBar;
 public class Spinner {
 
     //private static final SpinnerFragment spinnerFragment = new SpinnerFragment();
-    private final BaseActivity mActivity;
+    private final Context context;
     ProgressDialog progressDialog;
 
 
-    public Spinner(BaseActivity activity) {
-        this.mActivity = activity;
+    public Spinner(Context context) {
+        this.context = context;
     }
 
     public void show() {
         //spinnerFragment.show(mActivity.getFragmentManager().beginTransaction().addToBackStack("spinner"), "spinner");
         //progressDialog = new ProgressDialog(mActivity);
-        if(progressDialog!=null && progressDialog.isShowing())
+        if (progressDialog != null && progressDialog.isShowing())
             return;
-        progressDialog = progressDialog.show(mActivity, null, null, true, false);
-        progressDialog.setContentView(new ProgressBar(mActivity));
+        progressDialog = progressDialog.show(context, null, null, true, false);
+        progressDialog.setContentView(new ProgressBar(context));
     }
 
     public void hide() {

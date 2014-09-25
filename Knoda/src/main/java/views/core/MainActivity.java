@@ -104,7 +104,6 @@ import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
-import views.search.SearchFragment;
 import views.settings.SettingsFragment;
 import views.settings.SettingsProfileFragment;
 
@@ -152,17 +151,18 @@ public class MainActivity extends BaseActivity {
             refreshFollowing();
         }
     };
-    private HomeFragment homeFragment = null;
-    private ActivityFragment activityFragment = null;
-    private SocialFragment socialFragment = null;
-    private MyProfileFragment myProfileFragment = null;
-    private SearchFragment searchFragment = null;
-    private SettingsFragment settingsFragment = null;
+    public HomeFragment homeFragment = null;
+    public ActivityFragment activityFragment = null;
+    public SocialFragment socialFragment = null;
+    public MyProfileFragment myProfileFragment = null;
+    public SettingsFragment settingsFragment = null;
     private RelativeLayout.LayoutParams navbarShown;
     private RelativeLayout.LayoutParams navbarHidden;
     private RelativeLayout.LayoutParams containerFull;
     private RelativeLayout.LayoutParams containerPartial;
     private AlertDialog connectedDialog;
+
+    public Helper helper = new Helper();
 
 
     @OnClick(R.id.nav_home)
@@ -255,75 +255,10 @@ public class MainActivity extends BaseActivity {
         initializeFragmentBackStack();
         //setUpNavigation();
 
-        if (getIntent().getData() != null)
-            twitterManager.checkIntentData(getIntent());
-
-
-        if (getIntent().getStringExtra("type") != null) {
-            pushNotification.type = getIntent().getStringExtra("type");
-        }
-        if (getIntent().getStringExtra("id") != null) {
-            pushNotification.id = getIntent().getStringExtra("id");
-        }
-
         sharedPrefManager.clearUnsafeData();
-
         launch();
 
-        if (getIntent().getStringExtra("type") != null) {
-            if (userManager.isLoggedIn()) {
-                spinner.show();
-                userManager.refreshUser(new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User object, ServerError error) {
-                        if (error != null) {
-                            spinner.hide();
-                            return;
-                        } else {
-                            if (pushNotification.type.equals("p")) {
-                                networkingManager.getPrediction(Integer.parseInt(pushNotification.id), new NetworkCallback<Prediction>() {
-                                    @Override
-                                    public void completionHandler(Prediction object, ServerError error) {
-                                        spinner.hide();
-                                        if (error != null)
-                                            onActivity();
-                                        else {
-                                            DetailsFragment fragment = DetailsFragment.newInstance(object);
-                                            pushFragment(fragment);
-                                        }
-                                    }
-                                });
-                            } else if (pushNotification.type.equals("gic")) {
-                                networkingManager.getInvitationByCode(pushNotification.id, new NetworkCallback<Invitation>() {
-                                    @Override
-                                    public void completionHandler(Invitation object, ServerError error) {
-                                        spinner.hide();
-                                        if (error != null)
-                                            onActivity();
-                                        else {
-                                            GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
-                                            pushFragment(fragment);
-                                        }
-                                    }
-                                });
-                            } else {
-                                onActivity();
-                                spinner.hide();
-                            }
-
-                        }
-                    }
-                });
-            } else {
-                userManager.loginAsGuest(new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User object, ServerError error) {
-                        showLogin("Whoa there cowboy!", "You're just a guest.\nSign up with Knoda.");
-                    }
-                });
-            }
-
-        }
+        helper.handlePushNotification(getIntent(), pushNotification);
         //TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
     }
 
@@ -425,7 +360,7 @@ public class MainActivity extends BaseActivity {
 
     public void pushFragment(Fragment fragment) {
 
-        if (!checkFragment(fragment))
+        if (!helper.checkFragment(fragment))
             return;
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -435,27 +370,6 @@ public class MainActivity extends BaseActivity {
         //transaction.add(fragment, fragment.getClass().getSimpleName());
     }
 
-    public boolean checkFragment(Fragment fragment) {
-        if (userManager != null && userManager.getUser() != null && !userManager.getUser().guestMode)
-            return true;
-
-        if (fragment instanceof SocialFragment) {
-            showLogin("Hey now!", "You need to create an account to access contests and groups.");
-            return false;
-        } else if (fragment instanceof AddPredictionFragment) {
-            showLogin("Oh Snap!", "You need to create an account to make predictions.");
-            return false;
-        } else if (fragment instanceof CreateCommentFragment) {
-            showLogin("Whoa!", "To comment on predictions, you need to create an account.");
-            return false;
-        }
-//        else if (fragment instanceof MyProfileFragment) {
-//            showLogin("Whoa there cowboy", "You're just a guest.\nSign up with Knoda to unlock your profile");
-//            return false;
-//        }
-
-        return true;
-    }
 
     public void popFragment() {
         getFragmentManager().popBackStack();
@@ -667,7 +581,7 @@ public class MainActivity extends BaseActivity {
 
         if (socialFragment == null)
             socialFragment = SocialFragment.newInstance();
-        if (checkFragment(socialFragment)) {
+        if (helper.checkFragment(socialFragment)) {
             clearStack();
             pushFragment(socialFragment);
         }
@@ -1071,13 +985,103 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public static class Helper {
-        static public Follow checkIfFollowingUser(int userid, ArrayList<Follow> myfollowing) {
+    public class Helper {
+        Helper() {
+        }
+
+        public Follow checkIfFollowingUser(int userid, ArrayList<Follow> myfollowing) {
             for (Follow f : myfollowing) {
                 if (f.leader_id == userid)
                     return f;
             }
             return null;
+        }
+
+        public void handlePushNotification(Intent intent, final Notification pushNotification) {
+            if (intent.getData() != null)
+                twitterManager.checkIntentData(intent);
+
+            if (intent.getStringExtra("type") != null) {
+                pushNotification.type = intent.getStringExtra("type");
+            }
+            if (intent.getStringExtra("id") != null) {
+                pushNotification.id = intent.getStringExtra("id");
+            }
+
+            if (intent.getStringExtra("type") != null) {
+                if (userManager.isLoggedIn()) {
+                    spinner.show();
+                    userManager.refreshUser(new NetworkCallback<User>() {
+                        @Override
+                        public void completionHandler(User object, ServerError error) {
+                            if (error != null) {
+                                spinner.hide();
+                                return;
+                            } else {
+                                if (pushNotification.type.equals("p")) {
+                                    networkingManager.getPrediction(Integer.parseInt(pushNotification.id), new NetworkCallback<Prediction>() {
+                                        @Override
+                                        public void completionHandler(Prediction object, ServerError error) {
+                                            spinner.hide();
+                                            if (error != null)
+                                                onActivity();
+                                            else {
+                                                DetailsFragment fragment = DetailsFragment.newInstance(object);
+                                                pushFragment(fragment);
+                                            }
+                                        }
+                                    });
+                                } else if (pushNotification.type.equals("gic")) {
+                                    networkingManager.getInvitationByCode(pushNotification.id, new NetworkCallback<Invitation>() {
+                                        @Override
+                                        public void completionHandler(Invitation object, ServerError error) {
+                                            spinner.hide();
+                                            if (error != null)
+                                                onActivity();
+                                            else {
+                                                GroupSettingsFragment fragment = GroupSettingsFragment.newInstance(object.group, pushNotification.id);
+                                                pushFragment(fragment);
+                                            }
+                                        }
+                                    });
+                                } else if (pushNotification.type.equals("test")) {
+
+                                } else {
+                                    onActivity();
+                                    spinner.hide();
+                                }
+
+                            }
+                        }
+                    });
+                } else {
+                    userManager.loginAsGuest(new NetworkCallback<User>() {
+                        @Override
+                        public void completionHandler(User object, ServerError error) {
+                            showLogin("Whoa there cowboy!", "You're just a guest.\nSign up with Knoda.");
+                        }
+                    });
+                }
+
+            }
+        }
+
+        public boolean checkFragment(Fragment fragment) {
+            if (userManager != null && userManager.getUser() != null && !userManager.getUser().guestMode)
+                return true;
+
+            if (fragment instanceof SocialFragment) {
+                showLogin("Hey now!", "You need to create an account to access contests and groups.");
+                return false;
+            } else if (fragment instanceof AddPredictionFragment) {
+                showLogin("Oh Snap!", "You need to create an account to make predictions.");
+                return false;
+            } else if (fragment instanceof CreateCommentFragment) {
+                showLogin("Whoa!", "To comment on predictions, you need to create an account.");
+                return false;
+            }
+
+            return true;
         }
     }
 
