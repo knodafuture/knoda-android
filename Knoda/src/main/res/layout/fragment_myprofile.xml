@@ -10,50 +10,89 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/knodaLightGreen"
-            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:weightSum="3">
+            android:paddingBottom="10dp">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right">
+                android:orientation="horizontal"
+                android:layout_centerVertical="true"
+                android:weightSum="2">
 
-                <LinearLayout
-                    android:id="@+id/profile_followers_container"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:layout_centerVertical="true"
+                    android:layout_weight="1"
+                    android:gravity="center">
 
-                    <TextView
-                        android:id="@+id/profile_followers"
+                    <LinearLayout
+                        android:id="@+id/profile_followers_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10,888"
-                        android:textColor="@color/knodaDarkGreen"
-                        android:textSize="24sp" />
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-                    <TextView
+                        <TextView
+                            android:id="@+id/profile_followers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10,888"
+                            android:textColor="@color/knodaDarkGreen"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="FOLLOWERS"
+                            android:textColor="@color/knodaDarkGreen"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:id="@+id/profile_following_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="FOLLOWERS"
-                        android:textColor="@color/knodaDarkGreen"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </RelativeLayout>
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/profile_following"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="13"
+                            android:textColor="@color/knodaDarkGreen"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="FOLLOWING"
+                            android:textColor="@color/knodaDarkGreen"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
 
 
             <RelativeLayout
+                android:id="@+id/profile_avatar_container"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
                 android:gravity="center">
 
                 <com.android.volley.toolbox.NetworkImageView
@@ -72,37 +111,9 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left">
 
-                <LinearLayout
-                    android:id="@+id/profile_following_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/profile_following"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="13"
-                        android:textColor="@color/knodaDarkGreen"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="FOLLOWING"
-                        android:textColor="@color/knodaDarkGreen"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </RelativeLayout>
-
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <RelativeLayout
