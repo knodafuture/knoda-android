@@ -5,6 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.robotium.solo.Solo;
 
 import models.User;
+import views.contacts.FindFriendsActivity;
 import views.core.MainActivity;
 import views.predictionlists.HomeFragment;
 
@@ -25,9 +26,6 @@ public class HomeFragmentTest
         mainActivity = getActivity();
         solo = new Solo(getInstrumentation(), getActivity());
         homeFragment = mainActivity.homeFragment;
-        //mainActivity.networkingManager = new NetworkingManager(mainActivity);
-        //mainActivity.sharedPrefManager = new SharedPrefManager(mainActivity);
-        //mainActivity.userManager = new UserManager(mainActivity.networkingManager, mainActivity.sharedPrefManager);
     }
 
     @Override
@@ -47,6 +45,26 @@ public class HomeFragmentTest
         solo.sleep(1);
         assertEquals(homeFragment.homeActionBar.selected, 1);
     }
+
+    public void testSearchClick() {
+        solo.sleep(3);
+        solo.clickOnButton(0);
+        solo.waitForDialogToClose();
+        homeFragment.onSearchClick();
+        solo.waitForFragmentByTag("SearchFragment", 5);
+        String s = mainActivity.getFragmentManager().getBackStackEntryAt(mainActivity.getFragmentManager().getBackStackEntryCount() - 1).getName();
+        assertEquals(s, "SearchFragment");
+    }
+
+    public void testFindFriendsClick() {
+        solo.sleep(3);
+        solo.clickOnButton(0);
+        solo.waitForDialogToClose();
+        homeFragment.onAddFriendsClick();
+        solo.waitForActivity(FindFriendsActivity.class, 5);
+        solo.assertCurrentActivity("FindFriends acitivity is current", FindFriendsActivity.class);
+    }
+
 
     public void testWalkthrough() {
         homeFragment.accessAdapter().currentPage = 0;

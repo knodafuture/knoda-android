@@ -311,5 +311,11 @@ public class SharedPrefManager {
         return sharedPreferences.getBoolean(name, false);
     }
 
+    public void deleteKey(String s) {
+        SharedPreferences.Editor sharedPreferences = getSP().edit();
+        sharedPreferences.remove(s);
+        sharedPreferences.apply();
+    }
+
 }
 
