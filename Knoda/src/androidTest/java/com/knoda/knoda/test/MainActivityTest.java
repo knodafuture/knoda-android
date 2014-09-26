@@ -2,6 +2,7 @@ package com.knoda.knoda.test;
 
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
 
 import com.robotium.solo.Solo;
 
@@ -35,12 +36,14 @@ public class MainActivityTest
 
     @Override
     public void tearDown() throws Exception {
+        mainActivity.networkingManager.stopCalls();
         solo.finishOpenedActivities();
     }
 
     public void testPreconditions() {
         assertNotNull("mainActivity is null", mainActivity);
         solo.assertCurrentActivity("main is current", MainActivity.class);
+
     }
 
     public void testFollows() {
@@ -51,6 +54,7 @@ public class MainActivityTest
         assertNotNull(mainActivity.helper.checkIfFollowingUser(2, myfollowing));
     }
 
+    @UiThreadTest
     public void testPushNotifications() {
         Notification pushNotifcation = new Notification();
         Intent testIntent = new Intent();

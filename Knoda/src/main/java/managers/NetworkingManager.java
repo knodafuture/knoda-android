@@ -132,7 +132,6 @@ public class NetworkingManager {
         String url = buildUrl("session.json", false, null);
 
         executeRequest(Request.Method.POST, url, payload, LoginResponse.class, callback);
-
     }
 
     public void socialSignIn(final SocialAccount payload, final NetworkCallback<LoginResponse> callback) {
@@ -301,6 +300,14 @@ public class NetworkingManager {
         ParamBuilder builder = new ParamBuilder().create().withLastId(lastId).withPageLimit().add("challenged", "true");
 
         String url = buildUrl("predictions.json", true, builder);
+
+        executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
+    }
+
+    public void getPredictionsNoUser(NetworkListCallback<Prediction> callback) {
+
+        ParamBuilder builder = ParamBuilder.create().add("recent", "true");
+        String url = buildUrl("predictions.json?recent=true", false, builder);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getPredictionListTypeToken(), callback);
     }
@@ -689,8 +696,24 @@ public class NetworkingManager {
 
     }
 
+    public String returnBuildURL(String s, ParamBuilder builder) {
+        return buildUrl(s, false, builder);
+    }
+
+    public void stopCalls() {
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+    }
+
     private String getAuthToken() {
-        return sharedPrefManager.getSavedAuthtoken();
+        if (sharedPrefManager != null)
+            return sharedPrefManager.getSavedAuthtoken();
+        else
+            return "";
     }
 
     private <T extends BaseModel> void executeRequestWithTimeout(int httpMethod, String url, final Object payload, final Class responseClass, final NetworkCallback<T> callback, Integer timeout) {

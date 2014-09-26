@@ -240,6 +240,7 @@ public class FindFriendsActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        networkingManager.stopCalls();
         if (progressDialog != null)
             progressDialog.dismiss();
     }

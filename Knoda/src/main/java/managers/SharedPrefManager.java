@@ -27,7 +27,7 @@ public class SharedPrefManager {
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
     private static final String REG_ID_KEY = "REGISTRATION_ID";
-    private static final String FIRST_LAUNCH_KEY = "FIRST_LAUNCH";
+    public static final String FIRST_LAUNCH_KEY = "FIRST_LAUNCH";
     private static final String SAVED_SOCIAL_ACCOUNT_KEY = "SOCIAL_ACCOUNT_SAVED";
     private static final String SAVED_PREDICTION_IN_PROGESS_KEY = "PREDICTION_IN_PROGRESS";
     private static final String SAVED_GUEST_MODE_KEY = "GUEST_MODE_KEY";
@@ -89,7 +89,6 @@ public class SharedPrefManager {
 
     public boolean guestMode() {
         SharedPreferences sharedPreferences = getSP();
-
         return sharedPreferences.getBoolean(SAVED_GUEST_MODE_KEY, false);
     }
 

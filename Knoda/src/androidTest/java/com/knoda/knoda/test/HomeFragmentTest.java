@@ -30,6 +30,7 @@ public class HomeFragmentTest
 
     @Override
     public void tearDown() throws Exception {
+        mainActivity.networkingManager.stopCalls();
         solo.finishOpenedActivities();
     }
 
@@ -62,9 +63,12 @@ public class HomeFragmentTest
         solo.waitForDialogToClose();
         homeFragment.onAddFriendsClick();
         solo.waitForActivity(FindFriendsActivity.class, 5);
-        solo.assertCurrentActivity("FindFriends acitivity is current", FindFriendsActivity.class);
+        if (solo.getCurrentActivity() instanceof FindFriendsActivity)
+            ((FindFriendsActivity) solo.getCurrentActivity()).networkingManager.stopCalls();
+        solo.assertCurrentActivity("FindFriends activity is current", FindFriendsActivity.class);
+        if (solo.getCurrentActivity() instanceof FindFriendsActivity)
+            ((FindFriendsActivity) solo.getCurrentActivity()).networkingManager.stopCalls();
     }
-
 
     public void testWalkthrough() {
         homeFragment.accessAdapter().currentPage = 0;
