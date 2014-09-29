@@ -44,8 +44,8 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     static ColorStateList bragcolor;
     static ColorStateList settlecolor;
     static ColorStateList groupcolor;
-    final MainActivity activity;
-    BitmapDrawable userPic;
+    public MainActivity activity;
+    public BitmapDrawable userPic;
     String filter = "all";
     int pixelToDP = 1;
     RelativeLayout.LayoutParams showButton;
@@ -89,6 +89,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             imageLoader.get(((MainActivity) activity).userManager.getUser().avatar.small, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    userPic = null;
                     userPic = new BitmapDrawable(response.getBitmap());
                 }
 

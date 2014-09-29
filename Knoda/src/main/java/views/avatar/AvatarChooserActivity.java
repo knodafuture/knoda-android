@@ -57,7 +57,7 @@ public abstract class AvatarChooserActivity extends BaseActivity {
         setContentView(R.layout.activity_photo_chooser);
         requestQueue = Volley.newRequestQueue(this);
 
-        updateBackground();
+        //updateBackground();
 
         ButterKnife.inject(this);
         restoreActionBar();
@@ -226,43 +226,43 @@ public abstract class AvatarChooserActivity extends BaseActivity {
         imageView.setImageBitmap(bitmap);
     }
 
-    public void updateBackground() {
-        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.container);
-
-        if (relativeLayout == null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    updateBackground();
-                }
-            }, 10);
-        } else {
-            relativeLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Display display = getWindowManager().getDefaultDisplay();
-                        DisplayMetrics displayMetrics = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                        Point size = new Point();
-                        display.getSize(size);
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                        Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
-                        bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent));
-
-                        RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(relativeLayout.getContext()));
-                        bitmap = blur.blur(15, bitmap);
-                        BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
-
-                        relativeLayout.setBackgroundDrawable(d);
-                    } catch (Exception e) {
-                        Log.e("Knoda Error", e.getMessage());
-                    }
-                }
-            });
-        }
-    }
+//    public void updateBackground() {
+//        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.container);
+//
+//        if (relativeLayout == null) {
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    updateBackground();
+//                }
+//            }, 10);
+//        } else {
+//            relativeLayout.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        Display display = getWindowManager().getDefaultDisplay();
+//                        DisplayMetrics displayMetrics = new DisplayMetrics();
+//                        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//                        Point size = new Point();
+//                        display.getSize(size);
+//                        BitmapFactory.Options options = new BitmapFactory.Options();
+//                        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//                        Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
+//                        bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent));
+//
+//                        RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(relativeLayout.getContext()));
+//                        bitmap = blur.blur(15, bitmap);
+//                        BitmapDrawable d = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
+//
+//                        relativeLayout.setBackgroundDrawable(d);
+//                    } catch (Exception e) {
+//                        Log.e("Knoda Error", e.getMessage());
+//                    }
+//                }
+//            });
+//        }
+//    }
 
     protected abstract void useDefault();
 

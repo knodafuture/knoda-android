@@ -13,9 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -25,10 +23,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -116,7 +112,7 @@ public class MainActivity extends BaseActivity {
     private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
     public HashMap<String, ArrayList<Setting>> settings;
     public Menu menu;
-    public BitmapDrawable blurredBackground;
+    //public BitmapDrawable blurredBackground;
     public String mCurrentPhotoPath = null;
     public Uri mCapturedImageURI = null;
     public ArrayList<Follow> myfollowing = new ArrayList<Follow>();
@@ -151,11 +147,6 @@ public class MainActivity extends BaseActivity {
             refreshFollowing();
         }
     };
-    public HomeFragment homeFragment = null;
-    public ActivityFragment activityFragment = null;
-    public SocialFragment socialFragment = null;
-    public MyProfileFragment myProfileFragment = null;
-    public SettingsFragment settingsFragment = null;
     private RelativeLayout.LayoutParams navbarShown;
     private RelativeLayout.LayoutParams navbarHidden;
     private RelativeLayout.LayoutParams containerFull;
@@ -246,7 +237,7 @@ public class MainActivity extends BaseActivity {
         containerPartial = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         containerPartial.setMargins(0, actionBarHeight, 0, onedp * 60);
 
-        createTransparentBackground();
+        //createTransparentBackground();
 
         refreshUser();
         refreshActivities();
@@ -390,7 +381,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void showLogin(String titleMessage, String detailMessage) {
-        captureScreen();
+        //captureScreen();
         WelcomeFragment f = WelcomeFragment.newInstance(titleMessage, detailMessage);
 
         f.show(getFragmentManager().beginTransaction(), "welcome");
@@ -546,9 +537,7 @@ public class MainActivity extends BaseActivity {
             return;
         }
         clearStack();
-        if (homeFragment == null)
-            homeFragment = HomeFragment.newInstance();
-        pushFragment(homeFragment);
+        pushFragment(HomeFragment.newInstance());
     }
 
     public void onActivity() {
@@ -557,9 +546,7 @@ public class MainActivity extends BaseActivity {
             return;
         }
         clearStack();
-        if (activityFragment == null)
-            activityFragment = ActivityFragment.newInstance();
-        pushFragment(activityFragment);
+        pushFragment(ActivityFragment.newInstance());
     }
 
     public void onProfile() {
@@ -568,9 +555,7 @@ public class MainActivity extends BaseActivity {
             return;
         }
         clearStack();
-        if (myProfileFragment == null)
-            myProfileFragment = MyProfileFragment.newInstance();
-        pushFragment(myProfileFragment);
+        pushFragment(MyProfileFragment.newInstance());
     }
 
     public void onGroups() {
@@ -579,8 +564,7 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        if (socialFragment == null)
-            socialFragment = SocialFragment.newInstance();
+        SocialFragment socialFragment = SocialFragment.newInstance();
         if (helper.checkFragment(socialFragment)) {
             clearStack();
             pushFragment(socialFragment);
@@ -588,9 +572,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onSettings() {
-        if (settingsFragment == null)
-            settingsFragment = new SettingsFragment();
-        pushFragment(settingsFragment);
+        pushFragment(SettingsFragment.newInstance());
     }
 
     private void clearStack() {
@@ -691,76 +673,76 @@ public class MainActivity extends BaseActivity {
         bus.post(new ReloadListsEvent());
     }
 
-    private void captureScreen() {
-        final View v = getWindow().getDecorView();
+//    private void captureScreen() {
+//        final View v = getWindow().getDecorView();
+//
+//        v.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                v.setDrawingCacheEnabled(true);
+//
+//                Bitmap bmap = v.getDrawingCache();
+//
+//                int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
+//                Bitmap b = Bitmap.createBitmap(bmap, 0, contentViewTop, bmap.getWidth(), bmap.getHeight() - contentViewTop, null, true);
+//
+//                v.setDrawingCacheEnabled(false);
+//
+//                saveImage(b);
+//            }
+//        }, 500);
+//
+//    }
 
-        v.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                v.setDrawingCacheEnabled(true);
-
-                Bitmap bmap = v.getDrawingCache();
-
-                int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
-                Bitmap b = Bitmap.createBitmap(bmap, 0, contentViewTop, bmap.getWidth(), bmap.getHeight() - contentViewTop, null, true);
-
-                v.setDrawingCacheEnabled(false);
-
-                saveImage(b);
-            }
-        }, 500);
-
-    }
-
-    protected void saveImage(Bitmap b) {
-
-        final Context context = this;
-
-        AsyncTask<Bitmap, Void, File> t = new AsyncTask<Bitmap, Void, File>() {
-            @Override
-            protected File doInBackground(Bitmap... bitmaps) {
-
-                Bitmap b = bitmaps[0];
-
-                if (b == null)
-                    return null;
-
-//                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
-//                b = blur.blur(15, b);
+//    protected void saveImage(Bitmap b) {
+//
+//        final Context context = this;
+//
+//        AsyncTask<Bitmap, Void, File> t = new AsyncTask<Bitmap, Void, File>() {
+//            @Override
+//            protected File doInBackground(Bitmap... bitmaps) {
+//
+//                Bitmap b = bitmaps[0];
+//
 //                if (b == null)
 //                    return null;
+//
+////                RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(context));
+////                b = blur.blur(15, b);
+////                if (b == null)
+////                    return null;
+//
+//                File saved_image_file = new File(
+//                        Environment.getExternalStorageDirectory()
+//                                + "/blur_background.png"
+//                );
+//                if (saved_image_file.exists())
+//                    saved_image_file.delete();
+//                try {
+//                    FileOutputStream out = new FileOutputStream(saved_image_file);
+//                    b.compress(Bitmap.CompressFormat.JPEG, 10, out);
+//                    out.flush();
+//                    out.close();
+//                    return saved_image_file;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    return null;
+//                }
+//            }
+//
+//            @Override
+//            protected void onPostExecute(File file) {
+//                bus.post(new ScreenCaptureEvent(file));
+//            }
+//        };
+//
+//        t.execute(b);
+//    }
 
-                File saved_image_file = new File(
-                        Environment.getExternalStorageDirectory()
-                                + "/blur_background.png"
-                );
-                if (saved_image_file.exists())
-                    saved_image_file.delete();
-                try {
-                    FileOutputStream out = new FileOutputStream(saved_image_file);
-                    b.compress(Bitmap.CompressFormat.JPEG, 10, out);
-                    out.flush();
-                    out.close();
-                    return saved_image_file;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(File file) {
-                bus.post(new ScreenCaptureEvent(file));
-            }
-        };
-
-        t.execute(b);
-    }
-
-    public void invalidateBackgroundImage() {
-        if (getFragmentManager().findFragmentByTag("welcome") != null)
-            captureScreen();
-    }
+//    public void invalidateBackgroundImage() {
+//        if (getFragmentManager().findFragmentByTag("welcome") != null)
+//            captureScreen();
+//    }
 
     public void refreshUser() {
         if (connectivityManager == null)
@@ -896,24 +878,26 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void createTransparentBackground() {
-        Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        Point size = new Point();
-        display.getSize(size);
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
-        try {
-            bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent2));
-        } catch (IllegalStateException e) {
-        }
-
-        //RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(this));
-        //bitmap = blur.blur(15, bitmap);
-        blurredBackground = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
-    }
+//    private void createTransparentBackground() {
+//        /*
+//        Display display = getWindowManager().getDefaultDisplay();
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        Point size = new Point();
+//        display.getSize(size);
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//        Bitmap bitmap = Bitmap.createBitmap(displayMetrics.widthPixels, displayMetrics.heightPixels, Bitmap.Config.ARGB_8888);
+//        try {
+//            bitmap.eraseColor(getResources().getColor(R.color.knodaLightGreenTransparent2));
+//        } catch (IllegalStateException e) {
+//        }
+//
+//        //RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(RenderScript.create(this));
+//        //bitmap = blur.blur(15, bitmap);
+//        blurredBackground = new BitmapDrawable(getResources(), Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight()));
+//        */
+//    }
 
     public boolean isDebuggable(Context ctx) {
         boolean debuggable = false;

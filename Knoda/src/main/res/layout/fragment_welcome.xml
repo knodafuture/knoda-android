@@ -1,12 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/knodaLightGreenTransparent">
+    android:background="@color/knodaLightGreenTransparent2">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
+s
     <Button
         android:id="@+id/wall_close"
         style="@style/xButton" />

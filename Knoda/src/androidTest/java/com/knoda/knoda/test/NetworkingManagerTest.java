@@ -14,6 +14,7 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkListCallback;
 import views.core.MainActivity;
+import views.predictionlists.HomeFragment;
 
 /**
  * Created by jeffcailteux on 9/26/14.
@@ -23,6 +24,8 @@ public class NetworkingManagerTest extends ActivityInstrumentationTestCase2<Main
     private MainActivity mainActivity;
     private Solo solo;
     private NetworkingManager networkingManager;
+    private HomeFragment homeFragment;
+
 
     public NetworkingManagerTest() {
         super(MainActivity.class);
@@ -35,6 +38,7 @@ public class NetworkingManagerTest extends ActivityInstrumentationTestCase2<Main
         mainActivity.networkingManager = new NetworkingManager(mainActivity);
         networkingManager = mainActivity.networkingManager;
         solo = new Solo(getInstrumentation(), getActivity());
+        homeFragment = (HomeFragment) mainActivity.getFragmentManager().findFragmentByTag("HomeFragment");
     }
 
     @Override
@@ -48,7 +52,7 @@ public class NetworkingManagerTest extends ActivityInstrumentationTestCase2<Main
         Condition condition = new Condition() {
             @Override
             public boolean isSatisfied() {
-                return mainActivity.homeFragment.accessAdapter().getCount() > 0;
+                return homeFragment.accessAdapter().getCount() > 0;
             }
         };
         solo.waitForCondition(condition, 5);

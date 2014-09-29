@@ -124,6 +124,13 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((ActivityAdapter) adapter).activity = null;
+        ((ActivityAdapter) adapter).userPic = null;
+    }
+
+    @Override
     public PagingAdapter getAdapter() {
         ActivityAdapter adapter1 = new ActivityAdapter(getActivity(), this, networkingManager.getImageLoader(), (MainActivity) getActivity());
         String cachedObject = sharedPrefManager.getObjectString(screenNumber + "activity");

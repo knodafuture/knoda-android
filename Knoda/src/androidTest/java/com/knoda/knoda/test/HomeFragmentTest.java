@@ -25,7 +25,7 @@ public class HomeFragmentTest
         super.setUp();
         mainActivity = getActivity();
         solo = new Solo(getInstrumentation(), getActivity());
-        homeFragment = mainActivity.homeFragment;
+        homeFragment = (HomeFragment) mainActivity.getFragmentManager().findFragmentByTag("HomeFragment");
     }
 
     @Override
@@ -35,7 +35,7 @@ public class HomeFragmentTest
     }
 
     public void testPreconditions() {
-        assertNotNull(mainActivity.homeFragment);
+        assertNotNull(homeFragment);
     }
 
     public void testHomeActionBar() throws InterruptedException {
