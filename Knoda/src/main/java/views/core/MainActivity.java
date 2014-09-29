@@ -302,10 +302,6 @@ public class MainActivity extends BaseActivity {
                 onCreateGroup();
                 break;
             }
-            case R.id.action_profile_guest: {
-                showLogin("Giddy Up!", "Now we're talking! Choose an option below to sign-up and start tracking your predictions.");
-                break;
-            }
             case R.id.action_explore: {
                 pushFragment(ContestFragment.newInstance("explore"));
                 break;
