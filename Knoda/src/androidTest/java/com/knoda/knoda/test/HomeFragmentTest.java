@@ -25,7 +25,7 @@ public class HomeFragmentTest
         super.setUp();
         mainActivity = getActivity();
         solo = new Solo(getInstrumentation(), getActivity());
-        homeFragment = (HomeFragment) mainActivity.getFragmentManager().findFragmentByTag("HomeFragment");
+        homeFragment = mainActivity.homeFragment;
     }
 
     @Override
@@ -47,11 +47,17 @@ public class HomeFragmentTest
         assertEquals(homeFragment.homeActionBar.selected, 1);
     }
 
-    public void testSearchClick() {
+    public void testSearchClick() throws Throwable {
         solo.sleep(3);
         solo.clickOnButton(0);
         solo.waitForDialogToClose();
-        homeFragment.onSearchClick();
+        runTestOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                homeFragment.onSearchClick();
+
+            }
+        });
         solo.waitForFragmentByTag("SearchFragment", 5);
         String s = mainActivity.getFragmentManager().getBackStackEntryAt(mainActivity.getFragmentManager().getBackStackEntryCount() - 1).getName();
         assertEquals(s, "SearchFragment");

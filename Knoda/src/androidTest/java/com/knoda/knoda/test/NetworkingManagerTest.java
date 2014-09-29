@@ -38,7 +38,7 @@ public class NetworkingManagerTest extends ActivityInstrumentationTestCase2<Main
         mainActivity.networkingManager = new NetworkingManager(mainActivity);
         networkingManager = mainActivity.networkingManager;
         solo = new Solo(getInstrumentation(), getActivity());
-        homeFragment = (HomeFragment) mainActivity.getFragmentManager().findFragmentByTag("HomeFragment");
+        homeFragment = mainActivity.homeFragment;
     }
 
     @Override

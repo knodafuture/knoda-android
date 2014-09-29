@@ -146,6 +146,7 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout.LayoutParams containerFull;
     private RelativeLayout.LayoutParams containerPartial;
     private AlertDialog connectedDialog;
+    public HomeFragment homeFragment;
 
     @OnClick(R.id.nav_home)
     void onClickHome() {
@@ -344,7 +345,11 @@ public class MainActivity extends BaseActivity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         //transaction.addToBackStack(fragment.getClass().getSimpleName()).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
-        transaction.addToBackStack(fragment.getClass().getSimpleName()).replace(R.id.fragmentContainer, fragment).commit();
+        transaction.setBreadCrumbTitle(fragment.getClass().getSimpleName());
+        transaction.addToBackStack(fragment.getClass().getSimpleName());
+        transaction.replace(R.id.fragmentContainer, fragment);
+        transaction.commit();
+        fragmentManager.executePendingTransactions();
         //transaction.add(fragment, fragment.getClass().getSimpleName());
     }
 
@@ -524,7 +529,8 @@ public class MainActivity extends BaseActivity {
             return;
         }
         clearStack();
-        pushFragment(HomeFragment.newInstance());
+        homeFragment=HomeFragment.newInstance();
+        pushFragment(homeFragment);
     }
 
     public void onActivity() {
