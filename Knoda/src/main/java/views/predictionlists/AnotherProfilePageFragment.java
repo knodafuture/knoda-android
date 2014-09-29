@@ -37,7 +37,7 @@ public class AnotherProfilePageFragment extends Fragment {
         fragment.barHeight = barheight;
         fragment.user = user;
         fragment.maxBarPixels = maxbarpixels;
-        fragment.onedp=onedp;
+        fragment.onedp = onedp;
         return fragment;
     }
 

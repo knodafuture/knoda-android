@@ -23,11 +23,11 @@ import models.SocialAccount;
 public class SharedPrefManager {
 
     public static final String SAVED_HOMESCREEN_SELECTED = "SAVED_HOMESCREEN_SELECTED";
+    public static final String FIRST_LAUNCH_KEY = "FIRST_LAUNCH";
     private static final String SAVED_USERNAME_KEY = "SAVEDUSERNAME";
     private static final String SAVED_PASSWORD_KEY = "SAVEDPASSWORD";
     private static final String SAVED_AUTHTOKEN_KEY = "SAVEDAUTHTOKEN";
     private static final String REG_ID_KEY = "REGISTRATION_ID";
-    public static final String FIRST_LAUNCH_KEY = "FIRST_LAUNCH";
     private static final String SAVED_SOCIAL_ACCOUNT_KEY = "SOCIAL_ACCOUNT_SAVED";
     private static final String SAVED_PREDICTION_IN_PROGESS_KEY = "PREDICTION_IN_PROGRESS";
     private static final String SAVED_GUEST_MODE_KEY = "GUEST_MODE_KEY";
@@ -267,16 +267,15 @@ public class SharedPrefManager {
         sharedPreferences.edit().putBoolean(SAVED_PREDICT_DATE_WALKTHROUGH_KEY, shouldShowVotingWalkthrough).commit();
     }
 
-    public void setShowPhonePopup(int value) {
-        SharedPreferences sharedPreferences = getSP();
-        sharedPreferences.edit().putInt(ADD_PHONE_KEY, value).commit();
-    }
-
     public int getShowPhonePopup() {
         SharedPreferences sharedPreferences = getSP();
         return sharedPreferences.getInt(ADD_PHONE_KEY, 0);
     }
 
+    public void setShowPhonePopup(int value) {
+        SharedPreferences sharedPreferences = getSP();
+        sharedPreferences.edit().putInt(ADD_PHONE_KEY, value).commit();
+    }
 
     public String getAPIurl() {
         SharedPreferences sharedPreferences = getSP();

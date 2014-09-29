@@ -47,7 +47,7 @@ public class FbDialog extends WebDialog {
     }
 
     public FbDialog(Context context, String action, Bundle parameters, DialogListener listener,
-            int theme) {
+                    int theme) {
         super(context, action, parameters, theme, null);
         setDialogListener(listener);
     }

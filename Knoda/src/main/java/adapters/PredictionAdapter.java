@@ -103,11 +103,11 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
             return view;
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.list_cell_no_content_follow_feed, null);
-            if(((MainActivity)homeFragment.getActivity()).myfollowing.size()>0){
-                ((TextView)view.findViewById(R.id.no_content_textview)).setText("Bummer!");
-                ((TextView)view.findViewById(R.id.no_content_textview2)).setText("None of your followers have made predictions yet.\n" +
+            if (((MainActivity) homeFragment.getActivity()).myfollowing.size() > 0) {
+                ((TextView) view.findViewById(R.id.no_content_textview)).setText("Bummer!");
+                ((TextView) view.findViewById(R.id.no_content_textview2)).setText("None of your followers have made predictions yet.\n" +
                         "View All prediction for now & check back soon!");
-            }else{
+            } else {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

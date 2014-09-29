@@ -30,11 +30,11 @@ import views.contacts.FindFriendsListCellHeader;
 public class UserContactAdapter extends PagingAdapter<UserContact> {
 
     public int type;
+    public int followSize = -1;
+    public boolean unchecking = false;
     FindFriendsActivity findFriendsActivity;
     ArrayList<UserContact> searchedContacts = new ArrayList<UserContact>();
     ArrayList<UserContact> allContacts;
-    public int followSize = -1;
-    public boolean unchecking=false;
 
     public UserContactAdapter(int type, Context context, PagingAdapterDatasource<UserContact> datasource, ImageLoader imageLoader, FindFriendsActivity activity) {
         super(context, datasource, imageLoader);
@@ -138,8 +138,8 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
 
     public void followAll(boolean checked) {
 
-        if(unchecking && !checked){
-            unchecking=false;
+        if (unchecking && !checked) {
+            unchecking = false;
             return;
         }
 

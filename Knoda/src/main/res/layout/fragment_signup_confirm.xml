@@ -18,8 +18,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:text="Temp"
-            android:textSize="20sp"
-            android:textColor="@color/knodaDarkGreen"/>
+            android:textColor="@color/knodaDarkGreen"
+            android:textSize="20sp" />
 
 
         <RelativeLayout

@@ -109,6 +109,7 @@ public class MainActivity extends BaseActivity {
     public String mCurrentPhotoPath = null;
     public Uri mCapturedImageURI = null;
     public ArrayList<Follow> myfollowing = new ArrayList<Follow>();
+    public Helper helper = new Helper();
     @Inject
     AppOutdatedManager appOutdatedManager;
     @InjectView(R.id.navbar)
@@ -145,9 +146,6 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout.LayoutParams containerFull;
     private RelativeLayout.LayoutParams containerPartial;
     private AlertDialog connectedDialog;
-
-    public Helper helper = new Helper();
-
 
     @OnClick(R.id.nav_home)
     void onClickHome() {

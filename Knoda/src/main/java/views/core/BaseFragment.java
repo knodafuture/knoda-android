@@ -105,7 +105,7 @@ public class BaseFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        
+
     }
 
 }

@@ -82,23 +82,20 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
      * The default radius around the center point to search.
      */
     public static final int DEFAULT_RADIUS_IN_METERS = 1000;
+    private int radiusInMeters = DEFAULT_RADIUS_IN_METERS;
     /**
      * The default number of results to retrieve.
      */
     public static final int DEFAULT_RESULTS_LIMIT = 100;
-
+    private int resultsLimit = DEFAULT_RESULTS_LIMIT;
     private static final int searchTextTimerDelayInMilliseconds = 2 * 1000;
-
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String LOCATION = "location";
     private static final String CATEGORY = "category";
     private static final String WERE_HERE_COUNT = "were_here_count";
     private static final String TAG = "PlacePickerFragment";
-
     private Location location;
-    private int radiusInMeters = DEFAULT_RADIUS_IN_METERS;
-    private int resultsLimit = DEFAULT_RESULTS_LIMIT;
     private String searchText;
     private Timer searchTextTimer;
     private boolean hasSearchTextChangedSinceLastQuery;
@@ -290,7 +287,7 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
         super.onAttach(activity);
 
         if (searchBox != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(searchBox, InputMethodManager.SHOW_IMPLICIT);
         }
     }
@@ -300,7 +297,7 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
         super.onDetach();
 
         if (searchBox != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
         }
     }
@@ -393,8 +390,8 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
     }
 
     private Request createRequest(Location location, int radiusInMeters, int resultsLimit, String searchText,
-            Set<String> extraFields,
-            Session session) {
+                                  Set<String> extraFields,
+                                  Session session) {
         Request request = Request.newPlacesSearchRequest(session, location, radiusInMeters, resultsLimit, searchText,
                 null);
 
@@ -500,7 +497,7 @@ public class PlacePickerFragment extends PickerFragment<GraphPlace> {
 
         @Override
         protected void onLoadFinished(GraphObjectPagingLoader<GraphPlace> loader,
-                SimpleGraphObjectCursor<GraphPlace> data) {
+                                      SimpleGraphObjectCursor<GraphPlace> data) {
             super.onLoadFinished(loader, data);
 
             // We could be called in this state if we are clearing data or if we are being re-attached

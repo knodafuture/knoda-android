@@ -25,10 +25,10 @@
             android:id="@+id/myprofile_actionbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:fontFamily="sans-serif-medium"
-            android:layout_centerInParent="true"
             android:text="USERNAME"
             android:textColor="@color/knodaDarkGreen"
             android:textSize="16sp" />
@@ -42,16 +42,16 @@
             android:src="@drawable/ic_settings" />
 
     </RelativeLayout>
+
     <TextView
         android:id="@+id/myprofile_actionbar_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SIGN-UP"
-        android:textSize="16sp"
-        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
+        android:text="SIGN-UP"
         android:textColor="@color/white"
-        android:visibility="gone"
-        />
+        android:textSize="16sp"
+        android:visibility="gone" />
 </RelativeLayout>

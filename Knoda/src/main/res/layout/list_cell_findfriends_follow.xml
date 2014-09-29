@@ -47,10 +47,10 @@
                 android:id="@+id/findfriends_listcell_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
                 android:text="Username"
                 android:textColor="@color/knodaDarkGreen"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-medium" />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -68,11 +68,11 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
         android:button="@drawable/checkbox_selector"
-        android:visibility="visible"
         android:scaleX="1.2"
         android:scaleY="1.2"
         android:text=""
-        android:textSize="0sp"/>
+        android:textSize="0sp"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/findfriends_listcell_btn"
@@ -87,8 +87,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:background="#EFEFEF"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:background="#EFEFEF" />
 
 
 </views.contacts.FindFriendsListCell>

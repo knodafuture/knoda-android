@@ -62,8 +62,7 @@ class RequestProgress {
                 final Request.OnProgressCallback callbackCopy = (Request.OnProgressCallback) callback;
                 if (callbackHandler == null) {
                     callbackCopy.onProgress(currentCopy, maxProgressCopy);
-                }
-                else {
+                } else {
                     callbackHandler.post(new Runnable() {
                         @Override
                         public void run() {

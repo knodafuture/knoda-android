@@ -11,9 +11,9 @@
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
         android:text="Your Contacts on Knoda"
         android:textColor="@color/knodaDarkGreen"
-        android:gravity="center_vertical"
         android:textSize="18sp" />
 
     <TextView
@@ -25,7 +25,7 @@
         android:layout_marginRight="45dp"
         android:text="Select All"
         android:textColor="@color/knodaDarkGreen"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <CheckBox
         android:id="@+id/findfriendsheader_listcell_check"
@@ -35,8 +35,8 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
         android:button="@drawable/checkbox_selector"
-        android:scaleY="1.2"
         android:scaleX="1.2"
+        android:scaleY="1.2"
         android:visibility="visible" />
 
 </views.contacts.FindFriendsListCellHeader>

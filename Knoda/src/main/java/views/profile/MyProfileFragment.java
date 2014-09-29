@@ -63,10 +63,8 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
     @InjectView(R.id.topContainer)
     LinearLayout topContainer;
     int topContainerHeight;
-    private ViewPager mViewPager;
-
     MyProfileActionBar actionbar;
-
+    private ViewPager mViewPager;
 
     public static MyProfileFragment newInstance() {
         MyProfileFragment fragment = new MyProfileFragment();

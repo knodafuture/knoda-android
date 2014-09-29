@@ -795,10 +795,10 @@ public class NetworkingManager {
     }
 
     public class Message {
+        public String message;
+
         public Message() {
         }
-
-        public String message;
     }
 
 }

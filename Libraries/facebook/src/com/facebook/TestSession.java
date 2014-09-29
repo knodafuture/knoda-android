@@ -67,27 +67,19 @@ import java.util.Map;
  */
 public class TestSession extends Session {
     private static final long serialVersionUID = 1L;
-
-    private enum Mode {
-        PRIVATE, SHARED
-    }
-
     private static final String LOG_TAG = Logger.LOG_TAG_BASE + "TestSession";
-
     private static Map<String, TestAccount> appTestAccounts;
     private static String testApplicationSecret;
     private static String testApplicationId;
-
     private final String sessionUniqueUserTag;
     private final List<String> requestedPermissions;
     private final Mode mode;
     private String testAccountId;
     private String testAccountUserName;
-
     private boolean wasAskedToExtendAccessToken;
 
     TestSession(Activity activity, List<String> permissions, TokenCachingStrategy tokenCachingStrategy,
-            String sessionUniqueUserTag, Mode mode) {
+                String sessionUniqueUserTag, Mode mode) {
         super(activity, TestSession.testApplicationId, tokenCachingStrategy);
 
         Validate.notNull(permissions, "permissions");
@@ -149,7 +141,7 @@ public class TestSession extends Session {
      * @return a new TestSession that is in the CREATED state, ready to be opened
      */
     public static TestSession createSessionWithSharedUser(Activity activity, List<String> permissions,
-            String sessionUniqueUserTag) {
+                                                          String sessionUniqueUserTag) {
         return createTestSession(activity, permissions, Mode.SHARED, sessionUniqueUserTag);
     }
 
@@ -197,27 +189,8 @@ public class TestSession extends Session {
         testApplicationSecret = applicationSecret;
     }
 
-    /**
-     * Gets the ID of the test user that this TestSession is authenticated as.
-     *
-     * @return the Facebook user ID of the test user
-     */
-    public final String getTestUserId() {
-        return testAccountId;
-    }
-
-    /**
-     * Gets the name of the test user that this TestSession is authenticated as.
-     *
-     * @return the name of the test user
-     */
-    public final String getTestUserName() {
-        return testAccountUserName;
-    }
-
-
     private static synchronized TestSession createTestSession(Activity activity, List<String> permissions, Mode mode,
-            String sessionUniqueUserTag) {
+                                                              String sessionUniqueUserTag) {
         if (Utility.isNullOrEmpty(testApplicationId) || Utility.isNullOrEmpty(testApplicationSecret)) {
             throw new FacebookException("Must provide app ID and secret");
         }
@@ -262,7 +235,7 @@ public class TestSession extends Session {
             throw new FacebookException("Unexpected number of results from TestUsers batch query");
         }
 
-        TestAccountsResponse testAccountsResponse  = responses.get(0).getGraphObjectAs(TestAccountsResponse.class);
+        TestAccountsResponse testAccountsResponse = responses.get(0).getGraphObjectAs(TestAccountsResponse.class);
         GraphObjectList<TestAccount> testAccounts = testAccountsResponse.getData();
 
         // Response should contain a map of test accounts: { id's => { GraphUser } }
@@ -294,6 +267,28 @@ public class TestSession extends Session {
             }
         }
         return null;
+    }
+
+    static final String getAppAccessToken() {
+        return testApplicationId + "|" + testApplicationSecret;
+    }
+
+    /**
+     * Gets the ID of the test user that this TestSession is authenticated as.
+     *
+     * @return the Facebook user ID of the test user
+     */
+    public final String getTestUserId() {
+        return testAccountId;
+    }
+
+    /**
+     * Gets the name of the test user that this TestSession is authenticated as.
+     *
+     * @return the name of the test user
+     */
+    public final String getTestUserName() {
+        return testAccountUserName;
     }
 
     @Override
@@ -352,10 +347,6 @@ public class TestSession extends Session {
 
     void fakeTokenRefreshAttempt() {
         setCurrentTokenRefreshRequest(new TokenRefreshRequest());
-    }
-
-    static final String getAppAccessToken() {
-        return testApplicationId + "|" + testApplicationSecret;
     }
 
     private void findOrCreateSharedTestAccount() {
@@ -426,7 +417,7 @@ public class TestSession extends Session {
         if (error != null) {
             Log.w(LOG_TAG, String.format("Could not delete test account %s: %s", testAccountId, error.getException().toString()));
         } else if (graphObject.getProperty(Response.NON_JSON_RESPONSE_PROPERTY) == (Boolean) false
-                   || graphObject.getProperty(Response.SUCCESS_KEY) == (Boolean) false) {
+                || graphObject.getProperty(Response.SUCCESS_KEY) == (Boolean) false) {
             Log.w(LOG_TAG, String.format("Could not delete test account %s: unknown reason", testAccountId));
         }
     }
@@ -461,6 +452,10 @@ public class TestSession extends Session {
         }
 
         return result.toString();
+    }
+
+    private enum Mode {
+        PRIVATE, SHARED
     }
 
     private interface TestAccount extends GraphObject {

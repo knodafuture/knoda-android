@@ -52,6 +52,12 @@ public class LoginActivity extends Activity {
     private AuthorizationClient authorizationClient;
     private AuthorizationClient.AuthorizationRequest request;
 
+    static Bundle populateIntentExtras(AuthorizationClient.AuthorizationRequest request) {
+        Bundle extras = new Bundle();
+        extras.putSerializable(EXTRA_REQUEST, request);
+        return extras;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,11 +143,5 @@ public class LoginActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         authorizationClient.onActivityResult(requestCode, resultCode, data);
-    }
-
-    static Bundle populateIntentExtras(AuthorizationClient.AuthorizationRequest request) {
-        Bundle extras = new Bundle();
-        extras.putSerializable(EXTRA_REQUEST, request);
-        return extras;
     }
 }

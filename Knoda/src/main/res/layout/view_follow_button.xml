@@ -14,9 +14,9 @@
             android:layout_width="40dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:background="@drawable/follow_btn"
-            android:layout_centerVertical="true"
             android:clickable="true" />
     </RelativeLayout>
 

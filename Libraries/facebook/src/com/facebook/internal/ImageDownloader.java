@@ -36,16 +36,16 @@ import java.util.Map;
 
 public class ImageDownloader {
     private static final int DOWNLOAD_QUEUE_MAX_CONCURRENT = WorkQueue.DEFAULT_MAX_CONCURRENT;
-    private static final int CACHE_READ_QUEUE_MAX_CONCURRENT = 2;
-    private static Handler handler;
     private static WorkQueue downloadQueue = new WorkQueue(DOWNLOAD_QUEUE_MAX_CONCURRENT);
+    private static final int CACHE_READ_QUEUE_MAX_CONCURRENT = 2;
     private static WorkQueue cacheReadQueue = new WorkQueue(CACHE_READ_QUEUE_MAX_CONCURRENT);
-
     private static final Map<RequestKey, DownloaderContext> pendingRequests = new HashMap<RequestKey, DownloaderContext>();
+    private static Handler handler;
 
     /**
      * Downloads the image specified in the passed in request.
      * If a callback is specified, it is guaranteed to be invoked on the calling thread.
+     *
      * @param request Request to process
      */
     public static void downloadAsync(ImageRequest request) {
@@ -313,7 +313,7 @@ public class ImageDownloader {
             boolean isEqual = false;
 
             if (o != null && o instanceof RequestKey) {
-                RequestKey compareTo = (RequestKey)o;
+                RequestKey compareTo = (RequestKey) o;
                 isEqual = compareTo.uri == uri && compareTo.tag == tag;
             }
 

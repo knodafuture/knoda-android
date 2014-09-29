@@ -50,33 +50,6 @@ class JsonUtil {
         return false;
     }
 
-    private final static class JSONObjectEntry implements Map.Entry<String, Object> {
-        private final String key;
-        private final Object value;
-
-        JSONObjectEntry(String key, Object value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        @SuppressLint("FieldGetter")
-        @Override
-        public String getKey() {
-            return this.key;
-        }
-
-        @Override
-        public Object getValue() {
-            return this.value;
-        }
-
-        @Override
-        public Object setValue(Object object) {
-            throw new UnsupportedOperationException("JSONObjectEntry is immutable");
-        }
-
-    }
-
     static Set<Map.Entry<String, Object>> jsonObjectEntrySet(JSONObject jsonObject) {
         HashSet<Map.Entry<String, Object>> result = new HashSet<Map.Entry<String, Object>>();
 
@@ -124,5 +97,32 @@ class JsonUtil {
         }
 
         return result;
+    }
+
+    private final static class JSONObjectEntry implements Map.Entry<String, Object> {
+        private final String key;
+        private final Object value;
+
+        JSONObjectEntry(String key, Object value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @SuppressLint("FieldGetter")
+        @Override
+        public String getKey() {
+            return this.key;
+        }
+
+        @Override
+        public Object getValue() {
+            return this.value;
+        }
+
+        @Override
+        public Object setValue(Object object) {
+            throw new UnsupportedOperationException("JSONObjectEntry is immutable");
+        }
+
     }
 }

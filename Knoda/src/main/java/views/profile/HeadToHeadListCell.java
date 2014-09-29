@@ -26,6 +26,8 @@ import views.core.MainActivity;
  */
 public class HeadToHeadListCell extends RelativeLayout {
 
+    final Animation animationSlideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slidein);
+    final Animation animationSlideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slideout);
     public TextView win1;
     public TextView wl1;
     public TextView wp1;
@@ -38,21 +40,13 @@ public class HeadToHeadListCell extends RelativeLayout {
     public ImageView avatar2;
     public TextView username;
     public TextView yourname;
-
+    public boolean expanded = false;
     int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getContext().getResources().getDisplayMetrics());
     int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
-
-    final Animation animationSlideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slidein);
-    final Animation animationSlideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slideout);
-
     final ResizeAnimation resizeUp = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 95 * onedp, screenWidth, 243 * onedp);
     final ResizeAnimation resizeDown = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 243 * onedp, screenWidth, 95 * onedp);
-
     final ResizeAnimation resizeUp2 = new ResizeAnimation(this, screenWidth, 95 * onedp, screenWidth, 243 * onedp);
     final ResizeAnimation resizeDown2 = new ResizeAnimation(this, screenWidth, 243 * onedp, screenWidth, 95 * onedp);
-
-
-    public boolean expanded = false;
 
     public HeadToHeadListCell(Context context) {
         super(context);

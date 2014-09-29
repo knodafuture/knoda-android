@@ -56,7 +56,7 @@ public class HeadToHeadFragment extends BaseListFragment implements PagingAdapte
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }

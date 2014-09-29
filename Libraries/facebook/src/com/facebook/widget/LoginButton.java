@@ -66,24 +66,6 @@ import java.util.List;
  * the {@link #setSession(com.facebook.Session)} method.
  */
 public class LoginButton extends Button {
-    
-    public static enum ToolTipMode {
-        /**
-         * Default display mode. A server query will determine if the tool tip should be displayed
-         * and, if so, what the string shown to the user should be.
-         */
-        DEFAULT,
-        
-        /**
-         * Display the tool tip with a local string--regardless of what the server returns 
-         */
-        DISPLAY_ALWAYS,
-        
-        /**
-         * Never display the tool tip--regardless of what the server says
-         */
-        NEVER_DISPLAY
-    }
 
     private static final String TAG = LoginButton.class.getName();
     private String applicationId = null;
@@ -104,119 +86,6 @@ public class LoginButton extends Button {
     private ToolTipMode nuxMode = ToolTipMode.DEFAULT;
     private long nuxDisplayTime = ToolTipPopup.DEFAULT_POPUP_DISPLAY_TIME;
     private ToolTipPopup nuxPopup;
-
-    static class LoginButtonProperties {
-        private SessionDefaultAudience defaultAudience = SessionDefaultAudience.FRIENDS;
-        private List<String> permissions = Collections.<String>emptyList();
-        private SessionAuthorizationType authorizationType = null;
-        private OnErrorListener onErrorListener;
-        private SessionLoginBehavior loginBehavior = SessionLoginBehavior.SSO_WITH_FALLBACK;
-        private Session.StatusCallback sessionStatusCallback;
-
-        public void setOnErrorListener(OnErrorListener onErrorListener) {
-            this.onErrorListener = onErrorListener;
-        }
-
-        public OnErrorListener getOnErrorListener() {
-            return onErrorListener;
-        }
-
-        public void setDefaultAudience(SessionDefaultAudience defaultAudience) {
-            this.defaultAudience = defaultAudience;
-        }
-
-        public SessionDefaultAudience getDefaultAudience() {
-            return defaultAudience;
-        }
-
-        public void setReadPermissions(List<String> permissions, Session session) {
-            if (SessionAuthorizationType.PUBLISH.equals(authorizationType)) {
-                throw new UnsupportedOperationException(
-                        "Cannot call setReadPermissions after setPublishPermissions has been called.");
-            }
-            if (validatePermissions(permissions, SessionAuthorizationType.READ, session)) {
-                this.permissions = permissions;
-                authorizationType = SessionAuthorizationType.READ;
-            }
-        }
-
-        public void setPublishPermissions(List<String> permissions, Session session) {
-            if (SessionAuthorizationType.READ.equals(authorizationType)) {
-                throw new UnsupportedOperationException(
-                        "Cannot call setPublishPermissions after setReadPermissions has been called.");
-            }
-            if (validatePermissions(permissions, SessionAuthorizationType.PUBLISH, session)) {
-                this.permissions = permissions;
-                authorizationType = SessionAuthorizationType.PUBLISH;
-            }
-        }
-
-        private boolean validatePermissions(List<String> permissions,
-                SessionAuthorizationType authType, Session currentSession) {
-            if (SessionAuthorizationType.PUBLISH.equals(authType)) {
-                if (Utility.isNullOrEmpty(permissions)) {
-                    throw new IllegalArgumentException("Permissions for publish actions cannot be null or empty.");
-                }
-            }
-            if (currentSession != null && currentSession.isOpened()) {
-                if (!Utility.isSubset(permissions, currentSession.getPermissions())) {
-                    Log.e(TAG, "Cannot set additional permissions when session is already open.");
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        List<String> getPermissions() {
-            return permissions;
-        }
-
-        public void clearPermissions() {
-            permissions = null;
-            authorizationType = null;
-        }
-
-        public void setLoginBehavior(SessionLoginBehavior loginBehavior) {
-            this.loginBehavior = loginBehavior;
-        }
-
-        public SessionLoginBehavior getLoginBehavior() {
-            return loginBehavior;
-        }
-
-        public void setSessionStatusCallback(Session.StatusCallback callback) {
-            this.sessionStatusCallback = callback;
-        }
-
-        public Session.StatusCallback getSessionStatusCallback() {
-            return sessionStatusCallback;
-        }
-    }
-
-    /**
-     * Specifies a callback interface that will be called when the button's notion of the current
-     * user changes (if the fetch_user_info attribute is true for this control).
-     */
-    public interface UserInfoChangedCallback {
-        /**
-         * Called when the current user changes.
-         * @param user  the current user, or null if there is no user
-         */
-        void onUserInfoFetched(GraphUser user);
-    }
-
-    /**
-     * Callback interface that will be called when a network or other error is encountered
-     * while logging in.
-     */
-    public interface OnErrorListener {
-        /**
-         * Called when a network or other error is encountered.
-         * @param error     a FacebookException representing the error that was encountered.
-         */
-        void onError(FacebookException error);
-    }
-
     /**
      * Create the LoginButton.
      *
@@ -266,7 +135,7 @@ public class LoginButton extends Button {
         parseAttributes(attrs);
         if (!isInEditMode()) {
             initializeActiveSessionWithCachedToken(context);
-        }        
+        }
     }
 
     /**
@@ -281,16 +150,6 @@ public class LoginButton extends Button {
     }
 
     /**
-     * Sets an OnErrorListener for this instance of LoginButton to call into when
-     * certain exceptions occur.
-     *
-     * @param onErrorListener The listener object to set
-     */
-    public void setOnErrorListener(OnErrorListener onErrorListener) {
-        properties.setOnErrorListener(onErrorListener);
-    }
-
-    /**
      * Returns the current OnErrorListener for this instance of LoginButton.
      *
      * @return The OnErrorListener
@@ -300,14 +159,13 @@ public class LoginButton extends Button {
     }
 
     /**
-     * Sets the default audience to use when the session is opened.
-     * This value is only useful when specifying write permissions for the native
-     * login dialog.
+     * Sets an OnErrorListener for this instance of LoginButton to call into when
+     * certain exceptions occur.
      *
-     * @param defaultAudience the default audience value to use
+     * @param onErrorListener The listener object to set
      */
-    public void setDefaultAudience(SessionDefaultAudience defaultAudience) {
-        properties.setDefaultAudience(defaultAudience);
+    public void setOnErrorListener(OnErrorListener onErrorListener) {
+        properties.setOnErrorListener(onErrorListener);
     }
 
     /**
@@ -319,6 +177,17 @@ public class LoginButton extends Button {
      */
     public SessionDefaultAudience getDefaultAudience() {
         return properties.getDefaultAudience();
+    }
+
+    /**
+     * Sets the default audience to use when the session is opened.
+     * This value is only useful when specifying write permissions for the native
+     * login dialog.
+     *
+     * @param defaultAudience the default audience value to use
+     */
+    public void setDefaultAudience(SessionDefaultAudience defaultAudience) {
+        properties.setDefaultAudience(defaultAudience);
     }
 
     /**
@@ -339,7 +208,6 @@ public class LoginButton extends Button {
      * (by managing the session explicitly).
      *
      * @param permissions the read permissions to use
-     *
      * @throws UnsupportedOperationException if setPublishPermissions has been called
      */
     public void setReadPermissions(List<String> permissions) {
@@ -364,13 +232,11 @@ public class LoginButton extends Button {
      * (by managing the session explicitly).
      *
      * @param permissions the read permissions to use
-     *
      * @throws UnsupportedOperationException if setPublishPermissions has been called
      */
     public void setReadPermissions(String... permissions) {
         properties.setReadPermissions(Arrays.asList(permissions), sessionTracker.getSession());
     }
-
 
     /**
      * Set the permissions to use when the session is opened. The permissions here
@@ -390,9 +256,8 @@ public class LoginButton extends Button {
      * (by managing the session explicitly).
      *
      * @param permissions the read permissions to use
-     *
      * @throws UnsupportedOperationException if setReadPermissions has been called
-     * @throws IllegalArgumentException if permissions is null or empty
+     * @throws IllegalArgumentException      if permissions is null or empty
      */
     public void setPublishPermissions(List<String> permissions) {
         properties.setPublishPermissions(permissions, sessionTracker.getSession());
@@ -416,20 +281,31 @@ public class LoginButton extends Button {
      * (by managing the session explicitly).
      *
      * @param permissions the read permissions to use
-     *
      * @throws UnsupportedOperationException if setReadPermissions has been called
-     * @throws IllegalArgumentException if permissions is null or empty
+     * @throws IllegalArgumentException      if permissions is null or empty
      */
     public void setPublishPermissions(String... permissions) {
         properties.setPublishPermissions(Arrays.asList(permissions), sessionTracker.getSession());
     }
-
 
     /**
      * Clears the permissions currently associated with this LoginButton.
      */
     public void clearPermissions() {
         properties.clearPermissions();
+    }
+
+    /**
+     * Gets the login behavior for the session that will be opened. If null is returned,
+     * the default ({@link SessionLoginBehavior SessionLoginBehavior.SSO_WITH_FALLBACK}
+     * will be used.
+     *
+     * @return loginBehavior The {@link SessionLoginBehavior SessionLoginBehavior} that
+     * specifies what behaviors should be attempted during
+     * authorization.
+     */
+    public SessionLoginBehavior getLoginBehavior() {
+        return properties.getLoginBehavior();
     }
 
     /**
@@ -446,19 +322,6 @@ public class LoginButton extends Button {
     }
 
     /**
-     * Gets the login behavior for the session that will be opened. If null is returned,
-     * the default ({@link SessionLoginBehavior SessionLoginBehavior.SSO_WITH_FALLBACK}
-     * will be used.
-     *
-     * @return loginBehavior The {@link SessionLoginBehavior SessionLoginBehavior} that
-     *                      specifies what behaviors should be attempted during
-     *                      authorization.
-     */
-    public SessionLoginBehavior getLoginBehavior() {
-        return properties.getLoginBehavior();
-    }
-
-    /**
      * Set the application ID to be used to open the session.
      *
      * @param applicationId the application ID to use
@@ -469,6 +332,7 @@ public class LoginButton extends Button {
 
     /**
      * Gets the callback interface that will be called when the current user changes.
+     *
      * @return the callback interface
      */
     public UserInfoChangedCallback getUserInfoChangedCallback() {
@@ -478,10 +342,20 @@ public class LoginButton extends Button {
     /**
      * Sets the callback interface that will be called when the current user changes.
      *
-     * @param userInfoChangedCallback   the callback interface
+     * @param userInfoChangedCallback the callback interface
      */
     public void setUserInfoChangedCallback(UserInfoChangedCallback userInfoChangedCallback) {
         this.userInfoChangedCallback = userInfoChangedCallback;
+    }
+
+    /**
+     * Sets the callback interface that will be called whenever the status of the Session
+     * associated with this LoginButton changes.
+     *
+     * @return the callback interface
+     */
+    public Session.StatusCallback getSessionStatusCallback() {
+        return properties.getSessionStatusCallback();
     }
 
     /**
@@ -496,59 +370,54 @@ public class LoginButton extends Button {
     }
 
     /**
-     * Sets the callback interface that will be called whenever the status of the Session
-     * associated with this LoginButton changes.
-
-     * @return the callback interface
-     */
-    public Session.StatusCallback getSessionStatusCallback() {
-        return properties.getSessionStatusCallback();
-    }
-    
-    /**
      * Sets the style (background) of the Tool Tip popup. Currently a blue style and a black
      * style are supported. Blue is default
+     *
      * @param nuxStyle The style of the tool tip popup.
      */
     public void setToolTipStyle(ToolTipPopup.Style nuxStyle) {
         this.nuxStyle = nuxStyle;
     }
-    
-    /**
-     * Sets the mode of the Tool Tip popup. Currently supported modes are default (normal
-     * behavior), always_on (popup remains up until forcibly dismissed), and always_off (popup
-     * doesn't show)
-     * @param nuxMode The new mode for the tool tip
-     */
-    public void setToolTipMode(ToolTipMode nuxMode) {
-        this.nuxMode = nuxMode;
-    }
-    
+
     /**
      * Return the current {@link ToolTipMode} for this LoginButton
+     *
      * @return The {@link ToolTipMode}
      */
     public ToolTipMode getToolTipMode() {
         return nuxMode;
     }
-    
+
     /**
-     * Sets the amount of time (in milliseconds) that the tool tip will be shown to the user. The 
-     * default is {@value ToolTipPopup#DEFAULT_POPUP_DISPLAY_TIME}. Any value that is less than or
-     * equal to zero will cause the tool tip to be displayed indefinitely.
-     * @param displayTime The amount of time (in milliseconds) that the tool tip will be displayed
-     * to the user
+     * Sets the mode of the Tool Tip popup. Currently supported modes are default (normal
+     * behavior), always_on (popup remains up until forcibly dismissed), and always_off (popup
+     * doesn't show)
+     *
+     * @param nuxMode The new mode for the tool tip
      */
-    public void setToolTipDisplayTime(long displayTime) {
-        this.nuxDisplayTime = displayTime;
+    public void setToolTipMode(ToolTipMode nuxMode) {
+        this.nuxMode = nuxMode;
     }
-    
+
     /**
      * Gets the current amount of time (in ms) that the tool tip will be displayed to the user
+     *
      * @return
      */
     public long getToolTipDisplayTime() {
         return nuxDisplayTime;
+    }
+
+    /**
+     * Sets the amount of time (in milliseconds) that the tool tip will be shown to the user. The
+     * default is {@value ToolTipPopup#DEFAULT_POPUP_DISPLAY_TIME}. Any value that is less than or
+     * equal to zero will cause the tool tip to be displayed indefinitely.
+     *
+     * @param displayTime The amount of time (in milliseconds) that the tool tip will be displayed
+     *                    to the user
+     */
+    public void setToolTipDisplayTime(long displayTime) {
+        this.nuxDisplayTime = displayTime;
     }
 
     /**
@@ -569,25 +438,22 @@ public class LoginButton extends Button {
      * update the Session state based on the contents of the resultCode and
      * data.
      *
-     * @param requestCode
-     *            The requestCode parameter from the forwarded call. When this
-     *            onActivityResult occurs as part of Facebook authorization
-     *            flow, this value is the activityCode passed to open or
-     *            authorize.
-     * @param resultCode
-     *            An int containing the resultCode parameter from the forwarded
-     *            call.
-     * @param data
-     *            The Intent passed as the data parameter from the forwarded
-     *            call.
+     * @param requestCode The requestCode parameter from the forwarded call. When this
+     *                    onActivityResult occurs as part of Facebook authorization
+     *                    flow, this value is the activityCode passed to open or
+     *                    authorize.
+     * @param resultCode  An int containing the resultCode parameter from the forwarded
+     *                    call.
+     * @param data        The Intent passed as the data parameter from the forwarded
+     *                    call.
      * @return A boolean indicating whether the requestCode matched a pending
-     *         authorization request for this Session.
+     * authorization request for this Session.
      * @see Session#onActivityResult(Activity, int, int, Intent)
      */
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         Session session = sessionTracker.getSession();
         if (session != null) {
-            return session.onActivityResult((Activity)getContext(), requestCode,
+            return session.onActivityResult((Activity) getContext(), requestCode,
                     resultCode, data);
         } else {
             return false;
@@ -647,7 +513,7 @@ public class LoginButton extends Button {
             setButtonText();
         }
     }
-    
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -657,21 +523,21 @@ public class LoginButton extends Button {
             checkNuxSettings();
         }
     }
-    
+
     private void showNuxPerSettings(FetchedAppSettings settings) {
         if (settings != null && settings.getNuxEnabled() && getVisibility() == View.VISIBLE) {
             String nuxString = settings.getNuxContent();
             displayNux(nuxString);
         }
     }
-    
+
     private void displayNux(String nuxString) {
         nuxPopup = new ToolTipPopup(nuxString, this);
         nuxPopup.setStyle(nuxStyle);
         nuxPopup.setNuxDisplayTime(nuxDisplayTime);
         nuxPopup.show();
     }
-    
+
     private void checkNuxSettings() {
         if (nuxMode == ToolTipMode.DISPLAY_ALWAYS) {
             String nuxString = getResources().getString(R.string.com_facebook_tooltip_default);
@@ -691,7 +557,7 @@ public class LoginButton extends Button {
                     showNuxPerSettings(result);
                 }
             };
-            task.execute((Void[])null);
+            task.execute((Void[]) null);
         }
 
     }
@@ -771,7 +637,7 @@ public class LoginButton extends Button {
                 if (currentSession != userInfoSession) {
                     Request request = Request.newMeRequest(currentSession, new Request.GraphUserCallback() {
                         @Override
-                        public void onCompleted(GraphUser me,  Response response) {
+                        public void onCompleted(GraphUser me, Response response) {
                             if (currentSession == sessionTracker.getOpenSession()) {
                                 user = me;
                                 if (userInfoChangedCallback != null) {
@@ -798,11 +664,154 @@ public class LoginButton extends Button {
     /**
      * Allow a developer to set the OnClickListener for the button.  This will be called back after we do any handling
      * internally for login
+     *
      * @param clickListener
      */
     @Override
     public void setOnClickListener(OnClickListener clickListener) {
         listenerCallback = clickListener;
+    }
+
+    void handleError(Exception exception) {
+        if (properties.onErrorListener != null) {
+            if (exception instanceof FacebookException) {
+                properties.onErrorListener.onError((FacebookException) exception);
+            } else {
+                properties.onErrorListener.onError(new FacebookException(exception));
+            }
+        }
+    }
+
+    public static enum ToolTipMode {
+        /**
+         * Default display mode. A server query will determine if the tool tip should be displayed
+         * and, if so, what the string shown to the user should be.
+         */
+        DEFAULT,
+
+        /**
+         * Display the tool tip with a local string--regardless of what the server returns
+         */
+        DISPLAY_ALWAYS,
+
+        /**
+         * Never display the tool tip--regardless of what the server says
+         */
+        NEVER_DISPLAY
+    }
+
+    /**
+     * Specifies a callback interface that will be called when the button's notion of the current
+     * user changes (if the fetch_user_info attribute is true for this control).
+     */
+    public interface UserInfoChangedCallback {
+        /**
+         * Called when the current user changes.
+         *
+         * @param user the current user, or null if there is no user
+         */
+        void onUserInfoFetched(GraphUser user);
+    }
+
+    /**
+     * Callback interface that will be called when a network or other error is encountered
+     * while logging in.
+     */
+    public interface OnErrorListener {
+        /**
+         * Called when a network or other error is encountered.
+         *
+         * @param error a FacebookException representing the error that was encountered.
+         */
+        void onError(FacebookException error);
+    }
+
+    static class LoginButtonProperties {
+        private SessionDefaultAudience defaultAudience = SessionDefaultAudience.FRIENDS;
+        private List<String> permissions = Collections.<String>emptyList();
+        private SessionAuthorizationType authorizationType = null;
+        private OnErrorListener onErrorListener;
+        private SessionLoginBehavior loginBehavior = SessionLoginBehavior.SSO_WITH_FALLBACK;
+        private Session.StatusCallback sessionStatusCallback;
+
+        public OnErrorListener getOnErrorListener() {
+            return onErrorListener;
+        }
+
+        public void setOnErrorListener(OnErrorListener onErrorListener) {
+            this.onErrorListener = onErrorListener;
+        }
+
+        public SessionDefaultAudience getDefaultAudience() {
+            return defaultAudience;
+        }
+
+        public void setDefaultAudience(SessionDefaultAudience defaultAudience) {
+            this.defaultAudience = defaultAudience;
+        }
+
+        public void setReadPermissions(List<String> permissions, Session session) {
+            if (SessionAuthorizationType.PUBLISH.equals(authorizationType)) {
+                throw new UnsupportedOperationException(
+                        "Cannot call setReadPermissions after setPublishPermissions has been called.");
+            }
+            if (validatePermissions(permissions, SessionAuthorizationType.READ, session)) {
+                this.permissions = permissions;
+                authorizationType = SessionAuthorizationType.READ;
+            }
+        }
+
+        public void setPublishPermissions(List<String> permissions, Session session) {
+            if (SessionAuthorizationType.READ.equals(authorizationType)) {
+                throw new UnsupportedOperationException(
+                        "Cannot call setPublishPermissions after setReadPermissions has been called.");
+            }
+            if (validatePermissions(permissions, SessionAuthorizationType.PUBLISH, session)) {
+                this.permissions = permissions;
+                authorizationType = SessionAuthorizationType.PUBLISH;
+            }
+        }
+
+        private boolean validatePermissions(List<String> permissions,
+                                            SessionAuthorizationType authType, Session currentSession) {
+            if (SessionAuthorizationType.PUBLISH.equals(authType)) {
+                if (Utility.isNullOrEmpty(permissions)) {
+                    throw new IllegalArgumentException("Permissions for publish actions cannot be null or empty.");
+                }
+            }
+            if (currentSession != null && currentSession.isOpened()) {
+                if (!Utility.isSubset(permissions, currentSession.getPermissions())) {
+                    Log.e(TAG, "Cannot set additional permissions when session is already open.");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        List<String> getPermissions() {
+            return permissions;
+        }
+
+        public void clearPermissions() {
+            permissions = null;
+            authorizationType = null;
+        }
+
+        public SessionLoginBehavior getLoginBehavior() {
+            return loginBehavior;
+        }
+
+        public void setLoginBehavior(SessionLoginBehavior loginBehavior) {
+            this.loginBehavior = loginBehavior;
+        }
+
+        public Session.StatusCallback getSessionStatusCallback() {
+            return sessionStatusCallback;
+        }
+
+        public void setSessionStatusCallback(Session.StatusCallback callback) {
+            this.sessionStatusCallback = callback;
+        }
     }
 
     private class LoginClickListener implements OnClickListener {
@@ -826,13 +835,13 @@ public class LoginButton extends Button {
                     }
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage(message)
-                           .setCancelable(true)
-                           .setPositiveButton(logout, new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int which) {
-                                   openSession.closeAndClearTokenInformation();
-                               }
-                           })
-                           .setNegativeButton(cancel, null);
+                            .setCancelable(true)
+                            .setPositiveButton(logout, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    openSession.closeAndClearTokenInformation();
+                                }
+                            })
+                            .setNegativeButton(cancel, null);
                     builder.create().show();
                 } else {
                     openSession.closeAndClearTokenInformation();
@@ -850,7 +859,7 @@ public class LoginButton extends Button {
                     if (parentFragment != null) {
                         openRequest = new Session.OpenRequest(parentFragment);
                     } else if (context instanceof Activity) {
-                        openRequest = new Session.OpenRequest((Activity)context);
+                        openRequest = new Session.OpenRequest((Activity) context);
                     }
 
                     if (openRequest != null) {
@@ -893,16 +902,6 @@ public class LoginButton extends Button {
                 properties.sessionStatusCallback.call(session, state, exception);
             } else if (exception != null) {
                 handleError(exception);
-            }
-        }
-    }
-
-    void handleError(Exception exception) {
-        if (properties.onErrorListener != null) {
-            if (exception instanceof FacebookException) {
-                properties.onErrorListener.onError((FacebookException)exception);
-            } else {
-                properties.onErrorListener.onError(new FacebookException(exception));
             }
         }
     }

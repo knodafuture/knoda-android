@@ -29,10 +29,10 @@ import java.util.Currency;
  */
 @Deprecated
 public class InsightsLogger {
-    private static final String EVENT_PARAMETER_PIXEL_ID         = "fb_offsite_pixel_id";
-    private static final String EVENT_PARAMETER_PIXEL_VALUE      = "fb_offsite_pixel_value";
+    private static final String EVENT_PARAMETER_PIXEL_ID = "fb_offsite_pixel_id";
+    private static final String EVENT_PARAMETER_PIXEL_VALUE = "fb_offsite_pixel_value";
 
-    private static final String EVENT_NAME_LOG_CONVERSION_PIXEL  = "fb_log_offsite_pixel";
+    private static final String EVENT_NAME_LOG_CONVERSION_PIXEL = "fb_log_offsite_pixel";
 
     private AppEventsLogger appEventsLogger;
 

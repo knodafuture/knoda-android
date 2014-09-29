@@ -72,6 +72,7 @@ public class FindFriendsActivity extends BaseActivity {
     public HashMap<String, GroupInvitation> inviting = new HashMap<String, GroupInvitation>();
     public FacebookManager facebookManager;
     public TwitterManager twitterManager;
+    protected OnBackPressedListener onBackPressedListener;
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
     @InjectView(R.id.findfriends_title)
@@ -84,7 +85,6 @@ public class FindFriendsActivity extends BaseActivity {
     Bus bus = new Bus();
     UserContacts localContacts;
     ProgressDialog progressDialog;
-    protected OnBackPressedListener onBackPressedListener;
     FindFriendsFacebookTwitterFragment facebookFragment = null;
     FindFriendsFacebookTwitterFragment twitterFragment = null;
     Session facebookSession;
@@ -418,34 +418,6 @@ public class FindFriendsActivity extends BaseActivity {
         });
     }
 
-    private class getContactsTask extends AsyncTask<Void, Void, Collection<UserContact>> {
-        public ArrayList<UserContact> contacts;
-
-        @Override
-        protected Collection<UserContact> doInBackground(Void... params) {
-            return getContacts().values();
-        }
-
-        @Override
-        protected void onPostExecute(Collection<UserContact> contacts1) {
-            localContacts = new UserContacts();
-            ArrayList<UserContact> sortList = new ArrayList<UserContact>(contacts1);
-            Collections.sort(sortList, new Comparator<UserContact>() {
-                @Override
-                public int compare(UserContact lhs, UserContact rhs) {
-                    return lhs.contact_id.toLowerCase().compareTo(rhs.contact_id.toLowerCase());
-                }
-            });
-            localContacts.contacts = sortList;
-            progressDialog.hide();
-            setupUI();
-        }
-    }
-
-    public interface OnBackPressedListener {
-        public void doBack();
-    }
-
     public void onExit() {
         if (following.size() + followingTwitter.size() + followingFacebook.size() + inviting.size() == 0) {
             close();
@@ -468,7 +440,6 @@ public class FindFriendsActivity extends BaseActivity {
                 })
                 .show();
     }
-
 
     private void submitAll() {
 
@@ -557,6 +528,35 @@ public class FindFriendsActivity extends BaseActivity {
         Log.i("FindFriends", "onActivityResult");
         if (facebookSession != null)
             facebookSession.onActivityResult(this, requestCode, resultCode, data);
+    }
+
+
+    public interface OnBackPressedListener {
+        public void doBack();
+    }
+
+    private class getContactsTask extends AsyncTask<Void, Void, Collection<UserContact>> {
+        public ArrayList<UserContact> contacts;
+
+        @Override
+        protected Collection<UserContact> doInBackground(Void... params) {
+            return getContacts().values();
+        }
+
+        @Override
+        protected void onPostExecute(Collection<UserContact> contacts1) {
+            localContacts = new UserContacts();
+            ArrayList<UserContact> sortList = new ArrayList<UserContact>(contacts1);
+            Collections.sort(sortList, new Comparator<UserContact>() {
+                @Override
+                public int compare(UserContact lhs, UserContact rhs) {
+                    return lhs.contact_id.toLowerCase().compareTo(rhs.contact_id.toLowerCase());
+                }
+            });
+            localContacts.contacts = sortList;
+            progressDialog.hide();
+            setupUI();
+        }
     }
 
 

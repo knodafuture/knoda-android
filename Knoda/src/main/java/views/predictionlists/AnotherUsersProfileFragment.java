@@ -72,9 +72,9 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
     }
 
     @Override
-    public void onItemClicked(int position){
+    public void onItemClicked(int position) {
         position--;
-        if(position<=0){
+        if (position <= 0) {
             return;
         }
 

@@ -54,6 +54,63 @@ public class FacebookAppLinkResolver implements AppLinkResolver {
 
     private final HashMap<Uri, AppLink> cachedAppLinks = new HashMap<Uri, AppLink>();
 
+    private static AppLink.Target getAndroidTargetFromJson(JSONObject targetJson) {
+        String packageName = tryGetStringFromJson(targetJson, APP_LINK_TARGET_PACKAGE_KEY, null);
+        if (packageName == null) {
+            // Package name is mandatory for each Android target
+            return null;
+        }
+        String className = tryGetStringFromJson(targetJson, APP_LINK_TARGET_CLASS_KEY, null);
+        String appName = tryGetStringFromJson(targetJson, APP_LINK_TARGET_APP_NAME_KEY, null);
+        String targetUrlString = tryGetStringFromJson(targetJson, APP_LINK_TARGET_URL_KEY, null);
+        Uri targetUri = null;
+        if (targetUrlString != null) {
+            targetUri = Uri.parse(targetUrlString);
+        }
+
+        return new AppLink.Target(packageName, className, targetUri, appName);
+    }
+
+    private static Uri getWebFallbackUriFromJson(Uri sourceUrl, JSONObject urlData) {
+        // Try and get a web target. This is best effort. Any failures results in null being returned.
+        try {
+            JSONObject webTarget = urlData.getJSONObject(APP_LINK_WEB_TARGET_KEY);
+            boolean shouldFallback = tryGetBooleanFromJson(webTarget, APP_LINK_TARGET_SHOULD_FALLBACK_KEY, true);
+            if (!shouldFallback) {
+                // Don't use a fallback url
+                return null;
+            }
+
+            String webTargetUrlString = tryGetStringFromJson(webTarget, APP_LINK_TARGET_URL_KEY, null);
+            Uri webUri = null;
+            if (webTargetUrlString != null) {
+                webUri = Uri.parse(webTargetUrlString);
+            }
+
+            // If we weren't able to parse a url from the web target, use the source url
+            return webUri != null ? webUri : sourceUrl;
+        } catch (JSONException e) {
+            // If we were missing a web target, just use the source as the web url
+            return sourceUrl;
+        }
+    }
+
+    private static String tryGetStringFromJson(JSONObject json, String propertyName, String defaultValue) {
+        try {
+            return json.getString(propertyName);
+        } catch (JSONException e) {
+            return defaultValue;
+        }
+    }
+
+    private static boolean tryGetBooleanFromJson(JSONObject json, String propertyName, boolean defaultValue) {
+        try {
+            return json.getBoolean(propertyName);
+        } catch (JSONException e) {
+            return defaultValue;
+        }
+    }
+
     /**
      * Asynchronously resolves App Link data for the passed in Uri
      *
@@ -184,62 +241,5 @@ public class FacebookAppLinkResolver implements AppLinkResolver {
         appLinkRequest.executeAsync();
 
         return taskCompletionSource.getTask();
-    }
-
-    private static AppLink.Target getAndroidTargetFromJson(JSONObject targetJson) {
-        String packageName = tryGetStringFromJson(targetJson, APP_LINK_TARGET_PACKAGE_KEY, null);
-        if (packageName == null) {
-            // Package name is mandatory for each Android target
-            return null;
-        }
-        String className = tryGetStringFromJson(targetJson, APP_LINK_TARGET_CLASS_KEY, null);
-        String appName = tryGetStringFromJson(targetJson, APP_LINK_TARGET_APP_NAME_KEY, null);
-        String targetUrlString = tryGetStringFromJson(targetJson, APP_LINK_TARGET_URL_KEY, null);
-        Uri targetUri = null;
-        if (targetUrlString != null) {
-            targetUri = Uri.parse(targetUrlString);
-        }
-
-        return new AppLink.Target(packageName, className, targetUri, appName);
-    }
-
-    private static Uri getWebFallbackUriFromJson(Uri sourceUrl, JSONObject urlData) {
-        // Try and get a web target. This is best effort. Any failures results in null being returned.
-        try {
-            JSONObject webTarget = urlData.getJSONObject(APP_LINK_WEB_TARGET_KEY);
-            boolean shouldFallback = tryGetBooleanFromJson(webTarget, APP_LINK_TARGET_SHOULD_FALLBACK_KEY, true);
-            if (!shouldFallback) {
-                // Don't use a fallback url
-                return null;
-            }
-
-            String webTargetUrlString = tryGetStringFromJson(webTarget, APP_LINK_TARGET_URL_KEY, null);
-            Uri webUri = null;
-            if (webTargetUrlString != null) {
-                webUri = Uri.parse(webTargetUrlString);
-            }
-
-            // If we weren't able to parse a url from the web target, use the source url
-            return webUri != null ? webUri: sourceUrl;
-        } catch (JSONException e) {
-            // If we were missing a web target, just use the source as the web url
-            return sourceUrl;
-        }
-    }
-
-    private static String tryGetStringFromJson(JSONObject json, String propertyName, String defaultValue) {
-        try {
-            return json.getString(propertyName);
-        } catch(JSONException e) {
-            return defaultValue;
-        }
-    }
-
-    private static boolean tryGetBooleanFromJson(JSONObject json, String propertyName, boolean defaultValue) {
-        try {
-            return json.getBoolean(propertyName);
-        } catch (JSONException e) {
-            return defaultValue;
-        }
     }
 }
