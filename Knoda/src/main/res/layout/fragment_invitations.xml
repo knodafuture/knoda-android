@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:hint="Type a name, phone number, or email address"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <View
             android:id="@+id/invitations_spacer"

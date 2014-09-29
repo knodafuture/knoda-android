@@ -3,23 +3,15 @@ package views.avatar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v8.renderscript.RenderScript;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.android.camera.CropImageIntentBuilder;
 import com.android.volley.RequestQueue;
@@ -30,7 +22,6 @@ import java.io.File;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import helpers.blur.RenderScriptGaussianBlur;
 import views.core.BaseActivity;
 
 public abstract class AvatarChooserActivity extends BaseActivity {

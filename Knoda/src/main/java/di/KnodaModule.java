@@ -18,7 +18,7 @@ import managers.SharedPrefManager;
                 KnodaApplication.class
         },
         library = true)
-public class KnodaModule extends Object {
+public class KnodaModule {
     private final KnodaApplication application;
 
     public KnodaModule(KnodaApplication application) {

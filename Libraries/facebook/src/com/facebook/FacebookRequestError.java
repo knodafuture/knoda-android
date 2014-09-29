@@ -18,6 +18,7 @@ package com.facebook;
 
 import com.facebook.android.R;
 import com.facebook.internal.Utility;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -498,6 +499,6 @@ public final class FacebookRequestError {
          * not limited to, JSON parsing errors or {@link java.io.IOException}s.
          */
         CLIENT
-    };
+    }
 
 }

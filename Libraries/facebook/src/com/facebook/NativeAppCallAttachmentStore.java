@@ -19,10 +19,16 @@ package com.facebook;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;

@@ -12,14 +12,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -47,8 +43,6 @@ import com.squareup.otto.Subscribe;
 import com.tjeannin.apprate.AppRater;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -85,7 +79,6 @@ import pubsub.HomeNavEvent;
 import pubsub.LoginFlowDoneEvent;
 import pubsub.ProfileNavEvent;
 import pubsub.ReloadListsEvent;
-import pubsub.ScreenCaptureEvent;
 import views.activity.ActivityFragment;
 import views.addprediction.AddPredictionFragment;
 import views.avatar.UserAvatarChooserFragment;
@@ -649,7 +642,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setActionBarTitle(String title) {
-        if (title == "" || title == null) {
+        if (title.equals("") || title == null) {
             title = "KNODA";
         }
 
@@ -660,7 +653,7 @@ public class MainActivity extends BaseActivity {
         ActionBar actionBar = getActionBar();
         actionBar.setTitle(s);
 
-        if (title != "KNODA")
+        if (!title.equals("KNODA"))
             this.title = title;
     }
 
@@ -838,7 +831,7 @@ public class MainActivity extends BaseActivity {
                             }
                             handler.postDelayed(activitiesRefreshRunnable, userRefreshInterval);
                         }
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
 
                 }

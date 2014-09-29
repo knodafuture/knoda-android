@@ -158,7 +158,7 @@ public class HeadToHeadListCell extends RelativeLayout {
     }
 
     public void setStreak(String streak, TextView streakTV) {
-        if (streak == null || streak == "") {
+        if (streak == null || streak.equals("")) {
             streakTV.setText("W0");
         } else {
             streakTV.setText(streak);

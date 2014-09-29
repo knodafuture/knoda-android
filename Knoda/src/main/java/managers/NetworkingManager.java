@@ -798,7 +798,6 @@ public class NetworkingManager {
         public Message() {
         }
 
-        ;
         public String message;
     }
 

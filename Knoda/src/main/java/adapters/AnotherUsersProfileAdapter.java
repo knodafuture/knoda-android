@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
-import com.squareup.otto.Bus;
 
 import java.util.Random;
 
@@ -33,7 +32,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
     private ViewPager mViewPager;
 
     public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, MainActivity mainActivity) {
-        super(context, datasource, imageLoader, new Bus(), true);
+        super(context, datasource, imageLoader, mainActivity.bus, true);
         this.mainActivity = mainActivity;
     }
 

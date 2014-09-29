@@ -5,8 +5,6 @@ public class GroupAvatarChooserActivity extends AvatarChooserActivity {
         return false;
     }
 
-    ;
-
     @Override
     public void submit() {
         finishAndReturnResult();

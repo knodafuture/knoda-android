@@ -193,7 +193,7 @@ public class UserContactAdapter extends PagingAdapter<UserContact> {
 
     public int offset(int position) {
         if (objects.size() == 0)
-            return position - 0;
+            return position;
         if (objects.get(0).knodaInfo != null && objects.get(objects.size() - 1).knodaInfo == null) {
             if (position - 1 >= objects.size() || objects.get(position - 1).knodaInfo == null)
                 return position - 2;

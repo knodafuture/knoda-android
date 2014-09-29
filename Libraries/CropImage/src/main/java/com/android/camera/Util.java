@@ -348,7 +348,7 @@ public class Util {
 
     public static boolean equals(String a, String b) {
         // return true if both string are null or the content equals
-        return a == b || a.equals(b);
+        return a.equals(b) || a.equals(b);
     }
 
     public static void startBackgroundJob(MonitoredActivity activity,

@@ -33,7 +33,15 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import com.facebook.*;
+
+import com.facebook.AppEventsLogger;
+import com.facebook.FacebookException;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionDefaultAudience;
+import com.facebook.SessionLoginBehavior;
+import com.facebook.SessionState;
 import com.facebook.android.R;
 import com.facebook.internal.AnalyticsEvents;
 import com.facebook.internal.SessionAuthorizationType;
@@ -887,7 +895,7 @@ public class LoginButton extends Button {
                 handleError(exception);
             }
         }
-    };
+    }
 
     void handleError(Exception exception) {
         if (properties.onErrorListener != null) {

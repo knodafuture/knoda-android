@@ -14,7 +14,7 @@
         android:padding="10dp"
         android:text="Add a comment..."
         android:textColor="@color/darkGray"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/base_listview"
