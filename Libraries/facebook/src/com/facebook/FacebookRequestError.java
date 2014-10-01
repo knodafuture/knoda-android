@@ -96,6 +96,7 @@ public final class FacebookRequestError {
     private final Object batchRequestResult;
     private final HttpURLConnection connection;
     private final FacebookException exception;
+
     private FacebookRequestError(int requestStatusCode, int errorCode,
                                  int subErrorCode, String errorType, String errorMessage, String errorUserTitle, String errorUserMessage,
                                  boolean errorIsTransient, JSONObject requestResultBody, JSONObject requestResult, Object batchRequestResult,

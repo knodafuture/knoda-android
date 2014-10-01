@@ -676,6 +676,7 @@ class AuthorizationClient implements Serializable {
         final String errorCode;
         final AuthorizationRequest request;
         Map<String, String> loggingExtras;
+
         private Result(AuthorizationRequest request, Code code, AccessToken token, String errorMessage,
                        String errorCode) {
             this.request = request;

@@ -3,6 +3,7 @@ package views.settings;
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -14,9 +15,9 @@ import android.widget.Toast;
 import com.knoda.knoda.R;
 
 import views.core.MainActivity;
+import views.core.Spinner;
 
 public class SettingsDeveloperFragment extends PreferenceFragment {
-
     Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(Preference preference) {
@@ -31,6 +32,16 @@ public class SettingsDeveloperFragment extends PreferenceFragment {
                     clipboard.setPrimaryClip(clip);
                 }
                 Toast.makeText(getActivity(), "GCM ID copied to clipboard", Toast.LENGTH_SHORT).show();
+            } else if (preference.getKey().equals("spinner")) {
+                final Spinner spinner = ((MainActivity) getActivity()).spinner;
+                spinner.show();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spinner.hide();
+                    }
+                }, 5000);
             }
             return false;
         }
@@ -56,16 +67,23 @@ public class SettingsDeveloperFragment extends PreferenceFragment {
 
     public void buildPage() {
         preferenceScreen.removeAll();
-        //userPic = getActivity().getResources().getDrawable(R.drawable.ic_notification_avatar);
 
+        if (((MainActivity) getActivity()).gcmManager != null && ((MainActivity) getActivity()).gcmManager.getRegistrationId() != null) {
+            Context c = getActivity();
+            Preference p1 = new Preference(c);
+            p1.setTitle("GCM ID");
+            p1.setSummary(((MainActivity) getActivity()).gcmManager.getRegistrationId());
+            p1.setKey("gcm");
+            p1.setOnPreferenceClickListener(clickListener);
+            preferenceScreen.addPreference(p1);
+        }
         Context c = getActivity();
-        Preference p1 = new Preference(c);
-        p1.setTitle("GCM ID");
-        p1.setSummary(((MainActivity) getActivity()).gcmManager.getRegistrationId());
-        p1.setKey("gcm");
-        //p1.setIcon(userPic);
-        p1.setOnPreferenceClickListener(clickListener);
-        preferenceScreen.addPreference(p1);
+        Preference p2 = new Preference(c);
+        p2.setTitle("Spinner");
+        p2.setSummary("Show, then hide spinner");
+        p2.setKey("spinner");
+        p2.setOnPreferenceClickListener(clickListener);
+        preferenceScreen.addPreference(p2);
 
     }
 
@@ -73,6 +91,8 @@ public class SettingsDeveloperFragment extends PreferenceFragment {
     public void onResume() {
         super.onResume();
         buildPage();
+
+
     }
 
 

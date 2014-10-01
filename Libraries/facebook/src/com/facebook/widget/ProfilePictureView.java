@@ -101,6 +101,7 @@ public class ProfilePictureView extends FrameLayout {
     private ImageRequest lastRequest;
     private OnErrorListener onErrorListener;
     private Bitmap customizedDefaultProfilePicture = null;
+
     /**
      * Constructor
      *

@@ -86,6 +86,7 @@ public class LoginButton extends Button {
     private ToolTipMode nuxMode = ToolTipMode.DEFAULT;
     private long nuxDisplayTime = ToolTipPopup.DEFAULT_POPUP_DISPLAY_TIME;
     private ToolTipPopup nuxPopup;
+
     /**
      * Create the LoginButton.
      *

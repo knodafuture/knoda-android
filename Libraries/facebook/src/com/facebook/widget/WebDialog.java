@@ -368,8 +368,8 @@ public class WebDialog extends Dialog {
         private Session session;
         private String applicationId;
         private String action;
-        private OnCompleteListener listener;        private int theme = DEFAULT_THEME;
-        private Bundle parameters;
+        private OnCompleteListener listener;
+        private Bundle parameters;        private int theme = DEFAULT_THEME;
         protected BuilderBase(Context context, String action) {
             Session activeSession = Session.getActiveSession();
             if (activeSession != null && activeSession.isOpened()) {
@@ -478,6 +478,8 @@ public class WebDialog extends Dialog {
                 this.parameters = new Bundle();
             }
         }
+
+
 
 
     }

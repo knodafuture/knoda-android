@@ -110,13 +110,14 @@ public class MainActivity extends BaseActivity {
     public Uri mCapturedImageURI = null;
     public ArrayList<Follow> myfollowing = new ArrayList<Follow>();
     public Helper helper = new Helper();
+    public GcmManager gcmManager;
+    public HomeFragment homeFragment;
     @Inject
     AppOutdatedManager appOutdatedManager;
     @InjectView(R.id.navbar)
     LinearLayout navbar;
     @InjectView(R.id.fragmentContainer)
     FrameLayout container;
-    public GcmManager gcmManager;
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
@@ -146,7 +147,6 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout.LayoutParams containerFull;
     private RelativeLayout.LayoutParams containerPartial;
     private AlertDialog connectedDialog;
-    public HomeFragment homeFragment;
 
     @OnClick(R.id.nav_home)
     void onClickHome() {
@@ -528,7 +528,7 @@ public class MainActivity extends BaseActivity {
             return;
         }
         clearStack();
-        homeFragment=HomeFragment.newInstance();
+        homeFragment = HomeFragment.newInstance();
         pushFragment(homeFragment);
     }
 

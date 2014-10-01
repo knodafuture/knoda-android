@@ -1373,12 +1373,7 @@ public class AppEventsLogger {
                     }
                 }
             }
-        }        private static final Runnable appSessionInfoFlushRunnable = new Runnable() {
-            @Override
-            public void run() {
-                PersistedAppSessionInfo.saveAppSessionInformation(applicationContext);
-            }
-        };
+        }
 
         static void saveAppSessionInformation(Context context) {
             ObjectOutputStream oos = null;
@@ -1403,7 +1398,12 @@ public class AppEventsLogger {
                     }
                 }
             }
-        }
+        }        private static final Runnable appSessionInfoFlushRunnable = new Runnable() {
+            @Override
+            public void run() {
+                PersistedAppSessionInfo.saveAppSessionInformation(applicationContext);
+            }
+        };
 
         static void onResume(
                 Context context,
@@ -1457,6 +1457,8 @@ public class AppEventsLogger {
                         TimeUnit.SECONDS);
             }
         }
+
+
 
 
     }
