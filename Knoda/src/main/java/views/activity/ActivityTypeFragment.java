@@ -126,8 +126,6 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ((ActivityAdapter) adapter).activity = null;
-        ((ActivityAdapter) adapter).userPic = null;
     }
 
     @Override

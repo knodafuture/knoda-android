@@ -88,6 +88,7 @@ public class NetworkingManager {
     int timeout = 15;//timeout in seconds
     private HashMap<String, String> headers;
     private ImageLoader imageLoader;
+    private BitmapLruCache bitmapLruCache;
 
     @Inject
     public NetworkingManager(Context applicationContext) {
@@ -122,9 +123,25 @@ public class NetworkingManager {
     }
 
     public ImageLoader getImageLoader() {
-        if (imageLoader == null)
-            imageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache());
+        if (imageLoader == null) {
+            bitmapLruCache = new BitmapLruCache();
+            imageLoader = new ImageLoader(mRequestQueue, bitmapLruCache);
+        }
         return imageLoader;
+    }
+
+    public void clearCache() {
+        if (mRequestQueue != null)
+            mRequestQueue.getCache().clear();
+        if (bitmapLruCache != null)
+            bitmapLruCache.evictAll();
+    }
+
+    public void resetImageloader() {
+        clearCache();
+        imageLoader = null;
+        bitmapLruCache = null;
+        getImageLoader();
     }
 
     public void login(final LoginRequest payload, final NetworkCallback<LoginResponse> callback) {

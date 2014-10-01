@@ -303,7 +303,7 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
 
     @Override
     public void onSignUpClick() {
-        mainActivity.showLogin("Giddy Up!", "Now we're talking! Choose an option below to sign-up and start tracking your predictions.");
+        ((MainActivity) getActivity()).showLogin("Giddy Up!", "Now we're talking! Choose an option below to sign-up and start tracking your predictions.");
     }
 
 }

@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity {
     LinearLayout navbar;
     @InjectView(R.id.fragmentContainer)
     FrameLayout container;
-    private GcmManager gcmManager;
+    public GcmManager gcmManager;
     private boolean actionBarEnabled = true;
     private String title;
     private Group currentGroup;
@@ -405,7 +405,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }
-
         Prediction p = sharedPrefManager.getPredictionInProgress();
 
         if (p != null)

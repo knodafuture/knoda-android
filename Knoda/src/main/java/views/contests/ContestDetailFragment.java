@@ -305,6 +305,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        bus.unregister(predictionAdapter);
     }
 
     @Override

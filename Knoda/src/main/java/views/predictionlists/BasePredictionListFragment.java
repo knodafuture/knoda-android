@@ -47,6 +47,12 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        bus.unregister(adapter);
+    }
+
+    @Override
     public AbsListView.OnScrollListener getOnScrollListener() {
         return swipeListener.makeScrollListener();
     }

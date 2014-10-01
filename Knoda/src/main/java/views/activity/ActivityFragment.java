@@ -1,6 +1,7 @@
 package views.activity;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -97,11 +98,10 @@ public class ActivityFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_activity, container, false);
-        topview = view;
-        selectedFilter = (TextView) view.findViewById(R.id.activity_1);
-        selectedUnderline = view.findViewById(R.id.underline_1);
-        return view;
+        topview = inflater.inflate(R.layout.fragment_activity, container, false);
+        selectedFilter = (TextView) topview.findViewById(R.id.activity_1);
+        selectedUnderline = topview.findViewById(R.id.underline_1);
+        return topview;
     }
 
     @Override
@@ -159,7 +159,10 @@ public class ActivityFragment extends BaseFragment {
             }
         });
         ((LinearLayout) topview.findViewById(R.id.activity_container)).addView(mViewPager);
-        adapter = new ActivityPagerAdapter(getFragmentManager());
+        if (Build.VERSION.SDK_INT >= 17)
+            adapter = new ActivityPagerAdapter(getChildFragmentManager());
+        else
+            adapter = new ActivityPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(adapter);
         switch (sharedPrefManager.getSavedActivityFilter()) {
             case R.id.activity_1:
@@ -180,6 +183,12 @@ public class ActivityFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        networkingManager.resetImageloader();
     }
 
     @Override

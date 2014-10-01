@@ -72,7 +72,6 @@ dependencies {
     compile project(':Libraries:facebook')
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile files('lib/robotium-solo-5.2.1.jar')
-
 }
 
 task incrementVersionCode << {

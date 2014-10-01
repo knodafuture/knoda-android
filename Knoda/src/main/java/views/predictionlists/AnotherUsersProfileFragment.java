@@ -97,6 +97,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        bus.unregister(adapter);
     }
 
     @Override

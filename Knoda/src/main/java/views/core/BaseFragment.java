@@ -108,4 +108,13 @@ public class BaseFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            bus.unregister(this);
+        } catch (Exception ignored) {
+        }
+    }
+
 }
