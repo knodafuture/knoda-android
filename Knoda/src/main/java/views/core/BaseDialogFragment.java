@@ -135,17 +135,17 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     public void updateBackground() {
-        if (getActivity() == null || getActivity() instanceof MainActivity != true || ((MainActivity) getActivity()).blurredBackground == null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    updateBackground();
-                }
-            }, 10);
-        } else {
-            if (getActivity() != null && ((MainActivity) getActivity()).blurredBackground != null)
-                getView().setBackgroundDrawable(((MainActivity) getActivity()).blurredBackground);
-
-        }
+//        if (getActivity() == null || getActivity() instanceof MainActivity != true || ((MainActivity) getActivity()).blurredBackground == null) {
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    updateBackground();
+//                }
+//            }, 10);
+//        } else {
+//            if (getActivity() != null && ((MainActivity) getActivity()).blurredBackground != null)
+//                getView().setBackgroundDrawable(((MainActivity) getActivity()).blurredBackground);
+//
+//        }
     }
 }

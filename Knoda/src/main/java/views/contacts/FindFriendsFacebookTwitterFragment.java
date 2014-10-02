@@ -14,10 +14,10 @@ import views.core.BaseListFragment;
 
 public class FindFriendsFacebookTwitterFragment extends BaseListFragment implements PagingAdapter.PagingAdapterDatasource<UserContact> {
 
+    public UserContactAdapter adapter;
     FindFriendsActivity parent;
     String filter;
     boolean folllowedAll = false;
-    public UserContactAdapter adapter;
 
     public FindFriendsFacebookTwitterFragment() {
     }

@@ -78,8 +78,8 @@ public class FindFriendsListCell extends RelativeLayout {
                         followingSet.remove(userContact.contact_id);
                     }
                     parent.setSubmitBtnText();
-                    if(!isChecked)
-                        adapter.unchecking=true;
+                    if (!isChecked)
+                        adapter.unchecking = true;
                     adapter.notifyDataSetChanged();
                 }
             });

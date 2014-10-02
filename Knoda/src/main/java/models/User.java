@@ -6,9 +6,6 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
-/**
- * Created by nick on 1/21/14.
- */
 public class User extends BaseModel {
 
 
@@ -37,9 +34,6 @@ public class User extends BaseModel {
 
     @SerializedName("streak")
     public String streak;
-
-    @SerializedName("total_predictions")
-    public Integer totalPredictions;
 
     @SerializedName("avatar_image")
     public RemoteImage avatar;

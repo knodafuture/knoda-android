@@ -74,8 +74,8 @@ public class BaseListFragment extends BaseFragment {
             public void adapterFinishedLoadingPage(int page) {
                 pListView.onRefreshComplete();
                 onLoadFinished();
-                if (getActivity() != null && getActivity() instanceof MainActivity)
-                    ((MainActivity) getActivity()).invalidateBackgroundImage();
+//                if (getActivity() != null && getActivity() instanceof MainActivity)
+//                    ((MainActivity) getActivity()).invalidateBackgroundImage();
             }
         });
 

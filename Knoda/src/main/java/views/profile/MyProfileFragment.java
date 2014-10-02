@@ -27,26 +27,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import helpers.TypefaceSpan;
-import managers.FacebookManager;
-import managers.TwitterManager;
 import models.ServerError;
 import models.SettingsCategory;
 import models.User;
 import networking.NetworkListCallback;
 import pubsub.ProfilePagerScrollEvent;
-import unsorted.ErrorReporter;
 import views.avatar.UserAvatarChooserActivity;
 import views.core.BaseFragment;
 import views.core.MainActivity;
-import views.core.Spinner;
-import views.predictionlists.HomeActionBar;
 
 public class MyProfileFragment extends BaseFragment implements MyProfileActionBar.MyProfileActionBarCallbacks {
 
-    public FacebookManager facebookManager;
-    public TwitterManager twitterManager;
-    public ErrorReporter errorReporter;
-    public Spinner spinner;
     public boolean loaded = false;
     public LinearLayout.LayoutParams params;
     @InjectView(R.id.topview)
@@ -72,10 +63,8 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
     @InjectView(R.id.topContainer)
     LinearLayout topContainer;
     int topContainerHeight;
-    private ViewPager mViewPager;
-
     MyProfileActionBar actionbar;
-
+    private ViewPager mViewPager;
 
     public static MyProfileFragment newInstance() {
         MyProfileFragment fragment = new MyProfileFragment();
@@ -119,9 +108,8 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        mainActivity = ((MainActivity) getActivity());
         setHasOptionsMenu(true);
-        mainActivity.networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
+        networkingManager.getSettings(new NetworkListCallback<SettingsCategory>() {
             @Override
             public void completionHandler(ArrayList<SettingsCategory> object, ServerError error) {
                 if (error == null) {
@@ -132,11 +120,6 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
                 }
             }
         });
-        spinner = mainActivity.spinner;
-        facebookManager = new FacebookManager(userManager, networkingManager);
-        twitterManager = mainActivity.twitterManager;
-        errorReporter = mainActivity.errorReporter;
-
     }
 
     @Override
@@ -246,6 +229,7 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
         inflater.inflate(R.menu.profile, menu);
         MenuItem menuItem = menu.findItem(R.id.myprofile_actionbar);
         actionbar = (MyProfileActionBar) menuItem.getActionView();
+        actionbar.setMode(userManager.getUser());
         getActivity().getActionBar().setDisplayShowHomeEnabled(false);
         getActivity().getActionBar().setDisplayUseLogoEnabled(false);
         getActivity().getActionBar().setDisplayShowTitleEnabled(false);
@@ -309,11 +293,17 @@ public class MyProfileFragment extends BaseFragment implements MyProfileActionBa
 
     @Override
     public void onSettingsClick() {
-        ((MainActivity)getActivity()).onSettings();
+        ((MainActivity) getActivity()).onSettings();
     }
 
     @Override
     public void onVersusClick() {
         pushFragment(new HeadToHeadFragment());
     }
+
+    @Override
+    public void onSignUpClick() {
+        ((MainActivity) getActivity()).showLogin("Giddy Up!", "Now we're talking! Choose an option below to sign-up and start tracking your predictions.");
+    }
+
 }

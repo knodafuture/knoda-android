@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.knoda.knoda.R;
 
 import di.KnodaApplication;
 import managers.NetworkingManager;
@@ -50,11 +51,11 @@ public class GcmIntentService extends IntentService {
         if (!extras.isEmpty()) {
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+//                sendNotification("Send error: " + extras.toString());
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification("Deleted messages on server: " +
-                        extras.toString());
+//                sendNotification("Deleted messages on server: " +
+//                        extras.toString());
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 if (KnodaApplication.isActivityVisible()) {
@@ -91,6 +92,29 @@ public class GcmIntentService extends IntentService {
                                 .bigText(msg))
                         .setContentText(msg)
                         .setAutoCancel(true);
+
+
+        NotificationCompat.Action action = null;
+        if (type.equals("p")) {
+            //if won/loss, see stats in cardview
+
+            //if expired, allow for settling via remoteaction notification
+
+        } else if (type.equals("gic")) {
+            action =
+                    new NotificationCompat.Action.Builder(R.drawable.action_group_icon,
+                            "Accept invitation to join " + msg.split(" ")[0] + "?", contentIntent)
+                            .build();
+
+        } else if (type.equals("f")) {
+            action =
+                    new NotificationCompat.Action.Builder(R.drawable.ic_invite,
+                            "Follow " + msg.split(" ")[0] + "?", contentIntent)
+                            .build();
+        }
+
+        if (action != null)
+            mBuilder.extend(new NotificationCompat.WearableExtender().addAction(action));
 
 
         mBuilder.setContentIntent(contentIntent);

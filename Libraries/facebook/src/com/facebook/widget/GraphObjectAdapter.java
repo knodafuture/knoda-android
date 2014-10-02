@@ -22,19 +22,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.SectionIndexer;
+import android.widget.TextView;
+
 import com.facebook.FacebookException;
 import com.facebook.android.R;
 import com.facebook.internal.ImageDownloader;
 import com.facebook.internal.ImageRequest;
 import com.facebook.internal.ImageResponse;
 import com.facebook.model.GraphObject;
+
 import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.Collator;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements SectionIndexer {
     private static final int DISPLAY_SECTIONS_THRESHOLD = 1;
@@ -65,47 +81,27 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
     private ArrayList<String> prefetchedProfilePictureIds = new ArrayList<String>();
     private OnErrorListener onErrorListener;
 
-    public interface DataNeededListener {
-        public void onDataNeeded();
-    }
-
-    public interface OnErrorListener {
-        void onError(GraphObjectAdapter<?> adapter, FacebookException error);
-    }
-
-    public static class SectionAndItem<T extends GraphObject> {
-        public String sectionKey;
-        public T graphObject;
-
-        public enum Type {
-            GRAPH_OBJECT,
-            SECTION_HEADER,
-            ACTIVITY_CIRCLE
-        }
-
-        public SectionAndItem(String sectionKey, T graphObject) {
-            this.sectionKey = sectionKey;
-            this.graphObject = graphObject;
-        }
-
-        public Type getType() {
-            if (sectionKey == null) {
-                return Type.ACTIVITY_CIRCLE;
-            } else if (graphObject == null) {
-                return Type.SECTION_HEADER;
-            } else {
-                return Type.GRAPH_OBJECT;
-            }
-        }
-    }
-
-    interface Filter<T> {
-        boolean includeItem(T graphObject);
-    }
-
     public GraphObjectAdapter(Context context) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
+    }
+
+    private static int compareGraphObjects(GraphObject a, GraphObject b, Collection<String> sortFields,
+                                           Collator collator) {
+        for (String sortField : sortFields) {
+            String sa = (String) a.getProperty(sortField);
+            String sb = (String) b.getProperty(sortField);
+
+            if (sa != null && sb != null) {
+                int result = collator.compare(sa, sb);
+                if (result != 0) {
+                    return result;
+                }
+            } else if (!(sa == null && sb == null)) {
+                return (sa == null) ? -1 : 1;
+            }
+        }
+        return 0;
     }
 
     public List<String> getSortFields() {
@@ -437,7 +433,6 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
         ViewGroup.LayoutParams layoutParams = picture.getLayoutParams();
         return String.format(Locale.US, "picture.height(%d).width(%d)", layoutParams.height, layoutParams.width);
     }
-
 
     private boolean shouldShowActivityCircleCell() {
         // We show the "more data" activity circle cell if we have a listener to request more data,
@@ -800,32 +795,52 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
         }
     }
 
-    private static int compareGraphObjects(GraphObject a, GraphObject b, Collection<String> sortFields,
-            Collator collator) {
-        for (String sortField : sortFields) {
-            String sa = (String) a.getProperty(sortField);
-            String sb = (String) b.getProperty(sortField);
-
-            if (sa != null && sb != null) {
-                int result = collator.compare(sa, sb);
-                if (result != 0) {
-                    return result;
-                }
-            } else if (!(sa == null && sb == null)) {
-                return (sa == null) ? -1 : 1;
-            }
-        }
-        return 0;
+    public interface DataNeededListener {
+        public void onDataNeeded();
     }
 
+    public interface OnErrorListener {
+        void onError(GraphObjectAdapter<?> adapter, FacebookException error);
+    }
+
+    interface Filter<T> {
+        boolean includeItem(T graphObject);
+    }
 
     // Graph object type to navigate the JSON that sometimes comes back instead of a URL string
     private interface ItemPicture extends GraphObject {
         ItemPictureData getData();
     }
 
+
     // Graph object type to navigate the JSON that sometimes comes back instead of a URL string
     private interface ItemPictureData extends GraphObject {
         String getUrl();
+    }
+
+    public static class SectionAndItem<T extends GraphObject> {
+        public String sectionKey;
+        public T graphObject;
+
+        public SectionAndItem(String sectionKey, T graphObject) {
+            this.sectionKey = sectionKey;
+            this.graphObject = graphObject;
+        }
+
+        public Type getType() {
+            if (sectionKey == null) {
+                return Type.ACTIVITY_CIRCLE;
+            } else if (graphObject == null) {
+                return Type.SECTION_HEADER;
+            } else {
+                return Type.GRAPH_OBJECT;
+            }
+        }
+
+        public enum Type {
+            GRAPH_OBJECT,
+            SECTION_HEADER,
+            ACTIVITY_CIRCLE
+        }
     }
 }

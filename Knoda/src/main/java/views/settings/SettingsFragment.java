@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
@@ -141,46 +140,10 @@ public class SettingsFragment extends BaseFragment {
 
         if (((MainActivity) getActivity()).isDebuggable(getActivity().getApplicationContext())) {
             getView().findViewById(R.id.switchAPI).setVisibility(View.VISIBLE);
-            String s = "Switch API from Prod to Staging";
-            if (networkingManager.baseUrl.contains("captaincold")) {
-                s = "Switch API from Staging to Prod";
-            }
-            ((TextView) getView().findViewById(R.id.switchAPItext)).setText(s);
             getView().findViewById(R.id.switchAPI).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    final UserManager userManager = ((MainActivity) getActivity()).userManager;
-                    final AlertDialog alert = new AlertDialog.Builder(getActivity())
-                            .setPositiveButton("Yes", null)
-                            .setNegativeButton("No", null)
-                            .setTitle("Are you sure you want to switch the API?")
-                            .create();
-                    alert.show();
-                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            alert.dismiss();
-                            userManager.signout(new NetworkCallback<User>() {
-                                @Override
-                                public void completionHandler(User u, ServerError error) {
-                                    String url = "http://captaincold.knoda.com/api/";
-                                    if (networkingManager.baseUrl.contains("captaincold")) {
-                                        url = "http://api.knoda.com/api/";
-                                    }
-                                    sharedPrefManager.setAPIurl(url);
-                                    ((MainActivity) getActivity()).spinner.show();
-                                    alert.dismiss();
-                                    ((MainActivity) getActivity()).restart();
-                                }
-                            });
-                        }
-                    });
-                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            alert.dismiss();
-                        }
-                    });
+                    pushFragment(SettingsDeveloperFragment.newInstance());
                 }
             });
         }

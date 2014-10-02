@@ -3,6 +3,7 @@ import java.util.regex.Pattern
 buildscript {
     repositories {
         mavenCentral()
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.12.+'
@@ -10,12 +11,15 @@ buildscript {
 }
 apply plugin: 'android'
 
+
 configurations {
     provided
 }
 
 repositories {
-    maven { url 'https://github.com/knodafuture/knoda-volley/raw/mvn-repo' }
+    maven {
+        url 'https://github.com/knodafuture/knoda-volley/raw/mvn-repo'
+    }
     mavenCentral()
 }
 
@@ -35,9 +39,13 @@ android {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice'
         exclude 'META-INF/LICENSE'
+        exclude 'META-INF/license'
         exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
         exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
     }
 }
 
@@ -62,6 +70,8 @@ dependencies {
     compile files('lib/tapjoyconnectlibrary.jar')
     compile files('lib/AppRate_0.5.jar')
     compile project(':Libraries:facebook')
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile files('lib/robotium-solo-5.2.1.jar')
 }
 
 task incrementVersionCode << {

@@ -1,13 +1,10 @@
 package views.predictionlists;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -212,7 +209,6 @@ public class PredictionListCell extends RelativeLayout {
         return 0;
     }
 
-
     public ArrayList<int[]> getSpans(String body, char prefix) {
         ArrayList<int[]> spans = new ArrayList<int[]>();
 
@@ -228,6 +224,11 @@ public class PredictionListCell extends RelativeLayout {
         }
 
         return spans;
+    }
+
+    public int testVoteImage(Prediction p) {
+        prediction = p;
+        return getVoteImage();
     }
 
 }

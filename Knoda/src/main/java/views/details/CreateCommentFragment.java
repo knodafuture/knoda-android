@@ -148,7 +148,6 @@ public class CreateCommentFragment extends BaseFragment {
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
