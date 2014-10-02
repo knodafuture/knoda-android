@@ -14,7 +14,6 @@ import android.widget.EditText;
 
 import com.flurry.android.FlurryAgent;
 import com.knoda.knoda.R;
-import com.tapjoy.TapjoyConnect;
 
 import org.joda.time.DateTime;
 
@@ -23,7 +22,6 @@ import butterknife.OnClick;
 import helpers.EditTextDoneCallback;
 import helpers.EditTextHelper;
 import helpers.PasswordValidator;
-import helpers.TapjoyPPA;
 import models.ServerError;
 import models.SignUpRequest;
 import models.SocialAccount;
@@ -165,7 +163,6 @@ public class SignUpFragment extends BaseDialogFragment {
                 if (error != null)
                     errorReporter.showError(error);
                 else {
-                    TapjoyConnect.getTapjoyConnectInstance().actionComplete(TapjoyPPA.TJC_SIGN_UP_FOR_KNODA___ANDROID_PPE);
                     sharedPrefManager.setFirstLaunch(true);
                     FlurryAgent.logEvent("SIGNUP_EMAIL");
                     UserAvatarChooserFragment f = new UserAvatarChooserFragment();

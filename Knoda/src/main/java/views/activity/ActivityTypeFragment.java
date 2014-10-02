@@ -220,7 +220,8 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
 
     @Override
     public void onLoadFinished() {
-        ((MainActivity) getActivity()).setActivitiesDot(true, true);
+        if (getActivity() != null)
+            ((MainActivity) getActivity()).setActivitiesDot(true, true);
     }
 
 }

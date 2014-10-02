@@ -258,8 +258,9 @@ public class GroupSettingsFragment extends BaseFragment implements MembershipCel
                         @Override
                         public void completionHandler(ArrayList<Group> object, ServerError error) {
                             spinner.hide();
-                            popFragment();
-                            pushFragment(GroupPredictionListFragment.newInstance(userManager.getGroupById(membership.groupId)));
+                            //popFragment();
+                            GroupPredictionListFragment fragment = GroupPredictionListFragment.newInstance(userManager.getGroupById(membership.groupId));
+                            pushFragment(fragment);
                         }
                     });
                 }

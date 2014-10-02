@@ -93,7 +93,8 @@ public class GcmIntentService extends IntentService {
                         .setContentText(msg)
                         .setAutoCancel(true);
 
-
+        //For wearables notifications
+        /*
         NotificationCompat.Action action = null;
         if (type.equals("p")) {
             //if won/loss, see stats in cardview
@@ -115,6 +116,7 @@ public class GcmIntentService extends IntentService {
 
         if (action != null)
             mBuilder.extend(new NotificationCompat.WearableExtender().addAction(action));
+        */
 
 
         mBuilder.setContentIntent(contentIntent);

@@ -243,7 +243,6 @@ public class MainActivity extends BaseActivity {
         launch();
 
         helper.handlePushNotification(getIntent(), pushNotification);
-        //TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
     }
 
     @Override
@@ -345,12 +344,12 @@ public class MainActivity extends BaseActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        //transaction.addToBackStack(fragment.getClass().getSimpleName()).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
-        transaction.setBreadCrumbTitle(fragment.getClass().getSimpleName());
-        transaction.addToBackStack(fragment.getClass().getSimpleName());
-        transaction.replace(R.id.fragmentContainer, fragment);
-        transaction.commit();
-        fragmentManager.executePendingTransactions();
+        transaction.addToBackStack(fragment.getClass().getSimpleName()).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
+//        transaction.setBreadCrumbTitle(fragment.getClass().getSimpleName());
+//        transaction.addToBackStack(fragment.getClass().getSimpleName());
+//        transaction.replace(R.id.fragmentContainer, fragment);
+//        transaction.commit();
+        //fragmentManager.executePendingTransactions(); //causes crash
         //transaction.add(fragment, fragment.getClass().getSimpleName());
     }
 

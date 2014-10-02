@@ -141,7 +141,6 @@ public class PredictionListCell extends RelativeLayout {
 
         usernameTextView.setText(prediction.username);
         timeStampsTextView.setText(prediction.getMetdataString());
-
         commentCountTextView.setText(prediction.commentCount.toString());
 
         if (prediction.verifiedAccount)
@@ -156,11 +155,11 @@ public class PredictionListCell extends RelativeLayout {
 
         if (prediction.contest_name != null) {
             groupView.setVisibility(VISIBLE);
-            groupTextView.setText(prediction.contest_name);
+            groupTextView.setText(prediction.contest_name.toString());
             groupIcon.setImageResource(R.drawable.contest_prediction_badge);
         } else if (prediction.groupName != null) {
             groupView.setVisibility(VISIBLE);
-            groupTextView.setText(prediction.groupName);
+            groupTextView.setText(prediction.groupName.toString());
         } else {
             groupView.setVisibility(GONE);
         }

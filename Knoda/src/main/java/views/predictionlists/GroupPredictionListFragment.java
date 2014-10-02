@@ -45,10 +45,10 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
         final GroupPredictionAdapter a = ((GroupPredictionAdapter) adapter);
         a.setGroup(group);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+
         /*
         headerview = new GroupPredictionListHeader(getActivity(), this);
         headerview.group = group;
-        final GroupPredictionAdapter a = ((GroupPredictionAdapter)adapter);
         a.setLoadFinishedListener(new PagingAdapter.PagingAdapaterPageLoadFinishListener<Prediction>() {
             @Override
             public void adapterFinishedLoadingPage(int page) {
@@ -87,7 +87,6 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
     @Override
     public void getObjectsAfterObject(Prediction object, NetworkListCallback<Prediction> callback) {
         int lastId = object == null ? 0 : object.id;
-
         networkingManager.getPredictionsForGroupAfter(group.id, lastId, callback);
     }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.knoda.knoda"
-    android:versionCode="68"
-    android:versionName="1.11">
+    android:versionCode="69"
+    android:versionName="1.12">
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -100,36 +100,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name="views.other.TagActivity">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <!--<data android:mimeType="vnd.android.cursor.item/vnd.cc.tag" />-->
+            <!--<action android:name="android.intent.action.VIEW" />-->
+            <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--<data android:mimeType="vnd.android.cursor.item/vnd.cc.tag" />-->
             <!--</intent-filter>-->
         </activity>
-
-        <activity
-            android:name="com.tapjoy.TJCOffersWebView"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name="com.tapjoy.TapjoyFullScreenAdWebView"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name="com.tapjoy.TapjoyVideoView"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name="com.tapjoy.TJAdUnitView"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.tapjoy.mraid.view.ActionHandler"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name="com.tapjoy.mraid.view.Browser"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-
 
         <receiver
             android:name="gcm.GcmBroadcastReceiver"
