@@ -348,7 +348,7 @@ public class MainActivity extends BaseActivity {
         transaction.addToBackStack(fragment.getClass().getSimpleName());
         transaction.replace(R.id.fragmentContainer, fragment);
         transaction.commit();
-        fragmentManager.executePendingTransactions();
+        //fragmentManager.executePendingTransactions(); //causes crash
         //transaction.add(fragment, fragment.getClass().getSimpleName());
     }
 

@@ -49,7 +49,10 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        bus.unregister(adapter);
+        try {
+            bus.unregister(adapter);
+        } catch (Exception e) {
+        }
     }
 
     @Override

@@ -60,18 +60,14 @@ public class GroupFragment extends BaseFragment implements PagingAdapter.PagingA
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 BaseFragment fragment;
-                if (view instanceof CreateGroupHeaderView) {
-                    fragment = AddGroupFragment.newInstance();
+                if (view instanceof GroupListCell) {
+                    GroupListCell v = ((GroupListCell) view);
+                    fragment = GroupPredictionListFragment.newInstance(v.group);
                 } else {
-                    if (view instanceof GroupListCell) {
-                        GroupListCell v = ((GroupListCell) view);
-                        fragment = GroupPredictionListFragment.newInstance(v.group);
-                    } else {
-                        fragment = AddGroupFragment.newInstance();
-                    }
-                    pushFragment(fragment);
-
+                    fragment = AddGroupFragment.newInstance();
                 }
+                pushFragment(fragment);
+
 
             }
         });

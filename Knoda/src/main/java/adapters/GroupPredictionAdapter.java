@@ -61,12 +61,13 @@ public class GroupPredictionAdapter extends PredictionAdapter {
     }
 
     View getHeaderView(View convertView) {
-
         header = (GroupPredictionListHeader) AdapterHelper.getConvertViewSafely(convertView, GroupPredictionListHeader.class);
-
         if (header == null)
             header = new GroupPredictionListHeader(context, delegate);
-        ((TextView) header.findViewById(R.id.group_prediction_list_leader_textview)).setText(group.leader.username);
+        try {
+            ((TextView) header.findViewById(R.id.group_prediction_list_leader_textview)).setText(group.leader.username.toString());
+        } catch (Exception e) {
+        }
         return header;
     }
 }
