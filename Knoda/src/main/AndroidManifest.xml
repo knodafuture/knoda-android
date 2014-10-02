@@ -38,10 +38,6 @@
             android:name="unsorted.TagProvider"
             android:authorities="com.knoda.knoda.hashtag" />
 
-        <provider
-            android:name="unsorted.TagProvider"
-            android:authorities="com.knoda.knoda.mention" />
-
         <activity
             android:name="views.core.MainActivity"
             android:label="@string/app_name"
@@ -104,10 +100,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="views.other.TagActivity">
-        </activity>
-        <activity android:name="views.other.MentionActivity">
-        </activity>
+
         <receiver
             android:name="gcm.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">

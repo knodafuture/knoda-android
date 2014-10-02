@@ -491,14 +491,17 @@ public class MainActivity extends BaseActivity {
             });
         }
 
-        if(getIntent().getData()!=null){
+        if (getIntent().getData() != null) {
             Uri uri = getIntent().getData();
             //strip off hashtag from the URI
-            String tag = uri.toString().split("/")[3];
-            if(tag.indexOf("#")!=-1){
+            String content = uri.toString().split("/")[3];
+            if (content.indexOf("#") != -1) {
                 //Toast.makeText(this, tag, Toast.LENGTH_SHORT).show();
-                tag=tag.replace("#","");
-                pushFragment(SearchFragment.newInstance(tag));
+                content = content.replace("#", "");
+                pushFragment(SearchFragment.newInstance(content));
+            } else if (content.indexOf("@") != -1){
+                content = content.replace("@", "");
+                pushFragment(SearchFragment.newInstance(content));
             }
         }
     }

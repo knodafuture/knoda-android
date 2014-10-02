@@ -1,7 +1,11 @@
 package views.predictionlists;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -83,6 +87,8 @@ public class PredictionListCell extends RelativeLayout {
         container = (RelativeLayout) findViewById(R.id.prediction_cell_container);
         textContainer = (LinearLayout) findViewById(R.id.prediction_cell_username_textview_container);
         groupIcon = (ImageView) findViewById(R.id.prediction_cell_group_icon);
+
+
     }
 
     public void setAgree(boolean agree) {
@@ -134,6 +140,15 @@ public class PredictionListCell extends RelativeLayout {
         Pattern mentionPattern = Pattern.compile("@([A-Za-z0-9_-]+)");
         String mentionScheme = "content://com.knoda.knoda.hashtag/";
         Linkify.addLinks(bodyTextView, mentionPattern, mentionScheme);
+
+        stripUnderlines(bodyTextView);
+
+//        bodyView.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //set handler to open prediction detail here
+//            }
+//        });
 
         usernameTextView.setText(prediction.username);
         timeStampsTextView.setText(prediction.getMetdataString());
@@ -234,5 +249,42 @@ public class PredictionListCell extends RelativeLayout {
         prediction = p;
         return getVoteImage();
     }
+
+
+    private void stripUnderlines(TextView textView) {
+        Spannable s = new SpannableString(textView.getText());
+        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+        for (URLSpan span : spans) {
+            int start = s.getSpanStart(span);
+            int end = s.getSpanEnd(span);
+            s.removeSpan(span);
+            span = new URLSpanNoUnderline(span.getURL(), getContext());
+            s.setSpan(span, start, end, 0);
+        }
+        textView.setText(s);
+    }
+
+
+    private class URLSpanNoUnderline extends URLSpan {
+        Context context;
+
+        public URLSpanNoUnderline(String url, Context c) {
+            super(url);
+            context = c;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+            if (getURL().contains("@")) {
+                ds.setColor(Color.BLUE);
+                ds.setFakeBoldText(true);
+            } else if (getURL().contains(("#"))) {
+                ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
+            }
+        }
+    }
+
 
 }
