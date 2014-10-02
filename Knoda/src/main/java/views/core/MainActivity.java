@@ -343,11 +343,11 @@ public class MainActivity extends BaseActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        //transaction.addToBackStack(fragment.getClass().getSimpleName()).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
-        transaction.setBreadCrumbTitle(fragment.getClass().getSimpleName());
-        transaction.addToBackStack(fragment.getClass().getSimpleName());
-        transaction.replace(R.id.fragmentContainer, fragment);
-        transaction.commit();
+        transaction.addToBackStack(fragment.getClass().getSimpleName()).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
+//        transaction.setBreadCrumbTitle(fragment.getClass().getSimpleName());
+//        transaction.addToBackStack(fragment.getClass().getSimpleName());
+//        transaction.replace(R.id.fragmentContainer, fragment);
+//        transaction.commit();
         //fragmentManager.executePendingTransactions(); //causes crash
         //transaction.add(fragment, fragment.getClass().getSimpleName());
     }
