@@ -242,7 +242,6 @@ public class MainActivity extends BaseActivity {
         launch();
 
         helper.handlePushNotification(getIntent(), pushNotification);
-        //TapjoyConnect.requestTapjoyConnect(this, TapjoyPPA.TJC_APP_ID, TapjoyPPA.TJC_APP_SECRET);
     }
 
     @Override
