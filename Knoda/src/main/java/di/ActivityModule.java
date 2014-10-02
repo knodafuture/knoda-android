@@ -48,6 +48,7 @@ import views.login.LoginFragment;
 import views.login.SignUpFragment;
 import views.login.SignupConfirmFragment;
 import views.login.WelcomeFragment;
+import views.other.MentionActivity;
 import views.other.TagActivity;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
@@ -117,7 +118,8 @@ import views.settings.SettingsFragment;
                 FollowFeedFragment.class,
                 HeadToHeadFragment.class,
                 TagActivity.class,
-                SettingsDeveloperFragment.class
+                SettingsDeveloperFragment.class,
+                MentionActivity.class
         },
         addsTo = KnodaModule.class,
         library = true

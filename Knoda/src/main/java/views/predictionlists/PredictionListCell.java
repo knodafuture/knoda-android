@@ -135,10 +135,6 @@ public class PredictionListCell extends RelativeLayout {
         String mentionScheme = "content://com.knoda.knoda.hashtag/";
         Linkify.addLinks(bodyTextView, mentionPattern, mentionScheme);
 
-
-        //Linkify.addLinks();
-
-
         usernameTextView.setText(prediction.username);
         timeStampsTextView.setText(prediction.getMetdataString());
         commentCountTextView.setText(prediction.commentCount.toString());
