@@ -125,9 +125,18 @@ public class PredictionListCell extends RelativeLayout {
         SpannableString spannableString =
                 new SpannableString(prediction.body);
         bodyTextView.setText(spannableString);
-        Pattern tagMatcher = Pattern.compile("[#]+[A-Za-z0-9-_]+\\b");
-        String newActivityURL = "content://com.knoda.knoda.hashtag/";
-        Linkify.addLinks(bodyTextView, tagMatcher, newActivityURL);
+
+        Pattern hashtagPattern = Pattern.compile("[#]+[A-Za-z0-9-_]+\\b");
+        String hashtagScheme = "content://com.knoda.knoda.hashtag/";
+        Linkify.addLinks(bodyTextView, hashtagPattern, hashtagScheme);
+
+
+        Pattern mentionPattern = Pattern.compile("@([A-Za-z0-9_-]+)");
+        String mentionScheme = "content://com.knoda.knoda.hashtag/";
+        Linkify.addLinks(bodyTextView, mentionPattern, mentionScheme);
+
+
+        //Linkify.addLinks();
 
 
         usernameTextView.setText(prediction.username);

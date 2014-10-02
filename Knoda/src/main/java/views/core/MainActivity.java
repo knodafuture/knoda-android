@@ -93,6 +93,7 @@ import views.login.WelcomeFragment;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.HomeFragment;
 import views.profile.MyProfileFragment;
+import views.search.SearchFragment;
 import views.settings.SettingsFragment;
 import views.settings.SettingsProfileFragment;
 
