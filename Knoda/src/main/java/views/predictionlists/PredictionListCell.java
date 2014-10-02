@@ -195,4 +195,9 @@ public class PredictionListCell extends RelativeLayout {
         return 0;
     }
 
+    public int testVoteImage(Prediction p) {
+        prediction = p;
+        return getVoteImage();
+    }
+
 }

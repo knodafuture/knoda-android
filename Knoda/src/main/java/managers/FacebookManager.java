@@ -53,11 +53,11 @@ public class FacebookManager {
             session = new Session.Builder(activity).build();
         }
         if (SessionState.CREATED_TOKEN_LOADED.equals(session.getState()) || allowLoginUI) {
-                Session.setActiveSession(session);
-                session.openForRead(openRequest);
-                //session.onActivityResult(activity,openRequest)
-                return session;
-            }
+            Session.setActiveSession(session);
+            session.openForRead(openRequest);
+            //session.onActivityResult(activity,openRequest)
+            return session;
+        }
 
         return null;
     }

@@ -72,9 +72,9 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
     }
 
     @Override
-    public void onItemClicked(int position){
+    public void onItemClicked(int position) {
         position--;
-        if(position<=0){
+        if (position <= 0) {
             return;
         }
 
@@ -97,6 +97,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        bus.unregister(adapter);
     }
 
     @Override

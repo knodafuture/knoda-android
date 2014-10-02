@@ -70,6 +70,7 @@ public class SocialFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         bus.register(this);
         sharedPrefManager.setSavedActivityFilter(R.id.activity_1);
+
     }
 
     @Override
@@ -87,7 +88,7 @@ public class SocialFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("SocialFeed");
-        setTitle(" ");
+        setTitle("GROUPS");
     }
 
     @Override

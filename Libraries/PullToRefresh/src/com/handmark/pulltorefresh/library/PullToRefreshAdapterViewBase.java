@@ -238,8 +238,6 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
         mScrollEmptyView = doScroll;
     }
 
-    ;
-
     @Override
     protected void onPullToRefresh() {
         super.onPullToRefresh();

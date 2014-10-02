@@ -19,7 +19,12 @@ package com.facebook.widget;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.content.Loader;
-import com.facebook.*;
+
+import com.facebook.FacebookException;
+import com.facebook.FacebookRequestError;
+import com.facebook.Request;
+import com.facebook.RequestBatch;
+import com.facebook.Response;
 import com.facebook.internal.CacheableRequestBatch;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphObjectList;
@@ -34,10 +39,6 @@ class GraphObjectPagingLoader<T extends GraphObject> extends Loader<SimpleGraphO
     private SimpleGraphObjectCursor<T> cursor;
     private boolean appendResults = false;
     private boolean loading = false;
-
-    public interface OnErrorListener {
-        public void onError(FacebookException error, GraphObjectPagingLoader<?> loader);
-    }
 
     public GraphObjectPagingLoader(Context context, Class<T> graphObjectClass) {
         super(context);
@@ -222,6 +223,10 @@ class GraphObjectPagingLoader<T extends GraphObject> extends Loader<SimpleGraphO
         }
 
         deliverResult(cursorToModify);
+    }
+
+    public interface OnErrorListener {
+        public void onError(FacebookException error, GraphObjectPagingLoader<?> loader);
     }
 
     interface PagedResults extends GraphObject {

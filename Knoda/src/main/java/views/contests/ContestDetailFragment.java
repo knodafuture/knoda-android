@@ -205,8 +205,8 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
             public void adapterFinishedLoadingPage(int page) {
                 pListview.onRefreshComplete();
                 //onLoadFinished();
-                if (getActivity() != null)
-                    ((MainActivity) getActivity()).invalidateBackgroundImage();
+//                if (getActivity() != null)
+//                    ((MainActivity) getActivity()).invalidateBackgroundImage();
             }
         });
 
@@ -305,6 +305,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     public void onDestroyView() {
         super.onDestroyView();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        bus.unregister(predictionAdapter);
     }
 
     @Override

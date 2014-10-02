@@ -44,8 +44,8 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
     static ColorStateList bragcolor;
     static ColorStateList settlecolor;
     static ColorStateList groupcolor;
-    final MainActivity activity;
-    BitmapDrawable userPic;
+    public MainActivity activity;
+    public BitmapDrawable userPic;
     String filter = "all";
     int pixelToDP = 1;
     RelativeLayout.LayoutParams showButton;
@@ -86,9 +86,10 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         groupcolor = activity.getResources().getColorStateList(R.color.group_selector_text);
 
         if (((MainActivity) activity).userManager.getUser() != null)
-            imageLoader.get(((MainActivity) activity).userManager.getUser().avatar.thumb, new ImageLoader.ImageListener() {
+            imageLoader.get(((MainActivity) activity).userManager.getUser().avatar.small, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    userPic = null;
                     userPic = new BitmapDrawable(response.getBitmap());
                 }
 
@@ -222,7 +223,7 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
         else
             activityDot.setVisibility(View.INVISIBLE);
 
-        Follow f = activity.checkIfFollowingUser(Integer.parseInt(activityItem.target));
+        Follow f = activity.helper.checkIfFollowingUser(Integer.parseInt(activityItem.target), activity.myfollowing);
         if (f != null) {
             cell.followbutton.setBackgroundResource(R.drawable.follow_btn_active);
             cell.cover.setTag(true);

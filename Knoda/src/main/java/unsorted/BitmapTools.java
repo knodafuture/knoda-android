@@ -43,9 +43,9 @@ public class BitmapTools {
         canvas2.drawCircle((bitmap.getWidth() / 2), (bitmap.getHeight() / 2),
                 (bitmap.getWidth() / 2) - 2, paint2);
         paint2.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas2.drawBitmap(bitmap, 2,2, paint2);
+        canvas2.drawBitmap(bitmap, 2, 2, paint2);
 
-        return ThumbnailUtils.extractThumbnail(overlay(output,output2), width, height);
+        return ThumbnailUtils.extractThumbnail(overlay(output, output2), width, height);
     }
 
     private static Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {

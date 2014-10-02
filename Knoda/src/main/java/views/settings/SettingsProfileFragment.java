@@ -625,7 +625,7 @@ public class SettingsProfileFragment extends PreferenceFragment {
 
     public String formatPhoneNumber(String original) {
         if (original.length() >= 10) {
-            return  "(" + original.substring(0, 3) + ") " + original.substring(3, 6) + "-" + original.substring(6, 10);
+            return "(" + original.substring(0, 3) + ") " + original.substring(3, 6) + "-" + original.substring(6, 10);
         } else
             return original;
     }

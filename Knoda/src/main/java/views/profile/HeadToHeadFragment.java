@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -52,12 +51,12 @@ public class HeadToHeadFragment extends BaseListFragment implements PagingAdapte
         super.onViewCreated(view, savedInstanceState);
         FlurryAgent.logEvent("HeadToHeadFragment");
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("HEAD-TO-HEAD WINS");
+        setTitle("RIVALS");
 
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
@@ -70,25 +69,6 @@ public class HeadToHeadFragment extends BaseListFragment implements PagingAdapte
     @Override
     public void getObjectsAfterObject(User user, final NetworkListCallback<User> callback) {
         networkingManager.getRivals(userManager.getUser().id, callback);
-    }
-
-    @Override
-    public void onListViewCreated(ListView listView) {
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                final Contest contest = (Contest) adapter.getItem(i - 1);
-//                if (contest != null) {
-//                    if (view.getId() == R.id.contest_standings_container) {
-//                        ContestLeaderboardFragment fragment = ContestLeaderboardFragment.newInstance(contest);
-//                        ((MainActivity) getActivity()).pushFragment(fragment);
-//                    } else {
-//                        ContestDetailFragment fragment = ContestDetailFragment.newInstance(contest);
-//                        ((MainActivity) getActivity()).pushFragment(fragment);
-//                    }
-//                }
-//            }
-//        });
     }
 
     @Override

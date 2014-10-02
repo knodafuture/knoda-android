@@ -1,7 +1,6 @@
 package views.profile;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +10,15 @@ import android.widget.TextView;
 
 import com.knoda.knoda.R;
 
+import models.User;
+
 /**
  * Created by nick on 2/11/14.
  */
 public class MyProfileActionBar extends RelativeLayout {
 
     public TextView titleTV;
+    public TextView signupTV;
     private MyProfileActionBarCallbacks callbacks;
 
     public MyProfileActionBar(Context context) {
@@ -48,8 +50,21 @@ public class MyProfileActionBar extends RelativeLayout {
                 callbacks.onSettingsClick();
             }
         });
-       titleTV = ((TextView) findViewById(R.id.myprofile_actionbar_title));
+        titleTV = ((TextView) findViewById(R.id.myprofile_actionbar_title));
+        signupTV = ((TextView) findViewById(R.id.myprofile_actionbar_signup));
+    }
 
+    public void setMode(User user) {
+        if (user.guestMode) {
+            signupTV.setVisibility(VISIBLE);
+            findViewById(R.id.myprofile_actionbar_settings).setVisibility(GONE);
+            signupTV.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callbacks.onSignUpClick();
+                }
+            });
+        }
     }
 
     public void setCallbacks(MyProfileActionBarCallbacks callbacks) {
@@ -58,7 +73,10 @@ public class MyProfileActionBar extends RelativeLayout {
 
     public interface MyProfileActionBarCallbacks {
         void onSettingsClick();
+
         void onVersusClick();
+
+        void onSignUpClick();
     }
 
 

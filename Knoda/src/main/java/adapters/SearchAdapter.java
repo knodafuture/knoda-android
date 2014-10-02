@@ -150,7 +150,7 @@ public class SearchAdapter extends BaseAdapter {
     }
 
     public void loadForSearchTerm(final String searchTerm) {
-        if (this.searchTerm == searchTerm)
+        if (this.searchTerm.equals(searchTerm))
             return;
 
         this.searchTerm = searchTerm;

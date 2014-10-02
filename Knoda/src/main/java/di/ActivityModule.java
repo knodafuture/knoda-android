@@ -59,6 +59,7 @@ import views.profile.MyProfileFeedFragment;
 import views.profile.MyProfileFragment;
 import views.profile.PhotoFragment;
 import views.search.SearchFragment;
+import views.settings.SettingsDeveloperFragment;
 import views.settings.SettingsFragment;
 
 /**
@@ -113,7 +114,8 @@ import views.settings.SettingsFragment;
                 FindFriendsFacebookTwitterFragment.class,
                 FollowFragment.class,
                 FollowFeedFragment.class,
-                HeadToHeadFragment.class
+                HeadToHeadFragment.class,
+                SettingsDeveloperFragment.class
         },
         addsTo = KnodaModule.class,
         library = true

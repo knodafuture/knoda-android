@@ -168,6 +168,12 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
         return predictionAdapter;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        bus.unregister(predictionAdapter);
+    }
+
 
     @Override
     public void getObjectsAfterObject(Prediction object, final NetworkListCallback<Prediction> callback) {

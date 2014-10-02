@@ -1,11 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/knodaLightGreenTransparent">
+    android:background="@color/knodaLightGreenTransparent2">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    s
 
     <Button
         android:id="@+id/wall_close"
@@ -32,10 +33,10 @@
             android:layout_below="@id/welcome_logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
             android:text="Welcome!"
             android:textColor="@color/white"
-            android:textSize="20dp"
-            android:fontFamily="sans-serif-medium" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/wall_prompt"
@@ -172,12 +173,12 @@
             android:layout_below="@id/welcome_login_twitter"
             android:layout_marginLeft="20dp"
             android:background="@android:color/transparent"
+            android:fontFamily="sans-serif-medium"
             android:paddingBottom="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
             android:text="Sign Up Later"
-            android:textColor="@color/white"
-            android:fontFamily="sans-serif-medium"/>
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/wall_login"
@@ -249,11 +250,11 @@
                     android:layout_marginLeft="1dp"
                     android:background="@android:color/transparent"
                     android:clickable="true"
+                    android:fontFamily="sans-serif-medium"
                     android:paddingBottom="10dp"
                     android:paddingTop="5dp"
                     android:text="@string/privacypolicy"
-                    android:textColor="@color/white"
-                    android:fontFamily="sans-serif-medium"/>
+                    android:textColor="@color/white" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

@@ -69,8 +69,8 @@
             android:clickable="true" />
 
         <View
-            style="@style/followButtonCover"
             android:id="@+id/follow_user_button_cover"
+            style="@style/followButtonCover"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="11dp"
@@ -81,6 +81,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:background="#EFEFEF"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:background="#EFEFEF" />
 </views.profile.FollowUserListCell>

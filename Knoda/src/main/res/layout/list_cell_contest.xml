@@ -39,11 +39,11 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal"
             android:text="Contest Title"
             android:textColor="@color/knodaDarkGreen"
-            android:textSize="20sp"
-            android:fontFamily="sans-serif-medium" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/contest_description"
@@ -54,12 +54,12 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:maxLines="2"
             android:text="This will show the first 2 lines of Contest description, if longer it will truncate. Vote each week"
             android:textColor="@color/knodaDarkGreen"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif-medium" />
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
@@ -202,7 +202,7 @@
         <RelativeLayout
             android:id="@+id/contest_walkthrough_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></RelativeLayout>
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

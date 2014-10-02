@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -27,6 +26,8 @@ import views.core.MainActivity;
  */
 public class HeadToHeadListCell extends RelativeLayout {
 
+    final Animation animationSlideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slidein);
+    final Animation animationSlideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slideout);
     public TextView win1;
     public TextView wl1;
     public TextView wp1;
@@ -38,21 +39,14 @@ public class HeadToHeadListCell extends RelativeLayout {
     public TextView streak2;
     public ImageView avatar2;
     public TextView username;
-
+    public TextView yourname;
+    public boolean expanded = false;
     int onedp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getContext().getResources().getDisplayMetrics());
     int screenWidth = getContext().getResources().getDisplayMetrics().widthPixels;
-
-    final Animation animationSlideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slidein);
-    final Animation animationSlideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slideout);
-
-    final ResizeAnimation resizeUp = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 105 * onedp, screenWidth, 253 * onedp);
-    final ResizeAnimation resizeDown = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 253 * onedp, screenWidth, 105 * onedp);
-
-    final ResizeAnimation resizeUp2 = new ResizeAnimation(this, screenWidth, 105 * onedp, screenWidth, 253 * onedp);
-    final ResizeAnimation resizeDown2 = new ResizeAnimation(this, screenWidth, 253 * onedp, screenWidth, 105 * onedp);
-
-
-    public boolean expanded = false;
+    final ResizeAnimation resizeUp = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 95 * onedp, screenWidth, 243 * onedp);
+    final ResizeAnimation resizeDown = new ResizeAnimation(findViewById(R.id.head_to_head_stats_container), screenWidth, 243 * onedp, screenWidth, 95 * onedp);
+    final ResizeAnimation resizeUp2 = new ResizeAnimation(this, screenWidth, 95 * onedp, screenWidth, 243 * onedp);
+    final ResizeAnimation resizeDown2 = new ResizeAnimation(this, screenWidth, 243 * onedp, screenWidth, 95 * onedp);
 
     public HeadToHeadListCell(Context context) {
         super(context);
@@ -76,14 +70,13 @@ public class HeadToHeadListCell extends RelativeLayout {
         avatar2 = (ImageView) findViewById(R.id.head_to_head_avatar2);
 
         username = (TextView) findViewById(R.id.head_to_head_username);
+        yourname = (TextView) findViewById(R.id.head_to_head_your_name);
         findViewById(R.id.head_to_head_container).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeExpanded();
             }
         });
-        //findViewById(R.id.head_to_head_stats_container).setLayoutParams(new RelativeLayout.LayoutParams(screenWidth, 105 * onedp));
-        //this.setLayoutParams(new ViewGroup.LayoutParams(screenWidth, 105 * onedp));
 
     }
 
@@ -111,12 +104,13 @@ public class HeadToHeadListCell extends RelativeLayout {
         barwidth = 0;
         if (user2.rivalry.opponent_won + user2.rivalry.user_won != 0) {
             barwidth = maxBarPixels * user2.rivalry.user_won / (user2.rivalry.opponent_won + user2.rivalry.user_won);
-            if (user2.rivalry.opponent_won != 0)
+            if (user2.rivalry.user_won != 0)
                 barwidth += 25 * onedp;
         }
         findViewById(R.id.greenBar2).setLayoutParams(new RelativeLayout.LayoutParams(barwidth, barHeight));
 
         username.setText(user2.username);
+        yourname.setText(user1.username);
 
         String temp = null;
         Typeface medium = Typeface.create(temp, Typeface.BOLD);
@@ -158,7 +152,7 @@ public class HeadToHeadListCell extends RelativeLayout {
     }
 
     public void setStreak(String streak, TextView streakTV) {
-        if (streak == null || streak == "") {
+        if (streak == null || streak.equals("")) {
             streakTV.setText("W0");
         } else {
             streakTV.setText(streak);
