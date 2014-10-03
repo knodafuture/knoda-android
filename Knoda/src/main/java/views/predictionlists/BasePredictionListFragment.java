@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
@@ -43,7 +42,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
 
     @Override
     public PagingAdapter getAdapter() {
-        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, null);
+        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, null, (MainActivity) getActivity());
     }
 
     @Override
@@ -69,12 +68,12 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
         swipeListener = new PredictionSwipeListener(listView, this);
         listView.setOnTouchListener(swipeListener);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                onItemClicked(i);
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                onItemClicked(i);
+//            }
+//        });
     }
 
     public void onItemClicked(int position) {
@@ -109,7 +108,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                     errorReporter.showError(error);
                 else {
                     cell.prediction = object;
-                    cell.update();
+                    cell.update((MainActivity) getActivity());
                     bus.post(new PredictionChangeEvent(object));
                 }
             }
@@ -135,13 +134,21 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                     errorReporter.showError(error);
                 } else {
                     cell.prediction = object;
-                    cell.update();
+                    cell.update((MainActivity) getActivity());
                     bus.post(new PredictionChangeEvent(object));
                 }
             }
         });
         guestContest(cell.prediction);
         FlurryAgent.logEvent("Swiped_Disagree");
+    }
+
+    @Override
+    public void onPredictionClick(PredictionListCell cell) {
+        if (cell.prediction != null) {
+            DetailsFragment fragment = DetailsFragment.newInstance(cell.prediction);
+            pushFragment(fragment);
+        }
     }
 
     private void guestContest(Prediction prediction) {

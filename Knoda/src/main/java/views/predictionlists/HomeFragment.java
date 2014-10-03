@@ -54,7 +54,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
 
     @Override
     public PagingAdapter getAdapter() {
-        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, this);
+        return new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, this, (MainActivity) getActivity());
     }
 
     @Subscribe

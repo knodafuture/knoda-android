@@ -32,6 +32,7 @@ import networking.NetworkListCallback;
 import pubsub.ProfileNavEvent;
 import pubsub.ProfilePagerScrollEvent;
 import views.core.BaseListFragment;
+import views.core.MainActivity;
 import views.details.DetailsFragment;
 import views.predictionlists.PredictionListCell;
 
@@ -157,7 +158,7 @@ public class MyProfileFeedFragment extends BaseListFragment implements PagingAda
 
     @Override
     public PagingAdapter getAdapter() {
-        predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true);
+        predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true, (MainActivity) getActivity());
         String cachedObject = sharedPrefManager.getObjectString(screenNumber + "profile");
         if (cachedObject != null) {
             Gson gson = GsonF.actory();

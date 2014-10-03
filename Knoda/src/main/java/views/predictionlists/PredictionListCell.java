@@ -9,6 +9,7 @@ import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,11 +18,11 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import models.Prediction;
+import views.core.MainActivity;
+import views.details.DetailsFragment;
 
 /**
  * Created by nick on 1/27/14.
@@ -118,15 +119,15 @@ public class PredictionListCell extends RelativeLayout {
         }
     }
 
-    public void setPrediction(Prediction prediction) {
+    public void setPrediction(Prediction prediction, MainActivity mainActivity) {
         this.prediction = prediction;
         if (prediction == null)
             return;
-        update();
+        update(mainActivity);
     }
 
 
-    public void update() {
+    public void update(final MainActivity mainActivity) {
 
         SpannableString spannableString =
                 new SpannableString(prediction.body);
@@ -147,6 +148,7 @@ public class PredictionListCell extends RelativeLayout {
 //            @Override
 //            public void onClick(View v) {
 //                //set handler to open prediction detail here
+//                mainActivity.pushFragment(DetailsFragment.newInstance(prediction));
 //            }
 //        });
 
@@ -228,28 +230,10 @@ public class PredictionListCell extends RelativeLayout {
         return 0;
     }
 
-    public ArrayList<int[]> getSpans(String body, char prefix) {
-        ArrayList<int[]> spans = new ArrayList<int[]>();
-
-        Pattern pattern = Pattern.compile(prefix + "\\w+");
-        Matcher matcher = pattern.matcher(body);
-
-        // Check all occurrences
-        while (matcher.find()) {
-            int[] currentSpan = new int[2];
-            currentSpan[0] = matcher.start();
-            currentSpan[1] = matcher.end();
-            spans.add(currentSpan);
-        }
-
-        return spans;
-    }
-
     public int testVoteImage(Prediction p) {
         prediction = p;
         return getVoteImage();
     }
-
 
     private void stripUnderlines(TextView textView) {
         Spannable s = new SpannableString(textView.getText());

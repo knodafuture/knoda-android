@@ -96,7 +96,7 @@ public class SearchAdapter extends BaseAdapter {
 
     private View getPredictionView(Prediction prediction) {
         PredictionListCell view = new PredictionListCell(context);
-        view.setPrediction(prediction);
+        view.setPrediction(prediction, mainActivity);
 
         if (prediction.userAvatar != null)
             view.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);

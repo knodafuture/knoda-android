@@ -3,6 +3,7 @@ package listeners;
 import android.animation.Animator;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -37,6 +38,7 @@ public class PredictionSwipeListener implements View.OnTouchListener {
     private float downX;
     private boolean swiping;
     private PredictionListCell downView;
+    private GestureDetector gestureDetector;
 
     private PredictionCellCallbacks callbacks;
 
@@ -47,6 +49,7 @@ public class PredictionSwipeListener implements View.OnTouchListener {
         animationTime = listView.getContext().getResources().getInteger(android.R.integer.config_shortAnimTime);
         this.listView = listView;
         this.callbacks = callbacks;
+        gestureDetector = new GestureDetector(listView.getContext(), new SingleTapConfirm());
     }
 
     public void setEnabled(boolean enabled) {
@@ -71,137 +74,161 @@ public class PredictionSwipeListener implements View.OnTouchListener {
         };
     }
 
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (viewWidth < 2)
             viewWidth = listView.getWidth();
 
-        switch (motionEvent.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN: {
-                if (paused)
+        //if single click, handle click, otherwise its a swipe
+        if (gestureDetector.onTouchEvent(motionEvent)) {
+
+            Rect rect = new Rect();
+            int childCount = listView.getChildCount();
+            int[] coords = new int[2];
+            listView.getLocationOnScreen(coords);
+            int x = (int) motionEvent.getRawX() - coords[0];
+            int y = (int) motionEvent.getRawY() - coords[1];
+            View child;
+            for (int i = 0; i < childCount; i++) {
+                child = listView.getChildAt(i);
+                child.getHitRect(rect);
+                if (rect.contains(x, y)) {
+                    if (child instanceof PredictionListCell)
+                        downView = (PredictionListCell) child;
+                    else
+                        downView = null;
                     break;
-
-                Rect rect = new Rect();
-                int childCount = listView.getChildCount();
-                int[] coords = new int[2];
-                listView.getLocationOnScreen(coords);
-                int x = (int) motionEvent.getRawX() - coords[0];
-                int y = (int) motionEvent.getRawY() - coords[1];
-
-                View child;
-
-                for (int i = 0; i < childCount; i++) {
-                    child = listView.getChildAt(i);
-                    child.getHitRect(rect);
-                    if (rect.contains(x, y)) {
-                        if (child instanceof PredictionListCell)
-                            downView = (PredictionListCell) child;
-                        else
-                            downView = null;
-                        break;
-                    }
                 }
-
-                if (downView != null) {
-                    downX = motionEvent.getRawX();
-                    threshold = (double) downView.getWidth() * thresholdPercentange;
-                }
-
-                view.onTouchEvent(motionEvent);
-                return true;
             }
+            if (downView != null)
+                callbacks.onPredictionClick(downView);
+            return true;
+        } else {
+            //this is a non-click
+            switch (motionEvent.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN: {
+                    if (paused)
+                        break;
 
-            case MotionEvent.ACTION_UP: {
-                if (downView == null)
-                    break;
-
-                if (swiping) {
-
-                    float deltaX = motionEvent.getRawX() - downX;
-
-                    if (Math.abs(deltaX) > threshold) {
-                        if (deltaX < 0)
-                            callbacks.onPredictionDisagreed(downView);
-                        else
-                            callbacks.onPredictionAgreed(downView);
-                    }
-                } else {
+                    Rect rect = new Rect();
+                    int childCount = listView.getChildCount();
                     int[] coords = new int[2];
-                    downView.usernameView.getLocationOnScreen(coords);
+                    listView.getLocationOnScreen(coords);
                     int x = (int) motionEvent.getRawX() - coords[0];
                     int y = (int) motionEvent.getRawY() - coords[1];
-                }
 
+                    View child;
 
-                reset();
-                break;
-            }
-
-            case MotionEvent.ACTION_CANCEL: {
-                if (downView == null)
-                    break;
-
-                //move view back to position
-
-                reset();
-                break;
-            }
-
-            case MotionEvent.ACTION_MOVE: {
-                if (downView == null || paused)
-                    break;
-
-                if ((downView.prediction.challenge != null && downView.prediction.challenge.isOwn) || downView.prediction.expired)
-                    break;
-
-                float deltaX = motionEvent.getRawX() - downX;
-
-                if (Math.abs(deltaX) > slop) {
-                    swiping = true;
-                    listView.requestDisallowInterceptTouchEvent(true);
-                    // Cancel ListView's touch (un-highlighting the item)
-                    MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
-
-                    cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
-                            (motionEvent.getActionIndex()
-                                    << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
-                    listView.onTouchEvent(cancelEvent);
-                    cancelEvent.recycle();
-                }
-
-                if (swiping) {
-                    if (Math.abs(deltaX) < downView.getWidth() * 0.0125)
-                        deltaX = 0;
-
-                    double percentage = Math.min(Math.abs(deltaX) / threshold, 1.0);
-                    if (Math.abs(deltaX) < downView.getWidth() / 2)
-                        downView.bodyView.setTranslationX(deltaX);
-                    if (deltaX > 0) {
-                        downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullGreenR, fullGreenG, fullGreenB));
-                        int leftMargin = ((RelativeLayout.LayoutParams) downView.agreeView.getLayoutParams()).leftMargin;
-
-                        if (downView.bodyView.getTranslationX() > leftMargin * 2 + downView.agreeView.getWidth())
-                            downView.agreeView.setTranslationX(downView.bodyView.getTranslationX() - leftMargin * 2 - downView.agreeView.getWidth());
-
-                    } else {
-                        downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullRedR, fullRedG, fullRedB));
-
-                        int rightMargin = ((RelativeLayout.LayoutParams) downView.disagreeView.getLayoutParams()).rightMargin;
-
-                        if (Math.abs(downView.bodyView.getTranslationX()) > rightMargin * 2 + downView.disagreeView.getWidth()) {
-                            downView.disagreeView.setX(downView.bodyView.getTranslationX() + downView.bodyView.getWidth() + rightMargin);
+                    for (int i = 0; i < childCount; i++) {
+                        child = listView.getChildAt(i);
+                        child.getHitRect(rect);
+                        if (rect.contains(x, y)) {
+                            if (child instanceof PredictionListCell)
+                                downView = (PredictionListCell) child;
+                            else
+                                downView = null;
+                            break;
                         }
-
-
                     }
 
+                    if (downView != null) {
+                        downX = motionEvent.getRawX();
+                        threshold = (double) downView.getWidth() * thresholdPercentange;
+                    }
 
+                    view.onTouchEvent(motionEvent);
                     return true;
                 }
 
-                break;
+                case MotionEvent.ACTION_UP: {
+                    if (downView == null)
+                        break;
+
+                    if (swiping) {
+
+                        float deltaX = motionEvent.getRawX() - downX;
+
+                        if (Math.abs(deltaX) > threshold) {
+                            if (deltaX < 0)
+                                callbacks.onPredictionDisagreed(downView);
+                            else
+                                callbacks.onPredictionAgreed(downView);
+                        }
+                    } else {
+                        int[] coords = new int[2];
+                        downView.usernameView.getLocationOnScreen(coords);
+                        int x = (int) motionEvent.getRawX() - coords[0];
+                        int y = (int) motionEvent.getRawY() - coords[1];
+                    }
+
+
+                    reset();
+                    break;
+                }
+
+                case MotionEvent.ACTION_CANCEL: {
+                    if (downView == null)
+                        break;
+
+                    //move view back to position
+
+                    reset();
+                    break;
+                }
+
+                case MotionEvent.ACTION_MOVE: {
+                    if (downView == null || paused)
+                        break;
+
+                    if ((downView.prediction.challenge != null && downView.prediction.challenge.isOwn) || downView.prediction.expired)
+                        break;
+
+                    float deltaX = motionEvent.getRawX() - downX;
+
+                    if (Math.abs(deltaX) > slop) {
+                        swiping = true;
+                        listView.requestDisallowInterceptTouchEvent(true);
+                        // Cancel ListView's touch (un-highlighting the item)
+                        MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
+
+                        cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
+                                (motionEvent.getActionIndex()
+                                        << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
+                        listView.onTouchEvent(cancelEvent);
+                        cancelEvent.recycle();
+                    }
+
+                    if (swiping) {
+                        if (Math.abs(deltaX) < downView.getWidth() * 0.0125)
+                            deltaX = 0;
+
+                        double percentage = Math.min(Math.abs(deltaX) / threshold, 1.0);
+                        if (Math.abs(deltaX) < downView.getWidth() / 2)
+                            downView.bodyView.setTranslationX(deltaX);
+                        if (deltaX > 0) {
+                            downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullGreenR, fullGreenG, fullGreenB));
+                            int leftMargin = ((RelativeLayout.LayoutParams) downView.agreeView.getLayoutParams()).leftMargin;
+
+                            if (downView.bodyView.getTranslationX() > leftMargin * 2 + downView.agreeView.getWidth())
+                                downView.agreeView.setTranslationX(downView.bodyView.getTranslationX() - leftMargin * 2 - downView.agreeView.getWidth());
+
+                        } else {
+                            downView.container.setBackgroundColor(rgbColorFromPercentageOfMax(percentage, fullRedR, fullRedG, fullRedB));
+
+                            int rightMargin = ((RelativeLayout.LayoutParams) downView.disagreeView.getLayoutParams()).rightMargin;
+
+                            if (Math.abs(downView.bodyView.getTranslationX()) > rightMargin * 2 + downView.disagreeView.getWidth()) {
+                                downView.disagreeView.setX(downView.bodyView.getTranslationX() + downView.bodyView.getWidth() + rightMargin);
+                            }
+                        }
+                        return true;
+                    }
+                    break;
+                }
             }
         }
+
         return false;
     }
 
@@ -258,6 +285,16 @@ public class PredictionSwipeListener implements View.OnTouchListener {
         void onPredictionAgreed(PredictionListCell cell);
 
         void onPredictionDisagreed(PredictionListCell cell);
+
+        void onPredictionClick(PredictionListCell cell);
+    }
+
+    private class SingleTapConfirm extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent event) {
+            return true;
+        }
     }
 
 

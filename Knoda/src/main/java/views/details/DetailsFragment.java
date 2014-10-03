@@ -128,7 +128,7 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
         commentAdapter = new CommentAdapter(getActivity(), this, this, networkingManager.getImageLoader(), bus);
         tallyAdapter = new TallyAdapter(getActivity(), this, this);
 
-        headerview = new DetailsHeaderView(getActivity(), this);
+        headerview = new DetailsHeaderView(getActivity(), this, (MainActivity) getActivity());
         headerview.setPrediction(prediction);
 
         if (prediction.userAvatar != null)

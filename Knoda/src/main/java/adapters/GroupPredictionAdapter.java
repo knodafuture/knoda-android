@@ -14,6 +14,7 @@ import helpers.AdapterHelper;
 import models.Group;
 import models.Prediction;
 import pubsub.NewPredictionEvent;
+import views.core.MainActivity;
 import views.group.GroupPredictionListHeader;
 
 public class GroupPredictionAdapter extends PredictionAdapter {
@@ -23,8 +24,8 @@ public class GroupPredictionAdapter extends PredictionAdapter {
     public GroupPredictionListHeader header;
     public GroupPredictionListHeader.GroupPredictionListHeaderDelegate delegate;
 
-    public GroupPredictionAdapter(Context context, PagingAdapter.PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus) {
-        super(context, datasource, imageLoader, bus, null);
+    public GroupPredictionAdapter(Context context, PagingAdapter.PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus, MainActivity mainActivity) {
+        super(context, datasource, imageLoader, bus, null, mainActivity);
         bus.register(this);
     }
 

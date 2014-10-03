@@ -14,6 +14,7 @@ import com.knoda.knoda.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import models.Prediction;
+import views.core.MainActivity;
 import views.predictionlists.PredictionListCell;
 
 /**
@@ -34,6 +35,7 @@ public class DetailsHeaderView extends RelativeLayout {
     public TextView pointsDetailsTextView;
     public Prediction prediction;
     private DetailsHeaderViewDelegate delegate;
+    MainActivity mainActivity;
 
     public DetailsHeaderView(Context context) {
         super(context);
@@ -45,10 +47,11 @@ public class DetailsHeaderView extends RelativeLayout {
         initView(context);
     }
 
-    public DetailsHeaderView(Context context, DetailsHeaderViewDelegate delegate) {
+    public DetailsHeaderView(Context context, DetailsHeaderViewDelegate delegate, MainActivity mainActivity) {
         super(context);
         initView(context);
         this.delegate = delegate;
+        this.mainActivity = mainActivity;
     }
 
     @OnClick(R.id.details_cell_agree_button)
@@ -103,7 +106,7 @@ public class DetailsHeaderView extends RelativeLayout {
 
     public void setPrediction(Prediction prediction) {
         this.prediction = prediction;
-        this.predictionCell.setPrediction(prediction);
+        this.predictionCell.setPrediction(prediction, mainActivity);
         update();
     }
 

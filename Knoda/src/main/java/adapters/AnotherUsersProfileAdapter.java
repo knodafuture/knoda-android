@@ -32,7 +32,7 @@ public class AnotherUsersProfileAdapter extends PredictionAdapter {
     private ViewPager mViewPager;
 
     public AnotherUsersProfileAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, MainActivity mainActivity) {
-        super(context, datasource, imageLoader, mainActivity.bus, true);
+        super(context, datasource, imageLoader, mainActivity.bus, true, mainActivity);
         this.mainActivity = mainActivity;
     }
 

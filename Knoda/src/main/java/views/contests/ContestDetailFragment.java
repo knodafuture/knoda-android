@@ -197,7 +197,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
     }
 
     public PagingAdapter getAdapter() {
-        predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true);
+        predictionAdapter = new PredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, true, (MainActivity) getActivity());
         predictionAdapter.showContestTour = true;
 
         predictionAdapter.setLoadFinishedListener(new PagingAdapter.PagingAdapaterPageLoadFinishListener() {
@@ -330,7 +330,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
                     errorReporter.showError(error);
                 else {
                     cell.prediction = object;
-                    cell.update();
+                    cell.update((MainActivity)getActivity());
                     bus.post(new PredictionChangeEvent(object));
                 }
             }
@@ -349,12 +349,20 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
                     errorReporter.showError(error);
                 } else {
                     cell.prediction = object;
-                    cell.update();
+                    cell.update((MainActivity)getActivity());
                     bus.post(new PredictionChangeEvent(object));
                 }
             }
         });
         FlurryAgent.logEvent("Swiped_Disagree");
+    }
+
+    @Override
+    public void onPredictionClick(PredictionListCell cell) {
+        if (cell.prediction != null) {
+            DetailsFragment fragment = DetailsFragment.newInstance(cell.prediction);
+            pushFragment(fragment);
+        }
     }
 
     @Override

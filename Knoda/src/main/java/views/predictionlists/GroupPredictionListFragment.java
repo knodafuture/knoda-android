@@ -15,6 +15,7 @@ import models.Group;
 import models.Prediction;
 import networking.NetworkListCallback;
 import pubsub.ChangeGroupEvent;
+import views.core.MainActivity;
 import views.group.GroupLeaderboardsFragment;
 import views.group.GroupPredictionListHeader;
 import views.group.GroupSettingsFragment;
@@ -79,7 +80,7 @@ public class GroupPredictionListFragment extends BasePredictionListFragment impl
 
     @Override
     public PagingAdapter getAdapter() {
-        GroupPredictionAdapter a = new GroupPredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus);
+        GroupPredictionAdapter a = new GroupPredictionAdapter(getActivity(), this, networkingManager.getImageLoader(), bus, (MainActivity) getActivity());
         a.delegate = this;
         return a;
     }

@@ -27,21 +27,24 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
     public boolean showContestTour = false;
     boolean disableTour = false;
     HomeFragment homeFragment = null;
+    private MainActivity mainActivity;
 
-    public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus, HomeFragment fragment) {
+    public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus, HomeFragment fragment, MainActivity mainActivity) {
         super(context, datasource, imageLoader);
         this.bus = bus;
         this.sharedPrefManager = new SharedPrefManager(context);
         this.bus.register(this);
         this.homeFragment = fragment;
+        this.mainActivity = mainActivity;
     }
 
-    public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus, boolean disableTour) {
+    public PredictionAdapter(Context context, PagingAdapterDatasource<Prediction> datasource, ImageLoader imageLoader, Bus bus, boolean disableTour, MainActivity mainActivity) {
         super(context, datasource, imageLoader);
         this.bus = bus;
         this.sharedPrefManager = new SharedPrefManager(context);
         this.bus.register(this);
         this.disableTour = disableTour;
+        this.mainActivity = mainActivity;
     }
 
     @Subscribe
@@ -65,7 +68,7 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
             listItem = new PredictionListCell(context);
 
         Prediction prediction = getItem(position);
-        listItem.setPrediction(prediction);
+        listItem.setPrediction(prediction, mainActivity);
         listItem.setTag(position);
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);
