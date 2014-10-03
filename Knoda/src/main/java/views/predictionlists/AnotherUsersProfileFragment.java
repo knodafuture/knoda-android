@@ -34,10 +34,18 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
         return fragment;
     }
 
+    public static AnotherUsersProfileFragment newInstance(User user) {
+        AnotherUsersProfileFragment fragment = new AnotherUsersProfileFragment();
+        fragment.user = user;
+        fragment.userId = user.id;
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userId = getArguments().getInt("USER_ID");
+        if (getArguments() != null)
+            userId = getArguments().getInt("USER_ID");
         setHasOptionsMenu(true);
     }
 
@@ -46,29 +54,35 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
         super.onViewCreated(view, savedInstanceState);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("");
-
-        networkingManager.getUser(userId, new NetworkCallback<User>() {
-            @Override
-            public void completionHandler(User object, ServerError error) {
-                if (error != null || object == null)
-                    errorReporter.showError(error);
-                else {
-                    user = object;
-
-                    ((AnotherUsersProfileAdapter) adapter).setUser(object);
-                    if (menu != null && menu.findItem(R.id.action_follow) != null && menu.findItem(R.id.action_follow).getActionView() != null) {
-                        if (user.following_id != null)
-                            menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
-                        else
-                            menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);
-
-                        setTitle(object.username.toUpperCase());
-                    }
-
-                }
-            }
-        });
         FlurryAgent.logEvent("Another_User_Profile_Screen");
+
+        if (user == null) {
+            networkingManager.getUser(userId, new NetworkCallback<User>() {
+                @Override
+                public void completionHandler(User object, ServerError error) {
+                    if (error != null || object == null)
+                        errorReporter.showError(error);
+                    else {
+                        user = object;
+
+                        ((AnotherUsersProfileAdapter) adapter).setUser(object);
+                        if (menu != null && menu.findItem(R.id.action_follow) != null && menu.findItem(R.id.action_follow).getActionView() != null) {
+                            if (user.following_id != null)
+                                menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
+                            else
+                                menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);
+
+                            setTitle(object.username.toUpperCase());
+                        }
+
+                    }
+                }
+            });
+        } else {
+            ((AnotherUsersProfileAdapter) adapter).setUser(user);
+            setTitle(user.username.toUpperCase());
+        }
+
     }
 
     @Override
@@ -107,6 +121,13 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
         followButton = (FollowButton) menu.findItem(R.id.action_follow).getActionView();
         followButton.setCallbacks(this);
         this.menu = menu;
+
+        if (menu != null && menu.findItem(R.id.action_follow) != null && menu.findItem(R.id.action_follow).getActionView() != null) {
+            if (user.following_id != null)
+                menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
+            else
+                menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);
+        }
     }
 
     @Override

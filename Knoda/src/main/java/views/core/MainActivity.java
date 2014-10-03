@@ -499,9 +499,24 @@ public class MainActivity extends BaseActivity {
                 //Toast.makeText(this, tag, Toast.LENGTH_SHORT).show();
                 content = content.replace("#", "");
                 pushFragment(SearchFragment.newInstance(content));
-            } else if (content.indexOf("@") != -1){
-                content = content.replace("@", "");
-                pushFragment(SearchFragment.newInstance(content));
+            } else if (content.indexOf("@") != -1) {
+                final String content2 = content.replace("@", "");
+                spinner.show();
+                networkingManager.getUserFromName(content2, new NetworkCallback<User>() {
+                    @Override
+                    public void completionHandler(User object, ServerError error) {
+                        spinner.hide();
+                        if (object != null && error == null) {
+                            if (object.id == userManager.getUser().id) {
+                                onProfile();
+                            } else {
+                                pushFragment(AnotherUsersProfileFragment.newInstance(object));
+                            }
+                        } else {
+                            Toast.makeText(MainActivity.this, "Unable to find user: " + content2, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         }
     }
