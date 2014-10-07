@@ -23,7 +23,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="10dp" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/add_prediction_body_edittext"
                 style="@style/knoda_edittext"
                 android:layout_width="match_parent"

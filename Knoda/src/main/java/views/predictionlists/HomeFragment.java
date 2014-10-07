@@ -102,6 +102,7 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         homeActionBar.setFilter(homeActionBar.selected);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return false;
@@ -242,11 +243,13 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         startActivity(intent);
     }
 
-    @Override
+
     public void onSwitchFeed(int number) {
         sharedPrefManager.saveObjectString(number, SharedPrefManager.SAVED_HOMESCREEN_SELECTED);
-        pListView.setRefreshing(true);
-        adapter.loadPage(0);
+        if (pListView != null) {
+            pListView.setRefreshing(true);
+            adapter.loadPage(0);
+        }
     }
 
     @Override

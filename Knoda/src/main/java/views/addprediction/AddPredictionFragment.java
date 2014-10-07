@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -42,6 +44,7 @@ import models.User;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
 import pubsub.NewPredictionEvent;
+import unsorted.AutoCompleteAdapter;
 import views.core.BaseFragment;
 import views.core.MainActivity;
 
@@ -49,7 +52,7 @@ public class AddPredictionFragment extends BaseFragment {
 
     private static boolean requestingTwitterConnect;
     @InjectView(R.id.add_prediction_body_edittext)
-    EditText bodyEditText;
+    AutoCompleteTextView bodyEditText;
     //    @InjectView(R.id.add_prediction_resolution_date_edittext)
 //    EditText resolutionDateEditText;
 //    @InjectView(R.id.add_prediction_resolution_time_edittext)
@@ -161,8 +164,8 @@ public class AddPredictionFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         ((MainActivity) getActivity()).showNavbar();
+        super.onDestroyView();
     }
 
     @Override
@@ -233,6 +236,30 @@ public class AddPredictionFragment extends BaseFragment {
                 }
             });
         }
+
+        //Autocomplete stuff
+        final AutoCompleteAdapter adapter = new AutoCompleteAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, (MainActivity) getActivity());
+        bodyEditText.setAdapter(adapter);
+        bodyEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(adapter.getItem(position));
+
+                String autoword = adapter.getItem(position);
+                String[] words = adapter.allwords.split(" ");
+                String all = "";
+                for (int x = 0; x < words.length - 1; x++) {
+                    String s = words[x];
+                    all += s + " ";
+                }
+                all += words[words.length - 1].substring(0, 1);
+                all += autoword;
+                bodyEditText.setText(all);
+                bodyEditText.setSelection(all.length());
+            }
+        });
+
+
     }
 
     private void buildTopicsDialog() {

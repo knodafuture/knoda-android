@@ -67,6 +67,7 @@ import networking.GsonArrayRequest;
 import networking.GsonRequest;
 import networking.NetworkCallback;
 import networking.NetworkListCallback;
+import networking.NetworkListObjectCallback;
 import networking.OkHttpStack;
 import unsorted.Logger;
 
@@ -381,6 +382,13 @@ public class NetworkingManager {
         String url = buildUrl("search/users.json", true, builder);
 
         executeListRequest(Request.Method.GET, url, null, TypeTokenFactory.getUserListTypeToken(), callback);
+    }
+
+    public void autocompleteHashtag(String hashtag, NetworkListObjectCallback<String> callback) {
+        ParamBuilder builder = ParamBuilder.create().add("q", hashtag);
+        String url = buildUrl("hashtags/autocomplete.json", false, builder);
+
+        executeListObjectRequest(Request.Method.GET, url, null, TypeTokenFactory.getHashtagToken(), callback);
     }
 
     public void searchForPredictions(String searchterm, NetworkListCallback<Prediction> callback) {
@@ -805,6 +813,37 @@ public class NetworkingManager {
 
         mRequestQueue.add(request);
     }
+
+    private <T> void executeListObjectRequest(int httpMethod, final String url, final Object payload, final TypeToken token, final NetworkListObjectCallback<T> callback) {
+        Logger.log("Executing request" + url);
+
+        Response.Listener<ArrayList<T>> responseListener = new Response.Listener<ArrayList<T>>() {
+            @Override
+            public void onResponse(ArrayList<T> response) {
+                if (callback != null)
+                    callback.completionHandler(response, null);
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (checkAndHandleOutdated(volleyError))
+                    return;
+                if (callback != null)
+                    callback.completionHandler(null, ServerError.newInstanceWithVolleyError(volleyError));
+            }
+        };
+
+        GsonArrayRequest<ArrayList<T>> request = new GsonArrayRequest<ArrayList<T>>(httpMethod, url, token, getHeaders(), responseListener, errorListener);
+        request.setRetryPolicy(new DefaultRetryPolicy(timeout * 1000, 0, 2.0f));
+
+        if (payload != null)
+            request.setPayload(payload);
+
+        mRequestQueue.add(request);
+    }
+
 
     private boolean checkAndHandleOutdated(VolleyError error) {
 //        if (error.networkResponse.statusCode == 410) {

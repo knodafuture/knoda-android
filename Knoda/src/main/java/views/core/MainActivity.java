@@ -345,12 +345,6 @@ public class MainActivity extends BaseActivity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.addToBackStack(fragment.getClass().getSimpleName()).replace(R.id.fragmentContainer, fragment).commitAllowingStateLoss();
-//        transaction.setBreadCrumbTitle(fragment.getClass().getSimpleName());
-//        transaction.addToBackStack(fragment.getClass().getSimpleName());
-//        transaction.replace(R.id.fragmentContainer, fragment);
-//        transaction.commit();
-        //fragmentManager.executePendingTransactions(); //causes crash
-        //transaction.add(fragment, fragment.getClass().getSimpleName());
     }
 
 
@@ -507,7 +501,7 @@ public class MainActivity extends BaseActivity {
                     public void completionHandler(User object, ServerError error) {
                         spinner.hide();
                         if (object != null && error == null) {
-                            if (object.id == userManager.getUser().id) {
+                            if (object.id.intValue() == userManager.getUser().id.intValue()) {
                                 onProfile();
                             } else {
                                 pushFragment(AnotherUsersProfileFragment.newInstance(object));
@@ -670,7 +664,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setActionBarTitle(String title) {
-        if (title.equals("") || title == null) {
+        if (title == null || title.equals("")) {
             title = "KNODA";
         }
 

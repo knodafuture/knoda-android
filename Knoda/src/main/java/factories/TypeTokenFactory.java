@@ -87,4 +87,9 @@ public class TypeTokenFactory {
         return new TypeToken<ArrayList<Follow>>() {
         };
     }
+
+    public static TypeToken getHashtagToken() {
+        return new TypeToken<ArrayList<String>>() {
+        };
+    }
 }
