@@ -265,6 +265,7 @@ public class PredictionListCell extends RelativeLayout {
                 ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
                 ds.setFakeBoldText(true);
             } else if (getURL().contains(("#"))) {
+                ds.setFakeBoldText(true);
                 ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
             }
         }
