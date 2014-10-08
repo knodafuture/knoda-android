@@ -1,7 +1,6 @@
 package views.predictionlists;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
@@ -9,7 +8,6 @@ import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,7 +20,6 @@ import java.util.regex.Pattern;
 
 import models.Prediction;
 import views.core.MainActivity;
-import views.details.DetailsFragment;
 
 /**
  * Created by nick on 1/27/14.
@@ -119,38 +116,31 @@ public class PredictionListCell extends RelativeLayout {
         }
     }
 
-    public void setPrediction(Prediction prediction, MainActivity mainActivity) {
+    public void setPrediction(Prediction prediction, MainActivity mainActivity, boolean enablehashtags) {
         this.prediction = prediction;
         if (prediction == null)
             return;
-        update(mainActivity);
+        update(mainActivity, enablehashtags);
     }
 
 
-    public void update(final MainActivity mainActivity) {
+    public void update(final MainActivity mainActivity, boolean enableHashtags) {
 
-        SpannableString spannableString =
-                new SpannableString(prediction.body);
-        bodyTextView.setText(spannableString);
+        if (enableHashtags) {
+            SpannableString spannableString =
+                    new SpannableString(prediction.body);
+            bodyTextView.setText(spannableString);
+            Pattern hashtagPattern = Pattern.compile("[#]+[A-Za-z0-9-_]+\\b");
+            String hashtagScheme = "content://com.knoda.knoda.hashtag/";
+            Linkify.addLinks(bodyTextView, hashtagPattern, hashtagScheme);
 
-        Pattern hashtagPattern = Pattern.compile("[#]+[A-Za-z0-9-_]+\\b");
-        String hashtagScheme = "content://com.knoda.knoda.hashtag/";
-        Linkify.addLinks(bodyTextView, hashtagPattern, hashtagScheme);
+            Pattern mentionPattern = Pattern.compile("@([A-Za-z0-9_-]+)");
+            String mentionScheme = "content://com.knoda.knoda.hashtag/";
+            Linkify.addLinks(bodyTextView, mentionPattern, mentionScheme);
 
-
-        Pattern mentionPattern = Pattern.compile("@([A-Za-z0-9_-]+)");
-        String mentionScheme = "content://com.knoda.knoda.hashtag/";
-        Linkify.addLinks(bodyTextView, mentionPattern, mentionScheme);
-
-        stripUnderlines(bodyTextView);
-
-//        bodyView.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //set handler to open prediction detail here
-//                mainActivity.pushFragment(DetailsFragment.newInstance(prediction));
-//            }
-//        });
+            stripUnderlines(bodyTextView);
+        } else
+            bodyTextView.setText(prediction.body);
 
         usernameTextView.setText(prediction.username);
         timeStampsTextView.setText(prediction.getMetdataString());
@@ -271,5 +261,51 @@ public class PredictionListCell extends RelativeLayout {
         }
     }
 
+    //THIS CODE IS FOR WE WANT BOTH SWIPE AND HASHTAGS
+    /*
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        TextView widget = (TextView) this.bodyTextView;
+        Object text = widget.getText();
+        if (text instanceof Spanned) {
+            Spannable buffer = (Spannable) text;
+
+            int action = event.getAction();
+
+            if (action == MotionEvent.ACTION_UP
+                    || action == MotionEvent.ACTION_DOWN) {
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                x -= widget.getTotalPaddingLeft();
+                y -= widget.getTotalPaddingTop();
+
+                x += widget.getScrollX();
+                y += widget.getScrollY();
+
+                Layout layout = widget.getLayout();
+                int line = layout.getLineForVertical(y);
+                int off = layout.getOffsetForHorizontal(line, x);
+
+                ClickableSpan[] link = buffer.getSpans(off, off,
+                        ClickableSpan.class);
+
+                if (link.length != 0) {
+                    if (action == MotionEvent.ACTION_UP) {
+                        link[0].onClick(widget);//do hashtag and mention logic here
+                    } else if (action == MotionEvent.ACTION_DOWN) {
+                        Selection.setSelection(buffer,
+                                buffer.getSpanStart(link[0]),
+                                buffer.getSpanEnd(link[0]));
+                    }
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
+    */
 
 }

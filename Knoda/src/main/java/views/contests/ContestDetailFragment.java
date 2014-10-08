@@ -330,7 +330,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
                     errorReporter.showError(error);
                 else {
                     cell.prediction = object;
-                    cell.update((MainActivity)getActivity());
+                    cell.update((MainActivity) getActivity(), false);
                     bus.post(new PredictionChangeEvent(object));
                 }
             }
@@ -349,7 +349,7 @@ public class ContestDetailFragment extends BaseFragment implements PredictionSwi
                     errorReporter.showError(error);
                 } else {
                     cell.prediction = object;
-                    cell.update((MainActivity)getActivity());
+                    cell.update((MainActivity) getActivity(), false);
                     bus.post(new PredictionChangeEvent(object));
                 }
             }

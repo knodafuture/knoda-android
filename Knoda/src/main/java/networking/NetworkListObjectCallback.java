@@ -2,7 +2,6 @@ package networking;
 
 import java.util.ArrayList;
 
-import models.BaseModel;
 import models.ServerError;
 
 /**

@@ -11,7 +11,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
 
 /**
- * Created by nick on 2/1/14.
+ * Created by jeff
  */
 public class ActivityListFollowCell extends RelativeLayout {
 

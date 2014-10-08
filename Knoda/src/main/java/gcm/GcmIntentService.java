@@ -13,7 +13,6 @@ import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.knoda.knoda.R;
 
 import di.KnodaApplication;
 import managers.NetworkingManager;

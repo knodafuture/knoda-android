@@ -123,7 +123,7 @@ public class AnotherUsersProfileFragment extends BasePredictionListFragment impl
         this.menu = menu;
 
         if (menu != null && menu.findItem(R.id.action_follow) != null && menu.findItem(R.id.action_follow).getActionView() != null) {
-            if (user!=null && user.following_id != null)
+            if (user != null && user.following_id != null)
                 menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn_active);
             else
                 menu.findItem(R.id.action_follow).getActionView().findViewById(R.id.view_follow_button).setBackgroundResource(R.drawable.follow_btn);

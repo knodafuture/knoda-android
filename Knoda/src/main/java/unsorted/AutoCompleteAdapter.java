@@ -17,8 +17,8 @@ import views.core.MainActivity;
  * Created by jeffcailteux on 10/6/14.
  */
 public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
-    private ArrayList<String> mData;
     public String allwords = "";
+    private ArrayList<String> mData;
     private MainActivity mainActivity;
 
     public AutoCompleteAdapter(Context context, int textViewResourceId, MainActivity mainActivity) {

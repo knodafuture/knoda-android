@@ -34,8 +34,8 @@ public class DetailsHeaderView extends RelativeLayout {
     public TextView pointsTotalTextView;
     public TextView pointsDetailsTextView;
     public Prediction prediction;
-    private DetailsHeaderViewDelegate delegate;
     MainActivity mainActivity;
+    private DetailsHeaderViewDelegate delegate;
 
     public DetailsHeaderView(Context context) {
         super(context);
@@ -106,7 +106,7 @@ public class DetailsHeaderView extends RelativeLayout {
 
     public void setPrediction(Prediction prediction) {
         this.prediction = prediction;
-        this.predictionCell.setPrediction(prediction, mainActivity);
+        this.predictionCell.setPrediction(prediction, mainActivity, true);
         update();
     }
 

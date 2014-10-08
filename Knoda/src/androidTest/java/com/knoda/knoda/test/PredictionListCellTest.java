@@ -60,7 +60,7 @@ public class PredictionListCellTest
         prediction.isReadyForResolution = false;
         prediction.settled = false;
 
-        listCell.setPrediction(prediction, mainActivity);
+        listCell.setPrediction(prediction, mainActivity, false);
 
         assertEquals(listCell.bodyTextView.getText().toString(), "test_body");
         assertEquals(listCell.usernameTextView.getText().toString(), "test_username");

@@ -108,7 +108,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                     errorReporter.showError(error);
                 else {
                     cell.prediction = object;
-                    cell.update((MainActivity) getActivity());
+                    cell.update((MainActivity) getActivity(), false);
                     bus.post(new PredictionChangeEvent(object));
                 }
             }
@@ -134,7 +134,7 @@ public class BasePredictionListFragment extends BaseListFragment implements Pred
                     errorReporter.showError(error);
                 } else {
                     cell.prediction = object;
-                    cell.update((MainActivity) getActivity());
+                    cell.update((MainActivity) getActivity(), false);
                     bus.post(new PredictionChangeEvent(object));
                 }
             }

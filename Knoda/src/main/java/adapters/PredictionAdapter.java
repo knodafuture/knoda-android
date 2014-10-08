@@ -68,7 +68,7 @@ public class PredictionAdapter extends PagingAdapter<Prediction> {
             listItem = new PredictionListCell(context);
 
         Prediction prediction = getItem(position);
-        listItem.setPrediction(prediction, mainActivity);
+        listItem.setPrediction(prediction, mainActivity, false);
         listItem.setTag(position);
         if (prediction.userAvatar != null)
             listItem.avatarImageView.setImageUrl(prediction.userAvatar.small, imageLoader);

@@ -1812,9 +1812,9 @@ public class Session implements Serializable {
         private final StartActivityDelegate startActivityDelegate;
         private final String authId = UUID.randomUUID().toString();
         private final Map<String, String> loggingExtras = new HashMap<String, String>();
-        private SessionLoginBehavior loginBehavior = SessionLoginBehavior.SSO_WITH_FALLBACK;        private int requestCode = DEFAULT_AUTHORIZE_ACTIVITY_CODE;
+        private SessionLoginBehavior loginBehavior = SessionLoginBehavior.SSO_WITH_FALLBACK;
         private StatusCallback statusCallback;
-        private boolean isLegacy = false;
+        private boolean isLegacy = false;        private int requestCode = DEFAULT_AUTHORIZE_ACTIVITY_CODE;
         private List<String> permissions = Collections.emptyList();
         private SessionDefaultAudience defaultAudience = SessionDefaultAudience.FRIENDS;
         private String applicationId;

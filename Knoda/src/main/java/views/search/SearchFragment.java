@@ -54,7 +54,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
 
     public static SearchFragment newInstance(String searchTerm) {
         SearchFragment fragment = new SearchFragment();
-        fragment.searchTerm=searchTerm;
+        fragment.searchTerm = searchTerm;
         return fragment;
     }
 
@@ -147,7 +147,7 @@ public class SearchFragment extends BaseFragment implements SearchView.SearchVie
         listview.setAdapter(searchAdapter);
         searchAdapter.loadForSearchTerm(string);
         listview.setOnItemClickListener(searchAdapter.makeOnItemClickListeners());
-        if (searchView!=null && searchView.searchField!=null && !searchView.searchField.getText().toString().equals(searchTerm))
+        if (searchView != null && searchView.searchField != null && !searchView.searchField.getText().toString().equals(searchTerm))
             searchView.searchField.setText(searchTerm);
     }
 
