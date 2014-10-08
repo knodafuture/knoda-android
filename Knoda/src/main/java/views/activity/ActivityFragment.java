@@ -1,7 +1,6 @@
 package views.activity;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -159,10 +158,7 @@ public class ActivityFragment extends BaseFragment {
             }
         });
         ((LinearLayout) topview.findViewById(R.id.activity_container)).addView(mViewPager);
-        if (Build.VERSION.SDK_INT >= 17)
-            adapter = new ActivityPagerAdapter(getChildFragmentManager());
-        else
-            adapter = new ActivityPagerAdapter(getFragmentManager());
+        adapter = new ActivityPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(adapter);
         switch (sharedPrefManager.getSavedActivityFilter()) {
             case R.id.activity_1:
