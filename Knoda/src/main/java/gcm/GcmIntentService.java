@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.knoda.knoda.R;
@@ -35,7 +34,6 @@ import views.predictionlists.AnotherUsersProfileFragment;
 public class GcmIntentService extends IntentService {
     public static final String TAG = "gcm.GcmIntentService";
     public static final int NOTIFICATION_ID = 1;
-    NotificationCompat.Builder builder;
     private NotificationManager mNotificationManager;
 
     public GcmIntentService() {
@@ -68,10 +66,6 @@ public class GcmIntentService extends IntentService {
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    public void sendNotification(String msg) {
-        sendNotification(msg, "", "");
-    }
-
     private void sendNotification(String msg, String type, String id) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -84,14 +78,17 @@ public class GcmIntentService extends IntentService {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 showActivitiesIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
+        android.app.Notification.Builder mBuilder =
+                new android.app.Notification.Builder(this)
                         .setSmallIcon(com.knoda.knoda.R.drawable.ic_notification)
                         .setContentTitle("KNODA")
-                        .setStyle(new NotificationCompat.BigTextStyle()
+                        .setStyle(new android.app.Notification.BigTextStyle()
                                 .bigText(msg))
                         .setContentText(msg)
+                        .setColor(getResources().getColor(R.color.knodaLightGreen))
+
                         .setAutoCancel(true);
+
 
         //For wearables notifications
         /*
@@ -119,12 +116,8 @@ public class GcmIntentService extends IntentService {
         */
 
 
-        mBuilder.setContentIntent(contentIntent);
+        mBuilder.setFullScreenIntent(contentIntent, true);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-    }
-
-    private void showAlert(final String msg) {
-        showAlert(msg, "", "");
     }
 
     private void showAlert(final String msg, final String type, final String notificationId) {
