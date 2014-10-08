@@ -7,7 +7,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -24,6 +25,7 @@ import models.Prediction;
 import models.ServerError;
 import networking.NetworkCallback;
 import pubsub.NewCommentEvent;
+import unsorted.AutoCompleteAdapter;
 import views.addprediction.MessageCounter;
 import views.core.BaseFragment;
 import views.core.MainActivity;
@@ -32,7 +34,7 @@ import views.core.MainActivity;
 public class CreateCommentFragment extends BaseFragment {
 
     @InjectView(R.id.add_comment_body_edittext)
-    EditText bodyEditText;
+    AutoCompleteTextView bodyEditText;
     @InjectView(R.id.add_comment_counter_textview)
     TextView messageCounterTextView;
     private Prediction prediction;
@@ -103,6 +105,27 @@ public class CreateCommentFragment extends BaseFragment {
                 submitComment();
             }
         });
+
+
+        final AutoCompleteAdapter adapter = new AutoCompleteAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, (MainActivity) getActivity());
+        bodyEditText.setAdapter(adapter);
+        bodyEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String autoword = adapter.getItem(position);
+                String[] words = adapter.allwords.split(" ");
+                String all = "";
+                for (int x = 0; x < words.length - 1; x++) {
+                    String s = words[x];
+                    all += s + " ";
+                }
+                all += words[words.length - 1].substring(0, 1);
+                all += autoword;
+                bodyEditText.setText(all);
+                bodyEditText.setSelection(all.length());
+            }
+        });
+
     }
 
     private void submitComment() {

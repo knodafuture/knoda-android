@@ -11,7 +11,7 @@
         android:layout_height="150dp"
         android:background="@color/white">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/add_comment_body_edittext"
             style="@style/knoda_edittext"
             android:layout_width="match_parent"

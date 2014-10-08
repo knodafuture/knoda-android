@@ -243,8 +243,6 @@ public class AddPredictionFragment extends BaseFragment {
         bodyEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(adapter.getItem(position));
-
                 String autoword = adapter.getItem(position);
                 String[] words = adapter.allwords.split(" ");
                 String all = "";

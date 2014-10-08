@@ -1,6 +1,11 @@
 package views.details;
 
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -9,6 +14,8 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.knoda.knoda.R;
+
+import java.util.regex.Pattern;
 
 import models.Comment;
 
@@ -51,8 +58,22 @@ public class CommentCell extends RelativeLayout {
 
     public void populate(Comment comment) {
         usernameTextView.setText(comment.username);
-        bodyTextView.setText(comment.text);
         timestampTextView.setText(comment.getCreationString());
+
+        SpannableString spannableString =
+                new SpannableString(comment.text);
+        bodyTextView.setText(spannableString);
+
+        Pattern hashtagPattern = Pattern.compile("[#]+[A-Za-z0-9-_]+\\b");
+        String hashtagScheme = "content://com.knoda.knoda.hashtag/";
+        Linkify.addLinks(bodyTextView, hashtagPattern, hashtagScheme);
+
+
+        Pattern mentionPattern = Pattern.compile("@([A-Za-z0-9_-]+)");
+        String mentionScheme = "content://com.knoda.knoda.hashtag/";
+        Linkify.addLinks(bodyTextView, mentionPattern, mentionScheme);
+
+        stripUnderlines(bodyTextView);
 
         if (comment.verifiedAccount)
             verifiedCheckmark.setVisibility(VISIBLE);
@@ -72,5 +93,40 @@ public class CommentCell extends RelativeLayout {
             return R.drawable.disagree_marker;
 
         return 0;
+    }
+
+    private void stripUnderlines(TextView textView) {
+        Spannable s = new SpannableString(textView.getText());
+        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+        for (URLSpan span : spans) {
+            int start = s.getSpanStart(span);
+            int end = s.getSpanEnd(span);
+            s.removeSpan(span);
+            span = new URLSpanNoUnderline(span.getURL(), getContext());
+            s.setSpan(span, start, end, 0);
+        }
+        textView.setText(s);
+    }
+
+    private class URLSpanNoUnderline extends URLSpan {
+        Context context;
+
+        public URLSpanNoUnderline(String url, Context c) {
+            super(url);
+            context = c;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+            if (getURL().contains("@")) {
+                ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
+                ds.setFakeBoldText(true);
+            } else if (getURL().contains(("#"))) {
+                ds.setFakeBoldText(true);
+                ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
+            }
+        }
     }
 }
