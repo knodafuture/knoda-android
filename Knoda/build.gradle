@@ -29,8 +29,8 @@ android {
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 19
-        renderscriptTargetApi 19
+        targetSdkVersion 20
+        renderscriptTargetApi 20
         renderscriptSupportMode true
         resConfigs "en"
         resConfigs "hdpi", "xhdpi", "xxhdpi"

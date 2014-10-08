@@ -262,7 +262,7 @@ public class PredictionListCell extends RelativeLayout {
             super.updateDrawState(ds);
             ds.setUnderlineText(false);
             if (getURL().contains("@")) {
-                ds.setColor(Color.BLUE);
+                ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
                 ds.setFakeBoldText(true);
             } else if (getURL().contains(("#"))) {
                 ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));

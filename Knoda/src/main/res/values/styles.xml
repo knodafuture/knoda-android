@@ -30,10 +30,12 @@
     </style>
 
     <style name="smallGreenText">
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/knodaLightGreen</item>
     </style>
 
     <style name="darkGreenText">
+        <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/knodaDarkGreen</item>
     </style>
 

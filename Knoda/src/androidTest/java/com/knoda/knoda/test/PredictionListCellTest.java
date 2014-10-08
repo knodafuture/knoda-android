@@ -60,16 +60,16 @@ public class PredictionListCellTest
         prediction.isReadyForResolution = false;
         prediction.settled = false;
 
-        listCell.setPrediction(prediction);
+        listCell.setPrediction(prediction, mainActivity);
 
-        assertEquals(listCell.bodyTextView.getText(), "test_body");
-        assertEquals(listCell.usernameTextView.getText(), "test_username");
-        assertEquals(listCell.timeStampsTextView.getText(), "test_expired | test_predicted | 50% agree | ");
-        assertEquals(listCell.commentCountTextView.getText(), "0");
+        assertEquals(listCell.bodyTextView.getText().toString(), "test_body");
+        assertEquals(listCell.usernameTextView.getText().toString(), "test_username");
+        assertEquals(listCell.timeStampsTextView.getText().toString(), "test_expired | test_predicted | 50% agree | ");
+        assertEquals(listCell.commentCountTextView.getText().toString(), "0");
         assertEquals(listCell.groupView.getVisibility(), View.GONE);
         assertEquals(listCell.avatarImageView.getTag(), 1);
         assertEquals(listCell.textContainer.getTag(), 1);
-        assertEquals(listCell.resultTextView.getText(), "");
+        assertEquals(listCell.resultTextView.getText().toString(), "");
     }
 
     public void testVoteImage() {

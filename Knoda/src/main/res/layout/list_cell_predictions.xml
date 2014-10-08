@@ -140,6 +140,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="TEST TEXT AND STUFF"
+                        android:textSize="16sp"
                         android:textColorLink="@color/knodaLightGreen"/>
 
                 </RelativeLayout>
@@ -159,7 +160,6 @@
                         style="@style/smallGreenText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:text="closes in 2 years | made 2 days ago | 80% agree" />
 
                     <ImageView
