@@ -484,33 +484,35 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
-
         if (getIntent().getData() != null) {
             Uri uri = getIntent().getData();
             //strip off hashtag from the URI
-            String content = uri.toString().split("/")[3];
-            if (content.indexOf("#") != -1) {
-                //Toast.makeText(this, tag, Toast.LENGTH_SHORT).show();
-                content = content.replace("#", "");
-                pushFragment(SearchFragment.newInstance(content));
-            } else if (content.indexOf("@") != -1) {
-                final String content2 = content.replace("@", "");
-                spinner.show();
-                networkingManager.getUserFromName(content2, new NetworkCallback<User>() {
-                    @Override
-                    public void completionHandler(User object, ServerError error) {
-                        spinner.hide();
-                        if (object != null && error == null) {
-                            if (object.id.intValue() == userManager.getUser().id.intValue()) {
-                                onProfile();
+            String[] uriArray = uri.toString().split("/");
+            if (uriArray.length >= 4) {
+                String content = uriArray[3];
+                if (content.indexOf("#") != -1) {
+                    //Toast.makeText(this, tag, Toast.LENGTH_SHORT).show();
+                    content = content.replace("#", "");
+                    pushFragment(SearchFragment.newInstance(content));
+                } else if (content.indexOf("@") != -1) {
+                    final String content2 = content.replace("@", "");
+                    spinner.show();
+                    networkingManager.getUserFromName(content2, new NetworkCallback<User>() {
+                        @Override
+                        public void completionHandler(User object, ServerError error) {
+                            spinner.hide();
+                            if (object != null && error == null) {
+                                if (object.id.intValue() == userManager.getUser().id.intValue()) {
+                                    onProfile();
+                                } else {
+                                    pushFragment(AnotherUsersProfileFragment.newInstance(object));
+                                }
                             } else {
-                                pushFragment(AnotherUsersProfileFragment.newInstance(object));
+                                Toast.makeText(MainActivity.this, "Unable to find user: " + content2, Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(MainActivity.this, "Unable to find user: " + content2, Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+                }
             }
         }
     }
