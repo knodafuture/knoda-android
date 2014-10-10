@@ -83,7 +83,7 @@ public class NetworkingManager {
     @Inject
     public SharedPrefManager sharedPrefManager;
     Context context;
-    String api_version = "6";
+    String api_version = "7";
     @Inject
     Bus bus;
     int timeout = 15;//timeout in seconds

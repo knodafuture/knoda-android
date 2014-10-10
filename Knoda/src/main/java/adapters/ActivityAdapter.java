@@ -197,7 +197,6 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             listItem.setTag(item);
             updateFollows(listItem, item);
             return listItem;
-
         } else {
             ActivityListWinLossCell listItem = (ActivityListWinLossCell) AdapterHelper.getConvertViewSafely(convertView, ActivityListWinLossCell.class);
             if (listItem == null)
@@ -282,7 +281,11 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             setImage(iconImageView, R.drawable.ic_notification_avatar);
             setUpButton(winlossbutton, buttonContainer, "", false);
             setUpBody(winlosscomment, true);
-
+        } else if (activityItem.type == ActivityItemType.COMMENT_MENTION) {
+            setUpCommentBg(commentBackground, true);
+            setImage(iconImageView, R.drawable.ic_notification_avatar);
+            setUpButton(winlossbutton, buttonContainer, "", false);
+            setUpBody(winlosscomment, true);
         } else if (activityItem.type == ActivityItemType.WON && filter.equals("all")) {
             setImage(iconImageView, R.drawable.ic_notification_avatar);
             setUpButton(winlossbutton, buttonContainer, "Brag", activityItem.shareable);
@@ -293,13 +296,11 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             winlossbutton.setBackgroundResource(R.drawable.brag_selector);
             winlossbutton.setTag(activityItem.target);
             winlossbutton.setOnClickListener(bragClick);
-
         } else if (activityItem.type == ActivityItemType.LOST && filter.equals("all")) {
             if (!activityItem.title.substring(0, 5).equals("<font"))
                 activityItem.title = "<font color='#FE3232'>You Lost</font>" + "—" + activityItem.title;
             setUpButton(winlossbutton, buttonContainer, "", false);
             setUpBody(winlosscomment, true);
-
         } else if (activityItem.type == ActivityItemType.INVITATION && (filter.equals("all") || filter.equals("invites"))) {
             winlossbutton.setOnClickListener(groupClick);
             setImage(iconImageView, R.drawable.ic_notification_group);
@@ -307,7 +308,14 @@ public class ActivityAdapter extends PagingAdapter<ActivityItem> {
             winlossbutton.setTextColor(groupcolor);
             winlossbutton.setBackgroundResource(R.drawable.group_selector);
             setUpBody(winlosscomment, false);
-
+        } else if (activityItem.type == ActivityItemType.PREDICTION_MENTION) {
+            setImage(iconImageView, R.drawable.ic_notification_avatar);
+            setUpButton(winlossbutton, buttonContainer, "View Prediction", true);
+            setUpBody(winlosscomment, true);
+            winlossbutton.setTextColor(groupcolor);
+            winlossbutton.setBackgroundResource(R.drawable.group_selector);
+            winlossbutton.setTag(activityItem);
+            winlossbutton.setOnClickListener(settleClick);
         } else if (activityItem.type == ActivityItemType.EXPIRED && (filter.equals("all") || filter.equals("expired"))) {
             winlossbutton.setOnClickListener(settleClick);
             setImage(iconImageView, R.drawable.ic_notification_settle);

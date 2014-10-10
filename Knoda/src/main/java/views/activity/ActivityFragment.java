@@ -74,7 +74,7 @@ public class ActivityFragment extends BaseFragment {
                 selectedUnderline = topview.findViewById(R.id.underline_3);
                 break;
             case R.id.activity_4:
-                filter = "invites";
+                filter = "social";
                 selectedUnderline = topview.findViewById(R.id.underline_4);
                 break;
         }

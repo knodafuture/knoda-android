@@ -402,6 +402,8 @@ public class AddPredictionFragment extends BaseFragment {
             public void completionHandler(final Prediction prediction1, ServerError error) {
                 if (error != null) {
                     errorReporter.showError(error);
+                    spinner.hide();
+                    popFragment();
                 } else {
                     bus.post(new NewPredictionEvent(prediction1));
 

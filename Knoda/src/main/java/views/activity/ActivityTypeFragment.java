@@ -150,7 +150,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
         else if (screenNumber == 2)
             filter = "comments";
         else if (screenNumber == 3)
-            filter = "invites";
+            filter = "social";
         pageLoaded = true;
         networkingManager.getActivityItemsAfter(lastId, filter, new NetworkListCallback<ActivityItem>() {
             @Override
@@ -214,7 +214,7 @@ public class ActivityTypeFragment extends BaseListFragment implements PagingAdap
     public String noContentString() {
         pListView.setBackgroundColor(Color.WHITE);
         if (screenNumber == 3)
-            return "No invitations";
+            return "No Social Activity";
         return "No Activity";
     }
 

@@ -1,8 +1,8 @@
 package models;
 
 /**
- * Created by nick on 2/1/14.
+ * Created by jeff
  */
 public enum ActivityItemType {
-    COMMENT, LOST, WON, EXPIRED, INVITATION, FOLLOWING
+    COMMENT, LOST, WON, EXPIRED, INVITATION, FOLLOWING, COMMENT_MENTION, PREDICTION_MENTION
 }

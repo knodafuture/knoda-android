@@ -71,7 +71,7 @@
             <TextView
                 android:id="@+id/activity_4"
                 style="@style/tabText"
-                android:text="Invites" />
+                android:text="Social" />
 
             <View
                 android:id="@+id/underline_4"
