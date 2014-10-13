@@ -64,11 +64,11 @@ public class AnotherProfilePageFragment extends Fragment {
             ImageView avatar1 = (ImageView) v.findViewById(R.id.profile_avatar1);
             ImageView avatar2 = (ImageView) v.findViewById(R.id.profile_avatar2);
 
-            //avatar1.setImageUrl(mainActivity.userManager.getUser().avatar.small, mainActivity.networkingManager.getImageLoader());
-            loadUserPic(mainActivity.userManager.getUser().avatar.small, avatar1);
-            loadUserPic(user.avatar.small, avatar2);
-
-            //avatar2.setImageUrl(user.avatar.small, mainActivity.networkingManager.getImageLoader());
+            try {
+                loadUserPic(mainActivity.userManager.getUser().avatar.small, avatar1);
+                loadUserPic(user.avatar.small, avatar2);
+            } catch (Exception ignored) {
+            }
 
             if (user.rivalry != null) {
                 ((TextView) v.findViewById(R.id.head_to_head_win1)).setText(user.rivalry.opponent_won + "");

@@ -489,6 +489,7 @@ public class MainActivity extends BaseActivity {
             //strip off hashtag from the URI
             String[] uriArray = uri.toString().split("/");
             if (uriArray.length >= 4) {
+                getIntent().setData(null);
                 String content = uriArray[3];
                 if (content.indexOf("#") != -1) {
                     //Toast.makeText(this, tag, Toast.LENGTH_SHORT).show();
