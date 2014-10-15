@@ -82,6 +82,9 @@ public class Prediction extends BaseModel {
     @SerializedName("contest_name")
     public String contest_name;
 
+    @SerializedName("embed_locations")
+    public ArrayList<EmbedLocation> embedLocations;
+
 //    public String getCreationString() {
 //        return "made " + DateUtil.getPeriodString(creationDate) + " ago";
 //    }

@@ -163,6 +163,9 @@ public class PredictionListCell extends RelativeLayout {
         } else if (prediction.groupName != null) {
             groupView.setVisibility(VISIBLE);
             groupTextView.setText(prediction.groupName.toString());
+        } else if (prediction.embedLocations != null && prediction.embedLocations.size() > 0) {
+            groupView.setVisibility(VISIBLE);
+            groupTextView.setText(prediction.embedLocations.get(0).domain);
         } else {
             groupView.setVisibility(GONE);
         }

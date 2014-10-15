@@ -42,6 +42,7 @@ import pubsub.NewCommentEvent;
 import pubsub.PredictionChangeEvent;
 import views.contests.ContestDetailFragment;
 import views.core.BaseListFragment;
+import views.core.BaseWebFragment;
 import views.core.MainActivity;
 import views.predictionlists.AnotherUsersProfileFragment;
 import views.predictionlists.CategoryFragment;
@@ -157,6 +158,10 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.GONE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.VISIBLE);
             ((TextView) actionbar.findViewById(R.id.details_action_group_textview)).setText("VIEW CONTEST");
+        } else if (prediction.embedLocations != null && prediction.embedLocations.size() > 0) {
+            actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.GONE);
+            actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.VISIBLE);
+            ((TextView) actionbar.findViewById(R.id.details_action_group_textview)).setText("VIEW WEBSITE");
         } else {
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.VISIBLE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.GONE);
@@ -235,6 +240,8 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
                 }
             });
 
+        } else if (prediction.embedLocations != null && prediction.embedLocations.size() > 0) {
+            pushFragment(BaseWebFragment.newInstance(prediction.embedLocations.get(0).url, prediction.embedLocations.get(0).domain, false));
         }
 
     }
