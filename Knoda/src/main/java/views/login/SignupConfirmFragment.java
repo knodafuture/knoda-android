@@ -1,5 +1,6 @@
 package views.login;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -77,6 +78,12 @@ public class SignupConfirmFragment extends BaseDialogFragment {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         usernameTV.setText(s);
         imageView.setImageUrl(u.avatar.small, networkingManager.getImageLoader());
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog){
+        WelcomeFragment f = WelcomeFragment.newInstance(null, null);
+        f.show(getFragmentManager().beginTransaction(), "welcome");
     }
 
 }

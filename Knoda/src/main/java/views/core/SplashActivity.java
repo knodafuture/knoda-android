@@ -34,7 +34,6 @@ public class SplashActivity extends BaseActivity {
         networkingManager.baseUrl = sharedPrefManager.getAPIurl();
     }
 
-
     private boolean showNotConnectedToNetworkDialog(VolleyError error) {
 
         if (error instanceof NoConnectionError) {

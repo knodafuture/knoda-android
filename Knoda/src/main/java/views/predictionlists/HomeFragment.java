@@ -252,13 +252,13 @@ public class HomeFragment extends BasePredictionListFragment implements HomeActi
         }
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        adapter.reset();
-        pListView.setRefreshing();
-        adapter.loadPage(0);
-    }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        adapter.reset();
+//        pListView.setRefreshing();
+//        adapter.loadPage(0);
+//    }
 
     public PagingAdapter accessAdapter() {
         return adapter;

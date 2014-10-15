@@ -273,7 +273,9 @@ public class MainActivity extends BaseActivity {
         if (spinner.isVisible())
             return;
 
-        if (getFragmentManager().getBackStackEntryCount() > 1)
+        if (userManager.user == null || userManager.user.guestMode == true) {
+            this.finish();
+        } else if (getFragmentManager().getBackStackEntryCount() > 1)
             getFragmentManager().popBackStack();
         else if (getFragmentManager().getBackStackEntryCount() <= 1) {
             if (getCurrentFragment().equals("HomeFragment"))
@@ -369,7 +371,6 @@ public class MainActivity extends BaseActivity {
     public void showLogin(String titleMessage, String detailMessage) {
         //captureScreen();
         WelcomeFragment f = WelcomeFragment.newInstance(titleMessage, detailMessage);
-
         f.show(getFragmentManager().beginTransaction(), "welcome");
     }
 

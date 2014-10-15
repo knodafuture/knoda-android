@@ -1,6 +1,7 @@
 package views.login;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -111,8 +112,8 @@ public class WelcomeFragment extends BaseDialogFragment {
             wtext = b.getCharSequence("welcometext").toString();
         if (b.getCharSequence("welcomeprompt") != null)
             wprompt = b.getCharSequence("welcomeprompt").toString();
-    }
 
+    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     }
@@ -258,5 +259,10 @@ public class WelcomeFragment extends BaseDialogFragment {
             sharedPrefManager.setShouldShowVotingWalkthrough(true);
             bus.post(new LoginFlowDoneEvent());
         }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog){
+        getActivity().finish();
     }
 }

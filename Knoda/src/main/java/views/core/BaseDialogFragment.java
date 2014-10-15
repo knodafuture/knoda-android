@@ -72,7 +72,7 @@ public class BaseDialogFragment extends DialogFragment {
     public void onCancel(DialogInterface dialogInterface) {
         super.onCancel(dialogInterface);
         sharedPrefManager.setShouldShowVotingWalkthrough(true);
-        bus.post(new LoginFlowDoneEvent());
+        //bus.post(new LoginFlowDoneEvent());
         Logger.log("CANCEL");
     }
 

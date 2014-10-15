@@ -1,6 +1,7 @@
 package views.login;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,6 +88,7 @@ public class SignUpFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_sign_up, container, false);
+
         return inflate;
     }
 
@@ -282,6 +284,11 @@ public class SignUpFragment extends BaseDialogFragment {
                 });
             }
         });
+    }
 
+    @Override
+    public void onCancel(DialogInterface dialog){
+        WelcomeFragment f = WelcomeFragment.newInstance(null, null);
+        f.show(getFragmentManager().beginTransaction(), "welcome");
     }
 }

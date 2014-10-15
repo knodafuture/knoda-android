@@ -1,6 +1,7 @@
 package views.login;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,7 +125,7 @@ public class LoginFragment extends BaseDialogFragment {
                 FlurryAgent.logEvent("LOGIN_EMAIL");
                 ((MainActivity) getActivity()).doLogin();
                 sharedPrefManager.setShouldShowVotingWalkthrough(true);
-                bus.post(new LoginFlowDoneEvent());
+                //bus.post(new LoginFlowDoneEvent());
                 dismiss();
             }
         });
@@ -145,5 +146,11 @@ public class LoginFragment extends BaseDialogFragment {
         }
 
         return true;
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog){
+        WelcomeFragment f = WelcomeFragment.newInstance(null, null);
+        f.show(getFragmentManager().beginTransaction(), "welcome");
     }
 }
