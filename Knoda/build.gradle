@@ -24,13 +24,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 21
+    buildToolsVersion '21.0.0'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 20
-        renderscriptTargetApi 20
+        targetSdkVersion 21
+        renderscriptTargetApi 21
         renderscriptSupportMode true
         resConfigs "en"
         resConfigs "hdpi", "xhdpi", "xxhdpi"
