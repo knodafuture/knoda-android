@@ -494,8 +494,10 @@ public class MainActivity extends BaseActivity {
                 getIntent().setData(null);
                 String content = "";
                 for (int i = 3; i != uriArray.length; i++) {
-                    content += uriArray[i];
+                    content += uriArray[i] + "/";
                 }
+                content = content.replace("https://", "");
+                content = content.replace("http://", "");
                 if (content.indexOf("#") != -1) {
                     //Toast.makeText(this, tag, Toast.LENGTH_SHORT).show();
                     content = content.replace("#", "");
@@ -519,9 +521,8 @@ public class MainActivity extends BaseActivity {
                         }
                     });
                 } else if (Patterns.WEB_URL.matcher(content).matches()) {
-                    if (!content.substring(0, 6).equals("http://") && !content.substring(0, 7).equals("https://"))
-                        content = "http://" + content;
-                    BaseWebFragment fragment = BaseWebFragment.newInstance(content, "Web", true);
+                    content = "http://" + content;
+                    BaseWebFragment fragment = BaseWebFragment.newInstance(content, " ", false);
                     pushFragment(fragment);
                 }
             }
