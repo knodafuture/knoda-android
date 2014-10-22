@@ -166,6 +166,7 @@ public class PredictionListCell extends RelativeLayout {
         } else if (prediction.embedLocations != null && prediction.embedLocations.size() > 0) {
             groupView.setVisibility(VISIBLE);
             groupTextView.setText(prediction.embedLocations.get(0).domain);
+            groupIcon.setImageResource(R.drawable.embed_prediction_badge);
         } else {
             groupView.setVisibility(GONE);
         }

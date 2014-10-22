@@ -162,6 +162,8 @@ public class DetailsFragment extends BaseListFragment implements PagingAdapter.P
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.GONE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.VISIBLE);
             ((TextView) actionbar.findViewById(R.id.details_action_group_textview)).setText("VIEW WEBSITE");
+            //set icon here
+            ((ImageView) actionbar.findViewById(R.id.details_action_group_imageview)).setImageResource(R.drawable.action_embed);
         } else {
             actionbar.findViewById(R.id.details_action_similar_clickable).setVisibility(View.VISIBLE);
             actionbar.findViewById(R.id.details_action_group_clickable).setVisibility(View.GONE);
