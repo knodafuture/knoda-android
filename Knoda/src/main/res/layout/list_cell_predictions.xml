@@ -140,7 +140,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="TEST TEXT AND STUFF"
-                        android:textColorLink="@color/knodaLightGreen"
                         android:textSize="16sp" />
 
                 </RelativeLayout>

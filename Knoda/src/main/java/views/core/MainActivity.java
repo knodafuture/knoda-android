@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
+import android.util.Patterns;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -491,7 +492,10 @@ public class MainActivity extends BaseActivity {
             String[] uriArray = uri.toString().split("/");
             if (uriArray.length >= 4) {
                 getIntent().setData(null);
-                String content = uriArray[3];
+                String content = "";
+                for (int i = 3; i != uriArray.length; i++) {
+                    content += uriArray[i];
+                }
                 if (content.indexOf("#") != -1) {
                     //Toast.makeText(this, tag, Toast.LENGTH_SHORT).show();
                     content = content.replace("#", "");
@@ -514,6 +518,11 @@ public class MainActivity extends BaseActivity {
                             }
                         }
                     });
+                } else if (Patterns.WEB_URL.matcher(content).matches()) {
+                    if (!content.substring(0, 6).equals("http://") && !content.substring(0, 7).equals("https://"))
+                        content = "http://" + content;
+                    BaseWebFragment fragment = BaseWebFragment.newInstance(content, "Web", true);
+                    pushFragment(fragment);
                 }
             }
         }

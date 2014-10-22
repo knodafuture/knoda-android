@@ -7,6 +7,7 @@ import android.text.TextPaint;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -138,6 +139,10 @@ public class PredictionListCell extends RelativeLayout {
             String mentionScheme = "content://com.knoda.knoda.hashtag/";
             Linkify.addLinks(bodyTextView, mentionPattern, mentionScheme);
 
+            Pattern webPattern = Patterns.WEB_URL;
+            String webScheme = "content://com.knoda.knoda.hashtag/";
+            Linkify.addLinks(bodyTextView, webPattern, webScheme);
+
             stripUnderlines(bodyTextView);
         } else
             bodyTextView.setText(prediction.body);
@@ -255,13 +260,13 @@ public class PredictionListCell extends RelativeLayout {
         public void updateDrawState(TextPaint ds) {
             super.updateDrawState(ds);
             ds.setUnderlineText(false);
+            ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
             if (getURL().contains("@")) {
-                ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
                 ds.setFakeBoldText(true);
             } else if (getURL().contains(("#"))) {
                 ds.setFakeBoldText(true);
-                ds.setColor(context.getResources().getColor(R.color.knodaLightGreen));
-            }
+            } else
+                ds.setFakeBoldText(true);
         }
     }
 
