@@ -65,6 +65,9 @@ public class BaseWebFragment extends BaseFragment {
                 spinner.hide();
             }
         });
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setBuiltInZoomControls(true);
         webView.loadUrl(url);
         if (disableNav)
             ((MainActivity) getActivity()).hideNavbar();

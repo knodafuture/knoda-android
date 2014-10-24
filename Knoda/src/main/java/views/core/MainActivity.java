@@ -1059,7 +1059,9 @@ public class MainActivity extends BaseActivity {
                                         }
                                     });
                                 } else if (pushNotification.type.equals("test")) {
-
+                                } else if (pushNotification.type.equals("m")) {
+                                    onHome();
+                                    spinner.hide();
                                 } else {
                                     onActivity();
                                     spinner.hide();

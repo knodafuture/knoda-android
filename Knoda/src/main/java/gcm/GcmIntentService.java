@@ -184,6 +184,8 @@ public class GcmIntentService extends IntentService {
                                                                                 spinner.hide();
                                                                                 AnotherUsersProfileFragment fragment = AnotherUsersProfileFragment.newInstance(Integer.parseInt(pushNotification.id));
                                                                                 mainActivity.pushFragment(fragment);
+                                                                            } else if (pushNotification.type.equals("m")) {
+                                                                                mainActivity.onHome();
                                                                             } else {
                                                                                 mainActivity.onActivity();
                                                                                 spinner.hide();
