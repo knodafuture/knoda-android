@@ -503,7 +503,7 @@ public class MainActivity extends BaseActivity {
                     content = content.replace("#", "");
                     pushFragment(SearchFragment.newInstance(content));
                 } else if (content.indexOf("@") != -1) {
-                    final String content2 = content.replace("@", "");
+                    final String content2 = content.replace("@", "").substring(0, content.length() - 2);
                     spinner.show();
                     networkingManager.getUserFromName(content2, new NetworkCallback<User>() {
                         @Override

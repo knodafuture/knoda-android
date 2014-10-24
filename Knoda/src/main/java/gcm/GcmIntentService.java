@@ -117,7 +117,6 @@ public class GcmIntentService extends IntentService {
             mBuilder.extend(new NotificationCompat.WearableExtender().addAction(action));
         */
 
-
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
@@ -186,6 +185,7 @@ public class GcmIntentService extends IntentService {
                                                                                 mainActivity.pushFragment(fragment);
                                                                             } else if (pushNotification.type.equals("m")) {
                                                                                 mainActivity.onHome();
+                                                                                spinner.hide();
                                                                             } else {
                                                                                 mainActivity.onActivity();
                                                                                 spinner.hide();

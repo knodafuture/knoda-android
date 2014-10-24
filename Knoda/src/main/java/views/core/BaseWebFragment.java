@@ -1,13 +1,17 @@
 package views.core;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.knoda.knoda.R;
 
@@ -41,6 +45,17 @@ public class BaseWebFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
+        inflater.inflate(R.menu.web, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_web) {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(i);
+        }
+        return true;
     }
 
 
@@ -56,22 +71,34 @@ public class BaseWebFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         spinner.show();
-        webView.setWebViewClient(new WebViewClient() {
-            public void onPageFinished(WebView wv, String url) {
-                spinner.hide();
-            }
-
-            public void onReceivedError(WebView wv, int error, String description, String failingUrl) {
-                spinner.hide();
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                if (progress == 100) {
+                    spinner.hide();
+                }
             }
         });
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setBuiltInZoomControls(true);
-        webView.loadUrl(url);
+
+        webView.loadUrl(url.toLowerCase());
+        android.os.Handler handler = new android.os.Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (spinner != null && spinner.isVisible()) {
+                    spinner.hide();
+                    Toast.makeText(getActivity(), "Failed to load site. Try again later.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, 10000);
         if (disableNav)
             ((MainActivity) getActivity()).hideNavbar();
 
+        System.out.println("Loading: " + url.toLowerCase());
     }
 
     @Override
@@ -85,5 +112,4 @@ public class BaseWebFragment extends BaseFragment {
         ((MainActivity) getActivity()).showNavbar();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
     }
-
 }
