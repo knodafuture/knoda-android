@@ -55,7 +55,7 @@ public class MyProfileActionBar extends RelativeLayout {
     }
 
     public void setMode(User user) {
-        if (user.guestMode) {
+        if (user == null || user.guestMode) {
             signupTV.setVisibility(VISIBLE);
             findViewById(R.id.myprofile_actionbar_settings).setVisibility(GONE);
             signupTV.setOnClickListener(new OnClickListener() {

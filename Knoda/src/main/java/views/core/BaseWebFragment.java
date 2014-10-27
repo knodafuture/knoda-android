@@ -71,22 +71,9 @@ public class BaseWebFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         spinner.show();
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int progress) {
-                if (progress == 100) {
-                    spinner.hide();
-                }
-            }
-        });
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setBuiltInZoomControls(true);
+        final android.os.Handler handler = new android.os.Handler();
 
-        webView.loadUrl(url.toLowerCase());
-        android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
+        final Runnable runnable=new Runnable() {
             @Override
             public void run() {
                 if (spinner != null && spinner.isVisible()) {
@@ -94,7 +81,23 @@ public class BaseWebFragment extends BaseFragment {
                     Toast.makeText(getActivity(), "Failed to load site. Try again later.", Toast.LENGTH_SHORT).show();
                 }
             }
-        }, 10000);
+        };
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                if (progress == 100) {
+                    spinner.hide();
+                    handler.removeCallbacks(runnable);
+                }
+            }
+        });
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.loadUrl(url.toLowerCase());
+        handler.postDelayed(runnable, 10000);
         if (disableNav)
             ((MainActivity) getActivity()).hideNavbar();
 
